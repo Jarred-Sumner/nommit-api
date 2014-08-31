@@ -35,13 +35,18 @@ ActiveRecord::Schema.define(version: 20140831004342) do
   add_index "orders", ["user_id"], name: "index_orders_on_user_id"
 
   create_table "users", force: true do |t|
-    t.integer  "facebook_uid"
+    t.string   "facebook_uid"
     t.string   "email"
     t.string   "phone"
+    t.string   "name"
     t.string   "access_token"
     t.datetime "last_signin"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "users", ["access_token"], name: "index_users_on_access_token"
+  add_index "users", ["email"], name: "index_users_on_email"
+  add_index "users", ["facebook_uid"], name: "index_users_on_facebook_uid"
 
 end
