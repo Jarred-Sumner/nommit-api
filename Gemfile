@@ -32,4 +32,8 @@ gem 'spring',        group: :development
 
 gem 'rspec-rails', group: :test
 
-gem 'dotenv-rails'
+# Environment Variables
+gem 'dotenv-rails', group: [:text, :development]
+
+# Facebook Auth
+gem 'koala'
