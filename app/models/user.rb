@@ -14,8 +14,9 @@ class User < ActiveRecord::Base
   end
 
   def self.authenticate_or_create!(access_token)
-    User.where(access_token: access_token).first_or_create!
-  rescue Koala::Facebook::AuthenticationError, ActiveRecord::RecordInvalid
+    user = User.where(access_token: access_token).first_or_create!
+    user.touch(:last_signin)
+    user
   end
 
   before_validation :update_from_facebook!, on: :create

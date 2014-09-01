@@ -5,6 +5,8 @@ class CreateFoods < ActiveRecord::Migration
       t.string :place
       t.text :description
       t.integer :price_in_cents
+      t.integer :state, default: 1, null: false
+      t.datetime :end_date
 
       t.timestamps
     end

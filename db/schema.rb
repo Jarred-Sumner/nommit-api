@@ -11,15 +11,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140831004342) do
+ActiveRecord::Schema.define(version: 20140901001400) do
+
+  create_table "addresses", force: true do |t|
+    t.string   "name"
+    t.string   "phone"
+    t.string   "address_one"
+    t.string   "address_two"
+    t.string   "city",             default: "Pittsburgh"
+    t.string   "state",            default: "PA"
+    t.string   "zip",              default: "15213"
+    t.string   "country",          default: "United States"
+    t.integer  "addressable_id"
+    t.string   "addressable_type"
+    t.text     "instructions"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "addresses", ["addressable_id"], name: "index_addresses_on_addressable_id"
+  add_index "addresses", ["addressable_type"], name: "index_addresses_on_addressable_type"
 
   create_table "foods", force: true do |t|
     t.string   "title"
     t.string   "place"
     t.text     "description"
     t.integer  "price_in_cents"
+    t.integer  "state",                default: 1, null: false
+    t.datetime "end_date"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "preview_file_name"
+    t.string   "preview_content_type"
+    t.integer  "preview_file_size"
+    t.datetime "preview_updated_at"
   end
 
   create_table "orders", force: true do |t|

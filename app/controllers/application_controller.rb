@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   attr_writer :current_user
-  respond_to :json
+  
+  before_action :require_current_user!
 
   def current_user
     @current_user ||= User.find_by(access_token: params[:access_token])
