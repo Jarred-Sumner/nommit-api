@@ -1,11 +1,7 @@
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.2'
-
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
@@ -32,13 +28,33 @@ gem 'spring',        group: :development
 
 gem 'rspec-rails', group: :test
 
-# Environment Variables
-gem 'dotenv-rails', group: [:test, :development]
-
 # Facebook Auth
 gem 'koala'
 
 # Images
 gem "paperclip", "~> 4.2"
 
-gem 'pry-rails', group: [:test, :development]
+group :test, :development do
+
+  # Use sqlite3 as the database for Active Record
+  gem 'sqlite3'
+
+  # Debugging
+  gem 'pry-rails'
+
+  # Environment Variables
+  gem 'dotenv-rails'
+
+end
+
+group :production do
+
+  # Heroku uses PostgreSQL
+  gem 'pg'
+
+  # Heroku's fancy deploy gem they try to set a standard for but honestly nobody gives a shit.
+  gem 'rails_12factor'
+
+  # Fancypants Application Server
+  gem 'unicorn'
+end
