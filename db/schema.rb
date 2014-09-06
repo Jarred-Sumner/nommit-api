@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140901001400) do
+ActiveRecord::Schema.define(version: 20140906213444) do
 
   create_table "addresses", force: true do |t|
     t.string   "name"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20140901001400) do
     t.string   "preview_content_type"
     t.integer  "preview_file_size"
     t.datetime "preview_updated_at"
+    t.integer  "goal"
   end
 
   create_table "orders", force: true do |t|
