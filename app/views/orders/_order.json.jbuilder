@@ -1,4 +1,4 @@
-json.(order, :id, :quantity, :created_at, :state, :price_in_cents)
+json.(order, :id, :quantity, :created_at, :state, :price_in_cents, :delivered_at)
 
 json.address do
   json.partial!("addresses/address", address: order.address)
