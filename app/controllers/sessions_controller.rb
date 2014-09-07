@@ -2,8 +2,7 @@ class SessionsController < ApplicationController
   skip_before_action :require_current_user!
 
   def create
-    @current_user = User.authenticate_or_create!(session_params)
-    @foods = Food.active
+    @user = User.authenticate_or_create!(session_params)
   rescue Koala::Facebook::AuthenticationError, ActiveRecord::RecordInvalid
     render status: :bad_request, nothing: true
   end
