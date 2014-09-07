@@ -28,7 +28,6 @@ class Order < ActiveRecord::Base
 
   validates :food, presence: true
   validates :user, presence: true
-  validates :goal, presence: true
 
   validate :food_is_active!
 end

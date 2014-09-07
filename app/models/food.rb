@@ -13,4 +13,5 @@ class Food < ActiveRecord::Base
   end
 
   scope :active, -> { where(state: STATES[:active]) }
+  validates :goal, presence: true
 end
