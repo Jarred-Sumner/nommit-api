@@ -1,4 +1,6 @@
-json.(order, :id, :quantity, :price_in_cents, :created_at, :state)
+json.(order, :id, :quantity, :created_at, :state)
+
+json.price order.price * 100
 
 json.address do
   json.partial!("addresses/address", address: order.address)
