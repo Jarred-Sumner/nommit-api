@@ -11,6 +11,10 @@ class Order < ActiveRecord::Base
     delivered: 2
   }
 
+  def price
+    self.price_in_cents * 100
+  end
+
   after_create :set_address_to_users_default!
 
   private
