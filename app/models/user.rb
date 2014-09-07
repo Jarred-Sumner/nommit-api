@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   has_many :orders
-  has_one :addresses, as: :addressable
+  belongs_to :address
 
   def update_from_facebook!
     facebook = Koala::Facebook::API.new(access_token)

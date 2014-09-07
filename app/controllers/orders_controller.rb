@@ -9,8 +9,8 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @order = Order.create!(order_params.merge(user: current_user))
-    Address.create(address_params.merge(addressable: @order))
+    @address = Address.create(address_params)
+    @order = Order.create!(order_params.merge(address: @address))
   rescue ActiveRecord::RecordInvalid => e
     render status: :bad_request, text: e.record.errors.full_messages
   end

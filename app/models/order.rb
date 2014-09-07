@@ -1,10 +1,9 @@
 class Order < ActiveRecord::Base
   belongs_to :food
   belongs_to :user
+  belongs_to :address
 
   scope :active, -> { where(state: STATES[:placed]) }
-
-  has_one :address, as: :addressable
 
   STATES = {
     placed: 0,
@@ -17,9 +16,7 @@ class Order < ActiveRecord::Base
   private
 
     def set_address_to_users_default!
-      user_address = self.address.dup
-      user_address.addressable = user
-      user_address.save!
+      self.user.update_attributes(:address_id => self.address_id)
     end
 
     def food_is_active!
@@ -28,6 +25,7 @@ class Order < ActiveRecord::Base
 
   validates :food, presence: true
   validates :user, presence: true
+  validates :address, presence: true
 
   validate :food_is_active!
 end

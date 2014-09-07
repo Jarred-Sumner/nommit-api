@@ -11,26 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140906213444) do
+ActiveRecord::Schema.define(version: 20140907013643) do
 
   create_table "addresses", force: true do |t|
     t.string   "name"
     t.string   "phone"
     t.string   "address_one"
     t.string   "address_two"
-    t.string   "city",             default: "Pittsburgh"
-    t.string   "state",            default: "PA"
-    t.string   "zip",              default: "15213"
-    t.string   "country",          default: "United States"
-    t.integer  "addressable_id"
-    t.string   "addressable_type"
+    t.string   "city",         default: "Pittsburgh"
+    t.string   "state",        default: "PA"
+    t.string   "zip",          default: "15213"
+    t.string   "country",      default: "United States"
     t.text     "instructions"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "addresses", ["addressable_id"], name: "index_addresses_on_addressable_id"
-  add_index "addresses", ["addressable_type"], name: "index_addresses_on_addressable_type"
 
   create_table "foods", force: true do |t|
     t.string   "title"
@@ -55,8 +50,10 @@ ActiveRecord::Schema.define(version: 20140906213444) do
     t.integer  "price_in_cents",             null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "address_id"
   end
 
+  add_index "orders", ["address_id"], name: "index_orders_on_address_id"
   add_index "orders", ["food_id"], name: "index_orders_on_food_id"
   add_index "orders", ["user_id"], name: "index_orders_on_user_id"
 
@@ -69,10 +66,12 @@ ActiveRecord::Schema.define(version: 20140906213444) do
     t.datetime "last_signin"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
   end
 
   add_index "users", ["access_token"], name: "index_users_on_access_token"
   add_index "users", ["email"], name: "index_users_on_email"
   add_index "users", ["facebook_uid"], name: "index_users_on_facebook_uid"
+  add_index "users", ["user_id"], name: "index_users_on_user_id"
 
 end
