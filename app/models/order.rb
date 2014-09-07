@@ -12,7 +12,7 @@ class Order < ActiveRecord::Base
   }
 
   def price
-    self.price_in_cents * 100
+    self.price_in_cents / 100.0
   end
 
   after_create :set_address_to_users_default!
