@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140907020318) do
+ActiveRecord::Schema.define(version: 20140907031313) do
 
   create_table "addresses", force: true do |t|
     t.string   "name"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 20140907020318) do
     t.datetime "updated_at"
     t.integer  "address_id"
     t.integer  "state",          default: 0, null: false
+    t.datetime "delivered_at"
   end
 
   add_index "orders", ["address_id"], name: "index_orders_on_address_id"
