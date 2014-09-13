@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
   def create
     @user = User.authenticate_or_create!(session_params)
   rescue Koala::Facebook::AuthenticationError, ActiveRecord::RecordInvalid
-    render status: :bad_request, nothing: true
+    render_error(status: :bad_request)
   end
 
   def destroy

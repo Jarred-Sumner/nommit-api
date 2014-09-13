@@ -9,6 +9,12 @@ class ApplicationController < ActionController::Base
 
   private
 
+    def render_error(status: nil, text: "An unexpected error occurred")
+      render status: status, json: {
+        message: text
+      }
+    end
+
     def require_current_user!
       render status: :unauthorized if current_user.nil?
     end
