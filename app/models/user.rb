@@ -13,8 +13,8 @@ class User < ActiveRecord::Base
     errors.add(:access_token, "is unauthorized")
   end
 
-  def self.authenticate_or_create!(session_params)
-    user = User.where(access_token: session_params[:access_token]).first_or_create!
+  def self.authenticate_or_create!(access_token)
+    user = User.where(access_token: access_token).first_or_create!
     user.touch(:last_signin)
     user
   end
