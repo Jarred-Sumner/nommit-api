@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   before_action :set_format!, :require_current_user!
 
   def current_user
-    @current_user ||= User.find_by(access_token: params[:access_token])
+    @current_user ||= Session.includes(:user).find_by(token: request.headers['X-SESSION-ID']).try(:user)
   end
 
   private

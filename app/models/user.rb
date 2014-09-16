@@ -1,11 +1,12 @@
 class User < ActiveRecord::Base
   has_many :orders
+  has_many :sessions
   belongs_to :address
 
   attr_accessor :facebook
 
   def self.from(access_token: nil)
-    unless user = User.find_by(access_token: access_token)
+    unless user = Session.includes(:user).find_by(access_token: access_token).try(:user)
       facebook = Koala::Facebook::API.new(access_token).get_object("me")
       user = User.where(facebook_uid: facebook['id']).first_or_initialize
       return user if user.persisted?
@@ -20,7 +21,7 @@ class User < ActiveRecord::Base
 
   def self.authenticate_or_create!(access_token)
     user = User.from(access_token: access_token)
-    user.update_attributes!(last_signin: DateTime.now, access_token: access_token)
+    Session.create!(user: user, access_token: access_token) if Session.where(access_token: access_token).count.zero?
     user
   end
 

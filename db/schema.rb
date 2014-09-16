@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140907031313) do
+ActiveRecord::Schema.define(version: 20140916221658) do
 
   create_table "addresses", force: true do |t|
     t.string   "name"
@@ -59,12 +59,24 @@ ActiveRecord::Schema.define(version: 20140907031313) do
   add_index "orders", ["food_id"], name: "index_orders_on_food_id"
   add_index "orders", ["user_id"], name: "index_orders_on_user_id"
 
+  create_table "sessions", force: true do |t|
+    t.integer  "user_id"
+    t.datetime "expiration"
+    t.string   "access_token"
+    t.string   "token",        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sessions", ["access_token"], name: "index_sessions_on_access_token"
+  add_index "sessions", ["token"], name: "index_sessions_on_token"
+  add_index "sessions", ["user_id"], name: "index_sessions_on_user_id"
+
   create_table "users", force: true do |t|
     t.string   "facebook_uid"
     t.string   "email"
     t.string   "phone"
     t.string   "name"
-    t.string   "access_token"
     t.datetime "last_signin"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -72,7 +84,6 @@ ActiveRecord::Schema.define(version: 20140907031313) do
     t.integer  "address_id"
   end
 
-  add_index "users", ["access_token"], name: "index_users_on_access_token"
   add_index "users", ["address_id"], name: "index_users_on_address_id"
   add_index "users", ["email"], name: "index_users_on_email"
   add_index "users", ["facebook_uid"], name: "index_users_on_facebook_uid"
