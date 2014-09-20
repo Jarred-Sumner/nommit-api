@@ -47,6 +47,7 @@ group :test, :development do
   # Environment Variables
   gem 'dotenv-rails'
 
+  gem 'rspec-rails'
 end
 
 group :production do
