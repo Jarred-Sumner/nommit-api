@@ -3,9 +3,10 @@ class Order < ActiveRecord::Base
   belongs_to :user
   belongs_to :address
 
-  scope :active, -> { where(state: STATES[:placed]) }
+  scope :active, -> { where(state: STATES[:cancelled]).not }
 
   STATES = {
+    cancelled: -1,
     placed: 0,
     delivering: 1,
     delivered: 2
@@ -31,5 +32,8 @@ class Order < ActiveRecord::Base
   validates :user, presence: true
   validates :address, presence: true
 
+  validates :rating, :inclusion => 1..5, allow_nil: true, if: -> { state == STATES[:delivered] }
+  validates :state, inclusion: STATES.values.min..STATES.values.max, allow_nil: false
+  
   validate :food_is_active!
 end
