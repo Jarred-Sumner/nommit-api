@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140916221658) do
+ActiveRecord::Schema.define(version: 20140920062655) do
 
   create_table "addresses", force: true do |t|
     t.string   "name"
@@ -59,6 +59,26 @@ ActiveRecord::Schema.define(version: 20140916221658) do
   add_index "orders", ["food_id"], name: "index_orders_on_food_id"
   add_index "orders", ["user_id"], name: "index_orders_on_user_id"
 
+  create_table "payment_methods", force: true do |t|
+    t.integer  "user_id"
+    t.string   "customer"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "payment_methods", ["customer"], name: "index_payment_methods_on_customer"
+  add_index "payment_methods", ["user_id"], name: "index_payment_methods_on_user_id"
+
+  create_table "places", force: true do |t|
+    t.string   "name"
+    t.boolean  "enabled"
+    t.integer  "address_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "places", ["address_id"], name: "index_places_on_address_id"
+
   create_table "sessions", force: true do |t|
     t.integer  "user_id"
     t.datetime "expiration"
@@ -71,6 +91,19 @@ ActiveRecord::Schema.define(version: 20140916221658) do
   add_index "sessions", ["access_token"], name: "index_sessions_on_access_token"
   add_index "sessions", ["token"], name: "index_sessions_on_token"
   add_index "sessions", ["user_id"], name: "index_sessions_on_user_id"
+
+  create_table "transactions", force: true do |t|
+    t.integer  "order_id"
+    t.integer  "payment_method_id"
+    t.integer  "state"
+    t.integer  "amount_charged_in_cents"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "transactions", ["order_id"], name: "index_transactions_on_order_id"
+  add_index "transactions", ["payment_method_id"], name: "index_transactions_on_payment_method_id"
+  add_index "transactions", ["state"], name: "index_transactions_on_state"
 
   create_table "users", force: true do |t|
     t.string   "facebook_uid"
