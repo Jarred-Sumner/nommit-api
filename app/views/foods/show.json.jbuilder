@@ -1,1 +1,1 @@
-json.partial! @food
+json.partial! @food, show_places: true

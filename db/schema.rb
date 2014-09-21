@@ -11,21 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140921001752) do
-
-  create_table "addresses", force: true do |t|
-    t.string   "name"
-    t.string   "phone"
-    t.string   "address_one"
-    t.string   "address_two"
-    t.string   "city",         default: "Pittsburgh"
-    t.string   "state",        default: "PA"
-    t.string   "zip",          default: "15213"
-    t.string   "country",      default: "United States"
-    t.text     "instructions"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+ActiveRecord::Schema.define(version: 20140921183616) do
 
   create_table "charges", force: true do |t|
     t.integer  "order_id"
@@ -40,9 +26,16 @@ ActiveRecord::Schema.define(version: 20140921001752) do
   add_index "charges", ["payment_method_id"], name: "index_charges_on_payment_method_id"
   add_index "charges", ["state"], name: "index_charges_on_state"
 
+  create_table "food_places", force: true do |t|
+    t.integer "food_id"
+    t.integer "place_id"
+  end
+
+  add_index "food_places", ["food_id"], name: "index_food_places_on_food_id"
+  add_index "food_places", ["place_id"], name: "index_food_places_on_place_id"
+
   create_table "foods", force: true do |t|
     t.string   "title"
-    t.string   "place"
     t.text     "description"
     t.integer  "price_in_cents"
     t.integer  "state",                default: 1, null: false
@@ -59,22 +52,35 @@ ActiveRecord::Schema.define(version: 20140921001752) do
 
   add_index "foods", ["seller_id"], name: "index_foods_on_seller_id"
 
-  create_table "orders", force: true do |t|
-    t.integer  "food_id"
-    t.integer  "user_id"
-    t.integer  "quantity",       default: 1, null: false
-    t.integer  "price_in_cents",             null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "address_id"
-    t.integer  "state",          default: 0, null: false
-    t.datetime "delivered_at"
-    t.integer  "rating"
+  create_table "foods_places", force: true do |t|
+    t.integer "food_id"
+    t.integer "place_id"
   end
 
-  add_index "orders", ["address_id"], name: "index_orders_on_address_id"
-  add_index "orders", ["food_id"], name: "index_orders_on_food_id"
-  add_index "orders", ["user_id"], name: "index_orders_on_user_id"
+  add_index "foods_places", ["food_id"], name: "index_foods_places_on_food_id"
+  add_index "foods_places", ["place_id"], name: "index_foods_places_on_place_id"
+
+  create_table "locations", force: true do |t|
+    t.string   "name"
+    t.string   "phone"
+    t.string   "address_one"
+    t.string   "address_two"
+    t.string   "city",         default: "Pittsburgh"
+    t.string   "state",        default: "PA"
+    t.string   "zip",          default: "15213"
+    t.string   "country",      default: "United States"
+    t.text     "instructions"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.decimal  "latitude"
+    t.decimal  "longitude"
+  end
+
+  add_index "locations", ["latitude"], name: "index_locations_on_latitude"
+  add_index "locations", ["longitude"], name: "index_Locations_on_longitude"
+
+# Could not dump table "orders" because of following NoMethodError
+#   undefined method `[]' for nil:NilClass
 
   create_table "payment_methods", force: true do |t|
     t.integer  "user_id"
@@ -86,15 +92,8 @@ ActiveRecord::Schema.define(version: 20140921001752) do
   add_index "payment_methods", ["customer"], name: "index_payment_methods_on_customer"
   add_index "payment_methods", ["user_id"], name: "index_payment_methods_on_user_id"
 
-  create_table "places", force: true do |t|
-    t.string   "name"
-    t.boolean  "enabled"
-    t.integer  "address_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "places", ["address_id"], name: "index_places_on_address_id"
+# Could not dump table "places" because of following NoMethodError
+#   undefined method `[]' for nil:NilClass
 
   create_table "sellers", force: true do |t|
     t.string   "name"

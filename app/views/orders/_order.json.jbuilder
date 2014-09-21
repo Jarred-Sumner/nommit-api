@@ -4,8 +4,8 @@ json.state_id order.state
 
 json.charge_state_id order.charge.try(:state)
 
-json.address do
-  json.partial!("addresses/address", address: order.address)
+json.location do
+  json.partial!("locations/location", address: order.location)
 end
 
 json.food do

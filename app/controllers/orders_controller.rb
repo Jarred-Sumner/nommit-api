@@ -9,8 +9,8 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @address = Address.create(address_params)
-    @order = Order.create!(order_params.merge(address: @address))
+    @location = Location.create(location_params)
+    @order = Order.create!(order_params.merge(location: @location))
   rescue ActiveRecord::RecordInvalid => e
     render status: :bad_request, text: e.record.errors.full_messages
   end
@@ -21,7 +21,7 @@ class OrdersController < ApplicationController
       params.allow(:food_id, :quantity)
     end
 
-    def address_params
+    def location_params
       params.allow(:address_one, :address_two, :instructions, :city, :state, :zip, :country)
     end
 

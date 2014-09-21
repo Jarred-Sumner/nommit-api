@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   has_many :orders
   has_many :sessions
-  belongs_to :address
+  belongs_to :location
   belongs_to :seller
 
   attr_accessor :facebook

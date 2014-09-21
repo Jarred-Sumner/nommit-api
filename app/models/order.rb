@@ -1,7 +1,7 @@
 class Order < ActiveRecord::Base
   belongs_to :food
   belongs_to :user
-  belongs_to :address
+  belongs_to :location
   has_one :charge
 
   scope :active, -> { where.not(state: STATES[:cancelled]) }
@@ -17,12 +17,12 @@ class Order < ActiveRecord::Base
     self.price_in_cents / 100.0
   end
 
-  after_create :set_address_to_users_default!
+  after_create :set_location_to_users_default!
 
   private
 
-    def set_address_to_users_default!
-      self.user.update_attributes(:address_id => self.address_id)
+    def set_location_to_users_default!
+      self.user.update_attributes(:location_id => self.location_id)
     end
 
     def food_is_active!
@@ -31,9 +31,9 @@ class Order < ActiveRecord::Base
 
   validates :food, presence: true
   validates :user, presence: true
-  validates :address, presence: true
+  validates :location, presence: true
 
-  validates :rating, :inclusion => 1..5, allow_nil: true, if: -> { state == STATES[:delivered] }
+  validates :rating, inclusion: 1..5, allow_nil: true, if: -> { state == STATES[:delivered] }
   validates :state, inclusion: STATES.values.min..STATES.values.max, allow_nil: false
 
   validate :food_is_active!
