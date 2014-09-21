@@ -1,4 +1,4 @@
-class Transaction < ActiveRecord::Base
+class Charge < ActiveRecord::Base
   belongs_to :order
   belongs_to :payment_method
 

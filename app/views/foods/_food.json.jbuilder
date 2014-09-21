@@ -8,5 +8,5 @@ json.order_count food.orders.active.count
 json.rating food.orders.average(:rating)
 
 json.seller do
-  json.partial!("sellers/seller", seller: food.seller)
+  json.partial!("sellers/seller", seller: food.seller) if food.seller.present?
 end

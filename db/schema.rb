@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140920062655) do
+ActiveRecord::Schema.define(version: 20140921001752) do
 
   create_table "addresses", force: true do |t|
     t.string   "name"
@@ -27,6 +27,19 @@ ActiveRecord::Schema.define(version: 20140920062655) do
     t.datetime "updated_at"
   end
 
+  create_table "charges", force: true do |t|
+    t.integer  "order_id"
+    t.integer  "payment_method_id"
+    t.integer  "state"
+    t.integer  "amount_charged_in_cents"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "charges", ["order_id"], name: "index_charges_on_order_id"
+  add_index "charges", ["payment_method_id"], name: "index_charges_on_payment_method_id"
+  add_index "charges", ["state"], name: "index_charges_on_state"
+
   create_table "foods", force: true do |t|
     t.string   "title"
     t.string   "place"
@@ -41,7 +54,10 @@ ActiveRecord::Schema.define(version: 20140920062655) do
     t.integer  "preview_file_size"
     t.datetime "preview_updated_at"
     t.integer  "goal"
+    t.integer  "seller_id"
   end
+
+  add_index "foods", ["seller_id"], name: "index_foods_on_seller_id"
 
   create_table "orders", force: true do |t|
     t.integer  "food_id"
@@ -53,6 +69,7 @@ ActiveRecord::Schema.define(version: 20140920062655) do
     t.integer  "address_id"
     t.integer  "state",          default: 0, null: false
     t.datetime "delivered_at"
+    t.integer  "rating"
   end
 
   add_index "orders", ["address_id"], name: "index_orders_on_address_id"
@@ -79,6 +96,16 @@ ActiveRecord::Schema.define(version: 20140920062655) do
 
   add_index "places", ["address_id"], name: "index_places_on_address_id"
 
+  create_table "sellers", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "logo_file_name"
+    t.string   "logo_content_type"
+    t.integer  "logo_file_size"
+    t.datetime "logo_updated_at"
+  end
+
   create_table "sessions", force: true do |t|
     t.integer  "user_id"
     t.datetime "expiration"
@@ -92,19 +119,6 @@ ActiveRecord::Schema.define(version: 20140920062655) do
   add_index "sessions", ["token"], name: "index_sessions_on_token"
   add_index "sessions", ["user_id"], name: "index_sessions_on_user_id"
 
-  create_table "transactions", force: true do |t|
-    t.integer  "order_id"
-    t.integer  "payment_method_id"
-    t.integer  "state"
-    t.integer  "amount_charged_in_cents"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "transactions", ["order_id"], name: "index_transactions_on_order_id"
-  add_index "transactions", ["payment_method_id"], name: "index_transactions_on_payment_method_id"
-  add_index "transactions", ["state"], name: "index_transactions_on_state"
-
   create_table "users", force: true do |t|
     t.string   "facebook_uid"
     t.string   "email"
@@ -115,11 +129,13 @@ ActiveRecord::Schema.define(version: 20140920062655) do
     t.datetime "updated_at"
     t.integer  "user_id"
     t.integer  "address_id"
+    t.integer  "seller_id"
   end
 
   add_index "users", ["address_id"], name: "index_users_on_address_id"
   add_index "users", ["email"], name: "index_users_on_email"
   add_index "users", ["facebook_uid"], name: "index_users_on_facebook_uid"
+  add_index "users", ["seller_id"], name: "index_users_on_seller_id"
   add_index "users", ["user_id"], name: "index_users_on_user_id"
 
 end
