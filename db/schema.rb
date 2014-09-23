@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140921183616) do
+ActiveRecord::Schema.define(version: 20140921210527) do
 
   create_table "charges", force: true do |t|
     t.integer  "order_id"
@@ -25,14 +25,6 @@ ActiveRecord::Schema.define(version: 20140921183616) do
   add_index "charges", ["order_id"], name: "index_charges_on_order_id"
   add_index "charges", ["payment_method_id"], name: "index_charges_on_payment_method_id"
   add_index "charges", ["state"], name: "index_charges_on_state"
-
-  create_table "food_places", force: true do |t|
-    t.integer "food_id"
-    t.integer "place_id"
-  end
-
-  add_index "food_places", ["food_id"], name: "index_food_places_on_food_id"
-  add_index "food_places", ["place_id"], name: "index_food_places_on_place_id"
 
   create_table "foods", force: true do |t|
     t.string   "title"
@@ -77,10 +69,24 @@ ActiveRecord::Schema.define(version: 20140921183616) do
   end
 
   add_index "locations", ["latitude"], name: "index_locations_on_latitude"
-  add_index "locations", ["longitude"], name: "index_Locations_on_longitude"
+  add_index "locations", ["longitude"], name: "index_locations_on_longitude"
 
-# Could not dump table "orders" because of following NoMethodError
-#   undefined method `[]' for nil:NilClass
+  create_table "orders", force: true do |t|
+    t.integer  "food_id"
+    t.integer  "user_id"
+    t.integer  "state",          default: 0, null: false
+    t.integer  "quantity",       default: 1, null: false
+    t.integer  "price_in_cents",             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "delivered_at"
+    t.integer  "rating"
+    t.integer  "address_id"
+  end
+
+  add_index "orders", ["address_id"], name: "index_orders_on_address_id"
+  add_index "orders", ["food_id"], name: "index_orders_on_food_id"
+  add_index "orders", ["user_id"], name: "index_orders_on_user_id"
 
   create_table "payment_methods", force: true do |t|
     t.integer  "user_id"
@@ -92,8 +98,15 @@ ActiveRecord::Schema.define(version: 20140921183616) do
   add_index "payment_methods", ["customer"], name: "index_payment_methods_on_customer"
   add_index "payment_methods", ["user_id"], name: "index_payment_methods_on_user_id"
 
-# Could not dump table "places" because of following NoMethodError
-#   undefined method `[]' for nil:NilClass
+  create_table "places", force: true do |t|
+    t.string   "name"
+    t.boolean  "enabled"
+    t.integer  "location_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "places", ["location_id"], name: "index_places_on_location_id"
 
   create_table "sellers", force: true do |t|
     t.string   "name"
@@ -126,15 +139,13 @@ ActiveRecord::Schema.define(version: 20140921183616) do
     t.datetime "last_signin"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id"
-    t.integer  "address_id"
+    t.integer  "location_id"
     t.integer  "seller_id"
   end
 
-  add_index "users", ["address_id"], name: "index_users_on_address_id"
   add_index "users", ["email"], name: "index_users_on_email"
   add_index "users", ["facebook_uid"], name: "index_users_on_facebook_uid"
+  add_index "users", ["location_id"], name: "index_users_on_location_id"
   add_index "users", ["seller_id"], name: "index_users_on_seller_id"
-  add_index "users", ["user_id"], name: "index_users_on_user_id"
 
 end

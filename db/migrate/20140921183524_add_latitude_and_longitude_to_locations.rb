@@ -4,6 +4,6 @@ class AddLatitudeAndLongitudeToLocations < ActiveRecord::Migration
     add_column :locations, :longitude, :decimal
 
     add_index :locations, :latitude
-    add_index :Locations, :longitude
+    add_index :locations, :longitude
   end
 end

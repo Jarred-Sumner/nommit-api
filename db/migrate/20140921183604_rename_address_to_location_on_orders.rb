@@ -1,7 +1,6 @@
 class RenameAddressToLocationOnOrders < ActiveRecord::Migration
   def change
     remove_column :orders, :address_id
-    remove_index :orders, :address_id
-    add_column :orders, :address, :reference, index: true
+    add_reference :orders, :address, index: true
   end
 end
