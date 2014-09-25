@@ -2,6 +2,8 @@ class PaymentMethod < ActiveRecord::Base
   belongs_to :user
   has_many :charges
   has_many :orders, through: :charges
+  include StateID
+  enum state: [:active, :invalid]
 
   def create_for(token: nil, user: nil)
     customer = Stripe::Customer.create(description: "Customer for #{user.email}", card: token)

@@ -2,13 +2,8 @@ class Charge < ActiveRecord::Base
   belongs_to :order
   belongs_to :payment_method
 
-  STATES = {
-    failed: -1,
-    not_charged: 0,
-    charged: 1,
-    succeeded: 2,
-    refunded: 3
-  }
+  include StateID
+  enum state: { failed: -1, not_charged: 0, charged: 1, paid: 2, refunded: 3 }
 
   # TODO
   def charge
@@ -16,7 +11,7 @@ class Charge < ActiveRecord::Base
   end
 
   before_validation on: :create do
-    self.state ||= STATES[:not_charged]
+    self.state = Charge.states[:not_charged]
   end
 
   validates :state, inclusion: STATES.values.min..STATES.values.max, allow_nil: false

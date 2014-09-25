@@ -4,15 +4,11 @@ class Order < ActiveRecord::Base
   belongs_to :place
   belongs_to :promo
   has_one :charge
+  has_one :delivery
+  has_one :courier, through: :delivery
 
-  scope :active, -> { where.not(state: STATES[:cancelled]) }
-
-  STATES = {
-    cancelled: -1,
-    placed: 0,
-    delivering: 1,
-    delivered: 2
-  }
+  include StateID
+  enum state: { cancelled: -1, active: 0, delivering: 1, delivered: 2 }
 
   def price
     self.price_in_cents / 100.0
@@ -24,6 +20,12 @@ class Order < ActiveRecord::Base
   end
 
   private
+
+    def require_payment_method!
+      unless user.payment_method.try(:active?)
+        errors.add(:payment_method, "isn't working - could you re-enter it?")
+      end
+    end
 
     def food_is_active!
       errors.add(:food, "must be orderable") unless food.active?
@@ -45,8 +47,8 @@ class Order < ActiveRecord::Base
   validates :user, presence: true
   validates :place, presence: true
 
-  validates :rating, inclusion: 1..5, allow_nil: true, if: -> { state == STATES[:delivered] }
-  validates :state, inclusion: STATES.values.min..STATES.values.max, allow_nil: false
+  validates :rating, inclusion: 1..5, allow_nil: true, if: -> { delivered? }
+  validates :state, presence: true
 
   validate :food_is_active!
 

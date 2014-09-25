@@ -5,15 +5,7 @@ class Food < ActiveRecord::Base
   has_and_belongs_to_many :places
   belongs_to :seller
 
-  STATES = {
-    active: 1,
-    ended: 2
-  }
-
-  def active?
-    state == STATES[:active]
-  end
-
-  scope :active, -> { where(state: STATES[:active]) }
+  include StateID
+  enum state: { active: 1, ended: 2 }
   validates :goal, presence: true
 end

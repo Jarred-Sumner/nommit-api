@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140925005606) do
+ActiveRecord::Schema.define(version: 20140925045607) do
 
   create_table "charges", force: true do |t|
     t.integer  "order_id"
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20140925005606) do
   create_table "couriers", force: true do |t|
     t.integer  "user_id"
     t.integer  "seller_id"
-    t.integer  "state_id",   default: 0, null: false
+    t.integer  "state",      default: 0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -130,6 +130,7 @@ ActiveRecord::Schema.define(version: 20140925005606) do
     t.string   "customer"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "state_id"
   end
 
   add_index "payment_methods", ["customer"], name: "index_payment_methods_on_customer"
