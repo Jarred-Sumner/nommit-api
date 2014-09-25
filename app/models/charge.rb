@@ -14,7 +14,7 @@ class Charge < ActiveRecord::Base
     self.state = Charge.states[:not_charged]
   end
 
-  validates :state, inclusion: STATES.values.min..STATES.values.max, allow_nil: false
+  validates :state, presence: true
   validates :order, presence: true
   validates :payment_method, presence: true
 end

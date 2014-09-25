@@ -8,7 +8,7 @@ class Order < ActiveRecord::Base
   has_one :courier, through: :delivery
 
   include StateID
-  enum state: { cancelled: -1, active: 0, delivering: 1, delivered: 2 }
+  enum state: { cancelled: -1, active: 0, delivered: 1 }
 
   def price
     self.price_in_cents / 100.0
