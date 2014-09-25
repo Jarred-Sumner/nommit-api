@@ -2,7 +2,10 @@ json.(order, :id, :quantity, :created_at, :price_in_cents, :delivered_at, :ratin
 
 json.state_id order.state
 
-json.charge_state_id order.charge.try(:state)
+json.charge_state_id order.charge.try(:state) || Charge::STATES[:not_charged]
+
+json.promo_code order.promo.try(:name)
+json.discount_in_cents order.promo.try(:discount_in_cents) || 0
 
 json.place do
   json.partial!(order.place)

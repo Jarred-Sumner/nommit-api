@@ -4,3 +4,8 @@ json.(user, :email, :phone, :name, :last_signin, :created_at, :updated_at)
 json.seller do
   json.partial!("sellers/seller", seller: user.seller) if user.seller.present?
 end
+
+json.referral_code user.promo.name
+
+# TODO
+json.referral_credit 0

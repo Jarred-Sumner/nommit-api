@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140923183427) do
+ActiveRecord::Schema.define(version: 20140925005606) do
 
   create_table "charges", force: true do |t|
     t.integer  "order_id"
@@ -25,6 +25,39 @@ ActiveRecord::Schema.define(version: 20140923183427) do
   add_index "charges", ["order_id"], name: "index_charges_on_order_id"
   add_index "charges", ["payment_method_id"], name: "index_charges_on_payment_method_id"
   add_index "charges", ["state"], name: "index_charges_on_state"
+
+  create_table "couriers", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "seller_id"
+    t.integer  "state_id",   default: 0, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "couriers", ["seller_id"], name: "index_couriers_on_seller_id"
+  add_index "couriers", ["user_id"], name: "index_couriers_on_user_id"
+
+  create_table "deliveries", force: true do |t|
+    t.integer  "courier_id"
+    t.integer  "order_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "deliveries", ["courier_id"], name: "index_deliveries_on_courier_id"
+  add_index "deliveries", ["order_id"], name: "index_deliveries_on_order_id"
+
+  create_table "delivery_locations", force: true do |t|
+    t.datetime "arrives_at"
+    t.integer  "courier_id"
+    t.integer  "offset"
+    t.integer  "place_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delivery_locations", ["courier_id"], name: "index_delivery_locations_on_courier_id"
+  add_index "delivery_locations", ["place_id"], name: "index_delivery_locations_on_place_id"
 
   create_table "foods", force: true do |t|
     t.string   "title"
@@ -80,14 +113,16 @@ ActiveRecord::Schema.define(version: 20140923183427) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "delivered_at"
-    t.integer  "rating"
+    t.decimal  "rating"
     t.integer  "address_id"
     t.integer  "place_id"
+    t.integer  "promo_id"
   end
 
   add_index "orders", ["address_id"], name: "index_orders_on_address_id"
   add_index "orders", ["food_id"], name: "index_orders_on_food_id"
   add_index "orders", ["place_id"], name: "index_orders_on_place_id"
+  add_index "orders", ["promo_id"], name: "index_orders_on_promo_id"
   add_index "orders", ["user_id"], name: "index_orders_on_user_id"
 
   create_table "payment_methods", force: true do |t|
@@ -109,6 +144,20 @@ ActiveRecord::Schema.define(version: 20140923183427) do
   end
 
   add_index "places", ["location_id"], name: "index_places_on_location_id"
+
+  create_table "promos", force: true do |t|
+    t.string   "name",                            null: false
+    t.integer  "discount_in_cents", default: 500, null: false
+    t.datetime "expiration"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "type"
+  end
+
+  add_index "promos", ["name"], name: "index_promos_on_name", unique: true
+  add_index "promos", ["type"], name: "index_promos_on_type"
+  add_index "promos", ["user_id"], name: "index_promos_on_user_id"
 
   create_table "sellers", force: true do |t|
     t.string   "name"

@@ -284,26 +284,31 @@ PLACES.keys.each do |name|
   Place.create!(name: name, location: location)
 end
 
-s = Seller.create do |s|
-  s.name = "Nommit"
-  s.logo = open("http://i.imgur.com/CyyUsdI.png")
+jarred = Seller.create do |s|
+  s.name = "Jarred"
+  s.logo = open("https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/v/t1.0-1/p200x200/10150581_10202641427471233_1058179539_n.jpg?oh=5f74f89ac3ae772ce196d7b25a0e1ca5&oe=54CCF6FF&__gda__=1421987837_0d58dbfd1a04604794ab23f61602a1f5")
+end
+
+lucy = Seller.create do |s|
+  s.name = "Lucy"
+  s.logo = open("https://scontent-a-sjc.xx.fbcdn.net/hphotos-xaf1/v/t1.0-9/10441266_10152232431319538_5276593142039933165_n.jpg?oh=dcf26cd9149085ceb38623546796b636&oe=54D06111")
 end
 
 pizza = Food.create! do |f|
   f.title = "1x Pepperoni Pizza (Slice)"
   f.description = "This is one scrum-diddly-umptious slice of pepperoni pizza"
-  f.seller = s
+  f.seller = lucy
   f.goal = 75
   f.price_in_cents = 425
   f.end_date = 24.days.from_now
-  f.preview = open("http://www.forsythforfamilies.com/wp-content/uploads/2011/07/facebook-pep-pizza.jpg")
+  f.preview = open("http://www.papabellaspizzeria.com/Pizza_files/Pepperoni_1.jpg")
 end
 pizza.places << [Place.random, Place.random, Place.random]
 
 cookies = Food.create! do |f|
   f.title = "3 x Chocalate Chip Cookie"
   f.description = "Artisan Italian chocalate chips, cookie dough from the finest Israeli lait, at a size crafted for hungry college students."
-  f.seller = s
+  f.seller = lucy
   f.goal = 100
   f.price_in_cents = 300
   f.end_date = 24.days.from_now
@@ -314,7 +319,7 @@ cookies.places << [pizza.places.first, pizza.places.second, Place.random]
 nuggets = Food.create! do |f|
   f.title = "3 x Chicken Nuggets"
   f.description = "Dinosaur chicken nuggets. Delivered. You heard correctly. Ketchup included."
-  f.seller = s
+  f.seller = jarred
   f.price_in_cents = 200
   f.goal = 50
   f.end_date = 24.days.from_now

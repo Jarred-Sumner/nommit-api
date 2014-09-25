@@ -7,10 +7,12 @@ class Charge < ActiveRecord::Base
     not_charged: 0,
     charged: 1,
     succeeded: 2,
+    refunded: 3
   }
 
   # TODO
   def charge
+
   end
 
   before_validation on: :create do

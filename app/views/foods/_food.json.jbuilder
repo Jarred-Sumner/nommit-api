@@ -10,7 +10,7 @@ json.thumbnail_image_url image_url(food.preview.url)
 json.order_count food.orders.active.count + 1
 
 # Ratings default to 4. Because we want people to buy the food.
-json.rating food.orders.average(:rating) || 4
+json.rating food.orders.average(:rating).to_f || 4.to_f
 
 json.seller do
   json.partial!("sellers/seller", seller: food.seller) if food.seller.present?

@@ -9,20 +9,22 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @location = Location.create(location_params)
-    @order = Order.create!(order_params.merge(location: @location))
+    @order = Order.create!(order_params.merge(user_id: current_user.id, promo_id: promo.try(:id)))
+    render action: :show
   rescue ActiveRecord::RecordInvalid => e
-    render status: :bad_request, text: e.record.errors.full_messages
+    render_error(status: :bad_request, text: e.record.errors.full_messages.first)
   end
 
   private
 
     def order_params
-      params.allow(:food_id, :quantity)
+      params.permit(:food_id, :place_id, :quantity)
     end
 
-    def location_params
-      params.allow(:address_one, :address_two, :instructions, :city, :state, :zip, :country)
+    def promo
+      @promo ||= Promo.where(name: params[:promo_code]).first! if params[:promo_code].present?
+    rescue ActiveRecord::RecordNotFound
+      render_error(status: :bad_request, text: "Oops! Promo code not found. Try re-entering it?")
     end
 
 end

@@ -1,9 +1,11 @@
 class User < ActiveRecord::Base
   has_many :orders
   has_many :sessions
+  has_many :couriers
+  has_one :promo
   belongs_to :location
-  belongs_to :seller
-
+  has_many :sellers, through: :couriers
+  
   attr_accessor :facebook
 
   def self.from(access_token: nil)
@@ -29,4 +31,14 @@ class User < ActiveRecord::Base
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true
   validates :facebook_uid, presence: true, uniqueness: true
+
+  # TODO
+  def referral_credit
+  end
+
+  after_commit :generate_promo_code!, on: :create
+  def generate_promo_code!
+    ReferralPromo.create!(user_id: self.id)
+  end
+
 end
