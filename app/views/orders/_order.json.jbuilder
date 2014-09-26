@@ -9,17 +9,17 @@ json.promo_code order.promo.try(:name)
 json.discount_in_cents order.promo.try(:discount_in_cents) || 0
 
 json.place do
-  json.partial!(order.place)
+  json.partial!(order.place) if order.place.present?
 end
 
 json.food do
-  json.partial!(order.food)
+  json.partial!(order.food) if order.food.present?
 end
 
 json.user do
-  json.partial!(order.user)
+  json.partial!(order.user) if order.user.present?
 end
 
 json.courier do
-  json.partial!(order.courier)
+  json.partial!(order.courier) if order.courier.present?
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140925045607) do
+ActiveRecord::Schema.define(version: 20140925072129) do
 
   create_table "charges", force: true do |t|
     t.integer  "order_id"
@@ -25,6 +25,18 @@ ActiveRecord::Schema.define(version: 20140925045607) do
   add_index "charges", ["order_id"], name: "index_charges_on_order_id"
   add_index "charges", ["payment_method_id"], name: "index_charges_on_payment_method_id"
   add_index "charges", ["state"], name: "index_charges_on_state"
+
+  create_table "courier_places", force: true do |t|
+    t.datetime "arrives_at"
+    t.integer  "courier_id"
+    t.integer  "offset"
+    t.integer  "place_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "courier_places", ["courier_id"], name: "index_courier_places_on_courier_id"
+  add_index "courier_places", ["place_id"], name: "index_courier_places_on_place_id"
 
   create_table "couriers", force: true do |t|
     t.integer  "user_id"
@@ -47,23 +59,11 @@ ActiveRecord::Schema.define(version: 20140925045607) do
   add_index "deliveries", ["courier_id"], name: "index_deliveries_on_courier_id"
   add_index "deliveries", ["order_id"], name: "index_deliveries_on_order_id"
 
-  create_table "delivery_locations", force: true do |t|
-    t.datetime "arrives_at"
-    t.integer  "courier_id"
-    t.integer  "offset"
-    t.integer  "place_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "delivery_locations", ["courier_id"], name: "index_delivery_locations_on_courier_id"
-  add_index "delivery_locations", ["place_id"], name: "index_delivery_locations_on_place_id"
-
   create_table "foods", force: true do |t|
     t.string   "title"
     t.text     "description"
     t.integer  "price_in_cents"
-    t.integer  "state",                default: 1, null: false
+    t.integer  "state",                default: 0, null: false
     t.datetime "end_date"
     t.datetime "created_at"
     t.datetime "updated_at"

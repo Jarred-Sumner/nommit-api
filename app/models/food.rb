@@ -6,6 +6,8 @@ class Food < ActiveRecord::Base
   belongs_to :seller
 
   include StateID
-  enum state: { active: 1, ended: 2 }
+  enum state: { ready: 0, active: 1, ended: 2 }
   validates :goal, presence: true
+
+  scope :ongoing, lambda { where("end_date > ?", DateTime.now) }
 end

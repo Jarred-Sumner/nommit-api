@@ -294,6 +294,9 @@ lucy = Seller.create do |s|
   s.logo = open("https://scontent-a-sjc.xx.fbcdn.net/hphotos-xaf1/v/t1.0-9/10441266_10152232431319538_5276593142039933165_n.jpg?oh=dcf26cd9149085ceb38623546796b636&oe=54D06111")
 end
 
+j_user = User.create!(facebook_uid: "10203816999219792", email: "jarred@jarredsumner.com", name: "Jarred Sumner")
+l_user = User.create!(facebook_uid: "10152442953459538", email: "lguo@andrew.cmu.edu", name: "Lucy Guo")
+
 pizza = Food.create! do |f|
   f.title = "1x Pepperoni Pizza (Slice)"
   f.description = "This is one scrum-diddly-umptious slice of pepperoni pizza"
@@ -326,3 +329,10 @@ nuggets = Food.create! do |f|
   f.preview = open("https://38.media.tumblr.com/tumblr_mef4ddwioU1rum6sio1_500.png")
 end
 nuggets.places << [cookies.places.first, Place.random, Place.random]
+
+j_courier = Courier.create!(seller: jarred, user: j_user)
+l_courier = Courier.create!(seller: lucy, user: l_user)
+
+nuggets.places.each { |place| j_courier.courier_places.create!(place: place) }
+cookies.places.each { |place| l_courier.courier_places.create!(place: place) }
+pizza.places.each { |place| l_courier.courier_places.create!(place: place) }

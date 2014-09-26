@@ -1,7 +1,7 @@
 class PlacesController < ApplicationController
 
   def index
-    @places = Place.active.order('end_date ASC').limit(10)
+    @places = Place.all.includes(:location)
   end
 
   def show

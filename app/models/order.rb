@@ -28,7 +28,7 @@ class Order < ActiveRecord::Base
     end
 
     def food_is_active!
-      errors.add(:food, "must be orderable") unless food.active?
+      errors.add(:food, "doesn't have couriers delivering right now. Try again in a few minutes!") unless food.active?
     end
 
     def set_price_in_cents!
