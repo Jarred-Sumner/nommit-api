@@ -1,9 +1,9 @@
-class Courier::OrdersController < Courier::ApplicationController
+class Seller::OrdersController < Seller::ApplicationController
   before_action :require_courier!
   before_action :require_order!, only: :update
 
   def update
-    
+
   end
 
   private

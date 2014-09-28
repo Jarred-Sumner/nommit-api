@@ -22,7 +22,9 @@ class OrdersController < ApplicationController
   def update
     if food_delivery_place.present?
       @order = food_delivery_place.orders.find_by(id: update_params[:id])
-      @order.update_attributes!(state: update_params[:state_id])
+      if Integer(update_params[:state_id]) == Order.states[:delivered]
+        @order.update_attributes!(state: "delivered")
+      end
     end
   end
 

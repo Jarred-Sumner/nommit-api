@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140928042632) do
+ActiveRecord::Schema.define(version: 20140928195312) do
 
   create_table "charges", force: true do |t|
     t.integer  "order_id"
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 20140928042632) do
     t.integer  "state",         default: 0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "eta"
   end
 
   add_index "food_delivery_places", ["courier_id"], name: "index_food_delivery_places_on_courier_id"

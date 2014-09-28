@@ -1,5 +1,5 @@
-class Seller::FoodDeliveryPlacesController < Seller::ApplicationController
-  before_action :require_courier!, only: [:update, :update_in_batches]
+class Seller::FoodDeliveryPlacesController < ApplicationController
+  before_action :require_courier!, only: [:update, :update_in_batches, :index]
   before_action :require_food_delivery_place!, except: :index
 
   def index
@@ -15,7 +15,7 @@ class Seller::FoodDeliveryPlacesController < Seller::ApplicationController
 
   def update
   end
-  
+
   private
 
     def seller

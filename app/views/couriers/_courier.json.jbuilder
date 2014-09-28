@@ -1,13 +1,23 @@
 json.(courier, :state_id, :id)
 
-json.seller do
-  json.partial!(courier.seller)
+if show_seller ||= false
+  json.seller do
+    json.partial!(courier.seller)
+  end
 end
 
-json.places do
-  json.array!(courier.places)
+if show_places ||= false
+  json.places do
+    json.array!(courier.places)
+  end
+end
+
+if show_food_delivery_places ||= false
+  json.food_delivery_places do
+    json.array!(courier.food_delivery_places)
+  end
 end
 
 json.user do
-  json.partial!(courier.user)
+  json.partial!(partial: "/users/user", locals: { user: courier.user })
 end

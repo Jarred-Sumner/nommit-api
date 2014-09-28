@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   end
 
   def courier
-    @current_courier ||= Courier.find_by(id: params[:courier_id]) if params[:courier_id].present?
+    @current_courier ||= current_user.couriers.first
   end
 
   def seller
@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
     end
 
     def require_courier!
-      render_forbidden unless current_courier.present?
+      render_forbidden unless courier.present?
     end
 
     def render_error(status: nil, text: "An unexpected error occurred")
@@ -36,8 +36,12 @@ class ApplicationController < ActionController::Base
       }
     end
 
-    def render_invalid_record
-      render_error(status: :unprocessable_entity, text: "Oops! It looks like there was an error saving your changes.")
+    def render_invalid_record(e)
+      if Rails.env.development?
+        render_error(status: :unprocessable_entity, text: e.record.errors.full_messages.to_sentence)
+      else
+        render_error(status: :unprocessable_entity, text: "Oops! It looks like there was an error saving your changes.")
+      end
     end
 
     def render_generic_error(e)
