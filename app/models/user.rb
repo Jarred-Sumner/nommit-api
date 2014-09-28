@@ -3,9 +3,10 @@ class User < ActiveRecord::Base
   has_many :sessions
   has_many :couriers
   has_one :promo
+  has_one :payment_method
   belongs_to :location
   has_many :sellers, through: :couriers
-  
+
   attr_accessor :facebook
 
   def self.from(access_token: nil)

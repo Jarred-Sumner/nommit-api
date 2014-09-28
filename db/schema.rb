@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140925072129) do
+ActiveRecord::Schema.define(version: 20140928042632) do
 
   create_table "charges", force: true do |t|
     t.integer  "order_id"
@@ -58,6 +58,23 @@ ActiveRecord::Schema.define(version: 20140925072129) do
 
   add_index "deliveries", ["courier_id"], name: "index_deliveries_on_courier_id"
   add_index "deliveries", ["order_id"], name: "index_deliveries_on_order_id"
+
+  create_table "food_delivery_places", force: true do |t|
+    t.integer  "food_id"
+    t.integer  "place_id"
+    t.integer  "courier_id"
+    t.integer  "seller_id"
+    t.integer  "index"
+    t.integer  "wait_interval"
+    t.integer  "state",         default: 0, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "food_delivery_places", ["courier_id"], name: "index_food_delivery_places_on_courier_id"
+  add_index "food_delivery_places", ["food_id"], name: "index_food_delivery_places_on_food_id"
+  add_index "food_delivery_places", ["place_id"], name: "index_food_delivery_places_on_place_id"
+  add_index "food_delivery_places", ["seller_id"], name: "index_food_delivery_places_on_seller_id"
 
   create_table "foods", force: true do |t|
     t.string   "title"
@@ -117,9 +134,11 @@ ActiveRecord::Schema.define(version: 20140925072129) do
     t.integer  "address_id"
     t.integer  "place_id"
     t.integer  "promo_id"
+    t.integer  "courier_id"
   end
 
   add_index "orders", ["address_id"], name: "index_orders_on_address_id"
+  add_index "orders", ["courier_id"], name: "index_orders_on_courier_id"
   add_index "orders", ["food_id"], name: "index_orders_on_food_id"
   add_index "orders", ["place_id"], name: "index_orders_on_place_id"
   add_index "orders", ["promo_id"], name: "index_orders_on_promo_id"

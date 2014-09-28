@@ -3,15 +3,23 @@ class Order < ActiveRecord::Base
   belongs_to :user
   belongs_to :place
   belongs_to :promo
+  belongs_to :courier
   has_one :charge
-  has_one :delivery
-  has_one :courier, through: :delivery
 
   include StateID
   enum state: { cancelled: -1, active: 0, delivered: 1 }
 
   def price
     self.price_in_cents / 100.0
+  end
+
+  # Estimates work like this:
+  # Sellers have some couriers.
+  # Couriers delivery to Places (CourierPlace) in a rotation.
+  # 5 minutes at Mudge, 5 minutes at Donner, etc.
+  # Delivery estimates are based on the next time a Courier assigned to the Order's Place (through CourierPlace) is estimated to arrive.
+  def delivery_estimate
+
   end
 
   before_validation :on => :create do

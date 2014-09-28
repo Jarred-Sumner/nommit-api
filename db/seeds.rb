@@ -297,16 +297,23 @@ end
 j_user = User.create!(facebook_uid: "10203816999219792", email: "jarred@jarredsumner.com", name: "Jarred Sumner")
 l_user = User.create!(facebook_uid: "10152442953459538", email: "lguo@andrew.cmu.edu", name: "Lucy Guo")
 
+j_courier = Courier.create!(seller: jarred, user: j_user)
+l_courier = Courier.create!(seller: lucy, user: l_user)
+
 pizza = Food.create! do |f|
   f.title = "1x Pepperoni Pizza (Slice)"
   f.description = "This is one scrum-diddly-umptious slice of pepperoni pizza"
   f.seller = lucy
   f.goal = 75
+  f.state = 1
   f.price_in_cents = 425
   f.end_date = 24.days.from_now
   f.preview = open("http://www.papabellaspizzeria.com/Pizza_files/Pepperoni_1.jpg")
 end
-pizza.places << [Place.random, Place.random, Place.random]
+
+FoodDeliveryPlace.create!(food: pizza, place: Place.random, courier: l_courier, index: 0, wait_interval: 5 * 60, state: 1)
+FoodDeliveryPlace.create!(food: pizza, place: Place.random, courier: l_courier, index: 1, wait_interval: 5 * 60, state: 1)
+FoodDeliveryPlace.create!(food: pizza, place: Place.random, courier: l_courier, index: 2, wait_interval: 5 * 60, state: 1)
 
 cookies = Food.create! do |f|
   f.title = "3 x Chocalate Chip Cookie"
@@ -317,7 +324,10 @@ cookies = Food.create! do |f|
   f.end_date = 24.days.from_now
   f.preview = open("http://s3.amazonaws.com/gmi-digital-library/a5371459-75b5-4545-b1b9-89bcf1ffb9dc.jpg")
 end
-cookies.places << [pizza.places.first, pizza.places.second, Place.random]
+
+FoodDeliveryPlace.create!(food: cookies, place: pizza.places.first, courier: l_courier, index: 0, wait_interval: 300, state: 1)
+FoodDeliveryPlace.create!(food: cookies, place: pizza.places.second, courier: l_courier, index: 1, wait_interval: 300, state: 1)
+FoodDeliveryPlace.create!(food: cookies, place: Place.random, courier: l_courier, index: 2, wait_interval: 300, state: 1)
 
 nuggets = Food.create! do |f|
   f.title = "3 x Chicken Nuggets"
@@ -328,11 +338,8 @@ nuggets = Food.create! do |f|
   f.end_date = 24.days.from_now
   f.preview = open("https://38.media.tumblr.com/tumblr_mef4ddwioU1rum6sio1_500.png")
 end
-nuggets.places << [cookies.places.first, Place.random, Place.random]
 
-j_courier = Courier.create!(seller: jarred, user: j_user)
-l_courier = Courier.create!(seller: lucy, user: l_user)
 
-nuggets.places.each { |place| j_courier.courier_places.create!(place: place) }
-cookies.places.each { |place| l_courier.courier_places.create!(place: place) }
-pizza.places.each { |place| l_courier.courier_places.create!(place: place) }
+FoodDeliveryPlace.create!(food: nuggets, place: cookies.places.first, courier: j_courier, index: 0, wait_interval: 300, state: 1)
+FoodDeliveryPlace.create!(food: nuggets, place: Place.random, courier: j_courier, index: 1, wait_interval: 300, state: 1)
+FoodDeliveryPlace.create!(food: nuggets, place: Place.random, courier: j_courier, index: 2, wait_interval: 300, state: 1)

@@ -18,7 +18,5 @@ end
 
 # Avoid infinite rendering loop of places rendering foods, and foods rendering places
 if show_places ||= false
-  json.places do
-    json.array!(food.places, partial: "places/place", as: :place)
-  end
+  json.array! food.food_delivery_places
 end

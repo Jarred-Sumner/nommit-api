@@ -41,6 +41,9 @@ gem 'aws-sdk'
 # Payments
 gem 'stripe'
 
+# Phone parsing
+gem 'phone'
+
 group :test, :development do
 
   # Use sqlite3 as the database for Active Record

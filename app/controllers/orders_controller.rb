@@ -1,7 +1,11 @@
 class OrdersController < ApplicationController
 
   def index
-    @orders = Order.where(user: current_user)
+    if food_delivery_place.present?
+      @orders = food_delivery_place.orders
+    else
+      @orders = Order.where(user: current_user)
+    end
   end
 
   def show
@@ -15,10 +19,25 @@ class OrdersController < ApplicationController
     render_error(status: :bad_request, text: e.record.errors.full_messages.first)
   end
 
+  def update
+    if food_delivery_place.present?
+      @order = food_delivery_place.orders.find_by(id: update_params[:id])
+      @order.update_attributes!(state: update_params[:state_id])
+    end
+  end
+
   private
 
     def order_params
       params.permit(:food_id, :place_id, :quantity)
+    end
+
+    def update_params
+      params.permit(:id, :state_id)
+    end
+
+    def food_delivery_place
+      @food_delivery_place ||= FoodDeliveryPlace.find_by(courier: current_user.couriers, id: params[:food_delivery_place_id])
     end
 
     def promo
