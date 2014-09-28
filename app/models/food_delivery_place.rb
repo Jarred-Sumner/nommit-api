@@ -5,7 +5,7 @@ class FoodDeliveryPlace < ActiveRecord::Base
   belongs_to :seller
   include StateID
   enum state: [:ready, :active, :ended]
-  scope :deliverable, -> { joins(:food).where("foods.end_date > ? AND (foods.state == ? OR foods.state == ?)", DateTime.now, Food.states[:ready], Food.states[:active]) }
+  scope :deliverable, -> { joins(:food).where("foods.end_date > ? AND (foods.state = ? OR foods.state = ?)", DateTime.now, Food.states[:ready], Food.states[:active]) }
   MAX_WAIT_TIME = 15 unless defined?(MAX_WAIT_TIME)
 
   def orders
@@ -35,7 +35,7 @@ class FoodDeliveryPlace < ActiveRecord::Base
   end
 
   after_commit if: -> { active? } do
-    food.active! if food.ready?
+    food.active! if food.ready?trye
   end
 
   before_validation on: :create do
