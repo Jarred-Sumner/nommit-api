@@ -1,5 +1,5 @@
 class DeliveryPlacesController < ApplicationController
-  before_action :require_courier!, :require_delivery_place!
+  before_action :require_courier!, :require_delivery_place!, :require_authorized_courier!
 
   def update
     if Integer(delivery_place_params[:state_id]) == DeliveryPlace.states[:active]
@@ -17,7 +17,10 @@ class DeliveryPlacesController < ApplicationController
 
     def require_delivery_place!
       render_not_found unless delivery_place.present?
-      render_forbidden if delivery_place.courier.id != courier.id
+    end
+
+    def require_authorized_courier!
+      render_forbidden unless delivery_place.shift.courier_id == courier.id
     end
 
     def delivery_place
@@ -25,7 +28,7 @@ class DeliveryPlacesController < ApplicationController
     end
 
     def delivery_place_params
-      params.require(:id).permit(:state_id)
+      params.permit(:id, :state_id)
     end
 
 end

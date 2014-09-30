@@ -4,7 +4,8 @@ Rails.application.routes.draw do
   resources :sessions, only: [:create, :destroy]
   resources :payment_methods, only: [:update, :show]
   resources :users, only: [:update]
-  resources :orders, only: [:create, :index, :update]
+  resources :orders, only: [:create, :index, :update, :show]
+  resources :delivery_places, only: [:update]
 
   namespace :seller do
     resources :shifts, only: [:index, :update, :show]

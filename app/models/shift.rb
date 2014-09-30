@@ -4,9 +4,13 @@ class Shift < ActiveRecord::Base
   has_many :delivery_places
   has_many :foods, lambda { uniq }, through: :delivery_places
   LONGEST_DELIVER_TIME = 15.0 unless defined?(LONGEST_DELIVER_TIME)
+  DELIVERY_PADDING = 2 unless defined?(DELIVERY_PADDING)
 
   include StateID
-  enum state: [:active, :ended]
+  # Active means ongoing
+  # Halted means courier isn't accepting new orders, but in process of delivering old ones
+  # Ended means it's over. No more deliveries being made at this time.
+  enum state: [:active, :ended, :halted]
 
   # Couriers leave at DeliveryPlace for time_spent_in_place
   def deliver_to!(places: [], foods: [])
@@ -28,6 +32,7 @@ class Shift < ActiveRecord::Base
       .uniq
       .each_with_index do |place, index|
         place.update_attributes!(current_index: index, arrives_at: eta_for(index, count))
+        place.orders.update_all(delivered_at: eta_for(index, count) + DELIVERY_PADDING.minutes)
       end
   end
 

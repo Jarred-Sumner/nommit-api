@@ -1,6 +1,7 @@
-json.(order, :id, :quantity, :created_at, :price_in_cents, :rating)
+json.(order, :id, :quantity, :price_in_cents, :rating)
 
-json.delivered_at order.delivered_at || order.delivery_estimate
+json.delivered_at order.delivered_at.try(:iso8601)
+json.created_at order.created_at.iso8601
 
 json.state_id order.state_id
 json.charge_state_id order.charge.try(:state_id) || Charge.states[:not_charged]
