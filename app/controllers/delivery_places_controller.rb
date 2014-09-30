@@ -20,11 +20,7 @@ class DeliveryPlacesController < ApplicationController
     end
 
     def require_authorized_courier!
-      render_forbidden unless delivery_place.shift.courier_id == courier.id
-    end
-
-    def delivery_place
-      @deliver_place ||= DeliveryPlace.find_by(delivery_place_params[:id])
+      render_forbidden unless delivery_place.courier.id == courier.id
     end
 
     def delivery_place_params
