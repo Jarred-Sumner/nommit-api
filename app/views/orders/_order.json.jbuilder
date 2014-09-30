@@ -1,6 +1,6 @@
 json.(order, :id, :quantity, :created_at, :price_in_cents, :rating)
 
-json.delivered_at order.delivery_estimate
+json.delivered_at order.delivered_at || order.delivery_estimate
 
 json.state_id order.state_id
 json.charge_state_id order.charge.try(:state_id) || Charge.states[:not_charged]

@@ -1,11 +1,11 @@
 class FoodsController < ApplicationController
 
   def index
-    @foods = Food.active.order('end_date ASC').limit(10)
+    @foods = Food.visible
   end
 
   def show
-    @food = Food.find(params[:id])
+    @food = Food.find_by(id: params[:id])
   end
 
 end

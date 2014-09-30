@@ -2,7 +2,7 @@ json.(courier, :state_id, :id)
 
 if show_seller ||= false
   json.seller do
-    json.partial!(courier.seller)
+    json.partial!(partial: "sellers/seller", locals: { seller: courier.seller })
   end
 end
 
@@ -12,9 +12,9 @@ if show_places ||= false
   end
 end
 
-if show_food_delivery_places ||= false
-  json.food_delivery_places do
-    json.array!(courier.food_delivery_places)
+if show_shifts ||= false
+  json.shifts do
+    json.array!(courier.shifts)
   end
 end
 

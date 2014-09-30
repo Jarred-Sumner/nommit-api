@@ -1,1 +1,1 @@
-json.array! @places, partial: 'places/place', as: :place, show_foods: true
+json.array! @places, partial: 'places/place', as: :place, show_delivery_places: true

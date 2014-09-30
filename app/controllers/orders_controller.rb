@@ -1,8 +1,8 @@
 class OrdersController < ApplicationController
 
   def index
-    if food_delivery_place.present?
-      @orders = food_delivery_place.orders
+    if place.present?
+      @orders = place.orders.where(courier: current_user.couriers.first)
     else
       @orders = Order.where(user: current_user)
     end
@@ -20,15 +20,20 @@ class OrdersController < ApplicationController
   end
 
   def update
-    if food_delivery_place.present?
-      @order = food_delivery_place.orders.find_by(id: update_params[:id])
+    if @order = Order.find_by(courier: current_user.couriers, id: update_params[:id])
       if Integer(update_params[:state_id]) == Order.states[:delivered]
         @order.update_attributes!(state: "delivered")
       end
+      render action: :show
     end
+
   end
 
   private
+
+    def place
+      @place ||= Place.find_by(id: params[:place_id])
+    end
 
     def order_params
       params.permit(:food_id, :place_id, :quantity)
@@ -38,8 +43,8 @@ class OrdersController < ApplicationController
       params.permit(:id, :state_id)
     end
 
-    def food_delivery_place
-      @food_delivery_place ||= FoodDeliveryPlace.find_by(courier: current_user.couriers, id: params[:food_delivery_place_id])
+    def shift
+      @shift ||= Shift.find_by(courier: current_user.couriers, id: params[:shift_id])
     end
 
     def promo

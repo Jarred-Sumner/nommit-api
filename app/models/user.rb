@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   has_many :orders
   has_many :sessions
   has_many :couriers
+  has_many :shifts, through: :couriers
   has_one :promo
   has_one :payment_method
   belongs_to :location

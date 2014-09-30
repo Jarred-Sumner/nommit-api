@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140928195312) do
+ActiveRecord::Schema.define(version: 20140930100859) do
 
   create_table "charges", force: true do |t|
     t.integer  "order_id"
@@ -50,32 +50,29 @@ ActiveRecord::Schema.define(version: 20140928195312) do
   add_index "couriers", ["user_id"], name: "index_couriers_on_user_id"
 
   create_table "deliveries", force: true do |t|
-    t.integer  "courier_id"
-    t.integer  "order_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "deliveries", ["courier_id"], name: "index_deliveries_on_courier_id"
-  add_index "deliveries", ["order_id"], name: "index_deliveries_on_order_id"
-
-  create_table "food_delivery_places", force: true do |t|
     t.integer  "food_id"
-    t.integer  "place_id"
-    t.integer  "courier_id"
-    t.integer  "seller_id"
-    t.integer  "index"
-    t.integer  "wait_interval"
-    t.integer  "state",         default: 0, null: false
+    t.integer  "delivery_place_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "eta"
   end
 
-  add_index "food_delivery_places", ["courier_id"], name: "index_food_delivery_places_on_courier_id"
-  add_index "food_delivery_places", ["food_id"], name: "index_food_delivery_places_on_food_id"
-  add_index "food_delivery_places", ["place_id"], name: "index_food_delivery_places_on_place_id"
-  add_index "food_delivery_places", ["seller_id"], name: "index_food_delivery_places_on_seller_id"
+  add_index "deliveries", ["delivery_place_id"], name: "index_deliveries_on_delivery_place_id"
+  add_index "deliveries", ["food_id"], name: "index_deliveries_on_food_id"
+
+  create_table "delivery_places", force: true do |t|
+    t.integer  "shift_id"
+    t.integer  "place_id"
+    t.datetime "arrives_at"
+    t.integer  "current_index",             null: false
+    t.integer  "state",         default: 0, null: false
+    t.integer  "start_index",               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delivery_places", ["current_index"], name: "index_delivery_places_on_current_index"
+  add_index "delivery_places", ["place_id"], name: "index_delivery_places_on_place_id"
+  add_index "delivery_places", ["shift_id"], name: "index_delivery_places_on_shift_id"
 
   create_table "foods", force: true do |t|
     t.string   "title"
@@ -125,9 +122,9 @@ ActiveRecord::Schema.define(version: 20140928195312) do
   create_table "orders", force: true do |t|
     t.integer  "food_id"
     t.integer  "user_id"
-    t.integer  "state",          default: 0, null: false
-    t.integer  "quantity",       default: 1, null: false
-    t.integer  "price_in_cents",             null: false
+    t.integer  "state",                 default: 0, null: false
+    t.integer  "quantity",              default: 1, null: false
+    t.integer  "price_in_cents",                    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "delivered_at"
@@ -136,10 +133,13 @@ ActiveRecord::Schema.define(version: 20140928195312) do
     t.integer  "place_id"
     t.integer  "promo_id"
     t.integer  "courier_id"
+    t.integer  "delivery_id"
+    t.datetime "original_delivered_at"
   end
 
   add_index "orders", ["address_id"], name: "index_orders_on_address_id"
   add_index "orders", ["courier_id"], name: "index_orders_on_courier_id"
+  add_index "orders", ["delivery_id"], name: "index_orders_on_delivery_id"
   add_index "orders", ["food_id"], name: "index_orders_on_food_id"
   add_index "orders", ["place_id"], name: "index_orders_on_place_id"
   add_index "orders", ["promo_id"], name: "index_orders_on_promo_id"
@@ -202,6 +202,18 @@ ActiveRecord::Schema.define(version: 20140928195312) do
   add_index "sessions", ["access_token"], name: "index_sessions_on_access_token"
   add_index "sessions", ["token"], name: "index_sessions_on_token"
   add_index "sessions", ["user_id"], name: "index_sessions_on_user_id"
+
+  create_table "shifts", force: true do |t|
+    t.integer  "courier_id"
+    t.integer  "seller_id"
+    t.integer  "state",      default: 0, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "shifts", ["courier_id"], name: "index_shifts_on_courier_id"
+  add_index "shifts", ["seller_id"], name: "index_shifts_on_seller_id"
+  add_index "shifts", ["state"], name: "index_shifts_on_state"
 
   create_table "users", force: true do |t|
     t.string   "facebook_uid"

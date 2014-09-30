@@ -16,7 +16,6 @@ json.seller do
   json.partial!("sellers/seller", seller: food.seller) if food.seller.present?
 end
 
-# Avoid infinite rendering loop of places rendering foods, and foods rendering places
-if show_places ||= false
-  json.array! food.food_delivery_places
+json.delivery_places do
+  json.array!(food.delivery_places, partial: "delivery_places/delivery_place", as: :delivery_place, show_places: true)
 end

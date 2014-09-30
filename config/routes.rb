@@ -1,14 +1,16 @@
 Rails.application.routes.draw do
   resources :foods, only: [:index, :show]
-  resources :food_delivery_places, only: :index  do
-    resources :orders, only: [:update, :index]
-  end
-  resources :places, only: [:index, :show]
+  resources :shifts, only: [:index, :create, :update]
   resources :sessions, only: [:create, :destroy]
   resources :payment_methods, only: [:update, :show]
   resources :users, only: [:update]
-  resources :orders
+  resources :orders, only: [:create, :index, :update]
+
+  namespace :seller do
+    resources :shifts, only: [:index, :update, :show]
+    post 'shifts/update_in_batches' => 'shifts#update_in_batches'
+  end
 
   get 'users/me' => 'users#me'
-  get 'seller/food_delivery_places' => "seller/food_delivery_places#index"
+  get 'places/:place_id/orders' => 'orders#index'
 end
