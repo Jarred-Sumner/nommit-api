@@ -8,6 +8,6 @@ json.food_count place.food_count
 
 if show_delivery_places ||= false
   json.delivery_places do
-    json.array!(place.delivery_places, partial: "delivery_places/delivery_place", as: :delivery_place)
+    json.array!(place.delivery_places, partial: "delivery_places/delivery_place", as: :delivery_place, hide_place: true)
   end
 end

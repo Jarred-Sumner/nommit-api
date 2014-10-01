@@ -8,7 +8,7 @@ class DeliveryPlace < ActiveRecord::Base
   has_one :seller, through: :courier
 
   include StateID
-  enum state: [:ready, :arrived, :ended]
+  enum state: [:ready, :arrived, :halted, :ended]
   scope :active, lambda { where("state = ? OR state = ?", DeliveryPlace.states[:ready], DeliveryPlace.states[:arrived]) }
 
   validates :shift, presence: true

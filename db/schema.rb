@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140930100859) do
+ActiveRecord::Schema.define(version: 20141001115221) do
 
   create_table "charges", force: true do |t|
     t.integer  "order_id"
@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(version: 20140930100859) do
     t.datetime "preview_updated_at"
     t.integer  "goal"
     t.integer  "seller_id"
+    t.datetime "start_date"
   end
 
   add_index "foods", ["seller_id"], name: "index_foods_on_seller_id"
@@ -209,6 +210,7 @@ ActiveRecord::Schema.define(version: 20140930100859) do
     t.integer  "state",      default: 0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "ended_at"
   end
 
   add_index "shifts", ["courier_id"], name: "index_shifts_on_courier_id"

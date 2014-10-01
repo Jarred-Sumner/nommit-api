@@ -339,5 +339,5 @@ end
 shared_place_one = Place.random
 shared_place_two = Place.random
 
-l_shift.deliver_to!(places: [shared_place_one, shared_place_two, Place.random], foods: [pizza, cookies])
-j_shift.deliver_to!(places: [shared_place_one, shared_place_two, Place.random], foods: [nuggets])
+l_shift.deliver_to!(places: [shared_place_one, shared_place_two, Place.random])
+j_shift.deliver_to!(places: [shared_place_one, shared_place_two, Place.random])

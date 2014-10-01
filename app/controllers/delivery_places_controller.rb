@@ -11,6 +11,7 @@ class DeliveryPlacesController < ApplicationController
   end
 
   def show
+
   end
 
   private
