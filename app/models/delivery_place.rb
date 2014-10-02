@@ -22,7 +22,7 @@ class DeliveryPlace < ActiveRecord::Base
     self.start_index = current_index
   end
 
-  validates :no_orders_remaining, if: :ended?
+  validate :no_orders_remaining, if: :ended?
   def no_orders_remaining
     errors.add(:base, "Can't stop delivering until remaining orders are fulfilled") if self.orders.pending.count > 0
   end
