@@ -42,6 +42,7 @@ class ShiftsController < ApplicationController
       # So, it goes here.
       if Integer(dp_params[:delivery_place_state_id]) == DeliveryPlace.states[:arrived]
         ActiveRecord::Base.transaction do
+          delivery_place.shift.orders.where(state: Order.states[:arrived]).update_all(state: Order.states[:active])
           delivery_place.shift.delivery_places.update_all(state: :ready)
           delivery_place.arrived!
           delivery_place.orders.update_all(state: Order.states[:arrived])

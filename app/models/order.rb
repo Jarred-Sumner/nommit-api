@@ -47,7 +47,7 @@ class Order < ActiveRecord::Base
     end
 
     def set_price_in_cents!
-      self.price_in_cents = food.price_in_cents
+      self.price_in_cents = food.price_in_cents * self.quantity
     end
 
     def set_promo_discount!

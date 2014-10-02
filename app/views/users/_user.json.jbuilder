@@ -11,9 +11,3 @@ json.is_courier user.couriers.count > 0
 json.last_four user.payment_method.try(:last_four)
 json.card_type user.payment_method.try(:card_type)
 json.payment_authorized user.payment_method.try(:active?) == true
-
-if show_orders ||= false
-  json.orders do
-    json.array! user.orders, partial: "orders/order", as: :order
-  end
-end
