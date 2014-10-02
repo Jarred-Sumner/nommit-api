@@ -14,19 +14,29 @@ class OrdersController < ApplicationController
 
   def create
     @order = Order.create!(order_params.merge(user_id: current_user.id, promo_id: promo.try(:id)))
+    @order.food.ended! if @order.food.remaining.zero?
     render action: :show
   rescue ActiveRecord::RecordInvalid => e
     render_error(status: :bad_request, text: e.record.errors.full_messages.first)
   end
 
   def update
-    if @order = Order.find_by(courier: current_user.couriers, id: update_params[:id])
-      if Integer(update_params[:state_id]) == Order.states[:delivered]
-        @order.update_attributes!(state: Order.states[:delivered])
-      end
-      render action: :show
-    end
+    if Integer(update_params[:state_id]) == Order.states[:rated]
 
+      @order = Order.find_by(user_id: current_user.id, id: update_params[:id])
+      return if @order.nil? || @order.rated?
+
+      rating = Float(update_params[:rating])
+      tip    = Integer(update_params[:tip_in_cents])
+      @order.update_attributes!(state: Order.states[:rated], rating: rating, tip_in_cents: tip)
+      # TODO charge them tip.
+    elsif Integer(update_params[:state_id]) == Order.states[:delivered]
+      @order = Order.find_by(courier: current_user.couriers, id: update_params[:id])
+      return if @order.nil? || @order.delivered?
+
+      @order.update_attributes!(state: Order.states[:delivered])
+    end
+    render action: :show
   end
 
   private
@@ -40,7 +50,7 @@ class OrdersController < ApplicationController
     end
 
     def update_params
-      params.permit(:id, :state_id)
+      params.permit(:id, :state_id, :rating, :tip_in_cents)
     end
 
     def shift

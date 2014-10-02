@@ -10,9 +10,22 @@ class Food < ActiveRecord::Base
   belongs_to :seller
 
   include StateID
-  enum state: { ready: 0, active: 1, ended: 2 }
+  enum state: { ready: 0, active: 1, halted: 2, ended: 3 }
   scope :visible, lambda { where("end_date > ?", DateTime.now) }
+
+  scope :orderable, -> do
+    states = [
+      Food.states[:ready],
+      Food.states[:active]
+    ]
+    where(state: states).visible
+  end
+
   validates :goal, presence: true
 
   scope :ongoing, lambda { where("end_date > ?", DateTime.now).where(state: "active") }
+
+  def remaining
+    self.goal - self.orders.placed.sum(:quantity)
+  end
 end

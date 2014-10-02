@@ -1,7 +1,7 @@
 class FoodsController < ApplicationController
 
   def index
-    @foods = Food.visible
+    @foods = Food.visible.limit(10)
   end
 
   def show

@@ -7,7 +7,7 @@ json.header_image_url image_url(food.preview.url)
 json.thumbnail_image_url image_url(food.preview.url)
 
 # Teespring A/B tested this, and found that showing at least one order increased conversions
-json.order_count food.orders.active.count + 1
+json.order_count food.orders.placed.sum(:quantity) + 1
 
 # Ratings default to 4. Because we want people to buy the food.
 json.rating food.orders.average(:rating).to_f || 4.to_f

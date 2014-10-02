@@ -11,11 +11,6 @@ class Place < ActiveRecord::Base
   end
 
   def food_count
-    delivery_places
-      .active
-      .joins(:deliveries)
-      .select("deliveries.food_id")
-      .uniq("deliveries.food_id")
-      .count
+    self.foods.orderable.count
   end
 end

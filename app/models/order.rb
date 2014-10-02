@@ -9,6 +9,16 @@ class Order < ActiveRecord::Base
   include StateID
   enum state: { cancelled: -1, active: 0, arrived: 1, delivered: 2, rated: 3 }
 
+  scope :placed, -> do
+    states = [
+      Order.states[:active],
+      Order.states[:arrived],
+      Order.states[:delivered],
+      Order.states[:rated]
+    ]
+    where(state: states)
+  end
+
   def price
     self.price_in_cents / 100.0
   end
@@ -44,6 +54,12 @@ class Order < ActiveRecord::Base
 
     def delivery_place_is_active!
       errors.add(:base, "No couriers available to deliver to this location right now.") if !delivery.delivery_place.arrived? && !delivery.delivery_place.ready?
+    end
+
+    def enough_food_is_left!
+      if self.food.remaining - self.quantity < 0
+        errors.add(:base, "Not enough food left to place that order")
+      end
     end
 
     def set_price_in_cents!
@@ -90,6 +106,8 @@ class Order < ActiveRecord::Base
 
   validate :food_is_active!
   validate :delivery_place_is_active!, on: :create
+  validate :enough_food_is_left!, on: :create
+  #validate :require_payment_method!, on: :create
 
 
 end
