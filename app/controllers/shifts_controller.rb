@@ -21,15 +21,15 @@ class ShiftsController < ApplicationController
       if Integer(shift_params[:state_id]) == Shift.states[:ended]
         if shift.orders.active.count > 0
           shift.halt!
-          shift.delivery_places.update_all(state: :halted)
+          shift.delivery_places.update_all(state: Shift.states[:halted])
           return render_error(status: :unprocessable_entity, text: "Please fulfill the remaining #{shift.orders.active.count} order(s) before ending your shift.")
         else
           shift.ended!
-          shift.delivery_places.update_all(state: :ended)
+          shift.delivery_places.update_all(state: Shift.states[:ended])
         end
       elsif Integer(shift_params[:state_id]) == Shift.states[:halt]
         shift.halt!
-        shift.delivery_places.update_all(state: :ended)
+        shift.delivery_places.update_all(state: Shift.states[:ended])
       end
     elsif shift_params.has_key?(:place_ids)
       shift.deliver_to!(places: shift_params[:place_ids])
