@@ -10,6 +10,10 @@ class User < ActiveRecord::Base
 
   attr_accessor :facebook
 
+  def first_name
+    self.name.split(" ").first
+  end
+
   def self.from(access_token: nil)
     unless user = Session.includes(:user).find_by(access_token: access_token).try(:user)
       facebook = Koala::Facebook::API.new(access_token).get_object("me")

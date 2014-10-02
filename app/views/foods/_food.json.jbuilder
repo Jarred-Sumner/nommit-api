@@ -16,6 +16,8 @@ json.seller do
   json.partial!("sellers/seller", seller: food.seller) if food.seller.present?
 end
 
-json.delivery_places do
-  json.array!(food.delivery_places, partial: "delivery_places/delivery_place", as: :delivery_place, show_places: true)
+if !hide_delivery_places ||= false
+  json.delivery_places do
+    json.array!(food.delivery_places, partial: "delivery_places/delivery_place", as: :delivery_place, show_places: true)
+  end
 end

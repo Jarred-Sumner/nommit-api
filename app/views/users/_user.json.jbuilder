@@ -1,6 +1,8 @@
 json.id user.facebook_uid
-json.(user, :email, :phone, :name, :last_signin, :created_at, :updated_at)
+json.(user, :email, :phone, :last_signin, :created_at, :updated_at)
 
+json.full_name user.name
+json.name user.first_name
 json.referral_code user.promo.name
 json.referral_credit 0.0
 

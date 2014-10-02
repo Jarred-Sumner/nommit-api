@@ -13,6 +13,6 @@ end
 
 if show_foods ||= false
   json.foods do
-    json.array!(delivery_place.foods, partial: "foods/food", as: :food)
+    json.array!(delivery_place.foods, partial: "foods/food", as: :food, hide_delivery_places: true)
   end
 end

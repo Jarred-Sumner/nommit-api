@@ -284,21 +284,21 @@ PLACES.keys.each do |name|
   Place.create!(name: name, location: location)
 end
 
-jarred = Seller.create do |s|
-  s.name = "Jarred"
-  s.logo = open("https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/v/t1.0-1/p200x200/10150581_10202641427471233_1058179539_n.jpg?oh=5f74f89ac3ae772ce196d7b25a0e1ca5&oe=54CCF6FF&__gda__=1421987837_0d58dbfd1a04604794ab23f61602a1f5")
+trisigma = Seller.create! do |s|
+  s.name = "Sigma Sigma Sigma"
+  s.logo = open("http://media-cache-ak0.pinimg.com/736x/48/cf/4d/48cf4da6e1cc673ce05da861d3cba5c6.jpg")
 end
 
-lucy = Seller.create do |s|
-  s.name = "Lucy"
-  s.logo = open("https://scontent-a-sjc.xx.fbcdn.net/hphotos-xaf1/v/t1.0-9/10441266_10152232431319538_5276593142039933165_n.jpg?oh=dcf26cd9149085ceb38623546796b636&oe=54D06111")
+tridelta = Seller.create! do |s|
+  s.name = "Delta Delta Delta"
+  s.logo = open("https://tridelta.org/shop/media/images/products/zoom/532.jpg")
 end
 
 j_user = User.create!(facebook_uid: "10203816999219792", email: "jarred@jarredsumner.com", name: "Jarred Sumner")
 l_user = User.create!(facebook_uid: "10152442953459538", email: "lguo@andrew.cmu.edu", name: "Lucy Guo")
 
-j_courier = Courier.create!(seller: jarred, user: j_user)
-l_courier = Courier.create!(seller: lucy, user: l_user)
+j_courier = Courier.create!(seller: trisigma, user: j_user)
+l_courier = Courier.create!(seller: tridelta, user: l_user)
 
 j_shift = j_courier.shifts.create!
 l_shift = l_courier.shifts.create!
@@ -306,7 +306,7 @@ l_shift = l_courier.shifts.create!
 pizza = Food.create! do |f|
   f.title = "1x Pepperoni Pizza (Slice)"
   f.description = "This is one scrum-diddly-umptious slice of pepperoni pizza"
-  f.seller = lucy
+  f.seller = tridelta
   f.goal = 75
   f.state = 1
   f.price_in_cents = 425
@@ -317,7 +317,7 @@ end
 cookies = Food.create! do |f|
   f.title = "3 x Chocalate Chip Cookie"
   f.description = "Artisan Italian chocalate chips, cookie dough from the finest Israeli lait, at a size crafted for hungry college students."
-  f.seller = lucy
+  f.seller = tridelta
   f.goal = 100
   f.state = 1
   f.price_in_cents = 300
@@ -328,7 +328,7 @@ end
 nuggets = Food.create! do |f|
   f.title = "3 x Chicken Nuggets"
   f.description = "Dinosaur chicken nuggets. Delivered. You heard correctly. Ketchup included."
-  f.seller = jarred
+  f.seller = trisigma
   f.price_in_cents = 200
   f.goal = 50
   f.state = 1
@@ -336,8 +336,8 @@ nuggets = Food.create! do |f|
   f.preview = open("https://38.media.tumblr.com/tumblr_mef4ddwioU1rum6sio1_500.png")
 end
 
-shared_place_one = Place.random
-shared_place_two = Place.random
+shared_place_one = Place.random.id
+shared_place_two = Place.random.id
 
-l_shift.deliver_to!(places: [shared_place_one, shared_place_two, Place.random])
-j_shift.deliver_to!(places: [shared_place_one, shared_place_two, Place.random])
+l_shift.deliver_to!(places: [shared_place_one, shared_place_two, Place.random.id])
+j_shift.deliver_to!(places: [shared_place_one, shared_place_two, Place.random.id])

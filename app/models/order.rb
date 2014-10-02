@@ -41,6 +41,10 @@ class Order < ActiveRecord::Base
       errors.add(:food, "doesn't have couriers delivering right now. Try again in a few minutes!") unless food.active?
     end
 
+    def delivery_place_is_active!
+      errors.add(:base, "No couriers available to deliver to this location right now.") if !delivery.delivery_place.arrived? && !delivery.delivery_place.ready?
+    end
+
     def set_price_in_cents!
       self.price_in_cents = food.price_in_cents
     end
@@ -75,6 +79,7 @@ class Order < ActiveRecord::Base
   validates :state, presence: true
 
   validate :food_is_active!
+  validate :delivery_place_is_active!, on: :create
 
 
 end
