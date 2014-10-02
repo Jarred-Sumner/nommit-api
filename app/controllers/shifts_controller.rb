@@ -1,7 +1,7 @@
 class ShiftsController < ApplicationController
   before_action :require_courier!
   before_action :require_shift!, :require_authorized_courier!, only: [:update, :show]
-  before_action :place_ids, :require_at_least_one_place!, only: :create
+  before_action :require_at_least_one_place!, only: :create
 
   def index
     @shifts = current_user.shifts.limit(10).order("created_at DESC")
