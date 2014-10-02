@@ -3,7 +3,7 @@ class DeliveryPlacesController < ApplicationController
 
   def update
     if Integer(delivery_place_params[:state_id]) == DeliveryPlace.states[:active]
-      delivery_place.shift.delivery_places.update_all(state: "ready")
+      delivery_place.shift.delivery_places.update_all(state: DeliveryPlaces.states[:ready])
       delivery_place.arrived!
       delivery_place.shift.update_delivery_times!
     end
