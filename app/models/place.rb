@@ -11,7 +11,7 @@ class Place < ActiveRecord::Base
   end
 
   def food_count
-    active = [DeliveryPlaces.states[:arrived], DeliveryPlace.states[:ready]]
+    active = [DeliveryPlace.states[:arrived], DeliveryPlace.states[:ready]]
     self.foods.orderable.where(delivery_places: { state: active } ).count
   end
 end

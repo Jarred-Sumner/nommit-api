@@ -24,16 +24,12 @@ class DeliveryPlace < ActiveRecord::Base
 
   validate :no_orders_remaining, if: :ended?
   def no_orders_remaining
-    errors.add(:base, "Can't stop delivering until remaining orders are fulfilled") if self.orders.pending.count > 0
+    errors.add(:base, "Can't stop delivering until remaining orders are delivered") if self.orders.pending.count > 0
   end
 
   def arrive!
     transaction do
-      shift
-        .orders
-        .arrived
-        .update_all(state: Order.states[:active])
-
+      orders.arrived.update_all(state: Order.states[:active])
       shift
         .delivery_places
         .update_all(state: DeliveryPlace.states[:ready])
