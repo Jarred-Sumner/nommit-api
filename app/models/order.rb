@@ -60,7 +60,7 @@ class Order < ActiveRecord::Base
     end
 
     def delivery_place_is_active!
-      errors.add(:base, "No couriers available to deliver to this location right now.") if !delivery.delivery_place.arrived? && !delivery.delivery_place.ready?
+      errors.add(:base, "No couriers available to deliver to this location right now.") if !delivery.delivery_place.arrived? && !delivery.delivery_place.ready? && !delivery.delivery_place.halted?
     end
 
     def enough_food_is_left!
@@ -111,7 +111,7 @@ class Order < ActiveRecord::Base
   validates :rating, presence: true, if: :rated?
   validates :state, presence: true
 
-  validate :food_is_active!
+  validate :food_is_active!, on: :create
   validate :delivery_place_is_active!, on: :create
   validate :enough_food_is_left!, on: :create
   #validate :require_payment_method!, on: :create
