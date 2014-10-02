@@ -27,7 +27,6 @@ class Order < ActiveRecord::Base
     set_delivery!
     set_courier!
     set_delivery_estimate!
-    binding.pry
     self.original_delivered_at = self.delivered_at
   end
 
