@@ -81,7 +81,7 @@ class ShiftsController < ApplicationController
     end
 
     def require_at_least_one_place!
-      render_error(status: :bad_request, text: "Please select at least one place to deliver to") if Place.where(id: Array(place_ids)).count.zero?
+      render_error(status: :bad_request, text: "Please select at least one place to deliver to") if Place.where(id: Array(params[:place_ids])).count.zero?
     end
 
 end
