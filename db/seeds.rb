@@ -310,7 +310,7 @@ pizza = Food.create! do |f|
   f.goal = 75
   f.state = 1
   f.price_in_cents = 425
-  f.end_date = 24.days.from_now
+  f.end_date = 4.hours.from_now
   f.preview = open("http://www.papabellaspizzeria.com/Pizza_files/Pepperoni_1.jpg")
 end
 
@@ -321,7 +321,7 @@ cookies = Food.create! do |f|
   f.goal = 100
   f.state = 1
   f.price_in_cents = 300
-  f.end_date = 24.days.from_now
+  f.end_date = 4.hours.from_now
   f.preview = open("http://s3.amazonaws.com/gmi-digital-library/a5371459-75b5-4545-b1b9-89bcf1ffb9dc.jpg")
 end
 
@@ -332,7 +332,7 @@ nuggets = Food.create! do |f|
   f.price_in_cents = 200
   f.goal = 50
   f.state = 1
-  f.end_date = 24.days.from_now
+  f.end_date = 4.hours.from_now
   f.preview = open("https://38.media.tumblr.com/tumblr_mef4ddwioU1rum6sio1_500.png")
 end
 
