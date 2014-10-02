@@ -44,6 +44,9 @@ gem 'stripe'
 # Phone parsing
 gem 'phone'
 
+# Bugsnag
+gem "bugsnag"
+
 group :test, :development do
 
   # Use sqlite3 as the database for Active Record
