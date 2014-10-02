@@ -37,6 +37,7 @@ class ApplicationController < ActionController::Base
     end
 
     def render_invalid_record(e)
+      Bugsnag.notify(e)
       if Rails.env.development?
         render_error(status: :unprocessable_entity, text: e.record.errors.full_messages.to_sentence)
       else
@@ -45,6 +46,7 @@ class ApplicationController < ActionController::Base
     end
 
     def render_generic_error(e)
+      Bugsnag.notify(e)
       render_error(status: :internal_server_error, text: "Something broke! Our team has been notified. Try again repeatedly :)")
     end
 
