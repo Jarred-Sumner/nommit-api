@@ -50,15 +50,32 @@ class Shift < ActiveRecord::Base
 
     places = places[zero..count - 1] | places
 
-    places.each_with_index do |place, index|
-      place.update_attributes!(current_index: index, arrives_at: eta_for(index, count))
-      place.orders.update_all(delivered_at: eta_for(index, count) + DELIVERY_PADDING.minutes)
+    transaction do
+      places.each_with_index do |place, index|
+        place.update_attributes!(current_index: index, arrives_at: eta_for(index, count))
+        place.orders.update_all(delivered_at: eta_for(index, count) + DELIVERY_PADDING.minutes)
+      end
     end
+
   end
 
   def eta_for(index, place_count)
     time_spent_in_place = LONGEST_DELIVER_TIME / place_count.to_f
     (time_spent_in_place * (index + 1)).minutes.from_now
+  end
+
+  def end_shift!
+    transaction do
+      ended!
+      delivery_places.update_all(state: Shift.states[:ended])
+    end
+  end
+
+  def halt_shift!
+    transaction do
+      halt!
+      delivery_places.update_all(state: DeliveryPlace.states[:halted])
+    end
   end
 
   validates :courier, presence: true

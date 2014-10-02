@@ -22,4 +22,26 @@ class DeliveryPlace < ActiveRecord::Base
     self.start_index = current_index
   end
 
+  validates :no_orders_remaining, if: :ended?
+  def no_orders_remaining
+    errors.add(:base, "Can't stop delivering until remaining orders are fulfilled") if self.orders.pending.count > 0
+  end
+
+  def arrive!
+    transaction do
+      shift
+        .orders
+        .arrived
+        .update_all(state: Order.states[:active])
+
+      shift
+        .delivery_places
+        .update_all(state: DeliveryPlace.states[:ready])
+
+      self.arrived!
+      orders.update_all(state: Order.states[:arrived])
+
+      delivery_place.shift.update_delivery_times!(current_index)
+    end
+  end
 end

@@ -18,6 +18,13 @@ class Order < ActiveRecord::Base
     ]
     where(state: states)
   end
+  scope :pending, -> do
+    states = [
+      Order.states[:active],
+      Order.states[:arrived]
+    ]
+    where(state: states)
+  end
 
   def price
     self.price_in_cents / 100.0
