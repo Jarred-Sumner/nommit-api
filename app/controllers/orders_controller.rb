@@ -22,7 +22,7 @@ class OrdersController < ApplicationController
   def update
     if @order = Order.find_by(courier: current_user.couriers, id: update_params[:id])
       if Integer(update_params[:state_id]) == Order.states[:delivered]
-        @order.update_attributes!(state: "delivered")
+        @order.update_attributes!(state: Order.states[:delivered])
       end
       render action: :show
     end

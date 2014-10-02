@@ -41,9 +41,12 @@ class ShiftsController < ApplicationController
       # We need the latest version of all DeliveryPlaces for this Shift immediately afterwards, and it would be improper to return that in DeliveryPlaces#update
       # So, it goes here.
       if Integer(dp_params[:delivery_place_state_id]) == DeliveryPlace.states[:arrived]
-        delivery_place.shift.delivery_places.update_all(state: :ready)
-        delivery_place.arrived!
-        delivery_place.shift.update_delivery_times!(delivery_place.current_index)
+        ActiveRecord::Base.transaction do
+          delivery_place.shift.delivery_places.update_all(state: :ready)
+          delivery_place.arrived!
+          delivery_place.orders.update_all(state: Order.states[:arrived])
+          delivery_place.shift.update_delivery_times!(delivery_place.current_index)
+        end
       end
     end
     render action: :show

@@ -7,7 +7,7 @@ class Order < ActiveRecord::Base
   belongs_to :delivery
   has_one :charge
   include StateID
-  enum state: { cancelled: -1, active: 0, delivered: 1 }
+  enum state: { cancelled: -1, active: 0, arrived: 1, delivered: 2, rated: 3 }
 
   def price
     self.price_in_cents / 100.0
@@ -21,11 +21,13 @@ class Order < ActiveRecord::Base
   def delivery_estimate
   end
 
-  before_validation :on => :create do
+  before_validation on: :create do
     set_price_in_cents!
     set_promo_discount! if promo.present?
     set_delivery!
     set_courier!
+    set_delivery_estimate!
+    binding.pry
     self.original_delivered_at = self.delivered_at
   end
 
@@ -64,6 +66,14 @@ class Order < ActiveRecord::Base
         .select("deliveries.id")
         .first
         .id
+
+      if self.delivery.delivery_place.arrived?
+        self.arrived!
+      end
+    end
+
+    def set_delivery_estimate!
+      self.delivered_at = self.delivery.delivery_place.arrives_at
     end
 
     def set_courier!
@@ -76,6 +86,7 @@ class Order < ActiveRecord::Base
   validates :courier, presence: true
 
   validates :rating, inclusion: 1..5, allow_nil: true
+  validates :rating, presence: true, if: :rated?
   validates :state, presence: true
 
   validate :food_is_active!
