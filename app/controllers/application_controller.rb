@@ -36,6 +36,10 @@ class ApplicationController < ActionController::Base
       }
     end
 
+    def render_bad_request(text = "The information you entered was incorrect, please re-enter it and try again")
+      render_error(status: :bad_request, text: text)
+    end
+
     def render_invalid_record(e)
       Bugsnag.notify(e)
       if Rails.env.development?

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141002094816) do
+ActiveRecord::Schema.define(version: 20141003004527) do
 
   create_table "charges", force: true do |t|
     t.integer  "order_id"
@@ -152,7 +152,8 @@ ActiveRecord::Schema.define(version: 20141002094816) do
     t.string   "customer"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "state_id"
+    t.integer  "state_id",   default: 0, null: false
+    t.integer  "state",      default: 0, null: false
   end
 
   add_index "payment_methods", ["customer"], name: "index_payment_methods_on_customer"
@@ -228,11 +229,14 @@ ActiveRecord::Schema.define(version: 20141002094816) do
     t.datetime "updated_at"
     t.integer  "location_id"
     t.integer  "seller_id"
+    t.integer  "state",        default: 0, null: false
+    t.integer  "confirm_code"
   end
 
   add_index "users", ["email"], name: "index_users_on_email"
   add_index "users", ["facebook_uid"], name: "index_users_on_facebook_uid"
   add_index "users", ["location_id"], name: "index_users_on_location_id"
   add_index "users", ["seller_id"], name: "index_users_on_seller_id"
+  add_index "users", ["state"], name: "index_users_on_state"
 
 end

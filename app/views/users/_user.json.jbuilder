@@ -1,5 +1,5 @@
 json.id user.facebook_uid
-json.(user, :email, :phone, :last_signin, :created_at, :updated_at)
+json.(user, :email, :phone, :last_signin, :created_at, :updated_at, :state_id)
 
 json.full_name user.name
 json.name user.first_name

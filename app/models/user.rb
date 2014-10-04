@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
   has_one :payment_method
   belongs_to :location
   has_many :sellers, through: :couriers
+  include StateID
+  enum state: [:registered, :activated]
 
   attr_accessor :facebook
 
@@ -38,6 +40,11 @@ class User < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true
   validates :facebook_uid, presence: true, uniqueness: true
 
+  phony_normalize :phone, default_country_code: 'US'
+  validates :phone, phony_plausible: true, uniqueness: true, if: :activated?
+
+  validates :confirm_code, presence: true, uniqueness: true, if: :registered?
+
   # TODO
   def referral_credit
   end
@@ -47,4 +54,8 @@ class User < ActiveRecord::Base
     ReferralPromo.create!(user_id: self.id)
   end
 
+  before_validation :generate_confirm_code!, on: :create, if: :registered?
+  def generate_confirm_code!
+    self.confirm_code = rand(111111..999999)
+  end
 end

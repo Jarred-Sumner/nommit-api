@@ -102,6 +102,10 @@ class Order < ActiveRecord::Base
       self.courier_id = self.delivery.delivery_place.shift.courier_id
     end
 
+    def ensure_user_has_activated!
+      self.errors(:base, "Please confirm your phone number before placing an order") if self.user.registered?
+    end
+
   validates :food, presence: true
   validates :user, presence: true
   validates :place, presence: true
@@ -114,6 +118,7 @@ class Order < ActiveRecord::Base
   validate :food_is_active!, on: :create
   validate :delivery_place_is_active!, on: :create
   validate :enough_food_is_left!, on: :create
+  validate :ensure_user_has_activated!, on: :create
   #validate :require_payment_method!, on: :create
 
 

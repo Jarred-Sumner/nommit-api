@@ -42,7 +42,7 @@ gem 'aws-sdk'
 gem 'stripe'
 
 # Phone parsing
-gem 'phone'
+gem 'phony_rails'
 
 # Bugsnag
 gem "bugsnag"
