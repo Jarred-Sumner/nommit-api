@@ -3,10 +3,14 @@ Rails.application.routes.draw do
   resources :shifts, only: [:index, :create, :update, :show]
   resources :sessions, only: [:create, :destroy]
   resources :payment_methods, only: [:update, :show]
-  resources :users, only: [:update]
+
+  resources :users, only: [:update] do
+    resources :promos, only: [:create]
+  end
+
   resources :orders, only: [:create, :index, :update, :show]
   resources :delivery_places, only: [:update]
-  resources :places, only: :index
+  resources :places, only: [:index, :show]
 
   get 'users/me' => 'users#me'
   get 'places/:place_id/orders' => 'orders#index'

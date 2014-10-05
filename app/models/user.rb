@@ -3,11 +3,13 @@ class User < ActiveRecord::Base
   has_many :sessions
   has_many :couriers
   has_many :shifts, through: :couriers
+  has_many :user_promos
   has_one :promo
-  has_one :payment_method
+  has_one :payment_method, -> { where(state: PaymentMethod.states[:active]) }
   belongs_to :location
   has_many :sellers, through: :couriers
   include StateID
+
   enum state: [:registered, :activated]
 
   attr_accessor :facebook
@@ -43,7 +45,7 @@ class User < ActiveRecord::Base
   phony_normalize :phone, default_country_code: 'US'
   validates :phone, phony_plausible: true, uniqueness: true, if: :activated?
 
-  validates :confirm_code, presence: true, uniqueness: true, if: :registered?
+  validates :confirm_code, presence: true, uniqueness: true, length: { is: 6 }, if: :registered?
 
   # TODO
   def referral_credit

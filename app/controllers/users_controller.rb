@@ -7,10 +7,12 @@ class UsersController < ApplicationController
     if current_user.registered?
 
       if update_params[:confirm_code].present?
-        if current_user.confirm_code == update_params[:confirm_code]
+        if current_user.confirm_code == Integer(update_params[:confirm_code])
           current_user.update_attributes!(confirm_code: nil, state: User.states[:activated])
         else
-          return render_bad_request("Invalid confirm code, sending new one to #{Phony.format(current_user.phone)}. Please enter it and try again.")
+          phone = Phony.format(current_user.phone)
+          # TODO send new confirm code
+          return render_bad_request("Invalid confirm code, sending new one to #{phone}. Please enter it and try again.")
         end
       end
 
@@ -24,10 +26,6 @@ class UsersController < ApplicationController
 
     if update_params[:stripe_token].present?
       PaymentMethod.create_for(token: update_params[:stripe_token], user: current_user)
-    end
-
-    if update_params[:promo_code].present?
-
     end
 
     render action: :me

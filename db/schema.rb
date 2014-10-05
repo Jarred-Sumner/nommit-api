@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141003004527) do
+ActiveRecord::Schema.define(version: 20141004214655) do
 
   create_table "charges", force: true do |t|
     t.integer  "order_id"
@@ -137,6 +137,7 @@ ActiveRecord::Schema.define(version: 20141003004527) do
     t.integer  "delivery_id"
     t.datetime "original_delivered_at"
     t.integer  "tip_in_cents"
+    t.integer  "discount_in_cents",     default: 0, null: false
   end
 
   add_index "orders", ["address_id"], name: "index_orders_on_address_id"
@@ -147,13 +148,22 @@ ActiveRecord::Schema.define(version: 20141003004527) do
   add_index "orders", ["promo_id"], name: "index_orders_on_promo_id"
   add_index "orders", ["user_id"], name: "index_orders_on_user_id"
 
+  create_table "orders_user_promos", force: true do |t|
+    t.integer "user_promo_id"
+    t.integer "order_id"
+  end
+
+  add_index "orders_user_promos", ["order_id"], name: "index_orders_user_promos_on_order_id"
+  add_index "orders_user_promos", ["user_promo_id"], name: "index_orders_user_promos_on_user_promo_id"
+
   create_table "payment_methods", force: true do |t|
     t.integer  "user_id"
     t.string   "customer"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "state_id",   default: 0, null: false
     t.integer  "state",      default: 0, null: false
+    t.integer  "last_four"
+    t.string   "card_type"
   end
 
   add_index "payment_methods", ["customer"], name: "index_payment_methods_on_customer"
@@ -219,6 +229,19 @@ ActiveRecord::Schema.define(version: 20141003004527) do
   add_index "shifts", ["seller_id"], name: "index_shifts_on_seller_id"
   add_index "shifts", ["state"], name: "index_shifts_on_state"
 
+  create_table "user_promos", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "promo_id"
+    t.integer  "amount_remaining_in_cents"
+    t.integer  "state",                     default: 0, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_promos", ["promo_id"], name: "index_user_promos_on_promo_id"
+  add_index "user_promos", ["state"], name: "index_user_promos_on_state"
+  add_index "user_promos", ["user_id"], name: "index_user_promos_on_user_id"
+
   create_table "users", force: true do |t|
     t.string   "facebook_uid"
     t.string   "email"
@@ -229,8 +252,9 @@ ActiveRecord::Schema.define(version: 20141003004527) do
     t.datetime "updated_at"
     t.integer  "location_id"
     t.integer  "seller_id"
-    t.integer  "state",        default: 0, null: false
+    t.integer  "state",                     default: 0, null: false
     t.integer  "confirm_code"
+    t.integer  "promotion_credit_in_cents"
   end
 
   add_index "users", ["email"], name: "index_users_on_email"

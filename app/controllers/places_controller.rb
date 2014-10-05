@@ -2,6 +2,10 @@ class PlacesController < ApplicationController
   before_action :require_courier!
 
   def index
-    @places = Place.all
+    @places = Place.all.order("id DESC")
+  end
+
+  def show
+    @place = Place.find(Integer(params[:id]))
   end
 end

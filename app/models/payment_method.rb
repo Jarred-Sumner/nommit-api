@@ -9,13 +9,16 @@ class PaymentMethod < ActiveRecord::Base
     customer = Stripe::Customer.create(description: "Customer for #{user.email}", card: token)
 
     transaction do
-      user.payment_method.try(:deactivated!)
+      PaymentMethod.where(user_id: user.id).active.update_all(state: PaymentMethod.states[:deactivated])
 
       PaymentMethod.create! do |payment_method|
         payment_method.customer = customer.id
-        payment_method.user = user
+        payment_method.last_four = Integer(customer.cards.first.try(:last4))
+        payment_method.card_type = customer.cards.first.try(:brand).try(:downcase)
+        payment_method.user_id = user.id
         payment_method.state = PaymentMethod.states[:active]
       end
+
     end
   end
 

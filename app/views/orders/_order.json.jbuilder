@@ -9,7 +9,7 @@ json.state_id order.state_id
 json.charge_state_id order.charge.try(:state_id) || Charge.states[:not_charged]
 
 json.promo_code order.promo.try(:name)
-json.discount_in_cents order.promo.try(:discount_in_cents) || 0
+json.discount_in_cents order.discount_in_cents
 
 json.place do
   json.partial!(order.place, hide_delivery_places: true) if order.place.present?
