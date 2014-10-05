@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :orders, only: [:create, :index, :update, :show]
   resources :delivery_places, only: [:update]
   resources :places, only: [:index, :show]
+  resources :invites, only: [:create]
 
   get 'users/me' => 'users#me'
   get 'places/:place_id/orders' => 'orders#index'
