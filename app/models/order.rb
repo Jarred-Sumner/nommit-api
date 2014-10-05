@@ -92,7 +92,7 @@ class Order < ActiveRecord::Base
         .id
 
       if self.delivery.delivery_place.arrived?
-        self.arrived!
+        self.state = :arrived
       end
     end
 
