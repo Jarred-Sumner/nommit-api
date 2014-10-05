@@ -51,7 +51,7 @@ class User < ActiveRecord::Base
   def referral_credit
   end
 
-  after_commit :generate_promo_code!, on: :create
+  after_create :generate_promo_code!, on: :create
   def generate_promo_code!
     ReferralPromo.create!(user_id: self.id)
   end

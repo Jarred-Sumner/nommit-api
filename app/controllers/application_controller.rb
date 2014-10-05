@@ -50,6 +50,7 @@ class ApplicationController < ActionController::Base
     end
 
     def render_generic_error(e)
+      raise e if Rails.env.test?
       Bugsnag.notify(e)
       render_error(status: :internal_server_error, text: "Something broke! Our team has been notified. Try again repeatedly :)")
     end
