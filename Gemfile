@@ -44,9 +44,6 @@ gem 'stripe'
 # Phone parsing
 gem 'phony_rails'
 
-# Bugsnag
-gem "bugsnag"
-
 # Sidekiq
 gem 'sidekiq'
 
@@ -59,9 +56,13 @@ group :test, :development do
   gem 'pry-rails'
 
   # Environment Variables
-  gem 'dotenv-rails'
+  gem 'dotenv'
 
+  # Testing
   gem 'rspec-rails'
+
+  # Tests with Stripe
+  gem 'stripe-ruby-mock', '~> 1.10.1.7', require: "stripe_mock"
 end
 
 group :production do
@@ -74,5 +75,8 @@ group :production do
 
   # Fancypants Application Server
   gem 'unicorn'
+
+  # Bugsnag
+  gem "bugsnag"
 
 end

@@ -7,5 +7,6 @@ class Session < ActiveRecord::Base
   def generate_token!
     self.token = SecureRandom.urlsafe_base64(16)
   end
-  
+
+  validates :user_id, presence: true
 end
