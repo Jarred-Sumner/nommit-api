@@ -47,6 +47,9 @@ gem 'phony_rails'
 # Sidekiq
 gem 'sidekiq'
 
+# Bugsnag
+gem "bugsnag"
+
 group :test, :development do
 
   # Use sqlite3 as the database for Active Record
@@ -75,8 +78,4 @@ group :production do
 
   # Fancypants Application Server
   gem 'unicorn'
-
-  # Bugsnag
-  gem "bugsnag"
-
 end

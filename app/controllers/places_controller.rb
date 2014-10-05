@@ -6,6 +6,6 @@ class PlacesController < ApplicationController
   end
 
   def show
-    @place = Place.find(Integer(params[:id]))
+    @place = Place.find(params[:id])
   end
 end
