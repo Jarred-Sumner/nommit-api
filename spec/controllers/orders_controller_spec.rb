@@ -8,6 +8,8 @@ describe OrdersController, type: :controller do
     request.headers["X-SESSION-ID"] = session.token
   end
 
+  render_views
+
   describe "#create" do
 
     describe "with a missing food" do
@@ -56,12 +58,13 @@ describe OrdersController, type: :controller do
       it "succeeds" do
         expect do
           post :create, food_id: food.id, place_id: place.id, quantity: 1
-          binding.pry
         end.to change(Order, :count).by(1)
 
         expect(response.status).to eq(200)
-      end
 
+        order_id = JSON.parse(response.body)['id']
+        expect(Order.find(order_id)).to be_present
+      end
 
     end
 

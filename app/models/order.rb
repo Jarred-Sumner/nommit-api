@@ -42,11 +42,9 @@ class Order < ActiveRecord::Base
   before_validation on: :create do
     set_price_in_cents!
     set_delivery!
-    set_courier!
-    set_courier!
     set_promo_discount! if promo.present?
   end
-  after_create :set_delivery!, :set_courier!, :apply_pending_promotions!
+  after_create :apply_pending_promotions!
 
   private
 
