@@ -14,8 +14,8 @@ tridelta = Seller.create! do |s|
   s.logo = open("https://tridelta.org/shop/media/images/products/zoom/532.jpg")
 end
 
-j_user = User.create!(facebook_uid: "10203816999219792", email: "jarred@jarredsumner.com", name: "Jarred Sumner")
-l_user = User.create!(facebook_uid: "10152442953459538", email: "lguo@andrew.cmu.edu", name: "Lucy Guo")
+j_user = User.create!(facebook_uid: "10203816999219792", email: "jarred@jarredsumner.com", name: "Jarred Sumner", state: 1, phone: "+19252008843")
+l_user = User.create!(facebook_uid: "10152442953459538", email: "lguo@andrew.cmu.edu", name: "Lucy Guo", state: 1, phone: "+19255968005")
 
 j_courier = Courier.create!(seller: trisigma, user: j_user)
 l_courier = Courier.create!(seller: tridelta, user: l_user)
