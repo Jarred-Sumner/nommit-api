@@ -47,7 +47,7 @@ RSpec.configure do |config|
   end
 
   config.before(:suite) do
-    Dotenv.load!
+    Dotenv.load!("#{Rails.root}/.env")
     Stripe.api_key = ENV['STRIPE_SECRET']
   end
 

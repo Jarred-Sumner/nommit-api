@@ -41,13 +41,12 @@ class Order < ActiveRecord::Base
 
   before_validation on: :create do
     set_price_in_cents!
-    set_promo_discount! if promo.present?
     set_delivery!
     set_courier!
-    set_delivery_estimate!
-    self.original_delivered_at = self.delivered_at
+    set_courier!
+    set_promo_discount! if promo.present?
   end
-  after_create :apply_pending_promotions!
+  after_create :set_delivery!, :set_courier!, :apply_pending_promotions!
 
   private
 
@@ -61,8 +60,22 @@ class Order < ActiveRecord::Base
       errors.add(:food, "doesn't have couriers delivering right now. Try again in a few minutes!") unless food.active?
     end
 
-    def delivery_place_is_active!
-      errors.add(:base, "No couriers available to deliver to this location right now.") if !delivery.delivery_place.arrived? && !delivery.delivery_place.ready? && !delivery.delivery_place.halted?
+    def set_delivery!
+      if self.delivery = Delivery.for(place_id: self.place_id, food_id: self.food_id).first
+        set_courier!
+
+        if self.delivery.delivery_place.arrived?
+          self.state = :arrived
+        end
+
+      else
+        errors.add(:base, "No couriers available to deliver to this location right now.")
+      end
+    end
+
+
+    def set_courier!
+      self.courier_id = self.delivery.delivery_place.shift.courier_id
     end
 
     def enough_food_is_left!
@@ -83,25 +96,8 @@ class Order < ActiveRecord::Base
       end
     end
 
-    def set_delivery!
-      self.delivery_id = Delivery.where(food_id: self.food_id)
-        .joins(:delivery_place)
-        .where(delivery_places: { place_id: place.id })
-        .select("deliveries.id")
-        .first
-        .id
-
-      if self.delivery.delivery_place.arrived?
-        self.state = :arrived
-      end
-    end
-
     def set_delivery_estimate!
       self.delivered_at = self.delivery.delivery_place.arrives_at
-    end
-
-    def set_courier!
-      self.courier_id = self.delivery.delivery_place.shift.courier_id
     end
 
     def ensure_user_has_activated!
@@ -110,39 +106,39 @@ class Order < ActiveRecord::Base
 
     def apply_pending_promotions!
 
-      self.user.user_promos.active.collect do |user_promo|
-        promo = user_promo.reload
-        self.discount_in_cents = price_in_cents - self.discount_in_cents - promo.amount_remaining_in_cents
-
-
-        promo.amount_remaining_in_cents = user_promo.amount_remaining_in_cents - self.price_in_cents
-        promo.state = :used_up if promo.amount_remaining_in_cents.zero?
-        promo.save!
-
-        self.discount_in_cents = price_in_cents if self.discount_in_cents > price_in_cents
-        self.user_promos << promo
-
-        break if self.discount_in_cents >= self.price_in_cents
-      end
-
-      self.save!
+      # self.user.user_promos.active.collect do |user_promo|
+      #   promo = user_promo.reload
+      #   self.discount_in_cents = price_in_cents - self.discount_in_cents - promo.amount_remaining_in_cents
+      #
+      #
+      #   promo.amount_remaining_in_cents = user_promo.amount_remaining_in_cents - self.price_in_cents
+      #   promo.state = :used_up if promo.amount_remaining_in_cents.zero?
+      #   promo.save!
+      #
+      #   self.discount_in_cents = price_in_cents if self.discount_in_cents > price_in_cents
+      #   self.user_promos << promo
+      #
+      #   break if self.discount_in_cents >= self.price_in_cents
+      # end
+      #
+      # self.save!
 
     end
 
   validates :food, presence: true
   validates :user, presence: true
   validates :place, presence: true
-  validates :courier, presence: true
+  validates :courier, presence: true, on: :update
+  validates :delivery_id, presence: true, on: :update
 
   validates :rating, inclusion: 1..5, allow_nil: true
   validates :rating, presence: true, if: :rated?
   validates :state, presence: true
 
   validate :food_is_active!, on: :create
-  validate :delivery_place_is_active!, on: :create
   validate :enough_food_is_left!, on: :create
   validate :ensure_user_has_activated!, on: :create
-  #validate :require_payment_method!, on: :create
+  validate :require_payment_method!, on: :create
 
 
 end

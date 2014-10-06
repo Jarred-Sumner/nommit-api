@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 20141004214655) do
     t.string   "title"
     t.text     "description"
     t.integer  "price_in_cents"
-    t.integer  "state",                default: 0, null: false
+    t.integer  "state",                default: 1, null: false
     t.datetime "end_date"
     t.datetime "created_at"
     t.datetime "updated_at"

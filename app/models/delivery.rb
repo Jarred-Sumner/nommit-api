@@ -8,9 +8,18 @@ class Delivery < ActiveRecord::Base
 
   validate :food_is_owned_by_seller!
 
+  def self.for(place_id: nil, food_id: nil)
+    Delivery.joins(:delivery_place).where(delivery_places: { place_id: place_id }, food_id: food_id).order("delivery_places.state ASC")
+  end
+
+  def active?
+    self.delivery_place.ready? || self.delivery_place.arrived?
+  end
+
   private
 
     def food_is_owned_by_seller!
       errors.add(:food, "can only be delivered by the seller") unless self.food.seller_id == self.delivery_place.seller.id
     end
+
 end

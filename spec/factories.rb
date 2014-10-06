@@ -301,6 +301,11 @@ FactoryGirl.define do
     factory :registered_user do
       state 0
     end
+
+    after(:create) do |user|
+      create(:payment_method, user_id: user.id)
+    end
+
   end
 
   factory :food do
@@ -331,6 +336,10 @@ FactoryGirl.define do
   factory :courier do
     seller { FactoryGirl.create(:seller) }
     user { FactoryGirl.create(:user) }
+
+    factory :active_courier do
+      state Courier.states[:active]
+    end
   end
 
   factory :shift do
@@ -391,6 +400,10 @@ FactoryGirl.define do
   factory :session do
     access_token SecureRandom.urlsafe_base64
     user_id { create(:user).id }
+  end
+
+  factory :payment_method do
+    customer SecureRandom.urlsafe_base64
   end
 
 end

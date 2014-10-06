@@ -2,6 +2,7 @@ class Shift < ActiveRecord::Base
   belongs_to :courier
   belongs_to :seller
   has_many :delivery_places
+  has_many :places, through: :delivery_places
   has_many :orders, through: :delivery_places
   has_many :foods, lambda { uniq }, through: :delivery_places
   LONGEST_DELIVER_TIME = 15.0 unless defined?(LONGEST_DELIVER_TIME)
@@ -25,7 +26,7 @@ class Shift < ActiveRecord::Base
       raise ArgumentError, "Your shift is about to end! I can't let you start delivering to more places until the next shift."
     end
 
-    foods = self.seller.foods.where("state = ? OR state = ?", Food.states[:active], Food.states[:ready]).pluck(:id)
+    foods = self.seller.foods.active.pluck(:id)
 
     transaction do
       places.each_with_index do |place_id, index|
