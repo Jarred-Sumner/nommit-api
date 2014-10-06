@@ -9,4 +9,5 @@ class Session < ActiveRecord::Base
   end
 
   validates :user_id, presence: true
+  validates :access_token, presence: true
 end

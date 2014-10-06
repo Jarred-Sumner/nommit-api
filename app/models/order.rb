@@ -110,22 +110,22 @@ class Order < ActiveRecord::Base
 
     def apply_pending_promotions!
 
-      # self.user.user_promos.active.collect do |user_promo|
-      #   promo = user_promo.reload
-      #   self.discount_in_cents = price_in_cents - self.discount_in_cents - promo.amount_remaining_in_cents
-      #
-      #
-      #   promo.amount_remaining_in_cents = user_promo.amount_remaining_in_cents - self.price_in_cents
-      #   promo.state = :used_up if promo.amount_remaining_in_cents.zero?
-      #   promo.save!
-      #
-      #   self.discount_in_cents = price_in_cents if self.discount_in_cents > price_in_cents
-      #   self.user_promos << promo
-      #
-      #   break if self.discount_in_cents >= self.price_in_cents
-      # end
-      #
-      # self.save!
+      self.user.user_promos.active.collect do |user_promo|
+        promo = user_promo.reload
+        self.discount_in_cents = price_in_cents - self.discount_in_cents - promo.amount_remaining_in_cents
+
+
+        promo.amount_remaining_in_cents = user_promo.amount_remaining_in_cents - self.price_in_cents
+        promo.state = :used_up if promo.amount_remaining_in_cents.zero?
+        promo.save!
+
+        self.discount_in_cents = price_in_cents if self.discount_in_cents > price_in_cents
+        self.user_promos << promo
+
+        break if self.discount_in_cents >= self.price_in_cents
+      end
+
+      self.save!
 
     end
 

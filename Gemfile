@@ -50,6 +50,10 @@ gem 'sidekiq'
 # Bugsnag
 gem "bugsnag"
 
+# Factories
+gem 'factory_girl_rails'
+gem 'faker'
+
 group :test, :development do
 
   # Use sqlite3 as the database for Active Record
@@ -66,6 +70,8 @@ group :test, :development do
 
   # Tests with Stripe
   gem 'stripe-ruby-mock', '~> 1.10.1.7', require: "stripe_mock"
+
+  gem 'database_cleaner'
 end
 
 group :production do

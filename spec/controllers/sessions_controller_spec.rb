@@ -5,6 +5,7 @@ describe SessionsController, type: :controller do
 
   context "#create" do
     before(:each) { Session.destroy_all }
+    before(:all) { create(:user, :email => "jarred@jarredsumner.com", facebook_uid: "10203816999219792") }
     let(:access_token) { "CAAEof4vEg5QBAHxUNFboFI1wIA4BM4RlWSXC2k0kceNvBZA7y1ZBvyu3gyYoAZC5VooCFHITGnCIn7uVOXacSckXGW6rCzepJ9CLQr53USIasRPhN5ijSKVU8WygYOpJlOfAD6zmFRZBdwL012yKdcMtCr35781k5hNJzTBD0vrsIRtXBedz1D6rqQuBqReBg2n86F7xkUp4T2s61Rb3" }
 
     it "works" do

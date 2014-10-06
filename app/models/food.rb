@@ -21,9 +21,15 @@ class Food < ActiveRecord::Base
     where(state: states).visible
   end
 
+  validates :title, presence: true
+  validates :description, presence: true
   validates :goal, presence: true
+  validates :price_in_cents, presence: true, numericality: { only_integer: true, greater_than: 100 }
+  validates :seller_id, presence: true
+  validates :start_date, presence: true
+  validates :end_date, presence: true
 
-  scope :ongoing, lambda { where("end_date > ?", DateTime.now).where(state: "active") }
+  scope :ongoing, lambda { where("? BETWEEN start_date AND end_date", DateTime.now).where(state: "active") }
 
   def remaining
     self.goal - self.orders.placed.sum(:quantity)
