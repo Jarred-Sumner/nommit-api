@@ -1,5 +1,4 @@
 class OrdersController < ApplicationController
-  before_action :require_active_delivery!, on: :create
 
   def index
     if place.present?
@@ -71,7 +70,4 @@ class OrdersController < ApplicationController
       @delivery ||= Delivery.for(food_id: order_params[:food_id], place_id: order_params[:place_id]).first
     end
 
-    def require_active_delivery!
-      render_bad_request("Nobody is delivering this to #{place.name} right now. Please try again in a few minutes.") unless delivery.try(:active?)
-    end
 end
