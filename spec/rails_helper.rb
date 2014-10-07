@@ -46,11 +46,6 @@ RSpec.configure do |config|
     FactoryGirl.lint
   end
 
-  config.before(:suite) do
-    Dotenv.load!("#{Rails.root}/.env")
-    Stripe.api_key = ENV['STRIPE_SECRET']
-  end
-
   config.after(:suite) do
     DatabaseCleaner.clean_with(:truncation)
   end

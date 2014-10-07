@@ -1,5 +1,6 @@
 json.(food, :id, :title, :description, :goal)
 
+json.start_date food.start_date.iso8601
 json.end_date food.end_date.iso8601
 json.state_id food.state_id
 json.price (food.price_in_cents.to_f / 100.0)

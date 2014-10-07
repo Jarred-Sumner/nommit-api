@@ -10,7 +10,7 @@ class Food < ActiveRecord::Base
   belongs_to :seller
 
   include StateID
-  enum state: { active: 1, halted: 2, ended: 3 }
+  enum state: { active: 0, halted: 1, ended: 2 }
   scope :visible, lambda { where("end_date > ?", DateTime.now) }
 
   scope :orderable, -> do
