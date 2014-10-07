@@ -1,10 +1,10 @@
 class ShiftsController < ApplicationController
   before_action :require_courier!
   before_action :require_shift!, :require_authorized_courier!, only: [:update, :show]
-  before_action :require_at_least_one_place!, only: :create
+  before_action :require_no_ongoing_shifts!, :require_at_least_one_place!, only: :create
 
   def index
-    @shifts = current_user.shifts.limit(10).order("created_at DESC")
+    @shifts = courier.shifts.limit(10).order("created_at DESC")
   end
 
   def create
@@ -74,6 +74,11 @@ class ShiftsController < ApplicationController
 
     def require_shift!
       render_not_found if shift.nil?
+    end
+
+    def require_no_ongoing_shifts!
+      ongoing_shifts = courier.shifts.where(state: [Shift.states[:active], Shift.states[:halt]]).count
+      render_bad_request("Please finish your pending shift before starting a new one") if ongoing_shifts > 0
     end
 
     def require_authorized_courier!

@@ -353,7 +353,7 @@ FactoryGirl.define do
         4.times do |i|
           place = FactoryGirl.create(:place)
           dp = FactoryGirl.create(:delivery_place, place_id: FactoryGirl.create(:place).id, shift_id: shift.id, current_index: i, start_index: i)
-          dp.deliveries.create(food_id: create(:food).id)
+          dp.deliveries.create!(food_id: create(:food, seller_id: shift.seller_id).id)
         end
       end
 
@@ -372,6 +372,7 @@ FactoryGirl.define do
   factory :delivery_place do
     place_id { FactoryGirl.create(:place).id }
     shift_id { FactoryGirl.create(:shift).id }
+    arrives_at 15.minutes.from_now
     current_index 0
     start_index 0
   end
@@ -388,13 +389,18 @@ FactoryGirl.define do
   factory :place do
     name do
       remaining_names = PLACES.keys | Place.where(name: PLACES.keys).pluck(:name)
-      remaining_names.first
+      remaining_names.sample
     end
 
     location do |place|
       FactoryGirl.create(:location, latitude: PLACES[place.name][:latitude], longitude: PLACES[place.name][:longitude])
     end
 
+  end
+
+  factory :order do |o|
+    user_id { create(:user).id }
+    food_id { create(:food).id }
   end
 
   factory :session do
