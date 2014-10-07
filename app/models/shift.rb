@@ -68,7 +68,7 @@ class Shift < ActiveRecord::Base
   def end_shift!
     transaction do
       ended!
-      delivery_places.update_all(state: Shift.states[:ended])
+      delivery_places.update_all(state: DeliveryPlace.states[:ended])
     end
   end
 

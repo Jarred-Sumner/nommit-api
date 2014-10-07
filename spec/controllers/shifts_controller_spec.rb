@@ -90,6 +90,8 @@ describe ShiftsController, type: :controller do
         put :update, id: shift.id, state_id: Shift.states[:ended]
         expect(response.status).to eq(200)
         expect(shift.reload.state).to eq("ended")
+
+        expect(shift.delivery_places.ended.count).to eq(shift.delivery_places.count)
       end
 
       context "and one active one" do
