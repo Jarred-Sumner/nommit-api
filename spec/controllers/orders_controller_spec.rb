@@ -17,7 +17,7 @@ describe OrdersController, type: :controller do
 
       it "fails" do
         expect do
-          post :create, place_id: place.id, quanttiy: 1
+          post :create, place_id: place.id, quantity: 1
         end.to raise_error(ActionController::ParameterMissing)
       end
 
@@ -26,7 +26,7 @@ describe OrdersController, type: :controller do
     describe "to a place where that food isn't offered" do
       let(:courier) { create(:active_courier) }
       let(:shift) { create(:active_shift, courier_id: courier.id) }
-      let(:delivery_place) { create(:delivery_place, shift_id: shift.id, place_id: create(:place).id) }
+      let(:delivery_place) { shift.delivery_places.sample }
       let(:food) do
         food = create(:food, seller_id: courier.seller_id)
         Delivery.create!(food_id: food.id, delivery_place_id: delivery_place.id)
@@ -42,6 +42,42 @@ describe OrdersController, type: :controller do
         expect(response.status).to eq(400)
       end
 
+    end
+
+    describe "to a place where the shift has ended" do
+      let(:courier) { create(:active_courier) }
+      let(:shift) { create(:ended_shift, courier_id: courier.id) }
+      let(:place) { shift.places.sample }
+      let(:delivery_place) { shift.delivery_places.sample }
+
+      let(:food) { create(:food, seller_id: courier.seller_id) }
+
+      before :each do
+        delivery_place.update_attributes!(state: DeliveryPlace.states[:ended])
+        Delivery.create!(food: food, delivery_place: delivery_place)
+      end
+
+      it "fails" do
+        post :create, food_id: food.id, place_id: place.id, quantity: 1
+        expect(response.status).to eq(400)
+      end
+    end
+
+    describe "to a place where the food is halted" do
+      let(:courier) { create(:active_courier) }
+      let(:shift) { create(:active_shift, courier_id: courier.id, state: Shift.states[:halt]) }
+      let(:delivery_place) { shift.delivery_places.sample }
+      let(:food) { create(:food, seller_id: courier.seller_id) }
+
+      before :each do
+        delivery_place.update_attributes!(state: DeliveryPlace.states[:halted])
+        Delivery.create!(food: food, delivery_place: delivery_place)
+      end
+
+      it "fails" do
+        post :create, food_id: food.id, place_id: delivery_place.place_id, quantity: 1
+        expect(response.status).to eq(400)
+      end
     end
 
     describe "with valid params" do

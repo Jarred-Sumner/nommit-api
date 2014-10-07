@@ -24,7 +24,7 @@ class OrdersController < ApplicationController
     if Integer(update_params[:state_id]) == Order.states[:rated]
 
       @order = Order.find_by(user_id: current_user.id, id: update_params[:id])
-      return if @order.nil? || @order.rated?
+      return render_not_found if @order.nil? || @order.rated?
 
       rating = Float(update_params[:rating])
       tip    = Integer(update_params[:tip_in_cents])
@@ -32,11 +32,16 @@ class OrdersController < ApplicationController
       # TODO charge them tip.
     elsif Integer(update_params[:state_id]) == Order.states[:delivered]
       @order = Order.find_by(courier: current_user.couriers, id: update_params[:id])
-      return if @order.nil? || @order.delivered?
+      return render_not_found if @order.nil? || @order.delivered?
 
       @order.update_attributes!(state: Order.states[:delivered])
     end
-    render action: :show
+
+    if @order.present?
+      render action: :show
+    else
+      render_not_found
+    end
   end
 
   private

@@ -99,7 +99,11 @@ class Order < ActiveRecord::Base
     end
 
     def ensure_user_has_activated!
-      self.errors(:base, "Please confirm your phone number before placing an order") if self.user.registered?
+      self.errors.add(:base, "Please confirm your phone number before placing an order") if user.registered?
+    end
+
+    def delivery_place_is_accepting_new_orders!
+      self.errors.add(:base, "No couriers available to fulfill this order - check back soon!") unless delivery.try(:active?)
     end
 
     def apply_pending_promotions!
@@ -126,14 +130,15 @@ class Order < ActiveRecord::Base
   validates :food, presence: true
   validates :user, presence: true
   validates :place, presence: true
-  validates :courier, presence: true, on: :update
-  validates :delivery_id, presence: true, on: :update
+  validates :courier, presence: true
+  validates :delivery_id, presence: true
 
   validates :rating, inclusion: 1..5, allow_nil: true
   validates :rating, presence: true, if: :rated?
   validates :state, presence: true
 
   validate :food_is_active!, on: :create
+  validate :delivery_place_is_accepting_new_orders!, on: :create
   validate :enough_food_is_left!, on: :create
   validate :ensure_user_has_activated!, on: :create
   validate :require_payment_method!, on: :create

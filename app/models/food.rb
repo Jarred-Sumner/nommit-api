@@ -20,7 +20,7 @@ class Food < ActiveRecord::Base
   validates :title, presence: true
   validates :description, presence: true
   validates :goal, presence: true
-  validates :price_in_cents, presence: true, numericality: { only_integer: true, greater_than: 100 }
+  validates :price_in_cents, presence: true, numericality: { only_integer: true, greater_than: 99 }
   validates :seller_id, presence: true
   validates :start_date, presence: true
   validates :end_date, presence: true

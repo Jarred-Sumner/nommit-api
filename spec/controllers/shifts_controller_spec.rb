@@ -101,10 +101,11 @@ describe ShiftsController, type: :controller do
           create(:order, place_id: place_id, food_id: food_id)
         end
 
-        it "halts the shift" do
+        it "halts the shift and all the delivery places" do
           put :update, id: shift.id, state_id: Shift.states[:ended]
           expect(response.status).to eq(422)
           expect(shift.reload.state).to eq("halt")
+          expect(shift.delivery_places.halted.count).to eq(shift.delivery_places.count)
         end
 
       end
