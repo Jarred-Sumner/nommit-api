@@ -35,7 +35,7 @@ class DeliveryPlace < ActiveRecord::Base
         .update_all(state: DeliveryPlace.states[:ready])
 
       arrived!
-      orders.update_all(state: Order.states[:arrived])
+      orders.pending.update_all(state: Order.states[:arrived])
 
       shift.update_delivery_times!(current_index)
     end
