@@ -65,17 +65,19 @@ class Shift < ActiveRecord::Base
     (time_spent_in_place * (index + 1)).minutes.from_now
   end
 
-  def end_shift!
+  def ended!
     transaction do
-      ended!
-      delivery_places.update_all(state: DeliveryPlace.states[:ended])
+      self.state = :ended
+      self.save!
+      self.delivery_places.update_all(state: DeliveryPlace.states[:ended])
     end
   end
 
-  def halt_shift!
+  def halt!
     transaction do
-      halt!
-      delivery_places.update_all(state: DeliveryPlace.states[:halted])
+      self.state = :halt
+      self.save!
+      self.delivery_places.update_all(state: DeliveryPlace.states[:halted])
     end
   end
 
