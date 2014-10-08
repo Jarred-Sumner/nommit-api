@@ -31,6 +31,7 @@ class Shift < ActiveRecord::Base
     transaction do
       places.each_with_index do |place_id, index|
         next if delivery_places.where(place_id: place_id).count > 0
+
         dp = delivery_places.create!(place_id: place_id, arrives_at: eta_for(index, places.count), current_index: index)
         foods.each { |food_id| dp.deliveries.create!(food_id: food_id) }
       end

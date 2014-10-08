@@ -11,7 +11,7 @@ class Place < ActiveRecord::Base
       state: [ DeliveryPlace.states[:arrived], DeliveryPlace.states[:ready] ]
     })
   end
-
+  
   def self.random
     place_number = rand(0..Place.count)
     Place.offset(place_number).first

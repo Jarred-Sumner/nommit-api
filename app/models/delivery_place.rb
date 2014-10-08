@@ -1,11 +1,11 @@
 class DeliveryPlace < ActiveRecord::Base
   belongs_to :shift
   belongs_to :place
-  has_many :deliveries
+  belongs_to :seller
+  has_many :deliveries, dependent: :destroy
   has_many :foods, through: :deliveries
   has_many :orders, through: :deliveries
   has_one :courier, through: :shift
-  has_one :seller, through: :courier
 
   include StateID
   enum state: [:ready, :arrived, :halted, :ended]
@@ -13,12 +13,14 @@ class DeliveryPlace < ActiveRecord::Base
 
   validates :shift, presence: true
   validates :place, presence: true, uniqueness: { scope: :shift_id }
+  validates :place, uniqueness: { scope: :seller_id, message: "is already being handled by another courier" }, if: -> { ready? || arrived? }
   validates :state, uniqueness: { scope: :shift_id }, if: :arrived?
 
   validates :current_index, presence: true, uniqueness: { :scope => [:shift_id, :place_id] }
   validates :start_index, presence: true, uniqueness: { :scope => [:shift_id, :place_id] }
 
   before_validation on: :create do
+    self.seller_id = courier.seller_id
     self.start_index = current_index
   end
 

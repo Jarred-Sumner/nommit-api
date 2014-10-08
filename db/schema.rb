@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141004214655) do
+ActiveRecord::Schema.define(version: 20141008222613) do
 
   create_table "charges", force: true do |t|
     t.integer  "order_id"
@@ -68,10 +68,12 @@ ActiveRecord::Schema.define(version: 20141004214655) do
     t.integer  "start_index",               null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "seller_id"
   end
 
   add_index "delivery_places", ["current_index"], name: "index_delivery_places_on_current_index"
   add_index "delivery_places", ["place_id"], name: "index_delivery_places_on_place_id"
+  add_index "delivery_places", ["seller_id"], name: "index_delivery_places_on_seller_id"
   add_index "delivery_places", ["shift_id"], name: "index_delivery_places_on_shift_id"
 
   create_table "foods", force: true do |t|
