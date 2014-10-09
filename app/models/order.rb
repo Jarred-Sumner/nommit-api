@@ -19,10 +19,19 @@ class Order < ActiveRecord::Base
     ]
     where(state: states)
   end
+
   scope :pending, -> do
     states = [
       Order.states[:active],
       Order.states[:arrived]
+    ]
+    where(state: states)
+  end
+
+  scope :completed, -> do
+    states = [
+      Order.states[:delivered],
+      Order.states[:rated]
     ]
     where(state: states)
   end
