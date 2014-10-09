@@ -1,8 +1,7 @@
 class CouriersController < ApplicationController
 
   def me
-    @courier = current_user.couriers.first
-    render action: :show
+    @couriers = current_user.couriers
   end
 
   def show

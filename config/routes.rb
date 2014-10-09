@@ -14,5 +14,6 @@ Rails.application.routes.draw do
   resources :invites, only: [:create]
 
   get 'users/me' => 'users#me'
+  get 'couriers/me' => 'couriers#me'
   get 'places/:place_id/orders' => 'orders#index'
 end
