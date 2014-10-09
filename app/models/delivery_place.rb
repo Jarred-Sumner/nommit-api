@@ -13,7 +13,6 @@ class DeliveryPlace < ActiveRecord::Base
 
   validates :shift, presence: true
   validates :place, presence: true, uniqueness: { scope: :shift_id }
-  validates :place, uniqueness: { scope: :seller_id, message: "is already being handled by another courier" }, if: -> { ready? || arrived? }
   validates :state, uniqueness: { scope: :shift_id }, if: :arrived?
 
   validates :current_index, presence: true, uniqueness: { :scope => [:shift_id, :place_id] }
@@ -42,4 +41,12 @@ class DeliveryPlace < ActiveRecord::Base
       shift.update_delivery_times!(current_index)
     end
   end
+
+  validate :isnt_handled_by_another_courier!
+  def isnt_handled_by_another_courier!
+    if self.seller.delivery_places.active.where(place_id: place_id).count > 0
+      errors.add(:base, "#{place.name} is already being handled by another courier")
+    end
+  end
+
 end
