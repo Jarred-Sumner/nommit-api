@@ -42,7 +42,7 @@ class DeliveryPlace < ActiveRecord::Base
     end
   end
 
-  validate :isnt_handled_by_another_courier!
+  validate :isnt_handled_by_another_courier!, on: :create
   def isnt_handled_by_another_courier!
     if self.seller.delivery_places.active.where(place_id: place_id).count > 0
       errors.add(:base, "#{place.name} is already being handled by another courier")
