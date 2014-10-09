@@ -12,7 +12,7 @@ class Shift < ActiveRecord::Base
   # Active means ongoing
   # Halted means courier isn't accepting new orders, but in process of delivering old ones
   # Ended means it's over. No more deliveries being made at this time.
-  enum state: [:active, :ended, :halt]
+  enum state: [:active, :halt, :ended]
 
   # Couriers leave at DeliveryPlace for time_spent_in_place
   def deliver_to!(places: [])
