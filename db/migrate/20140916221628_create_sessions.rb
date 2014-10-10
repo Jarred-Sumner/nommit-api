@@ -3,7 +3,7 @@ class CreateSessions < ActiveRecord::Migration
     create_table :sessions do |t|
       t.references :user, index: true
       t.datetime :expiration
-      t.string :access_token
+      t.text :access_token
       t.string :token, null: false
 
       t.timestamps
