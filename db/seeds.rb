@@ -11,7 +11,7 @@ end
 
 tridelta = Seller.create! do |s|
   s.name = "Delta Delta Delta"
-  s.logo = open("https://tridelta.org/shop/media/images/products/zoom/532.jpg")
+  s.logo = open("http://i.imgur.com/Jq4kxzw.png")
 end
 
 j_user = User.create!(facebook_uid: "10203816999219792", email: "jarred@jarredsumner.com", name: "Jarred Sumner", state: 1, phone: "+19252008843")
