@@ -29,10 +29,10 @@ pizza = Food.create! do |f|
   f.seller = tridelta
   f.goal = 75
   f.start_date = 5.minutes.ago
-  f.price_in_cents = 425
   f.end_date = 22.days.from_now
   f.preview = open("http://www.papabellaspizzeria.com/Pizza_files/Pepperoni_1.jpg")
 end
+pizza.set_prices!([425, 625])
 
 cookies = Food.create! do |f|
   f.title = "3 x Chocalate Chip Cookie"
@@ -40,21 +40,22 @@ cookies = Food.create! do |f|
   f.seller = tridelta
   f.goal = 100
   f.start_date = 5.minutes.ago
-  f.price_in_cents = 300
   f.end_date = 22.days.from_now
   f.preview = open("http://s3.amazonaws.com/gmi-digital-library/a5371459-75b5-4545-b1b9-89bcf1ffb9dc.jpg")
 end
+cookies.set_prices!([300, 500])
+
 
 nuggets = Food.create! do |f|
   f.title = "3 x Chicken Nuggets"
   f.description = "Dinosaur chicken nuggets. Delivered. You heard correctly. Ketchup included."
   f.seller = trisigma
-  f.price_in_cents = 200
   f.goal = 50
   f.start_date = 5.minutes.ago
   f.end_date = 22.days.from_now
   f.preview = open("https://38.media.tumblr.com/tumblr_mef4ddwioU1rum6sio1_500.png")
 end
+nuggets.set_prices!([200, 300, 400])
 
 shared_place_one = Place.random.id
 shared_place_two = Place.random.id

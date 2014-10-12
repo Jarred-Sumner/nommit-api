@@ -53,7 +53,7 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
     def order_params
       params.require(:food_id)
       params.require(:place_id)
-      params.permit(:food_id, :place_id, :quantity)
+      params.permit(:food_id, :place_id, :price_id)
     end
 
     def update_params

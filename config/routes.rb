@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
+
   namespace :api do
+
     namespace :v1 do
       resources :foods, only: [:index, :show]
       resources :shifts, only: [:index, :create, :update, :show]
@@ -19,6 +21,7 @@ Rails.application.routes.draw do
       get 'couriers/me' => 'couriers#me'
       get 'places/:place_id/orders' => 'orders#index'
     end
+    
   end
 
 end

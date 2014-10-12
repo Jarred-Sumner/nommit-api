@@ -8,6 +8,7 @@ class Food < ActiveRecord::Base
   has_many :places, lambda { uniq }, through: :delivery_places
   has_many :couriers, through: :shifts
   belongs_to :seller
+  has_many :prices
 
   include StateID
   enum state: { active: 0, halted: 1, ended: 2 }
@@ -17,17 +18,29 @@ class Food < ActiveRecord::Base
     active.visible
   end
 
+  def set_prices!(prices)
+    transaction do
+      self.prices.destroy_all
+
+      default_price = prices[0]
+      9.times do |index|
+        price = prices[index] || default_price * (index + 1)
+        self.prices.create!(quantity: index + 1, price_in_cents: price)
+      end
+
+    end
+  end
+
   validates :title, presence: true
   validates :description, presence: true
   validates :goal, presence: true
-  validates :price_in_cents, presence: true, numericality: { only_integer: true, greater_than: 99 }
   validates :seller_id, presence: true
   validates :start_date, presence: true
   validates :end_date, presence: true
 
-  scope :ongoing, lambda { where("? BETWEEN start_date AND end_date", DateTime.now).where(state: "active") }
+  scope :ongoing, lambda { where("? BETWEEN start_date AND end_date", DateTime.now).active }
 
   def remaining
-    self.goal - self.orders.placed.sum(:quantity)
+    self.goal - self.orders.placed.joins(:price).sum("prices.quantity")
   end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141008222613) do
+ActiveRecord::Schema.define(version: 20141012014704) do
 
   create_table "charges", force: true do |t|
     t.integer  "order_id"
@@ -79,7 +79,6 @@ ActiveRecord::Schema.define(version: 20141008222613) do
   create_table "foods", force: true do |t|
     t.string   "title"
     t.text     "description"
-    t.integer  "price_in_cents"
     t.integer  "state",                default: 0, null: false
     t.datetime "end_date"
     t.datetime "created_at"
@@ -127,7 +126,6 @@ ActiveRecord::Schema.define(version: 20141008222613) do
     t.integer  "user_id"
     t.integer  "state",                 default: 0, null: false
     t.integer  "quantity",              default: 1, null: false
-    t.integer  "price_in_cents",                    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "delivered_at"
@@ -140,6 +138,7 @@ ActiveRecord::Schema.define(version: 20141008222613) do
     t.datetime "original_delivered_at"
     t.integer  "tip_in_cents"
     t.integer  "discount_in_cents",     default: 0, null: false
+    t.integer  "price_id"
   end
 
   add_index "orders", ["address_id"], name: "index_orders_on_address_id"
@@ -147,6 +146,7 @@ ActiveRecord::Schema.define(version: 20141008222613) do
   add_index "orders", ["delivery_id"], name: "index_orders_on_delivery_id"
   add_index "orders", ["food_id"], name: "index_orders_on_food_id"
   add_index "orders", ["place_id"], name: "index_orders_on_place_id"
+  add_index "orders", ["price_id"], name: "index_orders_on_price_id"
   add_index "orders", ["promo_id"], name: "index_orders_on_promo_id"
   add_index "orders", ["user_id"], name: "index_orders_on_user_id"
 
@@ -180,6 +180,16 @@ ActiveRecord::Schema.define(version: 20141008222613) do
   end
 
   add_index "places", ["location_id"], name: "index_places_on_location_id"
+
+  create_table "prices", force: true do |t|
+    t.integer  "quantity"
+    t.integer  "price_in_cents"
+    t.integer  "food_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "prices", ["food_id"], name: "index_prices_on_food_id"
 
   create_table "promos", force: true do |t|
     t.string   "name",                            null: false

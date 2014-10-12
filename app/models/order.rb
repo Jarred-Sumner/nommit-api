@@ -5,8 +5,10 @@ class Order < ActiveRecord::Base
   belongs_to :promo
   belongs_to :courier
   belongs_to :delivery
+  belongs_to :price
   has_one :charge
   has_and_belongs_to_many :user_promos
+
   include StateID
   enum state: { cancelled: -1, active: 0, arrived: 1, delivered: 2, rated: 3 }
 
@@ -36,8 +38,12 @@ class Order < ActiveRecord::Base
     where(state: states)
   end
 
-  def price
-    self.price_in_cents / 100.0
+  def price_in_cents
+    self.price.price_in_cents
+  end
+
+  def quantity
+    self.price.quantity
   end
 
   # Estimates work like this:
@@ -49,7 +55,6 @@ class Order < ActiveRecord::Base
   end
 
   before_validation on: :create do
-    set_price_in_cents!
     set_delivery!
     set_promo_discount! if promo.present?
   end
@@ -91,10 +96,6 @@ class Order < ActiveRecord::Base
       end
     end
 
-    def set_price_in_cents!
-      self.price_in_cents = food.price_in_cents * self.quantity
-    end
-
     def set_promo_discount!
       if self.promo.usable_for?(user: self.user)
         self.discount_in_cents = promo.discount_in_cents
@@ -113,6 +114,10 @@ class Order < ActiveRecord::Base
 
     def delivery_place_is_accepting_new_orders!
       self.errors.add(:base, "No couriers available to fulfill this order - check back soon!") unless delivery.try(:active?)
+    end
+
+    def price_belongs_to_food!
+      self.errors.add(:price, "is unavailable for this food") unless price.food_id == food_id
     end
 
     def apply_pending_promotions!
@@ -141,6 +146,8 @@ class Order < ActiveRecord::Base
   validates :place, presence: true
   validates :courier, presence: true
   validates :delivery_id, presence: true
+  validates :price, presence: true
+  validate :price_belongs_to_food!
 
   validates :rating, inclusion: 1..5, allow_nil: true
   validates :rating, presence: true, if: :rated?

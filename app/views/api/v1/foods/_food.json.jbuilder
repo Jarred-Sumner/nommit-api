@@ -3,12 +3,20 @@ json.(food, :id, :title, :description, :goal)
 json.start_date food.start_date.iso8601
 json.end_date food.end_date.iso8601
 json.state_id food.state_id
-json.price (food.price_in_cents.to_f / 100.0)
+
+json.prices do
+  json.array!(food.prices.order("quantity ASC"), partial: "api/v1/prices/price", as: :price)
+end
+
 json.header_image_url image_url(food.preview.url)
 json.thumbnail_image_url image_url(food.preview.url)
 
 # Teespring A/B tested this, and found that showing at least one order increased conversions
-json.order_count food.orders.placed.sum(:quantity) + 1
+quantity = food.orders.placed.joins(:price).sum("prices.quantity")
+quantity = 1 if quantity.zero?
+
+json.order_count quantity
+
 
 # Ratings default to 4. Because we want people to buy the food.
 json.rating food.orders.average(:rating).to_f || 4.to_f
