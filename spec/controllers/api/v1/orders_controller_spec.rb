@@ -122,7 +122,7 @@ describe Api::V1::OrdersController, type: :controller do
 
           expect(order).to be_present
           expect(order.discount_in_cents).to eq(promo.discount_in_cents)
-          expect(order.user_promos.first.state).to eq("used_up")
+          expect(order.applied_promos.first.state).to eq("used_up")
         end
 
       end
@@ -147,7 +147,7 @@ describe Api::V1::OrdersController, type: :controller do
 
           expect(order).to be_present
           expect(order.discount_in_cents).to eq(order.price_in_cents)
-          expect(order.user_promos.first.state).to eq("active")
+          expect(order.applied_promos.first.state).to eq("active")
         end
       end
 

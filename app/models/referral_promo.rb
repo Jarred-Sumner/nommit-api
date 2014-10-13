@@ -1,8 +1,10 @@
 class ReferralPromo < Promo
+  REFERRAL_DISCOUNT = 500.freeze unless defined?(REFERRAL_DISCOUNT)
   belongs_to :user
   validates :user, presence: true, uniqueness: true
 
   def usable_for?(user: nil)
+    return false if self.user.id == user.id
     return false if user.orders.placed.count > 0
     super
   end
@@ -12,8 +14,12 @@ class ReferralPromo < Promo
     loop do
       initials = self.user.name.split(" ").collect { |name| name[0] }.join("")
       self.name = "#{initials}#{rand(1..999)}"
-      break if Promo.where(name: self.name).empty?
+      break if Promo.where(name: name).empty?
     end
+  end
+
+  before_validation on: :create do
+    self.discount_in_cents = REFERRAL_DISCOUNT
   end
 
 end

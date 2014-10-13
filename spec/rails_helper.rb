@@ -46,7 +46,8 @@ RSpec.configure do |config|
     Stripe.api_key = ENV["STRIPE_SECRET"]
   end
 
-  config.after(:suite) do
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
   end
 

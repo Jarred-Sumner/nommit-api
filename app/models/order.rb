@@ -6,7 +6,7 @@ class Order < ActiveRecord::Base
   belongs_to :delivery
   belongs_to :price
   has_one :charge
-  has_and_belongs_to_many :user_promos
+  has_and_belongs_to_many :applied_promos
 
   include StateID
   enum state: { cancelled: -1, active: 0, arrived: 1, delivered: 2, rated: 3 }
@@ -56,7 +56,7 @@ class Order < ActiveRecord::Base
   before_validation on: :create do
     set_delivery!
   end
-  after_create :apply_pending_promotions!
+  after_create :apply_pending_promotions!, :issue_referral_credit!
 
   private
 
@@ -111,8 +111,13 @@ class Order < ActiveRecord::Base
     end
 
     def apply_pending_promotions!
-      self.user.user_promos.active.order("created_at ASC").collect do |u_p|
+      user.applied_promos.active.order("created_at ASC").find_each do |u_p|
         promo = u_p.reload
+
+        unless promo.usable?
+          promo.inactive!
+          next
+        end
 
         # Free order?
         if promo.amount_remaining_in_cents >= price_in_cents - discount_in_cents
@@ -121,15 +126,21 @@ class Order < ActiveRecord::Base
         else
           self.discount_in_cents = discount_in_cents + promo.amount_remaining_in_cents
           promo.amount_remaining_in_cents = 0
-          promo.state = :used_up
         end
-        promo.save!
 
-        self.user_promos << promo
+        promo.state = :used_up if promo.amount_remaining_in_cents.zero?
+        promo.save!
+        promo.referrer.active! if promo.referrer.present? && promo.referrer.state != 'used_up'
+
+        self.applied_promos << promo
         break if discount_in_cents >= price_in_cents
       end
 
       self.save!
+    end
+
+    def issue_referral_credit!
+      self.applied_promos
     end
 
   validates :food, presence: true
