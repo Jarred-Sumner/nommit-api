@@ -2,25 +2,13 @@ class Api::V1::PromosController < Api::V1::ApplicationController
   before_action :require_promo!
 
   def create
-    if promo.usable_for?(user: current_user)
-      current_user.user_promos.create!(promo_id: promo.id)
-    else
-      return render_bad_request("Promo code already in use or unavailable")
-    end
+    apply_promo_to_user!(name: promo_code)
     render current_user
   end
 
   private
 
-    def promo
-      @promo ||= Promo.active.find_by(name: create_params)
-    end
-
-    def require_promo!
-      render_bad_request("Promo code not found or expired. Please re-enter it and try again.") if promo.nil?
-    end
-
-    def create_params
+    def promo_code
       params.require(:code)
     end
 

@@ -2,7 +2,6 @@ class Order < ActiveRecord::Base
   belongs_to :food
   belongs_to :user
   belongs_to :place
-  belongs_to :promo
   belongs_to :courier
   belongs_to :delivery
   belongs_to :price
@@ -56,7 +55,6 @@ class Order < ActiveRecord::Base
 
   before_validation on: :create do
     set_delivery!
-    set_promo_discount! if promo.present?
   end
   after_create :apply_pending_promotions!
 
@@ -93,14 +91,6 @@ class Order < ActiveRecord::Base
     def enough_food_is_left!
       if food.remaining - quantity < 0
         errors.add(:base, "Not enough food left to place that order")
-      end
-    end
-
-    def set_promo_discount!
-      if promo.usable_for?(user: self.user)
-        self.discount_in_cents = promo.discount_in_cents
-      else
-        errors.add(:promo, "has expired or has already been used")
       end
     end
 

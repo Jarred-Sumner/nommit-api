@@ -102,6 +102,55 @@ describe Api::V1::OrdersController, type: :controller do
         expect(Order.find(order_id)).to be_present
       end
 
+      context "and a promo" do
+        let(:promo) { create(:promo, discount_in_cents: 75) }
+
+        it "succeeds" do
+          expect do
+            post :create, {
+              'food_id' => food.id,
+              'place_id' => place.id,
+              'price_id' => food.prices.first.id,
+              'promo_code' => promo.name
+            }
+          end.to change(Order, :count).by(1)
+
+          order_id = JSON.parse(response.body)['id']
+          order = Order.find_by(id: order_id)
+
+          expect(response.status).to eq(200)
+
+          expect(order).to be_present
+          expect(order.discount_in_cents).to eq(promo.discount_in_cents)
+          expect(order.user_promos.first.state).to eq("used_up")
+        end
+
+      end
+
+      context "and a promo that results in a free order" do
+        let(:promo) { create(:promo, discount_in_cents: food.prices.first.price_in_cents + 100) }
+
+        it "succeeds" do
+          expect do
+            post :create, {
+              'food_id' => food.id,
+              'place_id' => place.id,
+              'price_id' => food.prices.first.id,
+              'promo_code' => promo.name
+            }
+          end.to change(Order, :count).by(1)
+
+          order_id = JSON.parse(response.body)['id']
+          order = Order.find_by(id: order_id)
+
+          expect(response.status).to eq(200)
+
+          expect(order).to be_present
+          expect(order.discount_in_cents).to eq(order.price_in_cents)
+          expect(order.user_promos.first.state).to eq("active")
+        end
+      end
+
     end
 
   end

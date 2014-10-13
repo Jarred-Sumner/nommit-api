@@ -7,9 +7,11 @@ json.created_at order.created_at.iso8601
 
 json.state_id order.state_id
 json.charge_state_id order.charge.try(:state_id) || Charge.states[:not_charged]
-json.price_charged_in_cents order.price_in_cents
+json.price_charged_in_cents order.price_in_cents - order.discount_in_cents
 
-json.promo_code order.promo.try(:name)
+# Will remove in a later version of the API
+# We no longer associate Order with Promo
+json.promo_code nil
 json.discount_in_cents order.discount_in_cents
 
 json.place do

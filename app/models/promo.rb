@@ -1,11 +1,11 @@
 class Promo < ActiveRecord::Base
-  has_many :orders
   has_many :user_promos
+  has_many :orders, through: :user_promos
   scope :active, -> { where("expiration IS NULL OR expiration > ?", DateTime.now) }
 
   def usable_for?(user: nil)
     return false unless self.active?
-    return false if self.orders.where(user_id: user.try(:id)).placed.count > 0
+    return false unless orders.where(user_id: user.id).count.zero?
     true
   end
 

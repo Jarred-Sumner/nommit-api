@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141012014704) do
+ActiveRecord::Schema.define(version: 20141013073336) do
 
   create_table "charges", force: true do |t|
     t.integer  "order_id"
@@ -132,7 +132,6 @@ ActiveRecord::Schema.define(version: 20141012014704) do
     t.decimal  "rating"
     t.integer  "address_id"
     t.integer  "place_id"
-    t.integer  "promo_id"
     t.integer  "courier_id"
     t.integer  "delivery_id"
     t.datetime "original_delivered_at"
@@ -147,7 +146,6 @@ ActiveRecord::Schema.define(version: 20141012014704) do
   add_index "orders", ["food_id"], name: "index_orders_on_food_id"
   add_index "orders", ["place_id"], name: "index_orders_on_place_id"
   add_index "orders", ["price_id"], name: "index_orders_on_price_id"
-  add_index "orders", ["promo_id"], name: "index_orders_on_promo_id"
   add_index "orders", ["user_id"], name: "index_orders_on_user_id"
 
   create_table "orders_user_promos", force: true do |t|

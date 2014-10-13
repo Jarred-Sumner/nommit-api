@@ -17,7 +17,6 @@ quantity = 1 if quantity.zero?
 
 json.order_count quantity
 
-
 # Ratings default to 4. Because we want people to buy the food.
 json.rating food.orders.average(:rating).to_f || 4.to_f
 
