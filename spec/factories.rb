@@ -18,17 +18,61 @@ unless defined?(PLACES)
     latitude: 40.4444299,
     longitude: -79.9390354
   },
-  "Donner House" => {
+  "Donner" => {
     latitude: 40.4419354,
     longitude: -79.9401781
   },
-  "Fairfax Apartments" => {
+  "Fairfax" => {
     latitude: 40.4468557,
     longitude: -79.9481336
   },
-  "Fraternity/Sorority Quadrangle" => {
-    longitude: 40.44556,
-    latitude: -79.941909
+  "ΔΔΔ" => {
+    longitude: 40.4451018,
+    latitude: -79.9419017
+  },
+  "ΑΕΠ" => {
+    longitude: 40.4447605,
+    latitude: -79.9426024
+  },
+  "ΣΑΕ" => {
+    longitude: 40.4449303,
+    latitude: -79.9424954
+  },
+  "ΚΑΘ" => {
+    longitude: 40.4451467,
+    latitude: -79.9421494
+  },
+  "ΑΦ" => {
+    longitude: 40.4452222,
+    latitude: -79.9423586
+  },
+  "ΣΦΕ" => {
+    longitude: 40.4457315,
+    latitude: -79.9415754
+  },
+  "ΦΔΘ" => {
+    longitude: 40.445796,
+    latitude: -79.941866
+  },
+  "ΚΣ" => {
+    longitude: 40.4455397,
+    latitude: -79.9414252
+  },
+  "ΚΚΓ" => {
+    longitude: 40.4453607,
+    latitude: -79.941481
+  },
+  "ΑΧΩ" => {
+    longitude: 40.4450089,
+    latitude: -79.9416625
+  },
+  "ΔΤΔ" => {
+    longitude: 40.444614,
+    latitude: -79.9413782
+  },
+  "ΔΓ" => {
+    longitude: 40.4446823,
+    latitude: -79.9415874
   },
   "Hamerschlag House" => {
     longitude: 40.4412456,
@@ -38,23 +82,23 @@ unless defined?(PLACES)
     latitude: 40.4409919,
     longitude: -79.9392516
   },
-  "Margaret Morrison Apartments/Plaza" => {
+  "Margaret Morrison Plaza" => {
     latitude: 40.4417488,
     longitude: -79.9384917
   },
-  "Margaret Morrison Fraternity" => {
-    latitude: 40.4419765,
-    longitude: -79.9387316
-  },
+  # "Margaret Morrison Fraternity" => {
+  #   latitude: 40.4419765,
+  #   longitude: -79.9387316
+  # },
   "McGill House" => {
     latitude: 40.4417167,
     longitude: -79.9390194
   },
-  "Morewood Gardens (Housing Offices)" => {
+  "Morewood" => {
     latitude: 40.4454444,
     longitude: -79.9432431
   },
-  "Mudge House" => {
+  "Mudge" => {
     latitude: 40.4468909,
     longitude: -79.9429664
   },
@@ -65,7 +109,7 @@ unless defined?(PLACES)
   # "Resnik House" => {
   #
   # },
-  "Roselawn Houses" => {
+  "Roselawn" => {
     latitude: 40.4420264,
     longitude: -79.9381577
   },
@@ -85,15 +129,15 @@ unless defined?(PLACES)
     latitude: 40.4423254,
     longitude: -79.9379408
   },
-  "Stever House" => {
+  "Stever" => {
     latitude: 40.4462907,
     longitude: -79.942651
   },
-  "The Residence on Fifth" => {
+  "Res on Fifth" => {
     latitude: 40.446866,
     longitude: -79.946843
   },
-  "Webster Hall" => {
+  "Webster" => {
     latitude: 40.4473164,
     longitude: -79.9514019
   },
@@ -125,7 +169,7 @@ unless defined?(PLACES)
     latitude: 40.4443071,
     longitude: -79.9472501
   },
-  "Baker Hall (Dietrich/H&SS)" => {
+  "Baker Hall" => {
     latitude: 40.4443071,
     longitude: -79.9472501
   },
@@ -137,7 +181,7 @@ unless defined?(PLACES)
     latitude: 40.4459806,
     longitude: -79.941031
   },
-  "College of Fine Arts (CFA)" => {
+  "CFA" => {
     latitude: 40.4413865,
     longitude: -79.971262
   },
@@ -149,19 +193,19 @@ unless defined?(PLACES)
     latitude: 40.4423925,
     longitude: -79.9443068
   },
-  "Facilities Management Services Building" => {
-    latitude: 40.4433485,
-    longitude: -79.9464634
-  },
-  "Gates Center for Computer Science (SCS)" => {
+  # "Facilities Management Services Building" => {
+  #   latitude: 40.4433485,
+  #   longitude: -79.9464634
+  # },
+  "Gates Center" => {
     latitude: 40.443719,
     longitude: -79.944564
   },
-  "Hillman Center for Future-Generation Technologies (SCS)" => {
+  "Hillman Center" => {
     latitude: 40.443719,
     longitude: -79.944564
   },
-  "Hamburg Hall (Heinz)" => {
+  "Hamburg Hall" => {
     latitude: 40.4441734,
     longitude: -79.9455542
   },
@@ -176,35 +220,19 @@ unless defined?(PLACES)
   # "Jared L. Cohon University Center" => {
   #
   # },
-  "Margaret Morrison Carnegie Hall" => {
+  "Margaret Morrison Hall" => {
     latitude: 40.4420304,
     longitude: -79.9414491
   },
-  "Mellon Institute (MCS)" => {
-    latitude: 40.44618,
-    longitude: -79.951062
-  },
-  "National Robotics Engineering Center (NREC)" => {
-    latitude: 40.472856,
-    longitude: -79.965426
-  },
-  "Newell-Simon Hall (SCS)" => {
+  "Newell-Simon Hall" => {
     latitude: 40.4433813,
     longitude: -79.9455855
   },
-  "Pittsburgh Technology Center* (ETC)" => {
-    latitude: 40.4460425,
-    longitude: -79.9495774
-  },
-  "Posner Center" => {
-    latitude: 40.4416213,
-    longitude: -79.9424019
-  },
-  "Posner Hall (Tepper)" => {
+  "Tepper" => {
     latitude: 40.441096,
     longitude: -79.942273
   },
-  "Purnell Center for the Arts" => {
+  "Purnell" => {
     latitude: 40.4435574,
     longitude: -79.9435249
   },
@@ -215,11 +243,11 @@ unless defined?(PLACES)
   # "Roberts Engineering Hall" => {
   #
   # },
-  "Robert Mehrabian Collaborative" => {
-    latitude: 40.444057,
-    longitude: -79.946523
-  },
-  "Scaife Hall (CIT)" => {
+  # "Robert Mehrabian Collaborative" => {
+  #   latitude: 40.444057,
+  #   longitude: -79.946523
+  # },
+  "Scaife Hall" => {
     latitude: 40.443108,
     longitude: -79.9613592
   },
@@ -234,7 +262,7 @@ unless defined?(PLACES)
     latitude: 40.4439719,
     longitude: -79.9455384
   },
-  "Software Engineering Institute (SEI)" => {
+  "SEI" => {
     latitude: 40.446474,
     longitude: -79.950089
   },
@@ -242,7 +270,7 @@ unless defined?(PLACES)
     latitude: 40.4422193,
     longitude: -79.9405122
   },
-  "Warner Hall (Office of Admission)" => {
+  "Warner Hall" => {
     latitude: 40.4441647,
     longitude:-79.9433725
   },
@@ -253,38 +281,6 @@ unless defined?(PLACES)
   "Whitfield Hall (HR)" => {
     latitude: 40.448419,
     longitude: -79.9501861
-  },
-  "300 South Craig (Police)" => {
-    latitude: 40.4455908,
-    longitude: -79.9492398
-  },
-  "311 South Craig" => {
-    latitude: 40.4455225,
-    longitude: -79.9483015
-  },
-  "407 South Craig" => {
-    latitude: 40.4449953,
-    longitude: -79.9484048
-  },
-  "4516 Henry (UTDC)" => {
-    latitude: 40.4462639,
-    longitude: -79.9496189
-  },
-  "4609 Henry (Dietrich/H&SS Grad Labs)" => {
-    latitude: 40.4463639,
-    longitude: -79.9488793
-  },
-  "4615 Forbes (GATF)" => {
-    latitude: 40.444735,
-    longitude: -79.9478446
-  },
-  "4616 Henry (INI)" => {
-    latitude: 40.4460867,
-    longitude: -79.9480539
-  },
-  "6555 Penn*" => {
-    latitude: 40.455723,
-    longitude: -79.913402
   },
 }
 end
