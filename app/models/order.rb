@@ -45,24 +45,11 @@ class Order < ActiveRecord::Base
     price.quantity
   end
 
-  # Estimates work like this:
-  # Sellers have some couriers.
-  # Couriers delivery to Places (CourierPlace) in a rotation.
-  # 5 minutes at Mudge, 5 minutes at Donner, etc.
-  # Delivery estimates are based on the next time a Courier assigned to the Order's Place (through CourierPlace) is estimated to arrive.
-  def delivery_estimate
-  end
-
-  before_validation on: :create do
-    set_delivery!
-  end
-  after_create :apply_pending_promotions!, :issue_referral_credit!
-
   private
 
     def require_payment_method!
       unless user.payment_method.try(:active?)
-        errors.add(:payment_method, "isn't working - could you re-enter it?")
+        errors.add(:payment_method, "isn't working. To continue, please re-enter your payment information and try again.")
       end
     end
 
@@ -111,9 +98,12 @@ class Order < ActiveRecord::Base
     end
 
     def apply_pending_promotions!
+      # Grab all the active pending promotions
       user.applied_promos.active.order("created_at ASC").find_each do |u_p|
+        # Create a copy of it so it becomes mutable
         promo = u_p.reload
 
+        # If the promo expired or otherwise is unusable for some reason (and wasn't marked as such), mark it unusable
         unless promo.usable?
           promo.inactive!
           next
@@ -130,6 +120,8 @@ class Order < ActiveRecord::Base
 
         promo.state = :used_up if promo.amount_remaining_in_cents.zero?
         promo.save!
+
+        # Activate the referral credit of the referrer if it hasn't been all used up
         promo.referrer.active! if promo.referrer.present? && promo.referrer.state != 'used_up'
 
         self.applied_promos << promo
@@ -137,10 +129,6 @@ class Order < ActiveRecord::Base
       end
 
       self.save!
-    end
-
-    def issue_referral_credit!
-      self.applied_promos
     end
 
   validates :food, presence: true
@@ -155,11 +143,11 @@ class Order < ActiveRecord::Base
   validates :rating, presence: true, if: :rated?
   validates :state, presence: true
 
+  before_validation :set_delivery!, on: :create
+  after_create :apply_pending_promotions!, :charge!
   validate :food_is_active!, on: :create
   validate :delivery_place_is_accepting_new_orders!, on: :create
   validate :enough_food_is_left!, on: :create
   validate :ensure_user_has_activated!, on: :create
   validate :require_payment_method!, on: :create
-
-
 end

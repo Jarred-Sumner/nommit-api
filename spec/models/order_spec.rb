@@ -88,9 +88,9 @@ describe Order, type: :model do
         end
 
         it "referer" do
-          # from zero to one.
           expect do
             subject
+          # from zero to one. :P
           end.to change { referrer.applied_promos.active.count }.from(0).to(1)
 
           expect(
