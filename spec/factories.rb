@@ -74,9 +74,29 @@ unless defined?(PLACES)
     longitude: 40.4446823,
     latitude: -79.9415874
   },
-  "Hamerschlag House" => {
-    longitude: 40.4412456,
-    latitude: -79.9390432
+  "ΠΚΑ" => {
+    longitude: 40.442074,
+    latitude: -79.938624
+  },
+  "ΣΝ" => {
+    longitude: 40.442037,
+    latitude: -79.938695
+  },
+  "ΛΦΕ" => {
+    longitude: 40.442004,
+    latitude: -79.938774
+  },
+  "ΣΧ" => {
+    longitude: 40.441949,
+    latitude: -79.938917
+  },
+  "ΣΧ" => {
+    longitude: 40.441949,
+    latitude: -79.938917
+  },
+  "ΔΥ" => {
+    longitude: 40.441919,
+    latitude: -79.939000
   },
   "Henderson House" => {
     latitude: 40.4409919,
