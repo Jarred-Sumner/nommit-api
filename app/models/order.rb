@@ -39,11 +39,11 @@ class Order < ActiveRecord::Base
   end
 
   def price_in_cents
-    self.price.price_in_cents
+    price.price_in_cents
   end
 
   def quantity
-    self.price.quantity
+    price.quantity
   end
 
   # Estimates work like this:
@@ -73,10 +73,10 @@ class Order < ActiveRecord::Base
     end
 
     def set_delivery!
-      if self.delivery = Delivery.for(place_id: self.place_id, food_id: self.food_id).first
+      if self.delivery = Delivery.for(place_id: self.place_id, food_id: food_id).first
         set_courier!
 
-        if self.delivery.delivery_place.arrived?
+        if delivery.delivery_place.arrived?
           self.state = :arrived
         end
 
@@ -87,17 +87,17 @@ class Order < ActiveRecord::Base
 
 
     def set_courier!
-      self.courier_id = self.delivery.delivery_place.shift.courier_id
+      self.courier_id = delivery.delivery_place.shift.courier_id
     end
 
     def enough_food_is_left!
-      if self.food.remaining - self.quantity < 0
+      if food.remaining - quantity < 0
         errors.add(:base, "Not enough food left to place that order")
       end
     end
 
     def set_promo_discount!
-      if self.promo.usable_for?(user: self.user)
+      if promo.usable_for?(user: self.user)
         self.discount_in_cents = promo.discount_in_cents
       else
         errors.add(:promo, "has expired or has already been used")
@@ -105,7 +105,7 @@ class Order < ActiveRecord::Base
     end
 
     def set_delivery_estimate!
-      self.delivered_at = self.delivery.delivery_place.arrives_at
+      self.delivered_at = delivery.delivery_place.arrives_at
     end
 
     def ensure_user_has_activated!

@@ -12,12 +12,12 @@ describe Api::V1::OrdersController, type: :controller do
 
   describe "#create" do
 
-    describe "with a missing food" do
+    describe "with a missing food and price" do
       let(:place) { create(:place) }
 
       it "fails" do
         expect do
-          post :create, place_id: place.id, quantity: 1
+          post :create, place_id: place.id
         end.to raise_error(ActionController::ParameterMissing)
       end
 
@@ -36,7 +36,7 @@ describe Api::V1::OrdersController, type: :controller do
 
       it "fails" do
         expect do
-          post :create, food_id: food.id, place_id: place.id, quantity: 1
+          post :create, food_id: food.id, place_id: place.id, price_id: food.prices.first.id
         end.to_not change(Order, :count)
 
         expect(response.status).to eq(400)
@@ -58,7 +58,7 @@ describe Api::V1::OrdersController, type: :controller do
       end
 
       it "fails" do
-        post :create, food_id: food.id, place_id: place.id, quantity: 1
+        post :create, food_id: food.id, place_id: place.id, price_id: food.prices.first.id
         expect(response.status).to eq(400)
       end
     end
@@ -75,7 +75,7 @@ describe Api::V1::OrdersController, type: :controller do
       end
 
       it "fails" do
-        post :create, food_id: food.id, place_id: delivery_place.place_id, quantity: 1
+        post :create, food_id: food.id, place_id: delivery_place.place_id, price_id: food.prices.first.id
         expect(response.status).to eq(400)
       end
     end
@@ -93,7 +93,7 @@ describe Api::V1::OrdersController, type: :controller do
 
       it "succeeds" do
         expect do
-          post :create, food_id: food.id, place_id: place.id, quantity: 1
+          post :create, food_id: food.id, place_id: place.id, price_id: food.prices.first.id
         end.to change(Order, :count).by(1)
 
         expect(response.status).to eq(200)

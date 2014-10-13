@@ -4,7 +4,7 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
   def create
     @user = User.authenticate_or_create!(session_params)
     response.headers["X-SESSION-ID"] = Session.find_by(access_token: session_params).token
-  rescue Koala::Facebook::AuthenticationError, ActiveRecord::RecordInvalid
+  rescue Koala::Facebook::AuthenticationError, ActiveRecord::RecordInvalid => e
     render_error(status: :bad_request)
   end
 
