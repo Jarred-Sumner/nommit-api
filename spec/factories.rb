@@ -431,4 +431,9 @@ FactoryGirl.define do
     customer SecureRandom.urlsafe_base64
   end
 
+  factory :promo do
+    discount_in_cents 100
+    name { SecureRandom.urlsafe_base64 }
+  end
+
 end

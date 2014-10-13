@@ -61,6 +61,7 @@ class User < ActiveRecord::Base
     self.confirm_code = rand(111111..999999)
   end
 
+  # Utility method for retrieving a Facebook object given an access token
   def self.facebook_for(access_token)
     Koala::Facebook::API.new(access_token).get_object("me")
   end
