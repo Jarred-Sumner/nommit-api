@@ -155,4 +155,39 @@ describe Api::V1::OrdersController, type: :controller do
 
   end
 
+  describe "#update" do
+
+    describe "delivers" do
+
+      it "only from courier" do
+        pending
+      end
+
+      it "once" do
+        pending
+      end
+
+    end
+
+    describe "rates" do
+
+      it "and tips" do
+        pending
+      end
+
+      it "doesn't let you tip 24 hours later" do
+        pending
+      end
+
+      it "sets rating on food" do
+        pending
+      end
+
+      it "once" do
+        pending
+      end
+
+    end
+
+  end
 end

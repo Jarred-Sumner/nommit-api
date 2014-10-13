@@ -1,7 +1,7 @@
 class Shift < ActiveRecord::Base
   belongs_to :courier
   belongs_to :seller
-  has_many :delivery_places
+  has_many :delivery_places, dependent: :destroy
   has_many :places, through: :delivery_places
   has_many :orders, through: :delivery_places
   has_many :foods, lambda { uniq }, through: :delivery_places

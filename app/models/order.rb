@@ -5,7 +5,8 @@ class Order < ActiveRecord::Base
   belongs_to :courier
   belongs_to :delivery
   belongs_to :price
-  has_one :charge
+  has_one :charge, dependent: :destroy
+  has_one :seller, through: :food
   has_and_belongs_to_many :applied_promos
 
   include StateID
@@ -129,6 +130,11 @@ class Order < ActiveRecord::Base
       end
 
       self.save!
+    end
+
+    def charge!
+      Charge.create!(order_id: self.id, payment_method_id: user.payment_method.id)
+      ChargeWorker.perform_at(Charge::DELAY.hours.from_now, self.id)
     end
 
   validates :food, presence: true

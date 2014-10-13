@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141013201247) do
+ActiveRecord::Schema.define(version: 20141013224359) do
 
   create_table "applied_promos", force: true do |t|
     t.integer  "user_id"
@@ -43,8 +43,10 @@ ActiveRecord::Schema.define(version: 20141013201247) do
     t.integer  "amount_charged_in_cents"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "charge"
   end
 
+  add_index "charges", ["charge"], name: "index_charges_on_charge"
   add_index "charges", ["order_id"], name: "index_charges_on_order_id"
   add_index "charges", ["payment_method_id"], name: "index_charges_on_payment_method_id"
   add_index "charges", ["state"], name: "index_charges_on_state"
