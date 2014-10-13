@@ -4,11 +4,18 @@ describe Api::V1::SessionsController, type: :controller do
   render_views
 
   context "#create" do
-    before(:each) { Session.destroy_all }
-    before(:all) { create(:user, :email => "jarred@jarredsumner.com", facebook_uid: "10203816999219792") }
-    let(:access_token) { "CAAEof4vEg5QBAHxUNFboFI1wIA4BM4RlWSXC2k0kceNvBZA7y1ZBvyu3gyYoAZC5VooCFHITGnCIn7uVOXacSckXGW6rCzepJ9CLQr53USIasRPhN5ijSKVU8WygYOpJlOfAD6zmFRZBdwL012yKdcMtCr35781k5hNJzTBD0vrsIRtXBedz1D6rqQuBqReBg2n86F7xkUp4T2s61Rb3" }
+    before(:each) { Session.destroy_all && User.destroy_all }
+    before(:each) { create(:user, :email => "jarred@jarredsumner.com", facebook_uid: "10203816999219792") }
+    let(:access_token) { SecureRandom.urlsafe_base64 }
 
     it "works" do
+      allow(User).to receive(:facebook_for) do |access_token|
+        {
+          'id' => '10203816999219792',
+          'email' => 'jarred@jarredsumner.com',
+          'name' => 'Jarred Sumner'
+        }
+      end
       expect do
         post :create, access_token: access_token
       end.to change(Session, :count).by(1)

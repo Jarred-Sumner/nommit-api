@@ -328,7 +328,6 @@ FactoryGirl.define do
     title { Faker::Lorem.words(2).join(" ").titleize }
     description { Faker::Lorem.sentences(2).join(" ") }
     end_date 6.hours.from_now
-    price_in_cents { rand(100..425) }
     goal { rand(100..300) }
     start_date 3.hours.from_now
     # preview { open(FOOD_IMAGES.sample) }
@@ -342,6 +341,9 @@ FactoryGirl.define do
       state Food.states[:ended]
     end
 
+    after(:create) do |food|
+      food.set_prices!([rand(100..500)])
+    end
   end
 
   factory :seller do
@@ -417,6 +419,7 @@ FactoryGirl.define do
   factory :order do |o|
     user_id { create(:user).id }
     food_id { create(:food).id }
+    price_id { |o| Price.where(food_id: o.food_id).first.id }
   end
 
   factory :session do
@@ -428,4 +431,24 @@ FactoryGirl.define do
     customer SecureRandom.urlsafe_base64
   end
 
+  factory :promo do
+    discount_in_cents 100
+    name { SecureRandom.urlsafe_base64 }
+  end
+
+end
+
+class TestHelpers
+  module Order
+    def self.create_for(user: nil)
+      courier = FactoryGirl.create(:active_courier)
+      shift = FactoryGirl.create(:active_shift, courier_id: courier.id)
+      place = FactoryGirl.create(:place)
+      delivery_place = FactoryGirl.create(:delivery_place, shift_id: shift.id, place_id: place.id)
+      food = FactoryGirl.create(:food, seller_id: courier.seller_id)
+      Delivery.create!(food: food, delivery_place: delivery_place)
+
+      ::Order.create!(food_id: food.id, place_id: place.id, price_id: food.prices.first.id, user_id: user.id)
+    end
+  end
 end

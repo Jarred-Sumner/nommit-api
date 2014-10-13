@@ -19,6 +19,21 @@ class Api::V1::ApplicationController < ActionController::Base
     @current_seller ||= courier.try(:seller)
   end
 
+  def apply_promo_to_user!(name: nil)
+    promo = Promo.active.find_by!(name: name)
+    if promo.usable_for?(user: current_user)
+      current_user.applied_promos.create!(promo_id: promo.id)
+    else
+      if promo.class == ReferralPromo && current_user.orders.placed.count > 0
+        return render_bad_request("Referral codes are only available for new users")
+      else
+        return render_bad_request("Promo code already in use or unavailable")
+      end
+    end
+  rescue ActiveRecord::RecordNotFound
+    render_bad_request("Promo code not found or expired. Please re-enter it and try again.")
+  end
+
   private
 
     def require_current_user!

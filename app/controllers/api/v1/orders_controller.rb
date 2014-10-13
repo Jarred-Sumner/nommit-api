@@ -1,4 +1,5 @@
 class Api::V1::OrdersController < Api::V1::ApplicationController
+  before_action :apply_promo!, only: :create, if: -> { params[:promo_code].present? }
 
   def index
     if place.present?
@@ -13,7 +14,7 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
   end
 
   def create
-    @order = Order.create!(order_params.merge(user_id: current_user.id, promo_id: promo.try(:id)))
+    @order = Order.create!(order_params.merge(user_id: current_user.id))
     @order.food.ended! if @order.food.remaining.zero?
     render action: :show
   rescue ActiveRecord::RecordInvalid => e
@@ -53,6 +54,7 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
     def order_params
       params.require(:food_id)
       params.require(:place_id)
+      params.require(:price_id)
       params.permit(:food_id, :place_id, :price_id)
     end
 
@@ -65,14 +67,12 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
       @shift ||= Shift.find_by(courier: current_user.couriers, id: params[:shift_id])
     end
 
-    def promo
-      @promo ||= Promo.where(name: params[:promo_code]).first! if params[:promo_code].present?
-    rescue ActiveRecord::RecordNotFound
-      render_error(status: :bad_request, text: "Oops! Promo code not found. Try re-entering it?")
-    end
-
     def delivery
       @delivery ||= Delivery.for(food_id: order_params[:food_id], place_id: order_params[:place_id]).first
+    end
+
+    def apply_promo!
+      apply_promo_to_user!(name: params[:promo_code])
     end
 
 end

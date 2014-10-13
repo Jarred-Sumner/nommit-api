@@ -3,7 +3,7 @@ class Food < ActiveRecord::Base
   validates_attachment_content_type :preview, :content_type => /\Aimage\/.*\Z/
   has_many :orders
   has_many :deliveries
-  has_many :shifts, source: :seller
+  has_many :shifts, through: :seller
   has_many :delivery_places, through: :deliveries
   has_many :places, lambda { uniq }, through: :delivery_places
   has_many :couriers, through: :shifts

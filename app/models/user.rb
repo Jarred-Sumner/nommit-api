@@ -3,9 +3,10 @@ class User < ActiveRecord::Base
   has_many :sessions
   has_many :couriers
   has_many :shifts, through: :couriers
-  has_many :user_promos
-  has_one :promo
+  has_many :applied_promos
   has_one :payment_method, -> { where(state: PaymentMethod.states[:active]) }
+  has_many :payment_methods
+  has_one :referral_promo
   belongs_to :location
   has_many :sellers, through: :couriers
   include StateID
@@ -20,7 +21,7 @@ class User < ActiveRecord::Base
 
   def self.from(access_token: nil)
     unless user = Session.includes(:user).find_by(access_token: access_token).try(:user)
-      facebook = Koala::Facebook::API.new(access_token).get_object("me")
+      facebook = facebook_for(access_token)
       user = User.where(facebook_uid: facebook['id']).first_or_initialize
       return user if user.persisted?
 
@@ -59,5 +60,10 @@ class User < ActiveRecord::Base
   before_validation :generate_confirm_code!, on: :create, if: :registered?
   def generate_confirm_code!
     self.confirm_code = rand(111111..999999)
+  end
+
+  # Utility method for retrieving a Facebook object given an access token
+  def self.facebook_for(access_token)
+    Koala::Facebook::API.new(access_token).get_object("me")
   end
 end
