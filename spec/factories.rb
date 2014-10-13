@@ -169,7 +169,7 @@ unless defined?(PLACES)
     latitude: 40.4427468,
     longitude: -79.9408447
   },
-  "Woodlawn Apartments" => {
+  "Woodlawn" => {
     latitude: 40.4424402,
     longitude: -79.9377206
   },
