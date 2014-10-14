@@ -30,7 +30,7 @@ class PaymentMethod < ActiveRecord::Base
 
       # Charge previously failed charges with new payment method
       # If it fails again, it will have them re-enter their payment method again.
-      # TODO: flag frequently failed users with payment methods when this becomes a problem
+      # TODO: flag frequently failed users with payment methods if this becomes a problem
       failed_charges = Charge
         .joins(:payment_method)
         .where(payment_method: { id: user.payment_methods.failed.pluck(:id) })

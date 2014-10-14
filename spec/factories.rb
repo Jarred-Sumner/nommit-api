@@ -342,7 +342,7 @@ FactoryGirl.define do
     end
 
     after(:create) do |food|
-      food.set_prices!([rand(100..500)])
+      food.set_prices!([rand(300..500)])
     end
   end
 
@@ -440,7 +440,7 @@ end
 
 class TestHelpers
   module Order
-    def self.create_for(user: nil)
+    def self.create_for(user: nil, params: {})
       courier = FactoryGirl.create(:active_courier)
       shift = FactoryGirl.create(:active_shift, courier_id: courier.id)
       place = FactoryGirl.create(:place)
@@ -448,7 +448,7 @@ class TestHelpers
       food = FactoryGirl.create(:food, seller_id: courier.seller_id)
       Delivery.create!(food: food, delivery_place: delivery_place)
 
-      ::Order.create!(food_id: food.id, place_id: place.id, price_id: food.prices.first.id, user_id: user.id)
+      ::Order.create!(params.merge(food_id: food.id, place_id: place.id, price_id: food.prices.first.id, user_id: user.id))
     end
   end
 end

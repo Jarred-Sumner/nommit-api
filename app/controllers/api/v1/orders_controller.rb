@@ -23,14 +23,16 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
 
   def update
     if Integer(update_params[:state_id]) == Order.states[:rated]
-
       @order = Order.find_by(user_id: current_user.id, id: update_params[:id])
-      return render_not_found if @order.nil? || @order.rated?
+      return render_not_found if @order.nil? || @order.rated? || !@order.delivered?
 
-      rating = Float(update_params[:rating])
-      tip    = Integer(update_params[:tip_in_cents])
+      if @order.charge.paid? && update_params[:tip_in_cents].present?
+        return render_bad_request("Cannot tip an order 24 hours later -- the transaction has already been completed.")
+      end
+
+      rating = Float(update_params[:rating] || 4)
+      tip    = Integer(update_params[:tip_in_cents] || 0)
       @order.update_attributes!(state: Order.states[:rated], rating: rating, tip_in_cents: tip)
-      # TODO charge them tip.
     elsif Integer(update_params[:state_id]) == Order.states[:delivered]
       @order = Order.find_by(courier: current_user.couriers, id: update_params[:id])
       return render_not_found if @order.nil? || @order.delivered?

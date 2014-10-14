@@ -156,35 +156,82 @@ describe Api::V1::OrdersController, type: :controller do
   end
 
   describe "#update" do
+    let(:courier) { create(:active_courier) }
+    let(:shift) { create(:active_shift, courier_id: courier.id) }
+    let(:place) { create(:place) }
+    let(:delivery_place) { create(:delivery_place, shift_id: shift.id, place_id: place.id) }
+    let(:food) { create(:food, seller_id: courier.seller_id) }
+    let(:order) { create(:order, food_id: food.id, place_id: place.id, price_id: food.prices.first.id, user_id: user.id) }
+
+    before :each do
+      Delivery.create!(food: food, delivery_place: delivery_place)
+    end
 
     describe "delivers" do
 
-      it "only from courier" do
-        pending
+      subject do
+        put :update, id: order.id, state_id: Order.states[:delivered]
       end
 
-      it "once" do
-        pending
+      context "from courier" do
+        let(:session) { create(:session, user_id: courier.user_id) }
+
+        specify do
+          expect { subject }.to change { order.reload.state }.from("active").to("delivered")
+        end
+
+      end
+
+      context "from random user" do
+        let(:session) { create(:session) }
+
+        it "doesn't work" do
+          expect { subject }.to_not change { order.reload.state }
+        end
       end
 
     end
 
     describe "rates" do
+      let(:order) { create(:order, food_id: food.id, place_id: place.id, price_id: food.prices.first.id, user_id: user.id, state: Order.states[:delivered]) }
 
-      it "and tips" do
-        pending
+      before :each do
+        request.headers["X-SESSION-ID"] = create(:session, user_id: order.user_id).token
       end
 
-      it "doesn't let you tip 24 hours later" do
-        pending
+      context "from random user" do
+        let(:session) { create(:session) }
+
+        before :each do
+          request.headers["X-SESSION-ID"] = session.token
+        end
+
+        it "doesn't work" do
+          expect do
+            put :update, id: order.id, state_id: Order.states[:rated]
+          end.to_not change { order.reload.state }
+        end
+
+      end
+
+      it "and tips" do
+        tip = 1
+        expect do
+          put :update, id: order.id, state_id: Order.states[:rated], tip_in_cents: tip
+        end.to change { order.reload.tip_in_cents }.from(0).to(tip)
+      end
+
+      it "doesn't let you tip an order that's already been charged" do
+        order.charge.paid!
+        expect do
+          put :update, id: order.id, state_id: Order.states[:rated], tip_in_cents: 100
+        end.to_not change { order.reload.tip_in_cents }
       end
 
       it "sets rating on food" do
-        pending
-      end
-
-      it "once" do
-        pending
+        rating = 5.0
+        put :update, id: order.id, state_id: Order.states[:rated], rating: rating
+        expect(order.reload.rating).to eq(rating)
       end
 
     end

@@ -3,5 +3,5 @@ class Price < ActiveRecord::Base
   has_many :orders
 
   validates :quantity, presence: true, uniqueness: { scope: :food_id }
-  validates :price_in_cents, presence: true, numericality: { only_integer: true, greater_than: 99 }
+  validates :price_in_cents, presence: true, numericality: { only_integer: true, greater_than: 299 }
 end

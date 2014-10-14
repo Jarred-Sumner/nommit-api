@@ -160,7 +160,7 @@ ActiveRecord::Schema.define(version: 20141013224359) do
     t.integer  "courier_id"
     t.integer  "delivery_id"
     t.datetime "original_delivered_at"
-    t.integer  "tip_in_cents"
+    t.integer  "tip_in_cents",          default: 0, null: false
     t.integer  "discount_in_cents",     default: 0, null: false
     t.integer  "price_id"
   end
