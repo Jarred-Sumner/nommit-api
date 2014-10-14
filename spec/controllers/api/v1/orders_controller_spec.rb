@@ -102,6 +102,20 @@ describe Api::V1::OrdersController, type: :controller do
         expect(Order.find(order_id)).to be_present
       end
 
+      context "with failed payment method" do
+        before :each do
+          session.user.payment_method.failed!
+        end
+
+        it "fails" do
+          expect do
+            post :create, food_id: food.id, place_id: place.id, price_id: food.prices.first.id
+          end.not_to change(Order, :count)
+
+          expect(response.status).to eq(400)
+        end
+      end
+
       context "and a promo" do
         let(:promo) { create(:promo, discount_in_cents: 75) }
 

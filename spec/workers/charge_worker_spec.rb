@@ -78,6 +78,10 @@ describe ChargeWorker do
         expect { subject }.to change { charge.reload.state }.from("not_charged").to("failed")
       end
 
+      it "sets payment method to failed" do
+        expect { subject }.to change { charge.payment_method.reload.state }.from("active").to("failed")
+      end
+
     end
 
   end
