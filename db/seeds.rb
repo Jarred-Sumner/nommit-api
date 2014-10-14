@@ -55,7 +55,7 @@ nuggets = Food.create! do |f|
   f.end_date = 22.days.from_now
   f.preview = open("https://38.media.tumblr.com/tumblr_mef4ddwioU1rum6sio1_500.png")
 end
-nuggets.set_prices!([200, 300, 400])
+nuggets.set_prices!([300, 400, 400])
 
 shared_place_one = Place.random.id
 shared_place_two = Place.random.id
