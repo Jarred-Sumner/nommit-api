@@ -3,6 +3,7 @@ class InviteWorker
   sidekiq_options queue: :invites
 
   def perform(contacts = [])
-    
+    contacts.each do |contact|
+    end
   end
 end

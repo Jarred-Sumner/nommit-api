@@ -91,5 +91,6 @@ group :production do
   # We use PostgreSQL in Production
   gem 'pg'
 
+  # And, therubyracer, because it's difficult to get working on OS X.
   gem 'therubyracer'
 end

@@ -448,7 +448,11 @@ class TestHelpers
       food = FactoryGirl.create(:food, seller_id: courier.seller_id)
       Delivery.create!(food: food, delivery_place: delivery_place)
 
-      ::Order.create!(params.merge(food_id: food.id, place_id: place.id, price_id: food.prices.first.id, user_id: user.id))
+      params[:place_id] ||= place.id
+      params[:food_id]  ||= food.id
+      params[:price_id] ||= food.prices.first.id
+      params[:user_id]  ||= user.try(:id) || FactoryGirl.create(:user).id
+      ::Order.create!(params)
     end
   end
 end

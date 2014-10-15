@@ -142,7 +142,9 @@ describe Api::V1::ShiftsController, type: :controller do
       let(:place) { delivery_place.place }
 
       specify do
-        put :update, id: shift.id, delivery_place_state_id: DeliveryPlace.states[:arrived], delivery_place_id: delivery_place.id
+        expect do
+          put :update, id: shift.id, delivery_place_state_id: DeliveryPlace.states[:arrived], delivery_place_id: delivery_place.id
+        end.to change(Sms::ArrivalNotificationSender.jobs, :size).from(0).to(1)
         expect(response.status).to eq(200)
         expect(delivery_place.reload.state).to eq("arrived")
       end

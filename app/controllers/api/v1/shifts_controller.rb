@@ -37,7 +37,6 @@ class Api::V1::ShiftsController < Api::V1::ApplicationController
       # So, it goes here.
       if Integer(dp_params[:delivery_place_state_id]) == DeliveryPlace.states[:arrived]
         delivery_place.arrive!
-        Sms::ArrivalNotificationSender.perform_async(delivery_place.shift_id)
       end
     end
     render action: :show
