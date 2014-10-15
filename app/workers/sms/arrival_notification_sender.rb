@@ -6,7 +6,7 @@ class Sms::ArrivalNotificationSender
     shift.orders.arrived.find_each do |order|
       user = order.user
       courier_user = order.courier.user
-      message = "#{user.first_name} -- #{courier_user.first_name} is waiting for you at #{order.place.name} to pick up your food."
+      message = "#{user.first_name}, #{courier_user.first_name} is waiting for you at the front door of #{order.place.name} to pick up your food."
       Texter.new(message, order.user.phone).perform
     end
   end
