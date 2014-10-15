@@ -3,7 +3,6 @@ class Texter < Struct.new(:message, :to)
 
   def perform
     message << "\n - #{Rails.env.capitalize}" unless Rails.env.production?
-    message << "- NomBot"
     twilio.messages.create(
       from: PHONE,
       to: convert_to_e164(to),
