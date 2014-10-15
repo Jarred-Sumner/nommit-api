@@ -15,9 +15,8 @@ class Api::V1::UsersController < Api::V1::ApplicationController
       end
 
       if update_params[:phone].present?
-        current_user.phone = update_params[:phone]
-        current_user.generate_confirm_code!
-        current_user.save!
+        current_user.update_attributes(phone: update_params[:phone])
+        generate_confirm_code!
       end
 
     end
@@ -40,9 +39,14 @@ class Api::V1::UsersController < Api::V1::ApplicationController
     end
 
     def render_invalid_confirm_code
-      current_user.generate_confirm_code! && current_user.save!
-
+      generate_confirm_code!
       render_bad_request("Invalid confirm code, sending new one. Please enter it and try again.")
+    end
+
+    def generate_confirm_code!
+      current_user.generate_confirm_code!
+      current_user.save!
+      Sms::ConfirmCodeSender.perform_async(current_user.id)
     end
 
 end

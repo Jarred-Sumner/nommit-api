@@ -11,12 +11,14 @@ describe Api::V1::UsersController, type: :controller do
 
       before :each do
         request.headers["X-SESSION-ID"] = session.token
+        allow_any_instance_of(Texter).to receive(:perform)
       end
 
       it "changes phone" do
         put :update, id: user.id, phone: phone
         expect(response.status).to eq(200)
         expect(user.reload.phone).to eq(phone)
+        expect(Sms::ConfirmCodeSender.jobs.size).to eq(1)
       end
 
       it "sets User to activated on confirm" do
@@ -32,6 +34,7 @@ describe Api::V1::UsersController, type: :controller do
 
         expect(user.reload.state).to eq("registered")
         expect(response.status).to eq(400)
+        expect(Sms::ConfirmCodeSender.jobs.size).to eq(1)
       end
 
       context "given a valid token" do

@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.1.2'
+ruby '2.1.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.2'
@@ -44,6 +44,9 @@ gem 'stripe'
 # Phone parsing
 gem 'phony_rails'
 
+# Texting
+gem 'twilio-ruby'
+
 # Sidekiq
 gem 'sidekiq'
 
@@ -54,6 +57,12 @@ gem "bugsnag"
 gem 'factory_girl_rails'
 gem 'faker'
 
+# Deployment
+gem 'capistrano', '~> 3.1.0'
+gem 'capistrano-bundler', '~> 1.1.2'
+gem 'capistrano-rails', '~> 1.1.1'
+gem 'capistrano-rvm'
+
 group :test, :development do
 
   # Use sqlite3 as the database for Active Record
@@ -63,7 +72,7 @@ group :test, :development do
   gem 'pry-rails'
 
   # Environment Variables
-  gem 'dotenv'
+  gem 'dotenv-rails'
 
   # Testing
   gem 'rspec-rails'
@@ -76,12 +85,7 @@ end
 
 group :production do
 
-  # Heroku uses PostgreSQL
+  # PostgreSQL is the shit.
   gem 'pg'
 
-  # Heroku's fancy deploy gem they try to set a standard for but honestly nobody gives a shit.
-  gem 'rails_12factor'
-
-  # Fancypants Application Server
-  gem 'unicorn'
 end

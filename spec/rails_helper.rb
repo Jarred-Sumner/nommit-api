@@ -3,6 +3,7 @@ ENV["RAILS_ENV"] ||= 'test'
 require_relative './spec_helper'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
+require 'sidekiq/testing'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -41,14 +42,15 @@ RSpec.configure do |config|
   # The different available types are documented in the features, such as in
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
-  config.before(:suite) do
-    Dotenv.load!(Rails.root + ".env")
-    Stripe.api_key = ENV["STRIPE_SECRET"]
-  end
 
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
+    Sidekiq::Testing.fake!
+  end
+
+  config.after(:each) do
+    Sidekiq::Worker.clear_all
   end
 
 end

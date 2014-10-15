@@ -27,7 +27,7 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
       return render_not_found if @order.nil? || @order.rated? || !@order.delivered?
 
       if @order.charge.paid? && update_params[:tip_in_cents].present?
-        return render_bad_request("Cannot tip an order 24 hours later -- the transaction has already been completed.")
+        return render_bad_request("Cannot tip an order 24 hours later -- your card has already been charged.")
       end
 
       rating = Float(update_params[:rating] || 4)
