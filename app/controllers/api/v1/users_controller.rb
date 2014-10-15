@@ -46,7 +46,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
     def generate_confirm_code!
       current_user.generate_confirm_code!
       current_user.save!
-      # Sms::ConfirmCodeSender.perform_async(current_user.id)
+      Sms::ConfirmCodeSender.perform_async(current_user.id)
     end
 
 end
