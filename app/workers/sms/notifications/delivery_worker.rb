@@ -1,4 +1,4 @@
-class Sms::DeliveryNotificationSender
+class Sms::Notifications::DeliveryWorker
   include Sidekiq::Worker
 
   def perform(order_id)

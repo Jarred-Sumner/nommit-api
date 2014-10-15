@@ -194,6 +194,19 @@ describe Api::V1::OrdersController, type: :controller do
           expect { subject }.to change { order.reload.state }.from("active").to("delivered")
         end
 
+        it "sends delivery notification on first order" do
+          expect do
+            subject
+          end.to change(Sms::Notifications::DeliveryWorker.jobs, :size).from(0).to(1)
+        end
+
+        it "doesn't send delivery notification with past orders" do
+          TestHelpers::Order.create_for(params: { user_id: order.user_id })
+          expect do
+            subject
+          end.to_not change(Sms::Notifications::DeliveryWorker.jobs, :size)
+        end
+
       end
 
       context "from random user" do

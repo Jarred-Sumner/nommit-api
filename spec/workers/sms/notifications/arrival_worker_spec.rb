@@ -1,6 +1,6 @@
-require_relative "../../rails_helper"
+require_relative "../../../rails_helper"
 
-describe Sms::ArrivalNotificationSender do
+describe Sms::Notifications::ArrivalWorker do
 
   context "#perform" do
     let(:courier) { create(:active_courier) }
@@ -14,7 +14,7 @@ describe Sms::ArrivalNotificationSender do
       5.times { create(:order, place_id: place.id, user_id: create(:user).id, food_id: food.id, price_id: food.prices.first.id, state: :arrived) }
     end
 
-    subject { Sms::ArrivalNotificationSender.new }
+    subject { Sms::Notifications::ArrivalWorker.new }
 
     it "sends 5 texts" do
       allow(Texter).to receive(:run)

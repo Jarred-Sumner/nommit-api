@@ -71,6 +71,8 @@ class Shift < ActiveRecord::Base
       self.state = :ended
       save!
       delivery_places.update_all(state: DeliveryPlace.states[:ended])
+      courier.inactive!
+      Sms::Notifications::ShiftEndingWorker.perform_async(id)
     end
   end
 
@@ -97,5 +99,10 @@ class Shift < ActiveRecord::Base
   before_validation on: :create do
     self.seller = courier.seller
   end
+
+  after_create do
+    courier.active! if active?
+  end
+
 
 end

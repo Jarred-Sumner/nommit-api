@@ -1,9 +1,9 @@
-require_relative "../../rails_helper"
+require_relative "../../../rails_helper"
 
-describe Sms::DeliveryNotificationSender do
+describe Sms::Notifications::DeliveryWorker do
   let(:order) { TestHelpers::Order.create_for(params: { state: :delivered }) }
 
-  subject { Sms::DeliveryNotificationSender.new }
+  subject { Sms::Notifications::DeliveryWorker.new }
 
   context "#perform" do
     it "sends text" do

@@ -40,7 +40,7 @@ class DeliveryPlace < ActiveRecord::Base
       orders.pending.update_all(state: Order.states[:arrived])
 
       shift.update_delivery_times!(current_index)
-      Sms::ArrivalNotificationSender.perform_async(shift_id)
+      Sms::Notifications::ArrivalWorker.perform_async(shift_id)
     end
   end
 

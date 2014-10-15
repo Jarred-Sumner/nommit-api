@@ -1,4 +1,4 @@
-class Sms::ArrivalNotificationSender
+class Sms::Notifications::ArrivalWorker
   include Sidekiq::Worker
 
   def perform(shift_id)

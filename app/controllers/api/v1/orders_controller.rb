@@ -40,7 +40,7 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
       @order.update_attributes!(state: Order.states[:delivered])
 
       # Send them a delivery notification on their first order.
-      Sms::DeliveryNotificationSender.perform_async(@order.id) if @order.user.orders.count == 1
+      Sms::Notifications::DeliveryWorker.perform_async(@order.id) if @order.user.orders.count == 1
     end
 
     if @order.present?

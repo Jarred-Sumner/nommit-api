@@ -41,6 +41,7 @@ describe Api::V1::ShiftsController, type: :controller do
         post :create, place_ids: places
       end.to change(Shift, :count).by(1)
 
+      expect(courier.reload.state).to eq("active")
       expect(response.status).to eq(200)
     end
 
@@ -90,6 +91,7 @@ describe Api::V1::ShiftsController, type: :controller do
         put :update, id: shift.id, state_id: Shift.states[:ended]
         expect(response.status).to eq(200)
         expect(shift.reload.state).to eq("ended")
+        expect(courier.reload.state).to eq('inactive')
 
         expect(shift.delivery_places.ended.count).to eq(shift.delivery_places.count)
       end
@@ -144,7 +146,7 @@ describe Api::V1::ShiftsController, type: :controller do
       specify do
         expect do
           put :update, id: shift.id, delivery_place_state_id: DeliveryPlace.states[:arrived], delivery_place_id: delivery_place.id
-        end.to change(Sms::ArrivalNotificationSender.jobs, :size).from(0).to(1)
+        end.to change(Sms::Notifications::ArrivalWorker.jobs, :size).from(0).to(1)
         expect(response.status).to eq(200)
         expect(delivery_place.reload.state).to eq("arrived")
       end
