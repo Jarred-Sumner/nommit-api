@@ -14,8 +14,6 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
 
-gem 'therubyrhino',  platforms: :ruby
-
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 
@@ -84,6 +82,8 @@ group :test, :development do
   gem 'capistrano-rails', '~> 1.1.1'
   gem 'capistrano-rvm'
   gem 'capistrano-sidekiq'
+
+  gem 'therubyrhino',  platforms: :ruby
 end
 
 group :production do
@@ -91,4 +91,5 @@ group :production do
   # We use PostgreSQL in Production
   gem 'pg'
 
+  gem 'therubyracer'
 end
