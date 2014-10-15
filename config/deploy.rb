@@ -10,7 +10,7 @@ set :repo_url, 'git@github.com:Jarred-Sumner/nommit-api.git'
 
 set :deploy_to, '/home/deploy/nommit-api'
 
-set :linked_files, %w{config/database.yml}
+set :linked_files, %w{config/database.yml .env}
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 namespace :deploy do
@@ -31,6 +31,24 @@ namespace :deploy do
       # within release_path do
       #   execute :rake, 'cache:clear'
       # end
+    end
+  end
+
+end
+
+namespace :logs do
+
+  desc "tail rails logs"
+  task :rails do
+    on roles(:app) do
+      execute "tail -f #{shared_path}/log/#{fetch(:rails_env)}.log"
+    end
+  end
+
+  desc "tail sidekiq logs"
+  task :sidekiq do
+    on roles(:app) do
+      execute "tail -f #{shared_path}/log/sidekiq.log"
     end
   end
 

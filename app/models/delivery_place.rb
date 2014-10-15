@@ -30,6 +30,7 @@ class DeliveryPlace < ActiveRecord::Base
 
   def arrive!
     transaction do
+      current_dp = shift.delivery_places.active.first
       orders.arrived.update_all(state: Order.states[:active])
       shift
         .delivery_places
@@ -39,6 +40,7 @@ class DeliveryPlace < ActiveRecord::Base
       orders.pending.update_all(state: Order.states[:arrived])
 
       shift.update_delivery_times!(current_index)
+      Sms::ArrivalNotificationSender.perform_async(shift_id)
     end
   end
 

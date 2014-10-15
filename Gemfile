@@ -14,7 +14,7 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
 
-gem 'therubyracer',  platforms: :ruby
+gem 'therubyrhino',  platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -57,12 +57,6 @@ gem "bugsnag"
 gem 'factory_girl_rails'
 gem 'faker'
 
-# Deployment
-gem 'capistrano', '~> 3.1.0'
-gem 'capistrano-bundler', '~> 1.1.2'
-gem 'capistrano-rails', '~> 1.1.1'
-gem 'capistrano-rvm'
-
 # Environment Variables
 gem 'dotenv-rails'
 
@@ -81,6 +75,15 @@ group :test, :development do
   gem 'stripe-ruby-mock', '~> 1.10.1.7', require: "stripe_mock"
 
   gem 'database_cleaner'
+
+  gem 'test_after_commit'
+
+  # Deployment
+  gem 'capistrano', '~> 3.1.0'
+  gem 'capistrano-bundler', '~> 1.1.2'
+  gem 'capistrano-rails', '~> 1.1.1'
+  gem 'capistrano-rvm'
+  gem 'capistrano-sidekiq'
 end
 
 group :production do

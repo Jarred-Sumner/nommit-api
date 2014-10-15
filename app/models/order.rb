@@ -134,7 +134,7 @@ class Order < ActiveRecord::Base
 
     def charge!
       Charge.create!(order_id: self.id, payment_method_id: user.payment_method.id)
-      # ChargeWorker.perform_at(Charge::DELAY.hours.from_now, self.id)
+      ChargeWorker.perform_at(Charge::DELAY.hours.from_now, self.id)
     end
 
   validates :food, presence: true
@@ -150,7 +150,9 @@ class Order < ActiveRecord::Base
   validates :state, presence: true
 
   before_validation :set_delivery!, on: :create
-  after_create :apply_pending_promotions!, :charge!
+  after_create :apply_pending_promotions!
+  after_commit :charge!, on: :create
+  after_commit :send_arrival_text!, on: :create, if: :arrived?
   validate :food_is_active!, on: :create
   validate :delivery_place_is_accepting_new_orders!, on: :create
   validate :enough_food_is_left!, on: :create
