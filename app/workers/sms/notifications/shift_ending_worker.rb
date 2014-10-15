@@ -7,7 +7,7 @@ class Sms::Notifications::ShiftEndingWorker
       .where(seller_id: shift.seller_id)
       .where.not(id: shift.courier_id)
       .each do |courier|
-        message = "#{courier.user.first_name}'s shift ended! No more orders to #{shift.delivery_places.count} places until someone else delivers to those places."
+        message = "#{shift.courier.user.first_name}'s shift ended! No more orders to #{shift.delivery_places.count} places until someone else delivers to those places."
         Texter.run(message, courier.user.phone)
       end
   end

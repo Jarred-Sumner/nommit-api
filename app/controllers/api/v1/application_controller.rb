@@ -58,11 +58,7 @@ class Api::V1::ApplicationController < ActionController::Base
 
     def render_invalid_record(e)
       Bugsnag.notify(e)
-      if Rails.env.development?
-        render_error(status: :unprocessable_entity, text: e.record.errors.full_messages.to_sentence)
-      else
-        render_error(status: :unprocessable_entity, text: "Oops! It looks like there was an error saving your changes.")
-      end
+      render_error(status: :unprocessable_entity, text: e.record.errors.full_messages.to_sentence)
     end
 
     def render_generic_error(e)
