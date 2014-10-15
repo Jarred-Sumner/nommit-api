@@ -134,7 +134,7 @@ class Order < ActiveRecord::Base
 
     def charge!
       Charge.create!(order_id: self.id, payment_method_id: user.payment_method.id)
-      ChargeWorker.perform_at(Charge::DELAY.hours.from_now, self.id)
+      # ChargeWorker.perform_at(Charge::DELAY.hours.from_now, self.id)
     end
 
   validates :food, presence: true
