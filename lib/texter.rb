@@ -7,7 +7,6 @@ class Texter < Struct.new(:message, :to)
 
   def perform
     message << "\n - #{Rails.env.capitalize}" unless Rails.env.production?
-    binding.pry
     twilio.messages.create(
       from: PHONE,
       to: convert_To_e164(to),
@@ -29,6 +28,7 @@ class Texter < Struct.new(:message, :to)
         spaces: ''
       ).gsub(/\s+/, "") # Phony won't remove all spaces
       phone.insert(1, "1") if phone.length == 11 && phone[0] == "+"
+      phone
     end
 
 end
