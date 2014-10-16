@@ -21,7 +21,8 @@ Rails.application.routes.draw do
       get 'couriers/me' => 'couriers#me'
       get 'places/:place_id/orders' => 'orders#index'
     end
-    
+
   end
 
+  post 'twilio/sms' => "twilio#sms"
 end
