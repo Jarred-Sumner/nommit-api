@@ -24,5 +24,10 @@ Rails.application.routes.draw do
 
   end
 
+  namespace :dashboard do
+    get 'partials/foods'
+  end
+
   post 'twilio/sms' => "twilio#sms"
+  root to: 'dashboard#index'
 end

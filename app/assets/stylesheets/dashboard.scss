@@ -1,0 +1,85 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:300,400,500);
+
+* {
+  font-family: "Lato";
+}
+
+h1,h2,h3,h4,h5,h6,p,a {
+  margin-top: 10px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+  font-weight: 300;
+}
+p,div {
+  font-size: 10pt;
+}
+
+body {
+  margin: 0 auto;
+  padding: 0px;
+  background-color: #F8F8F8;
+}
+
+#header-container {
+  padding: 14px 10px;
+  border-bottom: 1px solid #C7C7C7;
+  background: white;
+
+}
+
+$faded-text: #959595;
+$brand-green: #228B8F;
+
+#header {
+  @include outer-container;
+  text-align: center;
+  .brand {
+    text-align: left;
+    @include span-columns(3);
+    .logo {
+      width: 94px;
+    }
+    .tagline {
+      font-weight: 300;
+      color: $faded-text;
+      font-size: 10pt;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .delivery-box {
+    @include span-columns(6);
+    margin-top: 6px;
+    text-align: center;
+    font-size: 17pt;
+
+  }
+
+  .account {
+    @include span-columns(3);
+    margin-top: 8px;
+    a {
+      text-decoration: none;
+      border-bottom: 1px dotted blue;
+      font-size: 14pt;
+    }
+  }
+}
+
+#place {
+  display: inline-block;
+  color: $brand-green;
+  border-bottom: 1px $brand-green dotted;
+  font-size: 17pt;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+#content-container {
+  margin-top: 14px;
+  width: 100%;
+}

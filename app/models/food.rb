@@ -41,6 +41,11 @@ class Food < ActiveRecord::Base
   scope :ongoing, lambda { where("? BETWEEN start_date AND end_date", DateTime.now).active }
 
   def remaining
-    self.goal - self.orders.placed.joins(:price).sum("prices.quantity")
+    self.goal - sold
+  end
+
+  def sold
+    sold = orders.placed.joins(:price).sum("prices.quantity")
+    sold > 0 ? sold : 1
   end
 end
