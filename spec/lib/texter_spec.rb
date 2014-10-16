@@ -12,6 +12,15 @@ describe Texter do
       texter.perform
     end
 
+    context "handles poorly formatted numbers" do
+      let(:phone) { "(925) 596-8005" }
+
+      specify do
+        expect(texter.convert_to_e164(phone)).to eq("+19255968005")
+      end
+
+    end
+
   end
 
 end

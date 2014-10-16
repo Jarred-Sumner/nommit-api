@@ -9,7 +9,7 @@ class Texter < Struct.new(:message, :to)
     message << "\n - #{Rails.env.capitalize}" unless Rails.env.production?
     twilio.messages.create(
       from: PHONE,
-      to: convert_To_e164(to),
+      to: convert_to_e164(to),
       body: message
     )
   end
@@ -18,17 +18,15 @@ class Texter < Struct.new(:message, :to)
     @twilio ||= Twilio::REST::Client.new
   end
 
-  private
-
-    def convert_to_e164(raw_phone)
-      phone = Phony.normalize(String(raw_phone))
-      phone = Phony.format(
-        phone,
-        format: :international,
-        spaces: ''
-      ).gsub(/\s+/, "") # Phony won't remove all spaces
-      phone.insert(1, "1") if phone.length == 11 && phone[0] == "+"
-      phone
-    end
+  def convert_to_e164(raw_phone)
+    phone = Phony.normalize(String(raw_phone))
+    phone = Phony.format(
+      phone,
+      format: :international,
+      spaces: ''
+    ).gsub(/\s+/, "") # Phony won't remove all spaces
+    phone.insert(1, "1") if phone.length == 11 && phone[0] == "+"
+    phone
+  end
 
 end
