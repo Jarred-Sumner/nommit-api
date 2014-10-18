@@ -1,5 +1,5 @@
 class Api::V1::PlacesController < Api::V1::ApplicationController
-
+  skip_before_action :require_current_user!, if: -> { params[:courier_id].blank? }
   def index
     if courier.present?
       these = Place
@@ -12,7 +12,7 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
                 }).pluck("places.id")
       @places = Place.where.not(id: these).order("id DESC")
     else
-      @places = Place.active.order("id DESC")
+      @places = Place.active.order("id DESC").uniq
     end
   end
 

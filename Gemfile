@@ -59,6 +59,9 @@ gem 'dotenv-rails'
 gem 'bourbon'
 gem 'neat'
 
+# Icons!!!11
+gem 'font-awesome-sass', '~> 4.2.0'
+
 group :test, :development do
 
   # Use sqlite3 as the database for Active Record

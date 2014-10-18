@@ -2,9 +2,10 @@
   @include outer-container;
   text-align: center;
   img {
-    height: 46px;
+    height: 100%;
     width: 100%;
     max-width: 525px;
+    max-height: 46px;
   }
 }
 
@@ -14,6 +15,7 @@
   @include outer-container;
   width: 600px;
 }
+
 #foods {
   @include span-columns(12);
   .food-container {
@@ -22,6 +24,7 @@
     border-radius: $border-radius;
     text-align: left;
     .food {
+      margin-bottom: 15px;
       text-align: left;
       background-color: white;
       border-radius: $border-radius;
@@ -69,6 +72,8 @@
             }
             .rating {
               float: right;
+              @include user-select(none);
+              a { color: $brand-green; cursor: default; }
             }
           }
           .progress-bar {
@@ -86,6 +91,21 @@
           }
         }
 
+      }
+      .promo {
+        padding: 11px;
+        padding-bottom: 0px;
+        label {
+          margin-right: 5px;
+          font-weight: 300;
+          color: #888888;
+        }
+        input {
+          padding: 5px;
+          border-radius: 3px;
+          border: 1px solid #CCC;
+          width: 205px;
+        }
       }
       .order {
         padding: 9px;

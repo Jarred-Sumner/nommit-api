@@ -14,5 +14,10 @@
 //= require jquery_ujs
 //= require angular/angular.min
 //= require angular/angular-ui-router
+//= require angular/angular-resource
+//= require underscore-min
+//= require_tree ./mixins
+//= require_tree ./angular/mixins
 //= require nommit
+//= require_tree ./angular/factories
 //= require_tree .

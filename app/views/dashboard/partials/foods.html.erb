@@ -5,38 +5,43 @@
 <div id='foods-container'>
   <div id='foods'>
 
-    <div class='food-container'>
+    <div class='food-container' ng-repeat='food in foods'>
       <div class='preview'>
-        <div class='food-preview' style='background-image: url(<%= raw @food.preview.url %>)'>
-          <%= image_tag @food.seller.logo.url, class: "seller-logo" %>
+        <div class='food-preview' ng-style="{ 'background-image': 'url({{food.header_image_url}})' }">
+          <img ng-src='{{food.seller.logo_url}}' class='seller-logo' />
         </div>
 
       </div>
       <div class='food'>
 
         <div class='overview'>
-          <h3 class='title'><%= @food.title %></h3>
-          <h5 class='seller-name'>By <%= @food.seller.name %></h5>
+          <h3 class='title'>{{food.title}}</h3>
+          <h5 class='seller-name'>By {{ food.seller.name }}</h5>
         </div>
 
         <div class='details'>
-          <div class='description'><%= @food.description %></div>
+          <div class='description'>{{ food.description }}</div>
           <div class='status'>
             <div class='stats'>
-              <span class='sold'><%= @food.sold %>/<%= @food.goal %> left</span>
-              <span class='rating'><%= @food.orders.average(:rating).to_f %></span>
+              <span class='sold'>{{ food.order_count }}/{{ food.goal }} left</span>
+              <rating score='food.rating' max='5' ng-if='food.rating > 0' readonly='true' />
             </div>
             <div class='progress-bar'>
-              <div class='progress' style='width: <%= (Float(@food.sold) / Float(@food.goal)) * 100 %>%;'></div>
+              <div class='progress' ng-style="{ 'width': '{{ progressForFood(food) }}%' }"></div>
             </div>
           </div>
         </div>
 
+        <div class='promo'>
+          <label for='promo'>Promo:</label>
+          <input type='text' ng-model='food.promo' name='promo' placeholder='(Optional Discount Code)' />
+        </div>
+
         <div class='order'>
-          <h2 class='price'>$<%= @food.prices.first.price_in_cents.to_f / 100.0 %></h2>
+          <h2 class='price'>{{ price(food, food.quantity) | currency }}</h2>
           <fieldset class='quantity-container'>
             <label for='quantity'>QTY:</label>
-            <select name="quantity" class='quantity'>
+            <select name="quantity" class='quantity' ng-model='food.quantity'>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -52,51 +57,6 @@
         </div>
 
       </div>
-    </div>
-    <div class='food-container'>
-  <div class='preview'>
-    <div class='food-preview' style='background-image: url(<%= raw @food.preview.url %>)'>
-      <%= image_tag @food.seller.logo.url, class: "seller-logo" %>
-    </div>
-
-  </div>
-  <div class='food'>
-
-    <div class='overview'>
-      <h3 class='title'><%= @food.title %></h3>
-      <h5 class='seller-name'>By <%= @food.seller.name %></h5>
-    </div>
-
-    <div class='details'>
-      <div class='description'><%= @food.description %></div>
-      <div class='status'>
-        <div class='stats'>
-          <span class='sold'><%= @food.sold %>/<%= @food.goal %> left</span>
-          <span class='rating'><%= @food.orders.average(:rating).to_f %></span>
-        </div>
-        <div class='progress-bar'>
-          <div class='progress' style='width: <%= (Float(@food.sold) / Float(@food.goal)) * 100 %>%;'></div>
-        </div>
-      </div>
-    </div>
-
-    <div class='order'>
-      <h2 class='price'>$<%= @food.prices.first.price_in_cents.to_f / 100.0 %></h2>
-      <fieldset class='quantity-container'>
-        <label for='quantity'>QTY:</label>
-        <select name="quantity" class='quantity'>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-        </select>
-      </fieldset>
-      <button class='place-order'>Place&nbsp;Order</button>
     </div>
 
   </div>
