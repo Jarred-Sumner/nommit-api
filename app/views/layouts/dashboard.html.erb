@@ -3,15 +3,18 @@
 <head>
   <title>Nommit</title>
   <%= stylesheet_link_tag    'application', media: 'all' %>
+  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+  <%= render 'config' %>
   <%= javascript_include_tag 'application'  %>
   <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 </head>
 <body>
 
 <div id='header-container' ng-controller='HeaderCtrl'>
   <header id='header'>
     <div ui-sref("foods") class='brand'>
-      <%= image_tag "nommit-logo.png", class: "logo" %>
+      <div class='nommit-logo logo'></div>
       <div class='tagline'>food in under 15 minutes.</div>
     </div>
 
@@ -21,8 +24,13 @@
       <div id='place' ng-bind='place.name' ng-click='changingPlace = !changingPlace'></div>
     </div>
 
-    <div class='account'>
-      <a ui-sref='login'>Login</a>
+    <div class='account' ng-if='!loggedIn'>
+      <a ng-click='showLogin()'>Login</a>
+    </div>
+
+    <div class='account' ng-if='loggedIn'>
+      <a ui-sref='account()'>Account</a>
+      <a ui-sref='orders()'>Orders</a>
     </div>
   </header>
 
@@ -36,6 +44,18 @@
         <span class='name' ng-bind='place.name' ng-click='setCurrentPlace(place.id)'></span>
       </li>
     </ul>
+  </div>
+
+  <div id='login-container' class='modal-cover' ng-if='isShowingLogin' ng-click='hideLogin()'>
+    <div class='modal-container'>
+      <div id='login-form' ng-controller='LoginCtrl' class='modal big'>
+        <div class='nommit-logo alt'></div>
+        <p class='info'>Food delivered in under 15 minutes. <br /> Only available at CMU.</p>
+        <div class='btn login-with-facebook' ng-click='login()' ng-if='!isLoggingIn'>Login with Facebook</div>
+        <fading-circle-spinner ng-if='isLoggingIn'></fading-circle-spinner>
+      </div>
+    </div>
+
   </div>
 
 </div>

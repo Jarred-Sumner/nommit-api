@@ -1,4 +1,5 @@
-@nommit.controller 'HeaderCtrl', ($scope, Places, $rootScope) ->
+@nommit.controller 'HeaderCtrl', ($scope, Places, $rootScope, Facebook, Sessions) ->
+  $scope.loggedIn = Sessions.isLoggedIn()
   $scope.places = Places.query (places) ->
     setCurrentPlace(window.settings.placeID())
   $scope.setCurrentPlace = (placeID) ->
@@ -22,3 +23,11 @@
       $scope.place = $scope.places[0]
   $scope.stopChangingPlace = ->
     $scope.changingPlace = false
+
+  $rootScope.$on "CurrentUser", (user) ->
+    $scope.loggedIn = Sessions.isLoggedIn()
+
+  $scope.showLogin = ->
+    $scope.isShowingLogin = true
+  # $scope.hideLogin = ->
+  #   $scope.isShowingLogin = false

@@ -1,0 +1,6 @@
+<script type='text/javascript'>
+  window.config = {
+    facebook: '<%= ENV["FACEBOOK_ID"] %>',
+  };
+  Stripe.setPublishableKey('<%= ENV["STRIPE_PUBKEY"] %>');
+</script>

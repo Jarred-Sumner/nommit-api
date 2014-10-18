@@ -1,0 +1,82 @@
+.modal-cover {
+  margin: 0 0;
+  text-align: center;
+  background-color: rgba(25,25,25,0.75);
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  overflow: hidden;
+  top: 0px;
+  left: 0px;
+  z-index: 100;
+  display: table;
+}
+
+.modal-container {
+  display: table-cell;
+  vertical-align: middle;
+  overflow: hidden;
+}
+
+.modal {
+  margin: 20px auto;
+  margin-top: 0px;
+  padding: 20px;
+  text-align: center;
+  border-radius: 4px;
+  box-shadow: 0px 2px 14px 0px rgba(0,0,0,0.50);
+  background-color: rgba(0,0,0,0.5);
+  max-width: 600px;
+  max-height: 400px;
+}
+
+.login-with-facebook {
+  border-radius: 3px;
+  @include linear-gradient(-179deg, #335DBD, #2D56B2);
+  background-color: #335DBD;
+  border: 1px solid #11284D;
+  box-shadow: inset 0px 1px 3px 0px #213F80;
+  font-weight: 500;
+  font-size: 16pt;
+  padding: 10px 15px;
+  text-shadow: inset 0px 1px 0px 0px rgba(0,0,0,0.69);
+  color: #FFFFFF;
+  line-height: 33px;
+  &:hover {
+    cursor: pointer;
+    @include linear-gradient(-179deg, darken(#335DBD, 10%), darken(#2D56B2, 10%));
+  }
+}
+
+
+
+#login-form {
+  .nommit-logo {
+    margin: 0 auto;
+    width: 268px;
+    height: 65px;
+  }
+  .info {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: #FFFFFF;
+    line-height: 36px;
+    text-shadow: 0px 2px 4px rgba(0,0,0,0.50);
+  }
+  .login-with-facebook {
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .fading-circle-spinner {
+    margin: 25px auto;
+    padding: 25px;
+    .fading-circle {
+      &:before {
+        background-color: #CCC;
+      }
+    }
+  }
+}

@@ -1,7 +1,13 @@
-@import url(http://fonts.googleapis.com/css?family=Lato:300,400,500);
+@import "font-awesome-sprockets";
+@import "font-awesome";
+
+@import "bourbon";
+@import "neat";
 
 * {
-  font-family: "Lato";
+  font-family: "Helvetica Neue", "Helvetica", "Arial";
+  @include box-sizing(border-box);
+  @include transition (all 0.2s linear);
 }
 
 h1,h2,h3,h4,h5,h6,p,a {
@@ -44,7 +50,8 @@ $brand-green: #228B8F;
     text-align: left;
     @include span-columns(3);
     .logo {
-      width: 94px;
+      height: 30px;
+      margin-bottom: 5px;
     }
     .tagline {
       font-weight: 300;
@@ -138,3 +145,17 @@ $brand-green: #228B8F;
   margin-top: 14px;
   width: 100%;
 }
+
+.nommit-logo {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: image-url("nommit-logo.png");
+  display: block;
+  &.alt {
+    background-image: image-url("nommit-logo-alt.png");
+  }
+}
+
+@import "dashboard/third-party/angular-spinkit.min";
+@import "dashboard/foods";
+@import "dashboard/login";
