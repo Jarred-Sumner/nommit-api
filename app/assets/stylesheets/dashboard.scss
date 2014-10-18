@@ -4,10 +4,11 @@
 @import "bourbon";
 @import "neat";
 
+@import "dashboard/third-party/angular-spinkit.min";
+
 * {
   font-family: "Helvetica Neue", "Helvetica", "Arial";
   @include box-sizing(border-box);
-  @include transition (all 0.2s linear);
 }
 
 h1,h2,h3,h4,h5,h6,p,a {
@@ -156,6 +157,5 @@ $brand-green: #228B8F;
   }
 }
 
-@import "dashboard/third-party/angular-spinkit.min";
 @import "dashboard/foods";
 @import "dashboard/login";

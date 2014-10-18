@@ -59,6 +59,8 @@
         .description {
           font-size: 10pt;
           font-weight: 300;
+          overflow: hidden;
+          height: 35px;
         }
 
         .status {
@@ -114,7 +116,7 @@
           display: inline-block;
         }
         .quantity-container {
-          margin-top: 13px;
+          margin-top: 7px;
           padding: 0px;
           border: none;
           float: right;
@@ -130,6 +132,10 @@
             border: 1px solid #CCC;
             font-size: 10pt;
             font-weight: 300;
+            background-color: white;
+            height: 25px;
+            width: 45px;
+            border-radius: 2px;
           }
         }
 

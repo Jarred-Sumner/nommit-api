@@ -20,7 +20,7 @@
 
       $rootScope.$broadcast("placeIDChanged", placeID: $scope.place.id)
     else
-      $scope.place = $scope.places[0]
+      $scope.setCurrentPlace($scope.places[0].id)
   $scope.stopChangingPlace = ->
     $scope.changingPlace = false
 
