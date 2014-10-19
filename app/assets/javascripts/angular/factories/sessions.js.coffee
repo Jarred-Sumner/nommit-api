@@ -4,15 +4,15 @@
   angular.extend Sessions,
     login: (user, cb) ->
       Sessions.save access_token: user.accessToken, (user, headers) ->
-        Sessions.setCurrentUser(new Users(user))
-
         sessionID = headers()["x-session-id"]
         $http.defaults.headers.common["X-SESSION-ID"] = sessionID
         window.settings.setSessionID(sessionID)
 
+        Sessions.setCurrentUser(new Users(user))
         cb(new Users(user))
     setCurrentUser: (user) ->
       $rootScope.$broadcast("CurrentUser", user)
+      window.settings.setUserID(user.id)
       @user = user
     currentUser: ->
       @user ||= Users.get("me") if Sessions.isLoggedIn()

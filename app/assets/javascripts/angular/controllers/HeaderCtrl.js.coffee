@@ -14,9 +14,8 @@
 
       # Remove current place from array and alphabetize places
       $scope.places = _.without($scope.places, $scope.place)
-      $scope.places = _.sortBy($scope.places, (place) ->
+      $scope.places = _.sortBy $scope.places, (place) ->
         place.name
-      )
 
       $rootScope.$broadcast("placeIDChanged", placeID: $scope.place.id)
     else
@@ -26,8 +25,10 @@
 
   $rootScope.$on "CurrentUser", (user) ->
     $scope.loggedIn = Sessions.isLoggedIn()
+    $scope.isShowingLogin = false
+    if user.isRegistered()
+
+
 
   $scope.showLogin = ->
     $scope.isShowingLogin = true
-  # $scope.hideLogin = ->
-  #   $scope.isShowingLogin = false
