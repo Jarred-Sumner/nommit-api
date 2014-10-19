@@ -1,4 +1,8 @@
 @nommit.controller 'LoginCtrl', ($scope, $rootScope, Facebook, Sessions) ->
+  loginStatus = null
+  Facebook.getLoginStatus (response) ->
+    loginStatus = response
+
   loginSucceeded = (response) ->
     if response.status == "connected"
       Sessions.login response.authResponse, (user) ->
@@ -6,10 +10,10 @@
         $rootScope.$emit("requireActivation") if user.isRegistered()
     else
 
+
   $scope.login = ->
     $scope.isLoggingIn = true
-    Facebook.getLoginStatus (response) ->
-      if response.status == "unknown"
-        Facebook.login(loginSucceeded)
-      else
-        loginSucceeded(response)
+    if loginStatus.status == "connected"
+      loginSucceeded(loginStatus)
+    else
+      Facebook.login(loginSucceeded)
