@@ -217,8 +217,13 @@ $brand-green: #228B8F;
       text-shadow: 0px 1px 0px #FFFFFF;
     }
     .close {
-      margin-top: 2px;
+      margin-top: 1px;
       float: left;
+      margin-left: -10px;
+      background-image: url("close-button.png");
+      height: 20px;
+      width: 20px;
+      @include retina-image(close-button, 20px 20px)
     }
   }
   .content {
