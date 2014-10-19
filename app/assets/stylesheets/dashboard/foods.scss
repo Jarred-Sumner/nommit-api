@@ -110,7 +110,7 @@
         margin-bottom: 10px;
         width: 100%;
         .price {
-          margin-bottom: 10px;
+          margin-bottom: 20px;
           color: $brand-green;
           font-weight: 400;
           display: inline-block;
@@ -147,7 +147,7 @@
           color: white;
           padding: 10px 15px;
           font-size: 12pt;
-          border-radius: 5px;
+          border-radius: 2px;
           outline: none;
           &:hover {
             background-color: darken(#42B7BB, 10%);
