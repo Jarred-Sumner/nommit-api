@@ -32,6 +32,7 @@
     $scope.user = user
     $scope.loggedIn = Sessions.isLoggedIn()
     $scope.isShowingLogin = false
+    $rootScope.$emit("requireActivation")
 
   $rootScope.$on "$stateChangeSuccess", ->
     # Fetch current user

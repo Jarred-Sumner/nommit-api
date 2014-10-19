@@ -35,13 +35,9 @@
   </header>
 
   <div ng-if='changingPlace' id='place-select-container' ng-click='stopChangingPlace()'>
-    <span class='label'>Delivering To: </span>
     <ul id='place-select'>
-      <li class='place'>
-        <span class='name' ng-bind='place.name' ng-click='setCurrentPlace(place.id)'></span>
-      </li>
       <li class='place' ng-repeat='place in places'>
-        <span class='name' ng-bind='place.name' ng-click='setCurrentPlace(place.id)'></span>
+        <span class='name place-list' ng-bind='place.name' ng-click='setCurrentPlace(place.id)'></span>
       </li>
     </ul>
   </div>
