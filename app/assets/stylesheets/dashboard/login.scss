@@ -22,16 +22,18 @@
 .modal {
   margin: 20px auto;
   margin-top: 0px;
-  padding: 20px;
+  padding: 40px;
   text-align: center;
   border-radius: 4px;
-  box-shadow: 0px 2px 14px 0px rgba(0,0,0,0.50);
-  background-color: rgba(0,0,0,0.5);
+  // background-color: rgba(0,0,0,0.5);
   max-width: 600px;
   max-height: 400px;
+  background-image: image-url("dashboard/login/loginbg.png");
+  background-size: 100% 100%;
 }
 
 .login-with-facebook {
+  width: 350px;
   border-radius: 3px;
   @include linear-gradient(-179deg, #335DBD, #2D56B2);
   background-color: #335DBD;
@@ -43,6 +45,9 @@
   text-shadow: inset 0px 1px 0px 0px rgba(0,0,0,0.69);
   color: #FFFFFF;
   line-height: 33px;
+
+  border-radius: 3px;
+
   &:hover {
     cursor: pointer;
     @include linear-gradient(-179deg, darken(#335DBD, 10%), darken(#2D56B2, 10%));
