@@ -13,7 +13,8 @@
   margin-top: 14px;
   text-align: center;
   @include outer-container;
-  width: 600px;
+  max-width: 600px;
+  width: 100%;
 }
 
 #foods {
@@ -191,5 +192,14 @@
   }
   .food-container:nth-child(even) {
     float: right;
+  }
+}
+
+@media only screen and (max-width: 675px) {
+  .food-container {
+    margin: 0 auto;
+    float: center !important;
+    display: block;
+    margin-bottom: 25px;
   }
 }

@@ -1,11 +1,9 @@
 @nommit.factory 'Users', ['$resource', ($resource) ->
-  Users = $resource "api/v1/users", "id" : @id
+  User = $resource("api/v1/users/:id", "id" : @id)
+  User::isActivated = ->
+    @state_id == 1
+  User::isRegistered = ->
+    @state_id == 0
 
-  angular.extend Users,
-    isActivated: ->
-      @state_id == 1
-    isRegistered: ->
-      @state_id == 0
-
-  Users
+  User
 ]

@@ -1,0 +1,60 @@
+<div class='modal-cover' ng-if='isShowingActivation'>
+  <div class='modal-container'>
+    <div id='activation-form' ng-controller='ActivateCtrl' class='modal'>
+
+      <div class='header'>
+        <span class='fa fa-close close' ng-click='close()'></span>
+        <span class='title'>Activate Account</span>
+      </div>
+
+      <div class='content'>
+
+        <div class='overlay'>
+          <img class='avatar' ng-style="{ 'background-image': 'url(https://graph.facebook.com/{{user.id}}/picture?type=large)' }" />
+          <div class='person'>
+            <h3 class='name'>{{user.full_name}}</h3>
+            <h5 class='email'>{{user.email}}</h5>
+          </div>
+        </div>
+
+        <form class='body' stripe-form='activate'>
+
+          <fieldset class='phone'>
+            <label for="phone">Enter your phone number:</label>
+            <input autofocus type="tel" name="phone" required ng-model='activation.phone'>
+          </fieldset>
+
+          <fieldset class='payment'>
+            <label for="credit-card">Enter your payment details:</label>
+            <input type='text'
+                   name='credit-card'
+                   class='cc'
+                   ng-model='activation.card'
+                   required
+                   payments-validate='card'
+                   payments-format="card"
+                   placeholder="**** **** **** ****" />
+            <input type="text"
+                   name="expiration"
+                   class='expiration'
+                   ng-model='activation.expiry'
+                   required
+                   payments-validate='expiry'
+                   payments-format="expiry"
+                   placeholder="XX/XXXX" />
+            <input type="cvc" name="cvc" class='cvc' ng-model='activation.cvc' required payments-type-model="type" payments-validate='cvc' payments-format="cvc" />
+          </fieldset>
+          <p class='secured'>
+            <i class='fa fa-lock'></i> Stored Securely with Stripe
+            <p class='muted'>(Lyft and Twitter use them too)</p>
+          </p>
+          
+          <button name="submit" ng-if='!isActivating' ng-click='isActivating = true'>Activate</button>
+          <fading-circle-spinner ng-if='isActivating'></fading-circle-spinner>
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>

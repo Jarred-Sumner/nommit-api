@@ -3,7 +3,7 @@
     if response.status == "connected"
       Sessions.login response.authResponse, (user) ->
         $scope.isLoggingIn = false
-
+        $rootScope.$emit("requireActivation") if user.isRegistered()
     else
 
   $scope.login = ->

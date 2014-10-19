@@ -34,6 +34,13 @@ body {
   background-color: #F8F8F8;
 }
 
+fieldset {
+  margin: 0px;
+  padding: 0px;
+  text-align: left;
+  border: none;
+}
+
 #header-container {
   padding: 14px 10px;
   border-bottom: 1px solid #C7C7C7;
@@ -154,6 +161,165 @@ $brand-green: #228B8F;
   display: block;
   &.alt {
     background-image: image-url("nommit-logo-alt.png");
+  }
+}
+
+.modal-cover {
+  margin: 0 0;
+  text-align: center;
+  background-color: rgba(25,25,25,0.75);
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  overflow: hidden;
+  top: 0px;
+  left: 0px;
+  z-index: 100;
+  display: table;
+}
+
+.modal-container {
+  display: table-cell;
+  vertical-align: middle;
+  overflow: hidden;
+}
+
+.modal {
+  margin: 0 auto;
+  text-align: center;
+  box-shadow: 0px 1px 4px 0px rgba(232,232,232,0.19);
+  max-width: 300px;
+  max-height: 400px;
+  .header {
+    margin: 0 0;
+    padding: 5px 20px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-bottom: 1px solid #D3D3D4;
+    @include linear-gradient(-179deg, white, #F1F1F1);
+    border: 1px solid white;
+    box-shadow: inset 0px 2px 1px 0px white;
+    color: #6F6F79;
+    .title {
+      margin-left: -11px;
+      font-size: 13px;
+      font-weight: bold;
+      line-height: 20px;
+      text-shadow: 0px 1px 0px #FFFFFF;
+    }
+    .close {
+      margin-top: 2px;
+      float: left;
+    }
+  }
+  .content {
+    margin-top: -1px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background: white;
+    border: 1px solid #E9E9E9;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+
+    label, p, span, h3 ,h5 {
+      font-size: 13px;
+      color: #6F6F79;
+      line-height: 20px;
+      text-shadow: 0px 1px 0px #FFFFFF;
+    }
+
+    input {
+      display: block;
+      margin-top: 5px;
+      padding: 8px;
+      width: 100%;
+      border: none;
+      background: #FFFFFF;
+      font-size: 15px;
+      color: #6F6F79;
+      line-height: 18px;
+      outline: none;
+      border-radius: 2px;
+      box-shadow: 0px 1px 0px 0px rgba(255,255,255,0.64), inset 0px 1px 2px 0px rgba(0,0,0,0.27);
+    }
+
+    button {
+      display: block;
+      padding: 6px 0px;
+      border-radius: 4px;
+      width: 100%;
+      @include linear-gradient(-179deg, #60C4BE, #42B7BB);
+      border: 1px solid #42B7BB;
+      font-size: 20px;
+      color: white;
+      line-height: 24px;
+      box-shadow: 0px 1px 0px 0px rgba(255,255,255,0.64), inset 0px 1px 2px 0px rgba(0,0,0,0.27);
+    }
+
+    fieldset {
+      margin-top: 10px;
+    }
+
+    .overlay {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      text-align: left;
+      .avatar {
+        display: inline-block;
+        padding: 2px;
+        background-color: white;
+        width: 64px;
+        height: 64px;
+        border-radius: 32px;
+        background-size: contain;
+        background-color: white;
+        background-position: 50%;
+        box-shadow: inset 0px 2px 3px 0px rgba(0,0,0,0.50);
+      }
+      .person {
+        margin-left: 5px;
+        position: relative;
+        bottom: 15px;
+        display: inline-block;
+        .name {
+          font-size: 16px;
+        }
+        .email {
+          margin-top: 0px;
+        }
+      }
+    }
+    .body {
+
+      .payment {
+        .expiration {
+          margin-right: 2px;
+        }
+        .expiration, .cvc {
+          display: inline-block;
+          max-width: 126px;
+          width: 100%;
+        }
+      }
+
+
+      button {
+        margin-top: 25px;
+        margin-bottom: 10px;
+      }
+      .secured {
+        text-align: center;
+        .muted {
+          margin: 0 auto;
+          text-align: center;
+          padding: 0px;
+          color: #CCC;
+          font-size: 8px;
+        }
+      }
+
+    }
   }
 }
 

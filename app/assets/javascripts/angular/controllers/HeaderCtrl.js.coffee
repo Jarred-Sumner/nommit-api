@@ -1,7 +1,7 @@
 @nommit.controller 'HeaderCtrl', ($scope, Places, $rootScope, Facebook, Sessions) ->
-  $scope.loggedIn = Sessions.isLoggedIn()
   $scope.places = Places.query (places) ->
     setCurrentPlace(window.settings.placeID())
+
   $scope.setCurrentPlace = (placeID) ->
     window.settings.setPlaceID(placeID)
     setCurrentPlace(placeID)
@@ -23,12 +23,25 @@
   $scope.stopChangingPlace = ->
     $scope.changingPlace = false
 
-  $rootScope.$on "CurrentUser", (user) ->
+  $rootScope.$on "requireLogin", ->
+    $scope.showLogin() unless $scope.user?
+  $rootScope.$on "requireActivation", ->
+    $scope.showActivation() if $scope.user? && $scope.user.isRegistered()
+
+  $rootScope.$on "CurrentUser", (event, user) ->
+    $scope.user = user
     $scope.loggedIn = Sessions.isLoggedIn()
     $scope.isShowingLogin = false
-    if user.isRegistered()
 
-
+  $rootScope.$on "$stateChangeSuccess", ->
+    # Fetch current user
+    # Notify all controllers that current user is available
+    Sessions.currentUser() if Sessions.isLoggedIn()
 
   $scope.showLogin = ->
     $scope.isShowingLogin = true
+  $scope.showActivation = ->
+    $scope.isShowingActivation = true
+
+  $rootScope.$on "HideActivation", ->
+    $scope.isShowingActivation = false
