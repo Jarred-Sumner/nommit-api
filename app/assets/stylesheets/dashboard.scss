@@ -315,6 +315,14 @@ $brand-green: #228B8F;
           margin-top: 0px;
         }
       }
+      .error {
+        font-size: 10px;
+        color: #D82D2D;
+        line-height: 20px;
+        /* Phone number is inva: */
+        text-shadow: 0px 0px 0px #FFFFFF;
+        display: inline-block;
+      }
     }
     .body {
 
