@@ -21,32 +21,45 @@
 
           <fieldset class='phone'>
             <label for="phone">Enter your phone number:</label>
-            <input autofocus type="tel" name="phone" required ng-model='activation.phone'>
+            <div class="inner-addon left-addon">
+              <i class="fa fa-mobile-phone"></i>
+              <input autofocus type="tel" name="phone" required ng-model='activation.phone' placeholder="(&middot;&middot;&middot;) &middot;&middot;&middot; - &middot;&middot;&middot;&middot;">
+            </div>
           </fieldset>
 
           <fieldset class='payment'>
             <label for="credit-card">Enter your payment details:</label>
-            <input type='text'
+
+            <div class='input-label inner-addon left-addon'>
+              <i class="fa fa-credit-card"></i>
+              <input type='text'
                    name='credit-card'
-                   class='cc'
+                   class='card'
                    ng-model='activation.card'
                    required
                    payments-validate='card'
                    payments-format="card"
-                   placeholder="**** **** **** ****" />
-            <input type="text"
-                   name="expiration"
-                   class='expiration'
-                   ng-model='activation.expiry'
-                   required
-                   payments-validate='expiry'
-                   payments-format="expiry"
-                   placeholder="XX/XXXX" />
-            <input type="cvc" name="cvc" class='cvc' ng-model='activation.cvc' required payments-type-model="type" payments-validate='cvc' payments-format="cvc" />
+                   placeholder="&middot;&middot;&middot;&middot; &middot;&middot;&middot;&middot; &middot;&middot;&middot;&middot; &middot;&middot;&middot;&middot;" />
+            </div>
+            <span class='input-label inner-addon left-addon'>
+              <i class="fa fa-calendar-o"></i>
+              <input type="text"
+                     name="expiration"
+                     class='expiration'
+                     ng-model='activation.expiry'
+                     required
+                     payments-validate='expiry'
+                     payments-format="expiry"
+                     placeholder="&middot;&middot; / &middot;&middot;&middot;&middot;" />
+            </span>
+            <span class='input-label inner-addon left-addon'>
+              <i class="fa fa-lock"></i>
+              <input type="cvc" name="cvc" class='cvc' ng-model='activation.cvc' required payments-type-model="type" payments-validate='cvc' payments-format="cvc" />
+            </span>
           </fieldset>
           <p class='secured'>
             <i class='fa fa-lock'></i> Stored Securely with Stripe
-            <p class='muted'>(Lyft and Twitter use them too)</p>
+            <em class='muted'>(Lyft and Twitter use them too)</em>
           </p>
           
           <button name="submit" ng-if='!isActivating' ng-click='isActivating = true'>Activate</button>
