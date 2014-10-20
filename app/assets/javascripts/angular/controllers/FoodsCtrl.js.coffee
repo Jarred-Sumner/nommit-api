@@ -21,5 +21,21 @@
 
   $rootScope.$on "placeIDChanged", (event) ->
     setPlace()
+  $rootScope.$on "CurrentUser", (event, user) ->
+    $scope.user = user
+
 
   setPlace()
+
+  $scope.order = (food) ->
+    if $scope.user
+      if $scope.user.isActivated()
+        $scope.orderingFood = true
+      else if $scope.user.isRegistered()
+        $rootScope.$broadcast "requireActivation",
+          callback: $scope.order
+          object: food
+    else
+      $rootScope.$broadcast "requireLogin",
+        callback: $scope.order
+        object: food

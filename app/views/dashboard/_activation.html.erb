@@ -18,7 +18,7 @@
           </div>
         </div>
 
-        <form class='body' stripe-form='activate'>
+        <form class='body' ng-submit="activate()">
 
           <fieldset class='phone'>
             <label for="phone">Enter your phone number:</label>
@@ -34,10 +34,10 @@
             <div class='input-label inner-addon left-addon'>
               <i class="fa fa-credit-card"></i>
               <input type='text'
-                   name='credit-card'
+                   name='card'
                    class='card'
-                   ng-model='activation.card'
                    required
+                   ng-model='payment.card'
                    payments-validate='card'
                    payments-format="card"
                    placeholder="&middot;&middot;&middot;&middot; &middot;&middot;&middot;&middot; &middot;&middot;&middot;&middot; &middot;&middot;&middot;&middot;" />
@@ -45,9 +45,9 @@
             <span class='input-label inner-addon left-addon'>
               <i class="fa fa-calendar-o"></i>
               <input type="text"
-                     name="expiration"
+                     name="expiry"
                      class='expiration'
-                     ng-model='activation.expiry'
+                     ng-model='payment.expiry'
                      required
                      payments-validate='expiry'
                      payments-format="expiry"
@@ -55,16 +55,22 @@
             </span>
             <span class='input-label inner-addon left-addon'>
               <i class="fa fa-lock"></i>
-              <input type="cvc" name="cvc" class='cvc' ng-model='activation.cvc' required payments-type-model="type" payments-validate='cvc' payments-format="cvc" />
+              <input type="cvc"
+                     name="cvc"
+                     class='cvc'
+                     required
+                     ng-model='payment.cvc'
+                     payments-type-model="type"
+                     payments-validate='cvc'
+                     payments-format="cvc" />
             </span>
           </fieldset>
           <p class='secured'>
             <i class='fa fa-lock'></i> Stored Securely with Stripe
             <em class='muted'>(Lyft and Twitter use them too)</em>
           </p>
-          
-          <button name="submit" ng-if='!isActivating' ng-click='isActivating = true'>Activate</button>
-          <fading-circle-spinner ng-if='isActivating'></fading-circle-spinner>
+
+          <button name="submit">Activate</button>
         </form>
 
       </div>

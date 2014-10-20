@@ -8,6 +8,9 @@
       Sessions.login response.authResponse, (user) ->
         $scope.isLoggingIn = false
         $rootScope.$emit("requireActivation") if user.isRegistered()
+        if $scope.loginCallback
+          $scope.loginCallback.callback($scope.loginCallback.object) if $scope.loginCallback?
+          $scope.loginCallback = null
     else
 
 
@@ -17,3 +20,7 @@
       loginSucceeded(loginStatus)
     else
       Facebook.login(loginSucceeded)
+
+  $rootScope.$on "requireLogin", (event, obj) ->
+    if obj.callback
+      $scope.loginCallback = obj

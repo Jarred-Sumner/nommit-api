@@ -52,7 +52,7 @@
               <option value="9">9</option>
             </select>
           </fieldset>
-          <button class='place-order'>Place&nbsp;Order</button>
+          <button class='place-order' ng-click='order(food)'>Place&nbsp;Order</button>
         </div>
 
       </div>
@@ -61,5 +61,30 @@
   </div>
 </div>
 
+<div class='modal-cover' ng-if='orderingFood'>
+  <div class='modal-container'>
+    <div class='modal'>
+
+      <div class='header'>
+        <span class='fa fa-close close' ng-click='close()'></span>
+        <span class='title'>{{currentFood.title}}</span>
+      </div>
+
+      <div class='content'>
+
+        <div class='overlay'>
+          <img class='avatar' ng-style="{ 'background-image': 'url(https://graph.facebook.com/{{user.id}}/picture?type=large)' }" />
+          <div class='person'>
+            <h3 class='name'>{{user.full_name}}</h3>
+            <h5 class='email'>{{user.email}}</h5>
+          </div>
+        </div>
+
+        <div class='body'>
+        </div>
+
+
+
+    </div>
   </div>
 </div>
