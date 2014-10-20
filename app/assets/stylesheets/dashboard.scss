@@ -126,6 +126,7 @@ $brand-green: #228B8F;
 }
 
 #place-select {
+  text-align: left;
   margin: 0 auto;
   margin-top: -20px;
   background-color: #F9F9F9;
@@ -142,7 +143,7 @@ $brand-green: #228B8F;
     @include user-select(none);
     .name {
       font-family: "HelveticaNeue-Light";
-      font-size: 28px;
+      font-size: 24px;
       color: #6F6F79;
       line-height: 20px;
       text-shadow: 0px 0px 0px #FFFFFF;
