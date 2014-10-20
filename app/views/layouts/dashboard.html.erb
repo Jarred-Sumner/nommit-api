@@ -35,9 +35,7 @@
   </header>
 
   <div ng-if='changingPlace' id='place-select-container'>
-    <div ng-click='' class="inner-addon left-addon">
-      <input id="place-input" autofocus type="tel" name="phone" required ng-model='activation.phone' placeholder="your location">
-    </div>
+    <input id="place-input" autofocus type="tel" name="phone" required ng-model='activation.phone' placeholder="your location">
     <ul id='place-select'>
       <li class='place' ng-repeat='place in places'>
         <span class='name' ng-bind='place.name' ng-click='setCurrentPlace(place.id)'></span>

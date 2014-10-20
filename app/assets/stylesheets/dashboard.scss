@@ -92,16 +92,17 @@ $brand-green: #228B8F;
 
 #place-input {
   margin: 0 auto;
-  text-align: left;
   width: 300px;
   height: 50px;
   font-size: 31px;
   color: #9797A3;
   line-height: 20px;
+  padding-left: 60px;
   /* type in your locatio: */
   text-shadow: 0px 0px 0px #FFFFFF;
   font-family: "HelveticaNeue-Light";
   padding-top: 10px;
+  overflow: hidden;
 
   @include linear-gradient(-179deg, #FFFFFF, 0%, #F1F1F1, 100%);
 
