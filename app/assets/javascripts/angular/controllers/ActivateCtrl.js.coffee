@@ -1,7 +1,8 @@
-@nommit.controller 'ActivateCtrl', ($scope, Sessions, Places, $rootScope, Users) ->
-  $scope.close = ->
-    $rootScope.$emit("HideActivation")
-  $rootScope.$on "requireActivation", (event, obj) ->
+@nommit.controller 'ActivateCtrl', ($scope, Sessions, Places, $rootScope, Users, $timeout) ->
+  $scope.close = (cb) ->
+    $rootScope.$emit("HideActivation", callback: cb)
+  $rootScope.$on "requireActivation", ->
+    $scope.error = "To continue, activate your account."
   $rootScope.$on "CurrentUser", (event, user) ->
     $scope.user = user
 
@@ -22,13 +23,22 @@
       exp_month: $scope.payment.expiry.split("/")[0]
       exp_year: $scope.payment.expiry.split("/")[1]
     , (status, response) ->
-      console.log(response)
-      if status == 200
-        Users.update
-          id: $scope.user.id
-          state_id: 1
-          phone: $scope.activation.phone
-          stripe_token: response.token
-      else
-        console.log(response)
-        # TODO: Handle error
+      # Wrap in timeout to fix issues with Angular context vs Window context
+      $timeout( ->
+        if response.error
+          $scope.error = response.error.message
+          $scope.isActivating = false
+        else
+          success = (user) ->
+            $scope.isActivating = false
+            $scope.close ->
+              $rootScope.$emit("requireValidation")
+          error = (error) ->
+            $scope.error = error.data.message
+            $scope.isActivating = false
+          params =
+            state_id: 1
+            phone: $scope.activation.phone
+            stripe_token: response.id
+          Users.update(id: $scope.user.id, params, success, error)
+      , 1)

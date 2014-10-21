@@ -31,8 +31,9 @@
     if $scope.user
       if $scope.user.isActivated()
         $scope.orderingFood = true
+        $rootScope.$emit "OrderFood", food: food, place: $scope.place
       else if $scope.user.isRegistered()
-        $rootScope.$broadcast "requireActivation",
+        $rootScope.$emit "requireActivation",
           callback: $scope.order
           object: food
     else

@@ -23,11 +23,6 @@
   $scope.stopChangingPlace = ->
     $scope.changingPlace = false
 
-  $rootScope.$on "requireLogin", ->
-    $scope.showLogin() unless $scope.user?
-  $rootScope.$on "requireActivation", ->
-    $scope.showActivation() if $scope.user? && $scope.user.isRegistered()
-
   $rootScope.$on "CurrentUser", (event, user) ->
     $scope.user = user
     $scope.loggedIn = Sessions.isLoggedIn()
@@ -43,5 +38,18 @@
   $scope.showActivation = ->
     $scope.isShowingActivation = true
 
-  $rootScope.$on "HideActivation", ->
+  $rootScope.$on "requireLogin", ->
+    $scope.showLogin() unless $scope.user?
+  $rootScope.$on "requireActivation", ->
+    $scope.showActivation() if $scope.user? && $scope.user.isRegistered()
+  $rootScope.$on "requireValidation", ->
+    $scope.isShowingConfirmPhone = true
+  $rootScope.$on "confirmOrder", (event, food) ->
+    $scope.isShowingConfirmOrder = true
+
+  $rootScope.$on "HideActivation", (event, obj) ->
     $scope.isShowingActivation = false
+    obj.callback() if obj.callback
+  $rootScope.$on "HideConfirmPhone", (event, obj) ->
+    $scope.isShowingConfirmPhone = false
+    obj.callback() if obj.callback

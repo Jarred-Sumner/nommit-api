@@ -1,4 +1,4 @@
-<div class='modal-cover' ng-if='isShowingActivation'>
+<div class='modal-cover' ng-show='isShowingActivation'>
   <div class='modal-container'>
     <div id='activation-form' ng-controller='ActivateCtrl' class='modal'>
 
@@ -10,19 +10,19 @@
       <div class='content'>
 
         <div class='overlay'>
-          <img class='avatar' ng-style="{ 'background-image': 'url(https://graph.facebook.com/{{user.id}}/picture?type=large)' }" />
+          <img class='avatar' ng-if='user' ng-style="{ 'background-image': 'url(https://graph.facebook.com/{{user.id}}/picture?type=large)' }" />
           <div class='person'>
             <h3 class='name'>{{user.full_name}}</h3>
             <h5 class='email'>{{user.email}}</h5>
-            <div class="error"><i class="fa fa-info-circle"></i>  Hello test error</div>
           </div>
+          <div class="info error" ng-if='error'><i class="fa fa-info-circle"></i>{{error}}</div>
         </div>
 
-        <form class='body' ng-submit="activate()">
+        <form class='body' name='activateForm' ng-submit="activate()">
 
           <fieldset class='phone'>
             <label for="phone">Enter your phone number:</label>
-            <div class="inner-addon left-addon">
+            <div class="input-label left">
               <i class="fa fa-mobile-phone"></i>
               <input autofocus type="tel" name="phone" required ng-model='activation.phone' placeholder="(&middot;&middot;&middot;) &middot;&middot;&middot; - &middot;&middot;&middot;&middot;">
             </div>
@@ -31,7 +31,7 @@
           <fieldset class='payment'>
             <label for="credit-card">Enter your payment details:</label>
 
-            <div class='input-label inner-addon left-addon'>
+            <div class='input-label left'>
               <i class="fa fa-credit-card"></i>
               <input type='text'
                    name='card'
@@ -42,7 +42,7 @@
                    payments-format="card"
                    placeholder="&middot;&middot;&middot;&middot; &middot;&middot;&middot;&middot; &middot;&middot;&middot;&middot; &middot;&middot;&middot;&middot;" />
             </div>
-            <span class='input-label inner-addon left-addon'>
+            <span class='input-label left'>
               <i class="fa fa-calendar-o"></i>
               <input type="text"
                      name="expiry"
@@ -53,7 +53,7 @@
                      payments-format="expiry"
                      placeholder="&middot;&middot; / &middot;&middot;&middot;&middot;" />
             </span>
-            <span class='input-label inner-addon left-addon'>
+            <span class='input-label left'>
               <i class="fa fa-lock"></i>
               <input type="cvc"
                      name="cvc"
@@ -66,11 +66,12 @@
             </span>
           </fieldset>
           <p class='secured'>
-            <i class='fa fa-lock'></i> Stored Securely with Stripe
-            <em class='muted'>(Lyft and Twitter use them too)</em>
+            <i class="fa fa-lock"></i>&nbsp;&nbsp;Stored Securely with Stripe
+            <em class='muted'>( Lyft and Twitter use them too!)</em>
           </p>
 
-          <button name="submit">Activate</button>
+          <button name="submit" ng-if='!isActivating' ng-disabled="activateForm.$invalid">Activate</button>
+          <fading-circle-spinner ng-if='isActivating'></fading-circle-spinner>
         </form>
 
       </div>

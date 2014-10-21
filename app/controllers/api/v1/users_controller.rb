@@ -27,7 +27,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
     render action: :me
   rescue Stripe::InvalidRequestError, Stripe::CardError => e
-    render_bad_request("Couldn't authorize credit card, please re-enter it and try again")
+    render_bad_request("Couldn't validate credit card, please re-enter it and try again")
   rescue ArgumentError
     render_invalid_confirm_code
   end

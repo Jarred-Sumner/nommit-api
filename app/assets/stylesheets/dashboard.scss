@@ -143,11 +143,11 @@ $brand-green: #228B8F;
   z-index: 100;
   text-align: center;
   span, li { font-size: 17pt; }
-  li { 
+  li {
     /* Line: */
     border-bottom: 1px solid #979797;
     -moz-box-shadow:    0px 0px 0px 0px rgba(255,255,255,0.50);
-    box-shadow:         0px 0px 0px 0px rgba(255,255,255,0.50); 
+    box-shadow:         0px 0px 0px 0px rgba(255,255,255,0.50);
     padding-bottom: 15px;
   }
   .label {
@@ -196,9 +196,15 @@ $brand-green: #228B8F;
 .modal {
   margin: 0 auto;
   text-align: center;
+  margin-bottom: 25px;
   box-shadow: 0px 1px 4px 0px rgba(232,232,232,0.19);
   max-width: 300px;
   max-height: 400px;
+  .fading-circle-spinner {
+    margin: 10px auto;
+    margin-bottom: 25px;
+    padding: 10px;
+  }
   .header {
     margin: 0 0;
     padding: 5px 20px;
@@ -263,24 +269,26 @@ $brand-green: #228B8F;
       border-radius: 4px;
       width: 100%;
       border: 1px solid #42B7BB;
+      box-shadow: 0px 1px 0px 0px rgba(24,24,24,0.11);
       color: white;
-      
       @include linear-gradient(-179deg, #60C4BE, 0%, #33A2A6, 98%);
-      /* Sketch doesnt export gradient borders at this point */
-      box-shadow:         0px 1px 0px 0px rgba(24,24,24,0.11);
-
-      font-family: Helvetica;
       font-size: 17px;
-      color: #FFFFFF;
+      color: white;
       line-height: 20px;
       letter-spacing: 0px;
-      /* Confirm: */
       text-shadow: 0px -1px 0px #3088C7;
-
+      outline: none;
       &:hover {
         @include linear-gradient(-179deg, darken(#60C4BE, 10%), 0%, darken(#33A2A6, 10%), 98%);
         cursor: pointer;
       }
+      &:active {
+        @include linear-gradient(-179deg, darken(#60C4BE, 15%), 0%, darken(#33A2A6, 15%), 98%);
+      }
+    }
+    button[disabled] {
+      opacity: 0.5;
+      pointer-events: none;
     }
 
     fieldset {
@@ -315,83 +323,67 @@ $brand-green: #228B8F;
           margin-top: 0px;
         }
       }
-      .error {
+      .info {
         font-size: 10px;
-        color: #D82D2D;
-        line-height: 20px;
-        /* Phone number is inva: */
-        text-shadow: 0px 0px 0px #FFFFFF;
-        display: inline-block;
+        line-height: 18px;
+        text-shadow: 0px 1px 0px #FFFFFF;
+        color: #6F6F79;
+        &.error {
+          color: #D82D2D;
+        }
+        .fa {
+          margin-right: 5px;
+        }
       }
     }
     .body {
 
-      .payment {
-        .expiration {
-          margin-right: 2px;
-        }
-        .expiration, .cvc {
-          display: inline-block;
-          max-width: 126px;
-          width: 100%;
-        }
+      fieldset {
         .fa {
           color: #4A5861;
         }
       }
 
-
       button {
         margin-top: 25px;
         margin-bottom: 10px;
-      }
-      .secured {
-        text-align: center;
-        .muted {
-          margin: 0 auto;
-          text-align: center;
-          padding: 0px;
-          color: #6F6F79;
-          font-size: 10px;
-          font-family: "HelveticaNeue-LightItalic";
-          font-style: italic;
-          display: block;
-          line-height: 20px;
-          text-shadow: 0px 0px 0px #FFFFFF;
-        }
       }
 
     }
   }
 }
 
-/* enable absolute positioning */
-.inner-addon { 
-  position: relative; 
+.input-label {
+  position: relative;
+  $indent: 30px;
   .fa {
     position: absolute;
     padding: 10px;
     pointer-events: none;
   }
+  .fa-check-circle-o {
+    font-size: 16px;
+  }
   .fa-calendar-o, .fa-lock {
     margin-top: 5px;
-  } 
+  }
   input {
-    text-indent: 30px;
+    text-indent: $indent;
   }
   .fa-mobile-phone {
     font-size: 20px;
     margin-top: -3px;
   }
+  &.left {
+    .fa { left:  0px; }
+    input  { padding-left: $indent / 3; }
+  }
+  &.right {
+    .fa { right: 0px; }
+    input { padding-right: $indent / 3; }
+  }
 }
 
-/* align icon */
-.left-addon .fa { left:  0px;}
-.right-addon .fa { right: 0px;}
-
-/* add padding  */
-.left-addon input  { padding-left:  30px; }
-.right-addon input { padding-right: 30px; }
-
+@import "dashboard/activation";
 @import "dashboard/foods";
 @import "dashboard/login";
