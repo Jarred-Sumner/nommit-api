@@ -47,7 +47,6 @@
   <%= render 'dashboard/login' %>
   <%= render 'dashboard/activation' %>
   <%= render 'dashboard/confirm_phone' %>
-
 </div>
 
 <div id='content-container' ui-view>
@@ -55,17 +54,13 @@
 </div>
 
 <div id='footer-container' ng-controller='HeaderCtrl'>
-  <footer id='footer'>
-    <div ui-sref("foods") class='brand'>
+  <footer>
+    <div class='app-store'>
       <a href="https://itunes.apple.com/us/app/nommit/id928890698?ls=1&mt=8" class='appstore-button appstore'></a>
     </div>
 
     <div class='copyright'>
       <span>© 2014 Blah Labs, Inc.</span>
-    </div>
-
-    <div class='account' ng-if='!loggedIn'>
-      <a ng-click='showLogin()'>Login</a>
     </div>
 
     <div class='support'>
