@@ -217,7 +217,7 @@ unless defined?(PLACES)
   #   latitude: 40.4433485,
   #   longitude: -79.9464634
   # },
-  "Gates Center" => {
+  "Gates (5th Floor)" => {
     latitude: 40.443719,
     longitude: -79.944564
   },
