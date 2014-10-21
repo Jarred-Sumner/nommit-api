@@ -90,6 +90,56 @@ $brand-green: #228B8F;
   }
 }
 
+#footer-container {
+  padding: 14px 10px;
+  border-bottom: 1px solid #C7C7C7;
+  background: #3e3e3e;
+}
+
+#footer {
+  a {
+    color: #BABABA;
+    font-size: 14pt;
+    font-weight: 200;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  @include outer-container;
+  text-align: center;
+  .brand {
+    text-align: left;
+    @include span-columns(3);
+    .appstore {
+      height: 40px;
+      margin-bottom: 5px;
+    }
+    .tagline {
+      font-weight: 300;
+      color: $faded-text;
+      font-size: 10pt;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .copyright {
+    @include span-columns(6);
+    margin-top: 16px;
+    text-align: center;
+    font-size: 12pt;
+    color: #BABABA;
+    font-weight: 200;
+
+  }
+
+  .support {
+    @include span-columns(3);
+    margin-top: 15px;
+  }
+}
+
 #place-input {
   margin: 0 auto;
   width: 300px;
@@ -208,6 +258,16 @@ $brand-green: #228B8F;
   display: block;
   &.alt {
     background-image: image-url("nommit-logo-alt.png");
+  }
+}
+
+.appstore-button {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: image-url("appstore.png");
+  display: block;
+  &.alt {
+    background-image: image-url("appstore.png");
   }
 }
 

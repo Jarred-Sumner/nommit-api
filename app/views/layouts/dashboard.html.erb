@@ -54,5 +54,26 @@
   <%= yield %>
 </div>
 
+<div id='footer-container' ng-controller='HeaderCtrl'>
+  <footer id='footer'>
+    <div ui-sref("foods") class='brand'>
+      <a href="https://itunes.apple.com/us/app/nommit/id928890698?ls=1&mt=8" class='appstore-button appstore'></a>
+    </div>
+
+    <div class='copyright'>
+      <span>© 2014 Blah Labs, Inc.</span>
+    </div>
+
+    <div class='account' ng-if='!loggedIn'>
+      <a ng-click='showLogin()'>Login</a>
+    </div>
+
+    <div class='support'>
+      <a ui-sref='support()'>Support</a>
+    </div>
+  </footer>
+
+</div>
+
 </body>
 </html>
