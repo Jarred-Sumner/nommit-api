@@ -13,10 +13,12 @@ describe Texter do
     end
 
     context "handles poorly formatted numbers" do
-      let(:phone) { "(925) 596-8005" }
+      let(:phones) { ["(925) 596-8005", "(954) 260-4240"] }
 
       specify do
-        expect(texter.convert_to_e164(phone)).to eq("+19255968005")
+        phones.each do |phone|
+          expect(texter.convert_to_e164(phone)).to eq("+1#{phone.gsub(/\(|\)| |\-/, "")}")
+        end
       end
 
     end
