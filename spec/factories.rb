@@ -294,7 +294,7 @@ unless defined?(PLACES)
     latitude: 40.4441647,
     longitude:-79.9433725
   },
-  "Wean Hall" => {
+  "Wean (La Prima Cafe)" => {
     latitude: 40.442668,
     longitude: -79.9457525
   },
