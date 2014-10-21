@@ -52,6 +52,16 @@ input, button {
   padding: 14px 10px;
   border-bottom: 1px solid #C7C7C7;
   background: white;
+  &.sticky {
+    position: fixed;
+    display: block;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    z-index: 999;
+    margin-bottom: 79px;
+
+  }
 
 }
 
@@ -152,25 +162,22 @@ $brand-green: #228B8F;
   margin: 0 auto;
   width: 300px;
   height: 50px;
-  font-size: 31px;
-  color: #9797A3;
+  font-size: 18px;
+  color: darken(#9797A3, 30%);
   line-height: 20px;
   padding-left: 60px;
-  /* type in your locatio: */
-  text-shadow: 0px 0px 0px #FFFFFF;
-  font-family: "HelveticaNeue-Light";
-  padding-top: 10px;
+  font-weight: 200;
   overflow: hidden;
-
+  border: 1px solid white;
+  box-shadow:  inset 0px 2px 1px 0px white;
   @include linear-gradient(-179deg, #FFFFFF, 0%, #F1F1F1, 100%);
-
-  border: 1px solid #FFFFFF;
-  box-shadow:         inset 0px 2px 1px 0px #FFFFFF;
-
   background-image: image-url("placesearch.png");
   display: inline-block;
   @include retina-image(placesearch, 300px 50px);
-
+  @include placeholder {
+    padding-top: 0px;
+    color: #9797A3;
+  }
 }
 
 #place {
@@ -187,30 +194,35 @@ $brand-green: #228B8F;
 #place-select {
   text-align: left;
   margin: 0 auto;
-  margin-top: -20px;
   background-color: #F9F9F9;
-  // border-radius: 2px;
   border: 1px solid white;
-  // -moz-box-shadow:    inset 0px 2px 1px 0px white;
-  // box-shadow:         inset 0px 2px 1px 0px white;
-  padding: 20px;
-  padding: 30px 20px;
+  box-shadow: inset 0px 2px 1px 0px white;
+  padding: 20px 15px;
+  padding-top: 0px;
+  margin-top: 0px;
+  margin-bottom: 5px;
   width: 300px;
   list-style: none;
+  overflow: auto;
+  max-height: 325px;
   .place {
-    margin-bottom: 20px;
-    @include user-select(none);
-    .name {
-      font-size: 14px;
-      font-weight: 200;
-      color: #6F6F79;
-      line-height: 20px;
-      text-shadow: 0px 1px 0px white;
-
-      &:hover {
-        color: #39393A;
-        cursor: pointer;
-      }
+    padding: 8px;
+    border-bottom: 1px dotted #979797;
+    box-shadow: 0px 0px 1px 0px rgba(255,255,255,0.5);
+    color: #6F6F79;
+    font-size: 18px;
+    font-weight: 200;
+    display: block;
+    width: 100%;
+    .fa {
+      margin-top: 2px;
+      float: right;
+    }
+    &:hover {
+      background-color: lighten(#F9F9F9, 1%);
+      border-bottom: 1px solid #979797;
+      cursor: pointer;
+      color: #39393A;
     }
 
   }
@@ -223,23 +235,10 @@ $brand-green: #228B8F;
   background-color: rgba(0,0,0,0.75);
   height: 100%;
   width: 100%;
-  top: 80px;
+  top: 78px;
   left: 0px;
   z-index: 100;
   text-align: center;
-  span, li { font-size: 17pt; }
-  li {
-    /* Line: */
-    border-bottom: 1px solid #979797;
-    -moz-box-shadow:    0px 0px 0px 0px rgba(255,255,255,0.50);
-    box-shadow:         0px 0px 0px 0px rgba(255,255,255,0.50);
-    padding-bottom: 15px;
-  }
-  .label {
-    color: white;
-    width: 144px;
-  }
-
   .footer {
     font-size: 12px;
     color: #6F6F79;
