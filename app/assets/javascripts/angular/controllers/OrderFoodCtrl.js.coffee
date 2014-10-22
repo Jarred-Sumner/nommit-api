@@ -18,6 +18,7 @@
       price_id: price.id
       food_id: $scope.food.id
       place_id: $scope.place.id
+    params.promo_code = $scope.food.promo if $scope.food.promo
     success = (order) ->
       $scope.placing = false
     error = (error) ->
