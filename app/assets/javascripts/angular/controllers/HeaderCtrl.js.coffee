@@ -1,4 +1,8 @@
 @nommit.controller 'HeaderCtrl', ($scope, Places, $rootScope, Facebook, Sessions) ->
+  $scope.search =
+    places: []
+    query: ""
+
   $scope.places = Places.query (places) ->
     setCurrentPlace(window.settings.placeID())
 
@@ -17,11 +21,21 @@
       $scope.places = _.sortBy $scope.places, (place) ->
         place.name
 
+      $scope.search.places = $scope.places
+
       $rootScope.$broadcast("placeIDChanged", placeID: $scope.place.id)
     else
       $scope.setCurrentPlace($scope.places[0].id)
-  $scope.stopChangingPlace = ->
-    $scope.changingPlace = false
+  $scope.filterPlaces = ->
+    if $scope.search.query.length > 0
+      $scope.search.places = _.filter $scope.search.places, (place) ->
+        place.name.indexOf($scope.search.query) > -1
+    else
+      $scope.search.places = $scope.places
+
+  $scope.closeOnEsc = ($event) ->
+    if $event.keyCode == 27
+      $scope.changingPlace = false
 
   $rootScope.$on "CurrentUser", (event, user) ->
     $scope.user = user
@@ -35,8 +49,14 @@
 
   $scope.showLogin = ->
     $scope.isShowingLogin = true
+  $scope.hideLogin = ->
+    $scope.isShowingLogin = false
   $scope.showActivation = ->
     $scope.isShowingActivation = true
+  $scope.showPlaces = ->
+    $scope.changingPlace = true
+  $scope.hidePlaces = ->
+    $scope.changingPlace = false
 
   $rootScope.$on "requireLogin", ->
     $scope.showLogin() unless $scope.user?

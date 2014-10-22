@@ -27,6 +27,8 @@
 
   setPlace()
 
+  $scope.searchPlaces = (query) ->
+
   $scope.order = (food) ->
     if $scope.user
       if $scope.user.isActivated()
