@@ -203,7 +203,7 @@ $brand-green: #228B8F;
   margin-bottom: 5px;
   width: 300px;
   list-style: none;
-  overflow: auto;
+  overflow: scroll;
   max-height: 325px;
   .place {
     padding: 8px;
@@ -334,7 +334,10 @@ $brand-green: #228B8F;
       background-image: url("close-button.png");
       height: 20px;
       width: 20px;
-      @include retina-image(close-button, 20px 20px)
+      @include retina-image(close-button, 20px 20px);
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
   .content {
@@ -458,6 +461,7 @@ $brand-green: #228B8F;
   }
 }
 
+span.input-label { display: inline-block }
 .input-label {
   position: relative;
   $indent: 30px;
