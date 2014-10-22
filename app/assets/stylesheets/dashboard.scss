@@ -54,6 +54,15 @@ $brand-green: #228B8F;
 #header {
   @include outer-container;
   text-align: center;
+  a {
+    color: #404040;
+    font-size: 14pt;
+    font-weight: 200;
+    padding-right: 10px;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
   .brand {
     text-align: left;
     @include span-columns(3);
@@ -76,17 +85,13 @@ $brand-green: #228B8F;
     margin-top: 6px;
     text-align: center;
     font-size: 17pt;
+    font-weight: 200;
 
   }
 
   .account {
     @include span-columns(3);
     margin-top: 8px;
-    a {
-      text-decoration: none;
-      border-bottom: 1px dotted blue;
-      font-size: 14pt;
-    }
   }
 }
 
