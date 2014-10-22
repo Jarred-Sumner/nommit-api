@@ -44,3 +44,4 @@
       $rootScope.$broadcast "requireLogin",
         callback: $scope.order
         object: food
+        error: true

@@ -9,9 +9,12 @@
         $scope.isLoggingIn = false
         if user.isRegistered()
           $rootScope.$emit("requireActivation", callback: $scope.loginCallback)
+          $scope.error = null
         else
           $rootScope.$emit("HideLogin", callback: $scope.loginCallback)
+          $scope.error = null
     else
+      $scope.error = "To continue, please login with Facebook."
 
 
   $scope.login = ->
@@ -24,3 +27,5 @@
   $rootScope.$on "requireLogin", (event, obj) ->
     if obj.callback
       $scope.loginCallback = obj
+    if obj.error
+      $scope.error = "To continue, please login with Facebook"
