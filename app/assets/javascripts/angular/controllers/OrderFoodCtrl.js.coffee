@@ -20,6 +20,7 @@
       place_id: $scope.place.id
     params.promo_code = $scope.food.promo if $scope.food.promo
     success = (order) ->
+      $scope.error = null
       $scope.placing = false
     error = (error) ->
       $scope.placing = false
