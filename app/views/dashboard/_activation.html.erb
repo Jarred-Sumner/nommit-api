@@ -1,6 +1,6 @@
-<div class='modal-cover' ng-show='isShowingActivation'>
+<div class='modal-cover' ng-show='isShowingActivation' ng-controller='ActivateCtrl' ng-click='close()'>
   <div class='modal-container'>
-    <div id='activation-form' ng-controller='ActivateCtrl' class='modal'>
+    <div id='activation-form' class='modal' prevent-click-delegation>
 
       <div class='header'>
         <span class='close' ng-click='close()'></span>
@@ -67,7 +67,7 @@
           </fieldset>
           <p class='secured'>
             <i class="fa fa-lock"></i>&nbsp;&nbsp;Stored Securely with Stripe
-            <em class='muted'>( Lyft and Twitter use them too!)</em>
+            <em class='muted'>(Lyft and Twitter use them too!)</em>
           </p>
 
           <button name="submit" ng-if='!isActivating' ng-disabled="activateForm.$invalid">Activate</button>

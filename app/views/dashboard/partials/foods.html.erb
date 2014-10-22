@@ -61,9 +61,9 @@
   </div>
 </div>
 
-<div class='modal-cover' id='order-food' ng-show='orderingFood' ng-controller='OrderFoodCtrl'>
+<div class='modal-cover' id='order-food' ng-show='orderingFood' ng-controller='OrderFoodCtrl' ng-click='close()' ng-keydown='closeOnEsc($event)'>
   <div class='modal-container'>
-    <div class='modal'>
+    <div class='modal' prevent-click-delegation>
 
       <div class='header'>
         <span class='close' ng-click='close()'></span>
@@ -78,21 +78,21 @@
             <h3 class='name'>{{user.full_name}}</h3>
             <h5 class='email'>{{user.email}}</h5>
           </div>
+          <div class="info error" ng-if='error'><i class="fa fa-info-circle"></i>{{error}}</div>
         </div>
 
         <div class='body'>
-          <form ng-submit='confirm()' class='confirm-form'>
+          <form ng-submit='placeOrder()' class='confirm-form'>
             <p>Confirm your order of <strong ng-if='food.quantity > 1'>{{food.quantity}} batch</strong> <strong ng-if='food.quantity == 1'>one batch</strong> of <br />
               <strong>{{food.title}}</strong> for:</p>
             <h2 class='price'>{{price | currency}}</h2>
             <h5 class='muted'>(Promo credit applied after confirmation)</h5>
-            <fading-circle-spinner ng-if='isConfirming'></fading-circle-spinner>
-            <button ng-if='!isConfirming'>Confirm</button>
-            <p class='muted' ng-if='!isConfirming'>By clicking "Confirm", you agree to pick up your food in the lobby of <strong>{{place.name}}</strong>.</p>
+            <fading-circle-spinner ng-if='placing'></fading-circle-spinner>
+            <button ng-if='!placing'>Confirm</button>
+            <p class='muted' ng-if='!placing'>By clicking "Confirm", you agree to pick up your food in the lobby of <strong>{{place.name}}</strong>.</p>
         </div>
 
-
-
+      </div>
     </div>
   </div>
 </div>

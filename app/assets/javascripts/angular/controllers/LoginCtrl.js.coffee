@@ -7,10 +7,10 @@
     if response.status == "connected"
       Sessions.login response.authResponse, (user) ->
         $scope.isLoggingIn = false
-        $rootScope.$emit("requireActivation") if user.isRegistered()
-        if $scope.loginCallback
-          $scope.loginCallback.callback($scope.loginCallback.object) if $scope.loginCallback?
-          $scope.loginCallback = null
+        if user.isRegistered()
+          $rootScope.$emit("requireActivation", callback: $scope.loginCallback)
+        else
+          $rootScope.$emit("HideLogin", callback: $scope.loginCallback)
     else
 
 

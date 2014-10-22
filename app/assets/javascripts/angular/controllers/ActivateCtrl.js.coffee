@@ -1,7 +1,8 @@
 @nommit.controller 'ActivateCtrl', ($scope, Sessions, Places, $rootScope, Users, $timeout) ->
   $scope.close = (cb) ->
     $rootScope.$emit("HideActivation", callback: cb)
-  $rootScope.$on "requireActivation", ->
+  $rootScope.$on "requireActivation", (event, cb) ->
+    $scope.callback = cb
     $scope.error = "To continue, activate your account."
   $rootScope.$on "CurrentUser", (event, user) ->
     $scope.user = user
@@ -32,7 +33,7 @@
           success = (user) ->
             $scope.isActivating = false
             $scope.close ->
-              $rootScope.$emit("requireValidation")
+              $rootScope.$emit("requireValidation", $scope.callback)
           error = (error) ->
             $scope.error = error.data.message
             $scope.isActivating = false

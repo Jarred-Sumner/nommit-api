@@ -1,10 +1,11 @@
 @nommit.controller 'ConfirmPhoneCtrl', ($scope, Sessions, Places, $rootScope, Users, $timeout) ->
   $rootScope.$on "CurrentUser", (event, user) ->
     $scope.user = user
-
   $rootScope.$on "requireValidation", (event, obj) ->
-    console.log(obj)
     $scope.callback = obj
+  $scope.close = ->
+    $rootScope.$emit("HideConfirmPhone")
+
 
   $scope.confirm = ->
     $scope.isConfirming = true
@@ -13,7 +14,7 @@
     success = (user) ->
       $scope.isConfirming = false
       Sessions.setCurrentUser(user)
-      $rootScope.$emit "HideConfirmPhone", callback: $scope.callback
+      $rootScope.$emit "HideConfirmPhone", $scope.callback
     error = (error) ->
       $scope.error = error.data.message
       $scope.isConfirming = false

@@ -12,11 +12,12 @@ class Api::V1::UsersController < Api::V1::ApplicationController
         else
           return render_invalid_confirm_code
         end
-      end
-
-      if update_params[:phone].present?
-        current_user.update_attributes(phone: update_params[:phone])
+      elsif update_params[:phone].present?
+        phone = Phony.normalize(update_params[:phone])
+        current_user.update_attributes(phone: phone)
         generate_confirm_code!
+      else
+        return render_bad_request("To continue, please enter a phone number.")
       end
 
     end
@@ -30,6 +31,8 @@ class Api::V1::UsersController < Api::V1::ApplicationController
     render_bad_request("Couldn't validate credit card, please re-enter it and try again")
   rescue ArgumentError
     render_invalid_confirm_code
+  rescue Phony::NormalizationError
+    render_bad_request("Please enter a valid phone number")
   end
 
   private

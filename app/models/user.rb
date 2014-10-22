@@ -15,6 +15,12 @@ class User < ActiveRecord::Base
 
   attr_accessor :facebook
 
+  def deactivate!
+    self.phone = nil
+    generate_confirm_code!
+    registered!
+  end
+
   def first_name
     self.name.split(" ").first
   end

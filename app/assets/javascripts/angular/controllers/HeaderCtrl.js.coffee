@@ -40,7 +40,6 @@
   $rootScope.$on "CurrentUser", (event, user) ->
     $scope.user = user
     $scope.loggedIn = Sessions.isLoggedIn()
-    $scope.isShowingLogin = false
 
   $rootScope.$on "$stateChangeSuccess", ->
     # Fetch current user
@@ -58,18 +57,26 @@
   $scope.hidePlaces = ->
     $scope.changingPlace = false
 
-  $rootScope.$on "requireLogin", ->
+  $rootScope.$on "requireLogin", (event, obj) ->
     $scope.showLogin() unless $scope.user?
-  $rootScope.$on "requireActivation", ->
-    $scope.showActivation() if $scope.user? && $scope.user.isRegistered()
+  $rootScope.$on "requireActivation", (event, obj) ->
+    $scope.isShowingLogin = false
+    if $scope.user? && $scope.user.isRegistered()
+      $scope.showActivation()
+
+
   $rootScope.$on "requireValidation", ->
     $scope.isShowingConfirmPhone = true
   $rootScope.$on "confirmOrder", (event, food) ->
     $scope.isShowingConfirmOrder = true
 
+  $rootScope.$on "HideLogin", (event, obj) ->
+    $scope.isShowingLogin = false
+    obj.callback(obj.object) if obj.callback
   $rootScope.$on "HideActivation", (event, obj) ->
     $scope.isShowingActivation = false
-    obj.callback() if obj.callback
+    obj.callback(obj.object) if obj
   $rootScope.$on "HideConfirmPhone", (event, obj) ->
     $scope.isShowingConfirmPhone = false
-    obj.callback() if obj.callback
+    console.log(obj)
+    obj.callback(obj.object) if obj

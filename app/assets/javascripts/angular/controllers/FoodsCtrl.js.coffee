@@ -27,8 +27,10 @@
 
   setPlace()
 
-  $scope.searchPlaces = (query) ->
-
+  $rootScope.$on "HideOrderFood", ->
+    $scope.orderingFood = false
+  $rootScope.$on "CurrentUser", (event, user) ->
+    $scope.user = user
   $scope.order = (food) ->
     if $scope.user
       if $scope.user.isActivated()

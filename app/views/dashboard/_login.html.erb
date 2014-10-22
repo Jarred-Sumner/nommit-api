@@ -1,6 +1,6 @@
-<div class='modal-cover' ng-if='isShowingLogin' ng-click='hideLogin()'>
+<div class='modal-cover' ng-show='isShowingLogin' ng-click='hideLogin()'>
   <div class='modal-container'>
-    <div id='login-form' ng-controller='LoginCtrl' class='login' prevent-click-propagation>
+    <div id='login-form' ng-controller='LoginCtrl' class='login' prevent-click-delegation>
       <div class='nommit-logo alt'></div>
       <p class='info'>Food delivered in under 15 minutes. <br /> Only available at CMU.</p>
       <div class='btn login-with-facebook' ng-click='login()' ng-if='!isLoggingIn'>Login with Facebook</div>
