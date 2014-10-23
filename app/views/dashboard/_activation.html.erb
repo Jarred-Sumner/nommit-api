@@ -24,7 +24,7 @@
             <label for="phone">Enter your phone number:</label>
             <div class="input-label left">
               <i class="fa fa-mobile-phone"></i>
-              <input autofocus type="tel" name="phone" required ng-model='activation.phone' placeholder="(&middot;&middot;&middot;) &middot;&middot;&middot; - &middot;&middot;&middot;&middot;">
+              <input focus='{{isShowingActivation}}' type="tel" name="phone" required ng-model='activation.phone' placeholder="(&middot;&middot;&middot;) &middot;&middot;&middot; - &middot;&middot;&middot;&middot;">
             </div>
           </fieldset>
 
