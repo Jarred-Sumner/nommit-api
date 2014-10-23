@@ -27,7 +27,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
       begin
         PaymentMethod.create_for(token: update_params[:stripe_token], user: current_user)
       rescue Stripe::InvalidRequestError, Stripe::CardError, ArgumentError => e
-        render_bad_request("Couldn't validate credit card, please re-enter it and try again")
+        return render_bad_request("Couldn't validate credit card, please re-enter it and try again")
       end
     end
 
