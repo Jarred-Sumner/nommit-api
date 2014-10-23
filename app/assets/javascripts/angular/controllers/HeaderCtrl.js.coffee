@@ -16,6 +16,8 @@
       $scope.place = _.find $scope.places, (place) ->
         String(place.id) == String(id)
 
+      $scope.setCurrentPlace($scope.places[0].id) unless $scope.place
+
       # Remove current place from array and alphabetize places
       $scope.places = _.without($scope.places, $scope.place)
       $scope.places = _.sortBy $scope.places, (place) ->
