@@ -13,7 +13,8 @@ class Api::V1::UsersController < Api::V1::ApplicationController
           return render_invalid_confirm_code
         end
       elsif update_params[:phone].present?
-        phone = Phony.normalize(update_params[:phone])
+        phone = PhonyRails.normalize_number(update_params[:phone], default_country_code: "US")
+        raise Phony::NormalizationError unless Phony.plausible?(phone)
         current_user.update_attributes(phone: phone)
         generate_confirm_code!
       else
@@ -23,12 +24,14 @@ class Api::V1::UsersController < Api::V1::ApplicationController
     end
 
     if update_params[:stripe_token].present?
-      PaymentMethod.create_for(token: update_params[:stripe_token], user: current_user)
+      begin
+        PaymentMethod.create_for(token: update_params[:stripe_token], user: current_user)
+      rescue Stripe::InvalidRequestError, Stripe::CardError, ArgumentError => e
+        render_bad_request("Couldn't validate credit card, please re-enter it and try again")
+      end
     end
 
     render action: :me
-  rescue Stripe::InvalidRequestError, Stripe::CardError => e
-    render_bad_request("Couldn't validate credit card, please re-enter it and try again")
   rescue ArgumentError
     render_invalid_confirm_code
   rescue Phony::NormalizationError

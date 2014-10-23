@@ -24,7 +24,7 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
   def update
     if Integer(update_params[:state_id]) == Order.states[:rated]
       @order = Order.find_by(user_id: current_user.id, id: update_params[:id])
-      return render_not_found if @order.nil? || @order.rated? || !@order.delivered?
+      return render_bad_request("Cannot make changes to this order") if @order.nil? || @order.rated? || !@order.delivered?
 
       if @order.charge.paid? && update_params[:tip_in_cents].present?
         return render_bad_request("Cannot tip an order 24 hours later -- your card has already been charged.")
