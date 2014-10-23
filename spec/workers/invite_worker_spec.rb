@@ -10,7 +10,7 @@ describe InviteWorker do
       users = []
       25.times { users << build(:user) }
       allow(Texter).to receive(:run)
-      expect(Texter).to receive(:run).exactly(2 * 25).times
+      expect(Texter).to receive(:run).exactly(users.count).times
 
       params = users.collect do |user|
         {
