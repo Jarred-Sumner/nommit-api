@@ -18,6 +18,7 @@
             food
         .flatten()
         .value()
+      $scope.fetchedFoods = true
 
   $rootScope.$on "placeIDChanged", (event) ->
     setPlace()

@@ -1,4 +1,5 @@
 <div class='container' id='foods-container'>
+  <fading-circle-spinner ng-if='!fetchedFoods'></fading-circle-spinner>
   <div class='rows' id='foods'>
 
     <div class='row-container' ng-repeat='food in foods'>

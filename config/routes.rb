@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       resources :users, only: [:update] do
         resources :promos, only: [:create]
       end
+      resources :promos, only: [:show]
 
       resources :orders, only: [:create, :index, :update, :show]
       resources :delivery_places, only: [:update]

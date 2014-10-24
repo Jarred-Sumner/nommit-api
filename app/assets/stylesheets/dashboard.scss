@@ -249,6 +249,8 @@ $brand-green: #228B8F;
   left: 0px;
   z-index: 100;
   text-align: center;
+  @include animation(fadeIn 0.25s ease-in-out);
+  @include backface-visibility(visible);
   .footer {
     font-size: 12px;
     color: #6F6F79;
@@ -369,6 +371,8 @@ $brand-green: #228B8F;
   left: 0px;
   z-index: 100;
   display: table;
+  @include animation(fadeIn 0.5s ease-in-out);
+  @include backface-visibility(visible);
 }
 
 .modal-container {
@@ -593,6 +597,17 @@ span.input-label { display: inline-block }
     margin-bottom: 25px;
   }
 }
+
+@include keyframes(fadeIn) {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
 
 
 

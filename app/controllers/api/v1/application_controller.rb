@@ -2,6 +2,7 @@ class Api::V1::ApplicationController < ActionController::Base
   attr_writer :current_user
   rescue_from ActiveRecord::RecordInvalid, with: :render_invalid_record
   rescue_from ActionController::ParameterMissing, with: :render_bad_request
+  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
   rescue_from ActionController::RoutingError, with: :render_not_found
   rescue_from Exception, with: :render_generic_error unless Rails.env.development?
 
@@ -68,7 +69,7 @@ class Api::V1::ApplicationController < ActionController::Base
     end
 
     def render_not_found
-      render_error(status: :not_found, text: "Four Oh Four Error. Not found :'(")
+      render_error(status: :not_found, text: "Couldn't find the thing you're looking for (404)")
     end
 
     def render_forbidden

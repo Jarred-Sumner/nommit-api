@@ -55,7 +55,7 @@ class Shift < ActiveRecord::Base
     transaction do
       places.each_with_index do |place, index|
         place.update_attributes!(current_index: index, arrives_at: eta_for(index, count))
-        place.orders.update_all(delivered_at: eta_for(index, count) + DELIVERY_PADDING.minutes)
+        place.orders.pending.update_all(delivered_at: eta_for(index, count) + DELIVERY_PADDING.minutes)
       end
     end
 
