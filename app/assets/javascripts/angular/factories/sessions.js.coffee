@@ -17,11 +17,10 @@
       @user = user
     currentUser: (cb) ->
       if Sessions.isLoggedIn()
-        unless @user
-          @user = Users.get id: "me", (user) ->
-            console.log(user)
-            $rootScope.$broadcast("CurrentUser", user)
-            cb(user) if cb
+        return cb(@user) if @user
+        @user = Users.get id: "me", (user) ->
+          $rootScope.$broadcast("CurrentUser", user)
+          cb(user) if cb
       else
         cb(null) if cb
     isLoggedIn: ->

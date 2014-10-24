@@ -1,0 +1,41 @@
+<div class='container' id='orders-container'>
+  <div class='rows' id='orders'>
+    <div class='row-container' ng-repeat='order in orders'>
+
+      <div class='preview'>
+        <div class='image' ng-style="{ 'background-image': 'url({{order.food.header_image_url}})' }">
+          <img profile-pic='{{order.courier.user.id}}' size='120x120' class='overlay courier' />
+          <img ng-src='{{order.food.seller.logo_url}}' class='overlay seller' />
+          <div class='overlay price-container'>
+            {{order.cost() | currency }}
+          </div>
+        </div>
+      </div>
+
+      <div class='row order' ng-if='order.isActive()'>
+
+        <div class='overview'>
+          <p class='description'>
+            <strong>{{order.courier.user.name}}</strong> is delivering
+            <strong>{{order.quantity}}</strong> order(s) of
+            <strong>{{order.food.title}}</strong> from
+            <strong>{{order.food.seller.name}}</strong> to you for
+            <strong>{{order.cost() | currency }}</strong>.
+          </p>
+        </div>
+
+        <div class='well'>
+          <h3 class='muted'>Arriving at {{order.place.name}} in:</h3>
+          <!-- <timer class='eta' end-date='{{ new Date(order.delivered_at)}}'></timer> -->
+        </div>
+
+        <div class='footer'>
+          <h4>Wondering where your courier is?</h4>
+          <h3 class='phone'>{{order.courier.user.phone | tel}}</h3>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

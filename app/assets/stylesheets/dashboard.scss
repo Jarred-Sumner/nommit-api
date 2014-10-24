@@ -48,7 +48,7 @@ input, button {
   outline: none;
 }
 
-.medium-weight {
+strong {
   font-weight: 500;
 }
 
@@ -265,6 +265,84 @@ $brand-green: #228B8F;
 #content-container {
   margin-top: 14px;
   width: 100%;
+  .container {
+    margin-top: 14px;
+    text-align: center;
+    @include outer-container;
+    max-width: 600px;
+    width: 100%;
+  }
+}
+
+.rows {
+  @include span-columns(12);
+  .row-container {
+    $border-radius: 4px;
+    $row-border-color: #E9E9E9;
+
+    width: 279px;
+    border-radius: $border-radius;
+    text-align: left;
+    &:nth-child(odd) {
+      float: left;
+    }
+    &:nth-child(even) {
+      float: right;
+    }
+
+    .row {
+      margin-bottom: 15px;
+      text-align: left;
+      background-color: white;
+      border-radius: $border-radius;
+      border: 1px solid $row-border-color;
+      border-top-left-radius: 0px;
+      border-top-right-radius: 0px;
+
+      .well {
+        padding: 11px;
+        background-color: #FCFCFC;
+        border-top: 1px solid #E9E9E9;
+        border-bottom: 1px solid #E9E9E9;
+        box-shadow: inset 0px 1px 4px solid rgba(232,232,232,0.19);
+      }
+    }
+
+    .preview {
+      border-left: 1px solid $row-border-color;
+      border-right: 1px solid $row-border-color;
+      .image {
+        border-top-left-radius: $border-radius;
+        border-top-right-radius: $border-radius;
+        width: 100%;
+        height: 172px;
+        background-size: cover;
+        position: relative;
+        .overlay {
+          padding: 2px;
+          background-color: white;
+          border-radius: 30px;
+          position: absolute;
+          z-index: 10;
+          bottom: -50px;
+          width: 60px;
+          height: 60px;
+          box-shadow: 0px 0px 1px 0px #CCC;
+        }
+      }
+    }
+
+  }
+
+}
+
+@media only screen and (max-width: 675px) {
+  .row-container {
+    margin: 0 auto;
+    float: center !important;
+    display: block;
+    margin-bottom: 25px;
+  }
 }
 
 .nommit-logo {
@@ -503,6 +581,22 @@ span.input-label { display: inline-block }
   }
 }
 
+.ribbon {
+  @include outer-container;
+  text-align: center;
+  img {
+    height: 100%;
+    width: 100%;
+    max-width: 525px;
+    max-height: 46px;
+  }
+}
+
+
+
+
+
 @import "dashboard/activation";
 @import "dashboard/foods";
+@import "dashboard/orders";
 @import "dashboard/login";

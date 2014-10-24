@@ -30,8 +30,10 @@
       $scope.setCurrentPlace($scope.places[0].id)
   $scope.filterPlaces = ->
     if $scope.search.query.length > 0
+      query = _.str.titleize($scope.search.query)
       $scope.search.places = _.filter $scope.search.places, (place) ->
-        place.name.indexOf($scope.search.query) > -1
+        name = _.str.titleize(place.name)
+        _.str.include(name, query)
     else
       $scope.search.places = $scope.places
 

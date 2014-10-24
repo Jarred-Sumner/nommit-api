@@ -18,6 +18,7 @@
 //= require angular/angular-payments
 //= require angular/angular-facebook
 //= require underscore-min
+//= require underscore.string.min.js
 //= require_tree ./mixins
 //= require_tree ./angular/mixins
 //= require nommit

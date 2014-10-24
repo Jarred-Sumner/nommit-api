@@ -1,25 +1,22 @@
-<div class='ribbon'>
-  <%= image_tag "dashboard/only-available-at-cmu.png" %>
-</div>
+<div class='container' id='foods-container'>
+  <div class='rows' id='foods'>
 
-<div id='foods-container'>
-  <div id='foods'>
+    <div class='row-container' ng-repeat='food in foods'>
 
-    <div class='food-container' ng-repeat='food in foods'>
       <div class='preview'>
-        <div class='food-preview' ng-style="{ 'background-image': 'url({{food.header_image_url}})' }">
-          <img ng-src='{{food.seller.logo_url}}' class='seller-logo' />
+        <div class='image' ng-style="{ 'background-image': 'url({{food.header_image_url}})' }">
+          <img ng-src='{{food.seller.logo_url}}' class='overlay seller' />
         </div>
-
       </div>
-      <div class='food'>
+
+      <div class='row food'>
 
         <div class='overview'>
           <h3 class='title'>{{food.title}}</h3>
           <h5 class='seller-name'>By {{ food.seller.name }}</h5>
         </div>
 
-        <div class='details'>
+        <div class='well'>
           <div class='description'>{{ food.description }}</div>
           <div class='status'>
             <div class='stats'>
@@ -38,7 +35,7 @@
           </div>
         </div>
 
-        <div class='order'>
+        <div class='footer'>
           <h2 class='price'>{{ price(food, food.quantity) | currency }}</h2>
           <fieldset class='quantity-container'>
             <label for='quantity'>QTY:</label>
@@ -85,11 +82,12 @@
 
         <div class='body'>
           <form ng-submit='placeOrder()' class='confirm-form'>
-            <p>Confirm your order of <span class="medium-weight" ng-if='food.quantity > 1'>{{food.quantity}} batch</span> <span class="medium-weight" ng-if='food.quantity == 1'>one batch</span> of <br />
-              <span class ="medium-weight">{{food.title}}</span> for:</p>
-            <h2 class='price medium-weight'>{{price | currency}}</h2>
+            <p>Confirm your order of <strong ng-if='food.quantity > 1'>{{food.quantity}} batch</strong> <strong ng-if='food.quantity == 1'>one batch</strong> of <br />
+              <strong>{{food.title}}</strong> for:
+            </p>
+            <h2 class='price'><em>{{price | currency}}</em></h2>
            <fading-circle-spinner ng-if='placing'></fading-circle-spinner>
-            <h5 class='muted italic' ng-if='!placing'>By clicking "Confirm", you agree to pick up your food in the lobby of <strong>{{place.name}}</strong>. Promo credit applied after confirmation</h5>
+            <p class='muted' ng-if='!placing'>By clicking "Confirm", you agree to pick up your food in the lobby of <strong>{{place.name}}</strong>. Promo credit applied after confirmation</p>
               <button ng-if='!placing'>Confirm</button>
             </form>
         </div>

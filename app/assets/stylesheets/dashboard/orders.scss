@@ -1,0 +1,58 @@
+#orders {
+
+  .preview {
+    margin: 0 auto;
+    text-align: center;
+  }
+  .overlay {
+    margin-top: 145px;
+    position: static;
+    display: inline-block;
+    &.price-container {
+      background-color: $brand-green;
+      color: white;
+      border: 2px solid white;
+      font-size: 18px;
+      height: auto;
+      width: auto;
+      max-width: 61px;
+      text-overflow: ellipsis;
+      padding: 18px 6px;
+
+      // This is really hacky.
+      position: relative;
+      top: -24px;
+    }
+  }
+
+  .row {
+    padding: 15px;
+    color: darken(#6C6C6C, 10%);
+    .overview {
+      .description { margin-top: 25px; font-size: 8pt; }
+      strong { font-weight: 400; }
+    }
+
+    .well {
+      margin: 15px -15px;
+      padding: 15px;
+      text-align: center;
+      .muted { font-size: 8pt; }
+      .muted, .eta {
+        margin-bottom: 10px;
+      }
+      .eta {
+        margin-top: 5px;
+        color: #696969;
+      }
+    }
+
+    .footer {
+      text-align: center;
+      .weak {
+        font-size: 8pt;
+      }
+    }
+  }
+
+}

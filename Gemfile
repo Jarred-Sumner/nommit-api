@@ -88,6 +88,8 @@ group :test, :development do
   gem 'capistrano-sidekiq'
 
   gem 'therubyrhino',  platforms: :ruby
+
+  gem 'did_you_mean'
 end
 
 group :production do

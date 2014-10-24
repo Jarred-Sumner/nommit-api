@@ -1,216 +1,181 @@
-.ribbon {
-  @include outer-container;
-  text-align: center;
-  img {
-    height: 100%;
-    width: 100%;
-    max-width: 525px;
-    max-height: 46px;
+
+.row-container {
+  $border-radius: 4px;
+  width: 279px;
+  border-radius: $border-radius;
+  text-align: left;
+  .overlay {
+    left: 10px;
   }
-}
-
-#foods-container {
-  margin-top: 14px;
-  text-align: center;
-  @include outer-container;
-  max-width: 600px;
-  width: 100%;
-}
-
-#foods {
-  @include span-columns(12);
-  .food-container {
-    $border-radius: 4px;
-    width: 279px;
-    border-radius: $border-radius;
+  .food {
+    margin-bottom: 15px;
     text-align: left;
-    .food {
-      margin-bottom: 15px;
-      text-align: left;
-      background-color: #FCFCFC;
-      border-radius: $border-radius;
-      border: 1px solid #E9E9E9;
-      border-top-left-radius: 0px;
-      border-top-right-radius: 0px;
-      .overview {
-        margin-left: 74px;
-        margin-bottom: 13px;
-        .title {
-          margin-top: 8px;
-          font-weight: 300;
-          line-height: 15px;
-          color: #767676;
-          font-size: 12pt;
-        }
-        .seller-name {
-          margin-top: 8px;
-          line-height: 9px;
+    background-color: #FCFCFC;
+    border-radius: $border-radius;
+    border: 1px solid #E9E9E9;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
 
-          font-size: 9pt;
-          color: #434040;
+    .overview {
+      margin-left: 74px;
+      margin-bottom: 13px;
+      .title {
+        margin-top: 8px;
+        font-weight: 300;
+        line-height: 15px;
+        color: #767676;
+        font-size: 12pt;
+      }
+      .seller-name {
+        margin-top: 8px;
+        line-height: 9px;
+
+        font-size: 9pt;
+        color: #434040;
+      }
+    }
+    .well {
+
+      .description {
+        font-size: 10pt;
+        font-weight: 300;
+        overflow: hidden;
+        height: 35px;
+      }
+
+      .status {
+        margin-top: 15px;
+        margin-bottom: 10px;
+
+        .stats {
+          margin-bottom: 5px;
+          color: #828282;
+          font-weight: 300;
+          .rating {
+            float: right;
+            @include user-select(none);
+            a { color: $brand-green; cursor: default; }
+          }
+        }
+
+        .progress-bar {
+          background-color: #F0F0F0;
+          height: 12px;
+          border-radius: 6px;
+          width: 100%;
+          display: block;
+          overflow: hidden;
+          .progress {
+            background-color: $brand-green;
+            height: 12px;
+            display: block;
+          }
+        }
+
+      }
+
+    }
+
+    .promo-container {
+      padding: 1px;
+      background-color: white;
+      border-bottom: 1px solid #E9E9E9;
+      .promo {
+        margin: 9px;
+        position: relative;
+        $placeholder-color: #999;
+        &:before {
+          @extend .fa;
+          @extend .fa-tag;
+          position: absolute;
+          top: 10px;
+          color: $placeholder-color;
+        }
+        &:hover {
+          &:before {
+            color: #5C5C5C;
+          }
+        }
+        input {
+          text-indent: 10px;
+          padding: 8px;
+          margin-top:  0px;
+          margin-bottom: 0px;
+          width: 100%;
+          outline: none;
+          border: none;
+          background-color: white;
+          font-size: 13px;
+          color: #5c5c5c;
+          @include placeholder {
+            color: $placeholder-color;
+          }
         }
       }
-      .details {
-        padding: 11px;
-        background-color: #FCFCFC;
-        border-top: 1px solid #E9E9E9;
-        border-bottom: 1px solid #E9E9E9;
-        box-shadow: inset 0px 1px 4px solid rgba(232,232,232,0.19);
+    }
 
-        .description {
+    .footer {
+      padding: 0px 9px;
+      margin-bottom: 10px;
+      width: 100%;
+      background-color:#FCFCFC;
+      .price {
+        margin-bottom: 20px;
+        color: $brand-green;
+        font-weight: 400;
+        display: inline-block;
+      }
+      .quantity-container {
+        margin-top: 7px;
+        padding: 0px;
+        border: none;
+        float: right;
+        display: block;
+        label {
+          font-weight: 300;
+          color: #888888;
+          margin-right: 5px;
+          font-size: 8pt;
+        }
+        .quantity {
+          padding: 10px;
+          border: 1px solid #CCC;
           font-size: 10pt;
           font-weight: 300;
-          overflow: hidden;
-          height: 35px;
-        }
-
-        .status {
-          margin-top: 15px;
-          margin-bottom: 10px;
-          .stats {
-            margin-bottom: 5px;
-            color: #828282;
-            font-weight: 300;
-            .sold {
-            }
-            .rating {
-              float: right;
-              @include user-select(none);
-              a { color: $brand-green; cursor: default; }
-            }
-          }
-          .progress-bar {
-            background-color: #F0F0F0;
-            height: 12px;
-            border-radius: 6px;
-            width: 100%;
-            display: block;
-            overflow: hidden;
-            .progress {
-              background-color: $brand-green;
-              height: 12px;
-              display: block;
-            }
-          }
-        }
-
-      }
-      .promo-container {
-        padding: 1px;
-        background-color: white;
-        .promo {
-          margin: 9px;
-          input {
-            padding: 8px;
-            margin-top:  0px;
-            margin-bottom: 0px;
-            width: 100%;
-            outline: none;
-            border: none;
-            background-color: white;
-            font-size: 13px;
-            color: #5c5c5c;
-          }
+          background-color: white;
+          height: 25px;
+          width: 45px;
+          border-radius: 2px;
         }
       }
-      .order {
-        padding: 0px 9px;
-        margin-bottom: 10px;
-        width: 100%;
-        background-color: #FCFCFC;
-        border-top: 1px solid #E9E9E9;
+
+      .place-order {
         .price {
           margin-bottom: 20px;
           color: $brand-green;
           font-weight: 400;
           display: inline-block;
         }
-        .quantity-container {
-          margin-top: 7px;
-          padding: 0px;
-          border: none;
-          float: right;
-          display: block;
-          label {
-            font-weight: 300;
-            color: #888888;
-            margin-right: 5px;
-            font-size: 8pt;
-          }
-          .quantity {
-            padding: 10px;
-            border: 1px solid #CCC;
-            font-size: 10pt;
-            font-weight: 300;
-            background-color: white;
-            height: 25px;
-            width: 45px;
-            border-radius: 2px;
-          }
-        }
-
-        .place-order {
-          display: block;
-          width: 100%;
-          background-color: #42B7BB;
-          border: 1px solid $brand-green;
-          color: white;
-          padding: 10px 15px;
-          font-size: 12pt;
-          border-radius: 2px;
-          outline: none;
-          &:hover {
-            background-color: darken(#42B7BB, 10%);
-            border: 1px solid darken($brand-green, 10%);
-            cursor: pointer;
-          }
-          &:active {
-            outline: none;
-          }
-        }
-      }
-    }
-    .preview {
-      border-left: 1px solid #E9E9E9;
-      border-right: 1px solid #E9E9E9;
-      .food-preview {
-        border-top-left-radius: $border-radius;
-        border-top-right-radius: $border-radius;
+        background-color: #42B7BB;
+        border: 1px solid $brand-green;
+        color: white;
+        padding: 10px 15px;
+        display: block;
         width: 100%;
-        height: 172px;
-        background-size: cover;
-        position: relative;
+        font-size: 12pt;
+        border-radius: 2px;
+        outline: none;
+        &:hover {
+          background-color: darken(#42B7BB, 10%);
+          border: 1px solid darken($brand-green, 10%);
+          cursor: pointer;
+        }
+        &:active {
+          outline: none;
+        }
       }
-      .seller-logo {
-        padding: 2px;
-        background-color: white;
-        border-radius: 30px;
-        position: absolute;
-        z-index: 10;
-        left: 10px;
-        bottom: -50px;
-        width: 60px;
-        height: 60px;
-      }
-
     }
-
-  }
-  .food-container:nth-child(odd) {
-    float: left;
-  }
-  .food-container:nth-child(even) {
-    float: right;
-  }
-}
-
-@media only screen and (max-width: 675px) {
-  .food-container {
-    margin: 0 auto;
-    float: center !important;
-    display: block;
-    margin-bottom: 25px;
-  }
+    }
 }
 
 #order-food {
@@ -223,19 +188,18 @@
       padding: 20px;
       padding-bottom: 5px;
       margin: 10px;
-      font-size: 48px;
-      color: #6F6F79;
-      line-height: 20px;
-      text-shadow: 0px 1px 0px white;
       margin-top: 30px;
+      margin-bottom: 30px;
+      font-size: 56px;
+      color: #6F6F79;
     }
-    h5 {
+    p {
       margin: 0;
       opacity: 0.75;
       font-size: 10px;
       padding-bottom: 0px;
     }
-    .italic {
+    em {
       font-style: italic;
       margin-top: 55px;
       text-align: center;
