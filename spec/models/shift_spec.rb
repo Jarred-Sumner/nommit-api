@@ -19,13 +19,26 @@ describe Shift, type: :model do
       create(:order, place_id: shift.delivery_places.sample.place_id, food_id: food.id, delivered_at: 1.minute.ago)
     end
 
-    it "swaps the order" do
-      shift.update_delivery_times!(1)
-      dps = shift.delivery_places.order("current_index ASC")
+    context "swaps the order of delivery places" do
+      let(:dps) { shift.delivery_places.order("current_index ASC") }
 
-      expect(dps.first.start_index).to eq(1)
-      expect(dps.second.start_index).to eq(2)
-      expect(dps.third.start_index).to eq(0)
+      before :each do
+        shift.update_delivery_times!(1)
+      end
+
+      specify do
+        expect(dps.first.start_index).to eq(1)
+        expect(dps.second.start_index).to eq(2)
+        expect(dps.third.start_index).to eq(0)
+      end
+
+      it "except for the same delivery place" do
+        shift.update_delivery_times!(0)
+        expect(dps.first.start_index).to eq(1)
+        expect(dps.second.start_index).to eq(2)
+        expect(dps.third.start_index).to eq(0)
+      end
+
     end
 
     it "updates delivery estimates" do
@@ -33,7 +46,7 @@ describe Shift, type: :model do
 
       shift.update_delivery_times!(1)
 
-      expect(shift.orders.first.delivered_at).to_not eq(eta)
+      expect(shift.orders.first.delivered_at > eta).to eq(true)
     end
   end
 

@@ -60,6 +60,7 @@ class Order < ActiveRecord::Base
 
     def set_delivery!
       if self.delivery = Delivery.for(place_id: self.place_id, food_id: food_id).first
+        self.delivered_at = delivery.delivery_place.arrives_at
         set_courier!
 
         if delivery.delivery_place.arrived?
@@ -80,10 +81,6 @@ class Order < ActiveRecord::Base
       if food.remaining - quantity < 0
         errors.add(:base, "Not enough food left to place that order")
       end
-    end
-
-    def set_delivery_estimate!
-      self.delivered_at = delivery.delivery_place.arrives_at
     end
 
     def ensure_user_has_activated!

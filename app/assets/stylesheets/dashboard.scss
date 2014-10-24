@@ -336,15 +336,6 @@ $brand-green: #228B8F;
 
 }
 
-@media only screen and (max-width: 675px) {
-  .row-container {
-    margin: 0 auto;
-    float: center !important;
-    display: block;
-    margin-bottom: 25px;
-  }
-}
-
 .nommit-logo {
   background-size: contain;
   background-repeat: no-repeat;
@@ -593,6 +584,15 @@ span.input-label { display: inline-block }
 }
 
 
+
+@media only screen and (max-width: 675px) {
+  .row-container {
+    margin: 0 auto;
+    float: center !important;
+    display: block;
+    margin-bottom: 25px;
+  }
+}
 
 
 

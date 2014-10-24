@@ -17,7 +17,7 @@
       @user = user
     currentUser: (cb) ->
       if Sessions.isLoggedIn()
-        return cb(@user) if @user
+        return cb(@user) if @user && cb
         @user = Users.get id: "me", (user) ->
           $rootScope.$broadcast("CurrentUser", user)
           cb(user) if cb

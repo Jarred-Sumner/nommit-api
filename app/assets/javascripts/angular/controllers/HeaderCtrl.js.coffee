@@ -45,7 +45,9 @@
     $scope.user = user
     $scope.loggedIn = Sessions.isLoggedIn()
 
-  $rootScope.$on "$stateChangeSuccess", ->
+  $rootScope.$on "$stateChangeSuccess", (event, state) ->
+    $scope.page = state.name
+
     # Fetch current user
     # Notify all controllers that current user is available
     Sessions.currentUser() if Sessions.isLoggedIn()

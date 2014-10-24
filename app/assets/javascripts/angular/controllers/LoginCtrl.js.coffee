@@ -25,6 +25,7 @@
       Facebook.login(loginSucceeded)
 
   $rootScope.$on "requireLogin", (event, obj) ->
+    return unless obj?
     if obj.callback
       $scope.loginCallback = obj
     if obj.error

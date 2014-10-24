@@ -20,10 +20,14 @@
         <div class='tagline'>food in under 15 minutes.</div>
       </div>
 
-      <div class='delivery-box'>
+      <div class='delivery-box' ng-if='page == "foods"'>
         <span ng-if='choosingPlace'>Now Delivering To:</span>
         <span ng-if='!choosingPlace'>Delivering To:</span>
         <div id='place' ng-bind='place.name' ng-click='showPlaces()'></div>
+      </div>
+
+      <div class='delivery-box' ng-if='page == "orders"'>
+        <span>Your Orders</span>
       </div>
 
       <div class='account' ng-if='!loggedIn'>

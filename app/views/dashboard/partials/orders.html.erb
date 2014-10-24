@@ -12,7 +12,36 @@
         </div>
       </div>
 
-      <div class='row order' ng-if='order.isActive()'>
+      <div class='row order active' ng-if='order.isActive()'>
+
+        <div class='overview'>
+          <p class='description'>
+            <strong>{{order.courier.user.name}}</strong> is delivering
+            <strong>{{order.quantity}}</strong> order(s) of
+            <strong>{{order.food.title}}</strong> from
+            <strong>{{order.food.seller.name}}</strong> to you for
+            <strong>{{order.cost() | currency }}</strong>.
+          </p>
+        </div>
+
+        <div class='well' ng-if='!order.isLate()'>
+          <h3 class='muted'>Arriving at <strong>{{order.place.name}}</strong> in:</h3>
+          <timer class='eta' end-time='order.deliveredAt().getTime()'>{{mminutes}}:{{sseconds}}</timer>
+        </div>
+
+        <div class='well' ng-if='order.isLate()'>
+          <h3 class='muted'>Arriving at <strong>{{order.place.name}}</strong> in:</h3>
+          <h2 class='eta'>Any Minute now</h2>
+        </div>
+
+        <div class='footer'>
+          <h4>Wondering where your courier is?</h4>
+          <h3 class='phone'><a ng-href='tel://{{order.courier.user.phone}}'>{{order.courier.user.phone | tel}}</a></h3>
+        </div>
+
+      </div>
+
+      <div class='row order arrived' ng-if='order.isArrived()'>
 
         <div class='overview'>
           <p class='description'>
@@ -25,16 +54,41 @@
         </div>
 
         <div class='well'>
-          <h3 class='muted'>Arriving at {{order.place.name}} in:</h3>
-          <!-- <timer class='eta' end-date='{{ new Date(order.delivered_at)}}'></timer> -->
+          <h3 class='muted'>Arrived at <strong>{{order.place.name}}</strong></h3>
+          <h2 class='eta'>Pick Up in Lobby</h2>
         </div>
 
         <div class='footer'>
           <h4>Wondering where your courier is?</h4>
-          <h3 class='phone'>{{order.courier.user.phone | tel}}</h3>
+          <h3 class='phone'><a ng-href='tel://{{order.courier.user.phone}}'>{{order.courier.user.phone | tel}}</a></h3>
         </div>
 
       </div>
+
+      <div class='row order delivered' ng-if='order.isDelivered() || order.isRated()'>
+
+        <div class='overview'>
+          <p class='description'>
+            <strong>{{order.courier.user.name}}</strong> delivered
+            <strong>{{order.quantity}}</strong> order(s) of
+            <strong>{{order.food.title}}</strong> from
+            <strong>{{order.food.seller.name}}</strong> to you for
+            <strong>{{order.cost() | currency }}</strong>.
+          </p>
+        </div>
+
+        <div class='well'>
+          <h3 class='muted'>Delivered to <strong>{{order.place.name}}</strong> at:</h3>
+          <h2 class='eta'>{{order.deliveredAt() | date:"MMMM dd 'at' hh:mm a"}}</h2>
+        </div>
+
+        <div class='footer'>
+          <h4 class='muted'>You Rated It:</h4>
+          <rating score='order.rating' max='5' readonly='true' />
+        </div>
+
+      </div>
+
 
     </div>
   </div>
