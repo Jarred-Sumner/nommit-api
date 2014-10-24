@@ -27,7 +27,7 @@
     .food {
       margin-bottom: 15px;
       text-align: left;
-      background-color: white;
+      background-color: #FCFCFC;
       border-radius: $border-radius;
       border: 1px solid #E9E9E9;
       border-top-left-radius: 0px;
@@ -95,21 +95,30 @@
         }
 
       }
-      .promo {
-        margin: 9px;
-        input {
-          padding: 10px;
-          border-radius: 3px;
-          border: 1px solid #CCC;
-          width: 100%;
-          outline: none;
-          box-shadow: inset 1px 1px 1px 0px #DDD;
+      .promo-container {
+        padding: 1px;
+        background-color: white;
+        .promo {
+          margin: 9px;
+          input {
+            padding: 8px;
+            margin-top:  0px;
+            margin-bottom: 0px;
+            width: 100%;
+            outline: none;
+            border: none;
+            background-color: white;
+            font-size: 13px;
+            color: #5c5c5c;
+          }
         }
       }
       .order {
         padding: 0px 9px;
         margin-bottom: 10px;
         width: 100%;
+        background-color: #FCFCFC;
+        border-top: 1px solid #E9E9E9;
         .price {
           margin-bottom: 20px;
           color: $brand-green;
@@ -219,13 +228,6 @@
       line-height: 20px;
       text-shadow: 0px 1px 0px white;
       margin-top: 30px;
-
-      font-family: Helvetica;
-      font-size: 56px;
-      color: #6F6F79;
-      line-height: 20px;
-      /* $5: */
-      text-shadow: 0px 1px 0px #FFFFFF;
     }
     h5 {
       margin: 0;

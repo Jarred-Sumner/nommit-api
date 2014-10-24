@@ -32,8 +32,10 @@
           </div>
         </div>
 
-        <div class='promo'>
-          <input type='text' ng-model='food.promo' name='promo' placeholder='Promo Code (Optional)' />
+        <div class="promo-container">
+          <div class='promo'>
+            <input type='text' ng-model='food.promo' name='promo' placeholder='Promo Code (Optional)' />
+          </div>
         </div>
 
         <div class='order'>
@@ -89,6 +91,7 @@
            <fading-circle-spinner ng-if='placing'></fading-circle-spinner>
             <h5 class='muted italic' ng-if='!placing'>By clicking "Confirm", you agree to pick up your food in the lobby of <strong>{{place.name}}</strong>. Promo credit applied after confirmation</h5>
               <button ng-if='!placing'>Confirm</button>
+            </form>
         </div>
 
       </div>
