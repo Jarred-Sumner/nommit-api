@@ -1,0 +1,166 @@
+#accounts-container {
+  background-color: white;
+  border: 1px solid $row-border-color;
+  border-radius: $row-border-radius;
+  max-width: 330px !important;
+  padding-bottom: 5px;
+  text-align: center;
+  .account {
+    padding: 5px;
+    color: #6F6F79;
+    font-size: 15pt;
+    line-height: 18px;
+    $width: 308px;
+    h2 {
+      margin: 22px;
+      font-size: 14pt;
+      color: #656565;
+    }
+    .input {
+      margin: 0 auto;
+      text-align: center;
+      padding: 10px 10px;
+      display: block;
+      border: 1px solid #E9E9E9;
+      background-color: #FCFCFC;
+      box-shadow: 0px 1px 0px rgba(255,255,255,0.5);
+      font-size: 12pt;
+      color: #474747;
+      max-width: $width;
+      &:hover {
+        cursor: pointer;
+        background-color: white;
+      }
+
+    }
+
+    .profile {
+      margin: 0 auto;
+      max-width: $width;
+      width: 100%;
+      text-align: center;
+      .prof-pic {
+        height: 63px;
+        width: 63px;
+        border-radius: 31px;
+        display: inline-block;
+        margin-right: 14px;
+      }
+      .details {
+        display: inline-block;
+        font-weight: 300;
+        text-align: left;
+        position: relative;
+        top: -10px;
+      }
+    }
+
+    .payment-info {
+      .edit, &:before {
+        margin: 0 0;
+        margin-top: 2px;
+        display: inline-block;
+        font-size: 12pt;
+        color: $brand-green;
+      }
+      .edit {
+        float: right;
+        margin-right: 5px;
+      }
+
+      &:before {
+        float: left;
+      }
+
+
+      &.visa {
+        &:before {
+          @extend .fa;
+          @extend .fa-cc-visa;
+        }
+      }
+      &.mastercard {
+        &:before {
+          @extend .fa;
+          @extend .fa-cc-mastercard;
+        }
+      }
+      &.amex {
+        &:before {
+          @extend .fa;
+          @extend .fa-cc-amex;
+        }
+      }
+      &.discover {
+        &:before {
+          @extend .fa;
+          @extend .fa-cc-discover;
+        }
+      }
+
+    }
+
+    .two-col {
+      margin: 35px auto;
+      text-align: center;
+      max-width: $width;
+      width: 100%;
+      display: block;
+
+      .one-col {
+        margin: 0 auto;
+        display: inline-block;
+        padding: 0px;
+        width: 48%;
+        text-align: center;
+        h2 {
+          margin: 0px;
+        }
+        h3 {
+          margin-top: 25px;
+          font-size: 26pt;
+          color: $brand-green;
+        }
+      }
+    }
+
+    .promo {
+      margin: 0 auto;
+      max-width: $width;
+      text-align: center;
+      input, button {
+        display: inline-block;
+      }
+
+      input {
+        width: 100%;
+        text-align: left;
+        @include calc(max-width, '#{$width} - 81px');
+        &:hover {
+          cursor: text;
+        }
+      }
+
+      button {
+        @include box-sizing(border-box);
+        background-color: #7C7C7C;
+        border: 1px solid #434343;
+        outline: none;
+        font-size: 14pt;
+        box-shadow: inset 0px 1px 0px rgba(255,255,255,0.5);
+        color: white;
+        padding: 6px 14px;
+        font-weight: 300;
+        border-radius: 3px;
+        text-shadow: none;
+      }
+      button[disabled] {
+        opacity: 0.75;
+        pointer-events: none;
+      }
+
+    }
+
+  }
+
+}

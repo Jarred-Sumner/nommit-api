@@ -28,11 +28,13 @@ Rails.application.routes.draw do
   namespace :dashboard do
     get 'partials/foods'
     get 'partials/orders'
+    get 'partials/account'
   end
 
   post 'twilio/sms' => "twilio#sms"
 
   get 'foods' => 'dashboard#index'
   get 'orders' => 'dashboard#index'
+  get 'account' => 'dashboard#index'
   root to: 'dashboard#index'
 end

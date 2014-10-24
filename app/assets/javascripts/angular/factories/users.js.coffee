@@ -11,5 +11,8 @@
   User::isRegistered = ->
     @state_id == 0
 
+  User::credit = ->
+    @credit_in_cents / 100
+
   User
 ]

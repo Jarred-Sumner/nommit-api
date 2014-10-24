@@ -31,6 +31,10 @@ window.settings =
       url: '/orders'
       templateUrl: 'dashboard/partials/orders'
       controller: 'OrdersCtrl'
+    ).state("account",
+      url: "/account"
+      templateUrl: 'dashboard/partials/account'
+      controller: "AccountCtrl"
     )
 
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|http|sms|tel):/)

@@ -6,4 +6,8 @@ class Dashboard::PartialsController < DashboardController
 
   def orders
   end
+
+  def account
+  end
+
 end
