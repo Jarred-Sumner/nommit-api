@@ -6,6 +6,7 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
       @orders = place.orders.where(courier: current_user.couriers.first)
     else
       @orders = Order.where(user: current_user)
+      @orders = @orders.where(state: Integer(index_params[:state_id])) if index_params[:state_id].present?
     end
   end
 
@@ -66,6 +67,10 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
     def update_params
       params.require(:id)
       params.permit(:state_id, :rating, :tip_in_cents, :id)
+    end
+
+    def index_params
+      params.permit(:state_id)
     end
 
     def shift
