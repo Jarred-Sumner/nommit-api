@@ -8,6 +8,7 @@ $nav-max-width: 800px;
     max-width: $nav-max-width;
     width: 100%;
     nav {
+      margin-top: 13px;
       @include span-columns(3);
       text-align: right;
       a {
@@ -90,6 +91,7 @@ $nav-max-width: 800px;
       text-shadow: none;
     }
     a {
+      margin-top: 13px;
       border-bottom: 1px dotted #BABABA;
       &:hover {
         border-bottom: 1px solid #BABABA;
@@ -119,11 +121,13 @@ $nav-max-width: 800px;
       font-size: 12pt;
       color: #BABABA;
       font-weight: 200;
+      margin-top: 13px;
     }
 
     .support {
       @include span-columns(3);
       text-shadow: none;
+      margin-top: 13px;
     }
 
   }
