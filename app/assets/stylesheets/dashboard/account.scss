@@ -1,11 +1,13 @@
 #accounts-container {
   background-color: white;
-  border: 1px solid $row-border-color;
   border-radius: $row-border-radius;
   max-width: 330px !important;
-  padding-bottom: 5px;
+  padding-bottom: 15px;
   margin-bottom: 15px;
   text-align: center;
+  border: 1px solid #BFBFBF;
+  -moz-box-shadow:    0px 0px 15px 0px rgba(186,186,186,0.50);
+  box-shadow:         0px 0px 15px 0px rgba(186,186,186,0.50);
   .account {
     padding: 5px;
     color: #6F6F79;
@@ -27,7 +29,7 @@
       box-shadow: 0px 1px 0px rgba(255,255,255,0.5);
       font-size: 12pt;
       color: #474747;
-      max-width: $width;
+      max-width: 80%;
       &:hover, &:focus {
         cursor: pointer;
         background-color: white;
@@ -118,6 +120,7 @@
         padding: 0px;
         width: 48%;
         text-align: center;
+        margin-top: -15px;
         h2 {
           margin: 0px;
         }
@@ -136,15 +139,15 @@
       input, button {
         display: inline-block;
       }
-
       input {
-        width: 100%;
+        width: 70%;
         float: left;
-        text-align: left;
+        text-align: center;
         @include calc(max-width, '#{$width} - 78px');
         &:hover {
           cursor: text;
         }
+        margin-top: -15px;
       }
 
       button {
@@ -161,6 +164,7 @@
         border-radius: 3px;
         text-shadow: none;
         float: right;
+        margin-top: -12px;
         &:hover {
           cursor: pointer;
           background-color: darken(#7C7C7C, 10%);
