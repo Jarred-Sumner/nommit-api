@@ -4,6 +4,7 @@
   border-radius: $row-border-radius;
   max-width: 330px !important;
   padding-bottom: 5px;
+  margin-bottom: 15px;
   text-align: center;
   .account {
     padding: 5px;
@@ -27,7 +28,7 @@
       font-size: 12pt;
       color: #474747;
       max-width: $width;
-      &:hover {
+      &:hover, &:focus {
         cursor: pointer;
         background-color: white;
       }
@@ -56,6 +57,10 @@
     }
 
     .payment-info {
+      @include user-select(none);
+      &:active {
+        .edit { color: darken($brand-green, 10%); }
+      }
       .edit, &:before {
         margin: 0 0;
         margin-top: 2px;
@@ -125,7 +130,7 @@
     }
 
     .promo {
-      margin: 0 auto;
+      margin: 0 8px;
       max-width: $width;
       text-align: center;
       input, button {
@@ -134,25 +139,35 @@
 
       input {
         width: 100%;
+        float: left;
         text-align: left;
-        @include calc(max-width, '#{$width} - 81px');
+        @include calc(max-width, '#{$width} - 78px');
         &:hover {
           cursor: text;
         }
       }
 
       button {
+        margin: 0 0;
         @include box-sizing(border-box);
         background-color: #7C7C7C;
         border: 1px solid #434343;
         outline: none;
-        font-size: 14pt;
-        box-shadow: inset 0px 1px 0px rgba(255,255,255,0.5);
+        font-size: 12pt;
+        box-shadow: inset 0px 0px 1px rgba(255,255,255,0.5);
         color: white;
-        padding: 6px 14px;
+        padding: 5px 14px;
         font-weight: 300;
         border-radius: 3px;
         text-shadow: none;
+        float: right;
+        &:hover {
+          cursor: pointer;
+          background-color: darken(#7C7C7C, 10%);
+        }
+        &:active {
+          background-color: darken(#7C7C7C, 15%);
+        }
       }
       button[disabled] {
         opacity: 0.75;

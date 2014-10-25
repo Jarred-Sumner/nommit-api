@@ -1,0 +1,197 @@
+$nav-padding: 14px 14px;
+$nav-max-width: 800px;
+
+.nav-container {
+  header,footer {
+    @include outer-container;
+    text-align: center;
+    max-width: $nav-max-width;
+    width: 100%;
+    nav {
+      @include span-columns(3);
+      text-align: right;
+      a {
+        font-size: 14pt;
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+#header-container {
+  border-bottom: 1px solid #C7C7C7;
+  background: white;
+  padding: $nav-padding;
+  &.sticky {
+    position: fixed;
+    display: block;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    z-index: 999;
+    margin-bottom: 79px;
+  }
+}
+
+
+#header {
+  .brand {
+    @include span-columns(3);
+    text-align: left;
+    .logo {
+      height: 30px;
+      margin-bottom: 5px;
+    }
+    .tagline {
+      font-weight: 300;
+      color: $faded-text;
+      font-size: 10pt;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .delivery-box {
+    text-align: center;
+    font-size: 17pt;
+    font-weight: 200;
+    color: #363637;
+    @include span-columns(6);
+    position: relative;
+    top: 11px;
+  }
+
+  nav {
+    position: relative;
+    top: 15px;
+  }
+}
+
+#footer-container {
+  footer {
+    margin-top: 14px;
+    height: 79px;
+    a {
+      color: #BABABA;
+      font-size: 14pt;
+      font-weight: 200;
+      text-shadow: none;
+    }
+
+    .appstore {
+      @include span-columns(3);
+      margin-top: 0px;
+      height: 40px;
+    }
+
+    .copyright {
+      @include span-columns(6);
+      text-align: center;
+      font-size: 12pt;
+      color: #BABABA;
+      font-weight: 200;
+    }
+
+    .support {
+      @include span-columns(3);
+      text-shadow: none;
+    }
+
+  }
+}
+
+#place-input {
+  margin: 0 auto;
+  width: 300px;
+  height: 50px;
+  font-size: 18px;
+  color: darken(#9797A3, 30%);
+  line-height: 20px;
+  padding-left: 60px;
+  font-weight: 200;
+  overflow: hidden;
+  border: 1px solid white;
+  box-shadow:  inset 0px 2px 1px 0px white;
+  @include linear-gradient(-179deg, #FFFFFF, 0%, #F1F1F1, 100%);
+  background-image: image-url("placesearch.png");
+  display: inline-block;
+  @include retina-image(placesearch, 300px 50px);
+  @include placeholder {
+    padding-top: 0px;
+    color: #9797A3;
+  }
+}
+
+#place {
+  display: inline-block;
+  color: $brand-green;
+  border-bottom: 1px $brand-green dotted;
+  font-size: 17pt;
+  @include user-select(none);
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+#place-select {
+  text-align: left;
+  margin: 0 auto;
+  background-color: #F9F9F9;
+  border: 1px solid white;
+  box-shadow: inset 0px 2px 1px 0px white;
+  padding: 20px 15px;
+  padding-top: 0px;
+  margin-top: 0px;
+  margin-bottom: 5px;
+  width: 300px;
+  list-style: none;
+  overflow: scroll;
+  max-height: 325px;
+  .place {
+    padding: 8px;
+    border-bottom: 1px dotted #979797;
+    box-shadow: 0px 0px 1px 0px rgba(255,255,255,0.5);
+    color: #6F6F79;
+    font-size: 18px;
+    font-weight: 200;
+    display: block;
+    width: 100%;
+    .fa {
+      margin-top: 2px;
+      float: right;
+    }
+    &:hover {
+      background-color: lighten(#F9F9F9, 1%);
+      border-bottom: 1px solid #979797;
+      cursor: pointer;
+      color: #39393A;
+    }
+
+  }
+}
+
+#place-select-container {
+  margin: 0 auto;
+  padding: 20px 10px;
+  position: fixed;
+  background-color: rgba(0,0,0,0.75);
+  height: 100%;
+  width: 100%;
+  top: 78px;
+  left: 0px;
+  z-index: 100;
+  text-align: center;
+  @include animation(fadeIn 0.25s ease-in-out);
+  @include backface-visibility(visible);
+  .footer {
+    font-size: 12px;
+    color: #6F6F79;
+    line-height: 20px;
+    display: inline-block;
+    width: 300px;
+    background-color: #F9F9F9;
+    margin-top: -180px;
+    padding: 15px;
+  }
+}

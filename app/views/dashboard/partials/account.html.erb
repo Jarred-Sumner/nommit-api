@@ -47,7 +47,7 @@
 
     <form class='promo' name='promoForm' ng-submit='applyPromo()'>
       <input type='text' class='input' ng-model='promo' required  placeholder='Enter Promo Code' />
-      <button>Apply</button>
+      <button ng-disabled='promoForm.$invalid'>Apply</button>
     </form>
 
   </div>

@@ -26,15 +26,21 @@ p,div {
 }
 
 a {
-  color: blue;
-  &:hover { cursor: pointer; }
-  &:visited { color: blue; }
+  color: #404040;
+  text-decoration: none;
+  border-bottom: 1px dotted #404040;
+  width: auto;
+  &:hover {
+    cursor: pointer;
+    border-bottom: 1px solid #404040;
+  }
+  &:visited { color: #404040; }
 }
 
 body {
   margin: 0 auto;
   padding: 0px;
-  background-color: #F8F8F8;
+  background-color: #3e3e3e;
 }
 
 fieldset {
@@ -52,220 +58,15 @@ strong {
   font-weight: 500;
 }
 
-#header-container {
-  padding: 14px 10px;
-  border-bottom: 1px solid #C7C7C7;
-  background: white;
-  &.sticky {
-    position: fixed;
-    display: block;
-    width: 100%;
-    top: 0px;
-    left: 0px;
-    z-index: 999;
-    margin-bottom: 79px;
-
-  }
-
-}
-
 $faded-text: #959595;
 $brand-green: #228B8F;
 
-#header {
-  @include outer-container;
-  text-align: center;
-  a {
-    color: #404040;
-    font-size: 14pt;
-    font-weight: 200;
-    padding-right: 10px;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-  .brand {
-    text-align: left;
-    @include span-columns(3);
-    .logo {
-      height: 30px;
-      margin-bottom: 5px;
-    }
-    .tagline {
-      font-weight: 300;
-      color: $faded-text;
-      font-size: 10pt;
-    }
-    &:hover {
-      cursor: pointer;
-    }
-  }
-
-  .delivery-box {
-    @include span-columns(6);
-    margin-top: 6px;
-    text-align: center;
-    font-size: 17pt;
-    font-weight: 200;
-    color: #363637;
-
-  }
-
-  .account {
-    @include span-columns(3);
-    margin-top: 8px;
-  }
-}
-
-#footer-container {
-  margin-top: 10px;
-  padding: 14px 10px;
-  background: #3e3e3e;
-  footer {
-    @include outer-container;
-    text-align: center;
-    a {
-      color: #BABABA;
-      font-size: 14pt;
-      font-weight: 200;
-      text-shadow: none;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-    .appstore {
-      @include span-columns(3);
-      height: 40px;
-      margin-bottom: 7px;
-      }
-    .brand {
-      text-align: left;
-      @include span-columns(3);
-      .tagline {
-        font-weight: 300;
-        color: $faded-text;
-        font-size: 10pt;
-      }
-      &:hover {
-        cursor: pointer;
-      }
-    }
-
-    .copyright {
-      @include span-columns(6);
-      margin-top: 16px;
-      text-align: center;
-      font-size: 12pt;
-      color: #BABABA;
-      font-weight: 200;
-    }
-
-    .support {
-      @include span-columns(3);
-      margin-top: 15px;
-      text-shadow: none;
-    }
-  }
-}
-
-#place-input {
-  margin: 0 auto;
-  width: 300px;
-  height: 50px;
-  font-size: 18px;
-  color: darken(#9797A3, 30%);
-  line-height: 20px;
-  padding-left: 60px;
-  font-weight: 200;
-  overflow: hidden;
-  border: 1px solid white;
-  box-shadow:  inset 0px 2px 1px 0px white;
-  @include linear-gradient(-179deg, #FFFFFF, 0%, #F1F1F1, 100%);
-  background-image: image-url("placesearch.png");
-  display: inline-block;
-  @include retina-image(placesearch, 300px 50px);
-  @include placeholder {
-    padding-top: 0px;
-    color: #9797A3;
-  }
-}
-
-#place {
-  display: inline-block;
-  color: $brand-green;
-  border-bottom: 1px $brand-green dotted;
-  font-size: 17pt;
-  @include user-select(none);
-  &:hover {
-    cursor: pointer;
-  }
-}
-
-#place-select {
-  text-align: left;
-  margin: 0 auto;
-  background-color: #F9F9F9;
-  border: 1px solid white;
-  box-shadow: inset 0px 2px 1px 0px white;
-  padding: 20px 15px;
-  padding-top: 0px;
-  margin-top: 0px;
-  margin-bottom: 5px;
-  width: 300px;
-  list-style: none;
-  overflow: scroll;
-  max-height: 325px;
-  .place {
-    padding: 8px;
-    border-bottom: 1px dotted #979797;
-    box-shadow: 0px 0px 1px 0px rgba(255,255,255,0.5);
-    color: #6F6F79;
-    font-size: 18px;
-    font-weight: 200;
-    display: block;
-    width: 100%;
-    .fa {
-      margin-top: 2px;
-      float: right;
-    }
-    &:hover {
-      background-color: lighten(#F9F9F9, 1%);
-      border-bottom: 1px solid #979797;
-      cursor: pointer;
-      color: #39393A;
-    }
-
-  }
-}
-
-#place-select-container {
-  margin: 0 auto;
-  padding: 20px 10px;
-  position: fixed;
-  background-color: rgba(0,0,0,0.75);
-  height: 100%;
-  width: 100%;
-  top: 78px;
-  left: 0px;
-  z-index: 100;
-  text-align: center;
-  @include animation(fadeIn 0.25s ease-in-out);
-  @include backface-visibility(visible);
-  .footer {
-    font-size: 12px;
-    color: #6F6F79;
-    line-height: 20px;
-    display: inline-block;
-    width: 300px;
-    background-color: #F9F9F9;
-    margin-top: -180px;
-    padding: 15px;
-  }
-}
 
 
 #content-container {
-  margin-top: 14px;
+  background-color: #F8F8F8;
+  padding-top: 14px;
+  padding-bottom: 14px;
   width: 100%;
   .container {
     margin-top: 14px;
@@ -606,6 +407,7 @@ span.input-label { display: inline-block }
   }
 }
 
+@import "dashboard/navigation";
 @import "dashboard/activation";
 @import "dashboard/foods";
 @import "dashboard/orders";

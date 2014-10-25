@@ -14,7 +14,7 @@
 <body>
 
 <div ng-controller='HeaderCtrl'>
-  <div id='header-container' ng-class='{ sticky: changingPlace }'>
+  <div id='header-container' class='nav-container' ng-class='{ sticky: changingPlace }'>
     <header id='header'>
       <div ui-sref="foods()" class='brand'>
         <div class='nommit-logo logo'></div>
@@ -27,22 +27,18 @@
         <div id='place' ng-bind='place.name' ng-click='showPlaces()'></div>
       </div>
 
-      <div class='delivery-box' ng-if='page == "orders"'>
-        <span>Orders</span>
+      <div class='delivery-box' ng-if='page != "foods"'>
+        <span>{{page | titleize}}</span>
       </div>
 
-      <div class='delivery-box' ng-if='page == "account"'>
-        <span>Account</span>
-      </div>
-
-      <div class='account' ng-if='!loggedIn'>
+      <nav class='account' ng-if='!loggedIn'>
         <a ng-click='showLogin()'>Login</a>
-      </div>
+      </nav>
 
-      <div class='account' ng-if='loggedIn'>
+      <nav class='account' ng-if='loggedIn'>
         <a ui-sref='account()'>Account</a>
         <a ui-sref='orders()'>Orders</a>
-      </div>
+      </nav>
     </header>
 
     <div ng-if='changingPlace' id='place-select-container' ng-keydown='closeOnEsc($event)' ng-click='hidePlaces()'>
@@ -73,17 +69,16 @@
   <%= yield %>
 </div>
 
-<div id='footer-container'>
+<div id='footer-container' class='nav-container'>
   <footer>
-      <a href="https://itunes.apple.com/us/app/nommit/id928890698?ls=1&mt=8" class='appstore-button appstore'></a>
-
+    <a href="https://itunes.apple.com/us/app/nommit/id928890698?ls=1&mt=8" class='appstore-button appstore'></a>
     <div class='copyright'>
       <span>© 2014 Blah Labs, Inc.</span>
     </div>
 
-    <div class='support'>
+    <nav>
       <a ui-sref='support()'>Support</a>
-    </div>
+    </nav>
   </footer>
 
 </div>
