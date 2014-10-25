@@ -1,4 +1,6 @@
-@nommit.controller 'FoodsCtrl', ($scope, Foods, Places, $rootScope) ->
+@nommit.controller 'FoodsCtrl', ($scope, Foods, Places, $rootScope, Sessions) ->
+  $scope.orderingFood = false
+
   $scope.price = (food, quantity) ->
     if quantity
       food.prices[quantity - 1].price
@@ -23,6 +25,9 @@
   $rootScope.$on "placeIDChanged", (event) ->
     setPlace()
   $rootScope.$on "CurrentUser", (event, user) ->
+    $scope.user = user
+
+  Sessions.currentUser (user) ->
     $scope.user = user
 
 

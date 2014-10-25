@@ -5,7 +5,7 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
     if place.present?
       @orders = place.orders.where(courier: current_user.couriers.first)
     else
-      @orders = Order.where(user: current_user)
+      @orders = Order.where(user: current_user).order("created_at DESC").limit(10)
       @orders = @orders.where(state: Integer(index_params[:state_id])) if index_params[:state_id].present?
     end
   end

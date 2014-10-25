@@ -213,7 +213,7 @@
       left: 90px;
 
       .name, .email {
-        text-shadow: 0px 1px 0px rgba(0,0,0,.35 );
+        text-shadow: 1px 1px 0px rgba(0,0,0,.35 );
         color: white;
         line-height: 15px;
       }
@@ -231,17 +231,12 @@
     text-align: center;
     .price {
       padding: 20px;
-      margin: 10px;
-      margin-top: 17px;
-      margin-bottom: 30px;
+      margin: 20px;
       font-size: 56px;
       color: #6F6F79;
     }
     p {
-      margin: 0;
-      opacity: 0.75;
       font-size: 10px;
-      padding-bottom: 0px;
     }
     .muted {
       text-align: left;
