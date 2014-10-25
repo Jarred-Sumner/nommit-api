@@ -24,7 +24,7 @@
         else
           Users.get id: "me", (user) ->
             Sessions.setCurrentUser(user)
-            cb(user)
+            cb(user) if cb
       else
         cb(null) if cb
     isLoggedIn: ->
