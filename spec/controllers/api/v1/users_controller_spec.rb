@@ -69,11 +69,10 @@ describe Api::V1::UsersController, type: :controller do
       it "resets confirm code on failed activation" do
         expect do
           put :update, id: user.id, confirm_code: "bagel"
-        end.to change { user.reload.confirm_code }
+        end.to change { Sms::ConfirmCodeSender.jobs.size }
 
         expect(user.reload.state).to eq("registered")
         expect(response.status).to eq(400)
-        expect(Sms::ConfirmCodeSender.jobs.size).to eq(1)
       end
 
     end

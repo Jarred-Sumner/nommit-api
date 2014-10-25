@@ -11,7 +11,7 @@ describe Sms::ConfirmCodeSender do
       allow(Texter).to receive(:run) { |message, phone| [message, phone] }
       expect(Texter).to receive(:run).exactly(1).times
       text = subject.perform(user.id)
-      expect(text[0]).to include(user.confirm_code.to_s)
+      expect(text[0]).to include(user.reload.confirm_code.to_s)
     end
 
   end
