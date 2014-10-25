@@ -4,7 +4,7 @@
 
       <div class='header'>
         <span class='close' ng-click='close()'></span>
-        <span class='title'>Rate your Order</span>
+        <span class='title'>Rate your Experience</span>
       </div>
 
       <div class='content with-food' ng-if='order'>
@@ -22,13 +22,19 @@
           <div class="info error" ng-if='error'><i class="fa fa-info-circle"></i>{{error}}</div>
           <form ng-submit='rate()'>
 
-            <p><strong>{{courier.user.name}}</strong> delivered a <strong>quantity of {{order.quantity}}</strong> for a total of (including tip):</p>
+            <div class='description'>
+              <p><strong>{{courier.user.name}}</strong> delivered a <strong>quantity of {{order.quantity}}</strong></p>
+              <p>For a total of <strong>(including tip)</strong>:</p>
+            </div>
 
-            <span class='tip'><i class='fa fa-minus-cicle' ng-disabled='price < order.cost()'></i></span>
-            <h2 class='price'>{{order.cost() | currency}}</h2>
-            <span class='tip' ng-click='incrementTip()' ><i class='fa fa-plus-cicle'></i></span>
+            <div class='total'>
+              <span class='tip' ng-click='decrementTip()' ng-disabled='tip < 1'><i class="fa fa-minus-circle"></i></span>
+              <h2 class='price'>{{order.cost() + tip | currency}}</h2>
+              <span class='tip' ng-click='incrementTip()'><i class='fa fa-plus-circle'></i></span>
+            </div>
 
-            <rating score='order.rating' max='5'></rating>
+            <p>Rate your experience:</p>
+            <rating score='order.rating' max='5' ng-click='enableDone()'></rating>
 
             <button ng-disabled='!rated' ng-if='!rating'>Done</button>
             <fading-circle-spinner ng-if='rating'></fading-circle-spinner>

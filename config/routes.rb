@@ -37,4 +37,6 @@ Rails.application.routes.draw do
   get 'orders' => 'dashboard#index'
   get 'account' => 'dashboard#index'
   root to: 'dashboard#index'
+
+  get 'download' => redirect("https://itunes.apple.com/us/app/nommit/id928890698?mt=8")
 end

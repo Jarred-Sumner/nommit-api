@@ -1,0 +1,55 @@
+#rate-order {
+
+  .body form {
+
+    .description {
+      margin-top: 27px;
+      p {
+        margin-top: 0px;
+      }
+    }
+    p {
+      font-size: 10pt;
+    }
+
+    .price {
+      padding: 0px;
+    }
+
+    .rating {
+      margin-top: 5px;
+      font-size: 32pt;
+      a:hover {
+        cursor: pointer;
+      }
+    }
+
+    .total {
+      margin: 20px;
+      @include user-select(none);
+      h2 {
+        margin-left: 10px;
+        margin-right: 10px;
+        display: inline-block;
+        font-size: 47px;
+      }
+      .tip {
+        font-size: 20pt;
+        position: relative;
+        top: -4px;
+        &:hover {
+          color: $brand-green;
+          cursor: pointer;
+        }
+        &[disabled] {
+          opacity: 0.5;
+          pointer-events: none;
+        }
+      }
+
+    }
+
+
+  }
+
+}
