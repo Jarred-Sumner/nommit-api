@@ -15,10 +15,9 @@
       $scope.foods = _.chain(place.delivery_places)
         .map (deliveryPlace) ->
           _.filter deliveryPlace.foods, (food) ->
-            food.rating = Math.round(food.rating )
+            food.rating = Math.round(food.rating)
             food.quantity = 1
-            console.log(food)
-            food.state_id == 1
+            food.state_id == 0
         .flatten()
         .value()
       $scope.fetchedFoods = true
@@ -42,7 +41,7 @@
     if $scope.user
       if $scope.user.isActivated()
         $scope.orderingFood = true
-        $rootScope.$emit "OrderFood", food: food, place: $scope.place
+        $rootScope.$emit "OrderFood", food: food, place: $scope.place, user: $scope.user
       else if $scope.user.isRegistered()
         $rootScope.$emit "requireActivation",
           callback: $scope.order

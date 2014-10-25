@@ -1,10 +1,12 @@
 class Api::V1::PromosController < Api::V1::ApplicationController
   before_action :apply_promo!, only: :create
-  skip_before_action :require_current_user!, only: :show
 
   def show
-    @promo = Promo.find_by!(name: promo_params)
-    render partial: "api/v1/promos/promo", locals: { promo: @promo }
+    if @promo = Promo.find_by(name: promo_params)
+      render partial: "api/v1/promos/promo", locals: { promo: @promo }
+    else
+      return render_bad_request("Promo code not found")
+    end
   end
 
   def create

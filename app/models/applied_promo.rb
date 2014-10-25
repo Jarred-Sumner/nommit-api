@@ -22,6 +22,12 @@ class AppliedPromo < ActiveRecord::Base
     self.amount_remaining_in_cents = promo.discount_in_cents
   end
 
+  after_create :expire_user_cache!
+
+  def expire_user_cache!
+    self.user.touch
+  end
+
   def usable?
     promo.active? && active?
   end

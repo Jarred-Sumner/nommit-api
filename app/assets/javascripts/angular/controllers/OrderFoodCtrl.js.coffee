@@ -1,10 +1,48 @@
-@nommit.controller 'OrderFoodCtrl', ($scope, Sessions, Places, $rootScope, Users, $timeout, Orders, $state) ->
+@nommit.controller 'OrderFoodCtrl', ($scope, Sessions, Foods, $rootScope, Users, $timeout, Orders, $state, Promos) ->
   resetData = ->
     $scope.food = null
     $scope.place = null
     $scope.price = null
     $scope.error = null
+    $scope.user = null
     $scope.placing = false
+  setVanillaPrice = ->
+    console.log($scope.user)
+    price = $scope.food.prices[$scope.food.quantity - 1].price * 100 - $scope.user.credit_in_cents
+    if price > 0
+      $scope.price = price / 100
+    else
+      $scope.price = 0
+
+  priceCheck = (food, user) ->
+    success = (promo) ->
+      promo = new Promos(promo)
+      if promo.active && promo.usable
+        price = food.price_in_cents - promo.discount_in_cents - $scope.user.credit_in_cents
+        if price > 0
+          price = price / 100
+        else
+          price = 0
+        $scope.price = price
+      else
+        setVanillaPrice()
+        if promo.active && !promo.usable
+          if promo.referral
+            $scope.error = "Promo only usable for first order"
+          else
+            $scope.error = "Promo already applied to your account"
+        else if promo.isExpired()
+          $scope.error = "Promo has expired"
+        else
+          $scope.error = "Promo cannot be used"
+      $scope.priceChecking = false
+    failure = (error) ->
+      $scope.priceChecking = false
+      $scope.error = error.data.message
+      setVanillaPrice()
+    Promos.get(id: food.promo, success, failure)
+
+
   $scope.close = ->
     resetData()
     $rootScope.$emit "HideOrderFood"
@@ -12,13 +50,16 @@
     $scope.user = user
   $rootScope.$on "OrderFood", (event, data) ->
     resetData()
-    food = data.food
+    food = new Foods(data.food)
 
     $scope.food = food
     $scope.place = data.place
-    $scope.price = food.prices[food.quantity - 1].price
-
-
+    $scope.user = data.user
+    if food.promo
+      $scope.priceChecking = true
+      priceCheck(food)
+    else
+      setVanillaPrice()
   $scope.placeOrder = ->
     $scope.placing = true
     price = $scope.food.prices[$scope.food.quantity - 1]

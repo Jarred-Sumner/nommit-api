@@ -92,10 +92,12 @@
             <p class='quantity' ng-if='food.quantity == 1'>You're ordering <strong>one</strong> for a total of:</p>
             <p class='quantity' ng-if='food.quantity > 1'>You're ordering <strong>{{food.quantity}}</strong> for a total of:</p>
 
-            <h2 class='price'>{{price | currency}}</h2>
-            <fading-circle-spinner ng-if='placing'></fading-circle-spinner>
+            <h2 class='price' ng-if='!priceChecking'>{{price | currency}}</h2>
+            <fading-circle-spinner ng-if='priceChecking'></fading-circle-spinner>
+
             <button ng-if='!placing'>Confirm</button>
             <p class='muted' ng-if='!placing'>By clicking "Confirm", you agree to pick up your food in the lobby of <strong>{{place.name}}</strong> when the courier arrives.</p>
+            <fading-circle-spinner ng-if='placing'></fading-circle-spinner>
           </form>
         </div>
 
