@@ -8,7 +8,6 @@ $nav-max-width: 800px;
     max-width: $nav-max-width;
     width: 100%;
     nav {
-      margin-top: 13px;
       @include span-columns(3);
       text-align: right;
       a {
@@ -127,6 +126,9 @@ $nav-max-width: 800px;
     .support {
       @include span-columns(3);
       text-shadow: none;
+    }
+
+    nav {
       margin-top: 13px;
     }
 
