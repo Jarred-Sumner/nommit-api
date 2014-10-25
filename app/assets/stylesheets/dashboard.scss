@@ -402,11 +402,8 @@ $row-border-color: #E9E9E9;
     }
   }
   .error {
-    text-align: left;
+    text-align: center;
     color: $error-color;
-    margin-left: 55px;
-    margin-top: -5px;
-    max-width: 192px;
     width: 100%;
     .fa { margin-right: 5px; }
   }
