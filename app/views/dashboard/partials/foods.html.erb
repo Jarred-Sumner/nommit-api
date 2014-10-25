@@ -84,14 +84,16 @@
 
         <div class='body'>
           <form ng-submit='placeOrder()' class='confirm-form'>
-            <p>Confirm your order of <strong ng-if='food.quantity > 1'>{{food.quantity}} batch</strong> <strong ng-if='food.quantity == 1'>one batch</strong> of <br />
-              <strong>{{food.title}}</strong> for:
-            </p>
-            <h2 class='price'><em>{{price | currency}}</em></h2>
-           <fading-circle-spinner ng-if='placing'></fading-circle-spinner>
-            <p class='muted' ng-if='!placing'>By clicking "Confirm", you agree to pick up your food in the lobby of <strong>{{place.name}}</strong>. Promo credit applied after confirmation</p>
-              <button ng-if='!placing'>Confirm</button>
-            </form>
+
+            <p class='quantity' ng-if='food.quantity == 1'>You're ordering <strong>one</strong> for a total of:</p>
+            <p class='quantity' ng-if='food.quantity > 1'>You're ordering <strong>{{food.quantity}}</strong> for a total of:</p>
+
+            <h2 class='price'>{{price | currency}}</h2>
+            <fading-circle-spinner ng-if='placing'></fading-circle-spinner>
+            <button ng-if='!placing'>Confirm</button>
+            <p class='muted' ng-if='!placing'>By clicking "Confirm", you agree to pick up your food in the lobby of <strong>{{place.name}}</strong> when the courier arrives.</p>
+
+          </form>
         </div>
 
       </div>

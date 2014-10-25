@@ -12,16 +12,19 @@
         Sessions.setCurrentUser(user)
         cb(user)
     setCurrentUser: (user) ->
+      user = new Users(user)
       $rootScope.$broadcast("CurrentUser", user)
       window.settings.setUserID(user.id)
       @user = user
     currentUser: (cb) ->
       if Sessions.isLoggedIn()
-        return cb(@user) if @user && cb
-        @user = Users.get id: "me", (user) ->
-          user = new Users(user)
-          $rootScope.$broadcast("CurrentUser", user)
-          cb(user) if cb
+        if @user
+          $rootScope.$broadcast("CurrentUser", @user)
+          return cb(@user) if cb
+        else
+          Users.get id: "me", (user) ->
+            Sessions.setCurrentUser(user)
+            cb(user) if cb
       else
         cb(null) if cb
     isLoggedIn: ->

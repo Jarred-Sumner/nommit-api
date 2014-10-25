@@ -1,9 +1,17 @@
-@nommit.controller 'OrderFoodCtrl', ($scope, Sessions, Places, $rootScope, Users, $timeout, Orders) ->
+@nommit.controller 'OrderFoodCtrl', ($scope, Sessions, Places, $rootScope, Users, $timeout, Orders, $state) ->
+  resetData = ->
+    $scope.food = null
+    $scope.place = null
+    $scope.price = null
+    $scope.error = null
+    $scope.placing = false
   $scope.close = ->
+    resetData()
     $rootScope.$emit "HideOrderFood"
   $rootScope.$on "CurrentUser", (event, user) ->
     $scope.user = user
   $rootScope.$on "OrderFood", (event, data) ->
+    resetData()
     food = data.food
 
     $scope.food = food
@@ -20,9 +28,9 @@
       place_id: $scope.place.id
     params.promo_code = $scope.food.promo if $scope.food.promo
     success = (order) ->
-      $scope.error = null
-      $scope.placing = false
+      resetData()
+      $state.transitionTo("orders")
     error = (error) ->
-      $scope.placing = false
+      resetData()
       $scope.error = error.data.message
     Orders.save(params, success, error)
