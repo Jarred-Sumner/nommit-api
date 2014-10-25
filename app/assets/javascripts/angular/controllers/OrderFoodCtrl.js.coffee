@@ -8,7 +8,6 @@
     $scope.user = null
     $scope.placing = false
   setVanillaPrice = ->
-    console.log($scope.user)
     price = $scope.food.prices[$scope.food.quantity - 1].price * 100 - $scope.user.credit_in_cents
     if price > 0
       $scope.price = price / 100

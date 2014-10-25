@@ -2,7 +2,7 @@
   Promos = $resource 'api/v1/promos/:id', id: '@id'
 
   Promos::isExpired = ->
-    new Date(@expiration) < new Date()
+    if @expiration then new Date(@expiration) < new Date() else false
   # angular.extend Foods,
   #   getPlaces:
 

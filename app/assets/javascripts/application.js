@@ -17,6 +17,7 @@
 //= require angular/angular-resource
 //= require angular/angular-payments
 //= require angular/angular-facebook
+//= require angular/angular-cache-buster
 //= require underscore-min
 //= require underscore.string.min.js
 //= require_tree ./mixins
