@@ -84,5 +84,4 @@
     obj.callback(obj.object) if obj
   $rootScope.$on "HideConfirmPhone", (event, obj) ->
     $scope.isShowingConfirmPhone = false
-    console.log(obj)
     obj.callback(obj.object) if obj
