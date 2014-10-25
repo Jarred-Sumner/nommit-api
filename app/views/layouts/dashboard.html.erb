@@ -32,12 +32,14 @@
       </div>
 
       <nav class='account' ng-if='!loggedIn'>
+        <a ui-sref='foods()' ng-class='{ active: page == "foods" }'>Menu</a>
         <a ng-click='showLogin()'>Login</a>
       </nav>
 
       <nav class='account' ng-if='loggedIn'>
-        <a ui-sref='account()'>Account</a>
-        <a ui-sref='orders()'>Orders</a>
+        <a ui-sref='foods()' ng-class='{ active: page == "foods" }'>Menu</a>
+        <a ui-sref='orders()' ng-class='{ active: page == "orders" }'>Orders</a>
+        <a ui-sref='account()' ng-class='{ active: page == "account" }'>Account</a>
       </nav>
     </header>
 
