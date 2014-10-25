@@ -176,3 +176,12 @@
     }
   }
 }
+
+@-moz-document url-prefix() {
+  // hack for quantity container to work on firefox
+  .quantity-container .quantity {
+    height: 34px !important;
+    padding: 6px !important;
+    width: 55px !important;
+  }
+}
