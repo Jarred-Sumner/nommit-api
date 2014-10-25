@@ -54,7 +54,6 @@
           .rating {
             float: right;
             @include user-select(none);
-            a { color: $brand-green; cursor: default; }
           }
         }
 

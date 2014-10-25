@@ -55,6 +55,9 @@
         margin-top: 10px;
         a { color: $brand-green; cursor: default; font-size: 14pt; }
       }
+      .phone a {
+        padding-bottom: 2px;
+      }
     }
 
     &.arrived {
@@ -65,7 +68,7 @@
       }
     }
 
-    
+
 
   }
 

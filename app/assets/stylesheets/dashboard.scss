@@ -407,6 +407,10 @@ span.input-label { display: inline-block }
   }
 }
 
+.rating {
+  a { color: $brand-green; cursor: default; border-bottom: none; }
+}
+
 @import "dashboard/navigation";
 @import "dashboard/activation";
 @import "dashboard/foods";
