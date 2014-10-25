@@ -1,107 +1,109 @@
-<div class='container' id='foods-container'>
-  <fading-circle-spinner ng-if='!fetchedFoods'></fading-circle-spinner>
-  <div class='rows' id='foods'>
-    <div class='row-container' ng-repeat='food in foods'>
+<% cache "foods" do %>
+  <div class='container' id='foods-container'>
+    <fading-circle-spinner ng-if='!fetchedFoods'></fading-circle-spinner>
+    <div class='rows' id='foods'>
+      <div class='row-container' ng-repeat='food in foods'>
 
-      <div class='preview'>
-        <div class='image' ng-style="{ 'background-image': 'url({{food.header_image_url}})' }">
-          <img ng-src='{{food.seller.logo_url}}' class='overlay seller' />
-        </div>
-      </div>
-
-      <div class='row food'>
-
-        <div class='overview'>
-          <h3 class='title'>{{food.title}}</h3>
-          <h5 class='seller-name'>By {{ food.seller.name }}</h5>
-        </div>
-
-        <div class='well'>
-          <div class='description'>{{ food.description }}</div>
-          <div class='status'>
-            <div class='stats'>
-              <span class='sold'>{{ food.order_count }}/{{ food.goal }} left</span>
-              <rating score='food.rating' max='5' ng-if='food.rating > 0' readonly='true' />
-            </div>
-            <div class='progress-bar'>
-              <div class='progress' ng-style="{ 'width': '{{ progressForFood(food) }}%' }"></div>
-            </div>
+        <div class='preview'>
+          <div class='image' ng-style="{ 'background-image': 'url({{food.header_image_url}})' }">
+            <img ng-src='{{food.seller.logo_url}}' class='overlay seller' />
           </div>
         </div>
 
-        <div class="promo-container">
-          <div class='promo'>
-            <input type='text' ng-model='food.promo' name='promo' placeholder='Promo Code (Optional)' />
+        <div class='row food'>
+
+          <div class='overview'>
+            <h3 class='title'>{{food.title}}</h3>
+            <h5 class='seller-name'>By {{ food.seller.name }}</h5>
           </div>
-        </div>
 
-        <div class='footer'>
-          <h2 class='price'>{{ price(food, food.quantity) | currency }}</h2>
-          <fieldset class='quantity-container'>
-            <label for='quantity'>QTY:</label>
-            <select name="quantity" class='quantity' ng-model='food.quantity'>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-            </select>
-          </fieldset>
-          <button class='place-order' ng-click='order(food)'>Place&nbsp;Order</button>
-        </div>
+          <div class='well'>
+            <div class='description'>{{ food.description }}</div>
+            <div class='status'>
+              <div class='stats'>
+                <span class='sold'>{{ food.order_count }}/{{ food.goal }} left</span>
+                <rating score='food.rating' max='5' ng-if='food.rating > 0' readonly='true' />
+              </div>
+              <div class='progress-bar'>
+                <div class='progress' ng-style="{ 'width': '{{ progressForFood(food) }}%' }"></div>
+              </div>
+            </div>
+          </div>
 
+          <div class="promo-container">
+            <div class='promo'>
+              <input type='text' ng-model='food.promo' name='promo' placeholder='Promo Code (Optional)' />
+            </div>
+          </div>
+
+          <div class='footer'>
+            <h2 class='price'>{{ price(food, food.quantity) | currency }}</h2>
+            <fieldset class='quantity-container'>
+              <label for='quantity'>QTY:</label>
+              <select name="quantity" class='quantity' ng-model='food.quantity'>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+              </select>
+            </fieldset>
+            <button class='place-order' ng-click='order(food)'>Place&nbsp;Order</button>
+          </div>
+
+        </div>
       </div>
+
     </div>
-
-  </div>
-  <div class='no-content' ng-if='fetchedFoods && foods.length == 0'>
-    <h2>No food offered at {{place.name}} right now!</h2>
-    <h2>Check back between 8 PM - 12 AM.</h2>
-    <div class='no-content-available'></div>
-  </div>
-</div>
-
-<div class='modal-cover' id='order-food' ng-show='orderingFood' ng-controller='OrderFoodCtrl' ng-click='close()' ng-keydown='closeOnEsc($event)'>
-  <div class='modal-container'>
-    <div class='modal' prevent-click-delegation>
-
-      <div class='header'>
-        <span class='close' ng-click='close()'></span>
-        <span class='title'>Confirm Order</span>
-      </div>
-
-      <div class='content'>
-
-        <div class='overlay with-background' ng-if='food' ng-style="{ 'background-image': 'url({{food.header_image_url}})' }">
-          <div class='sheet'></div>
-          <img class='avatar' ng-if='food.seller' ng-style="{ 'background-image': 'url({{food.seller.logo_url}})' }" />
-          <div class='person'>
-            <h3 class='name'>{{food.title}}</h3>
-            <h5 class='email'>By {{food.seller.name}}</h5>
-          </div>
-        </div>
-
-        <div class='body'>
-          <div class="info error" ng-if='error'><i class="fa fa-info-circle"></i>{{error}}</div>
-          <form ng-submit='placeOrder()' class='confirm-form'>
-
-            <p class='quantity' ng-if='food.quantity == 1'>You're ordering <strong>one</strong> for a total of:</p>
-            <p class='quantity' ng-if='food.quantity > 1'>You're ordering <strong>{{food.quantity}}</strong> for a total of:</p>
-
-            <h2 class='price' ng-if='!priceChecking'>{{price | currency}}</h2>
-            <fading-circle-spinner ng-if='priceChecking'></fading-circle-spinner>
-
-            <button ng-if='!placing'>Confirm</button>
-            <p class='muted' ng-if='!placing'>By clicking "Confirm", you agree to pick up your food in the lobby of <strong>{{place.name}}</strong> when the courier arrives.</p>
-            <fading-circle-spinner ng-if='placing'></fading-circle-spinner>
-          </form>
-        </div>
-
-      </div>
+    <div class='no-content' ng-if='fetchedFoods && foods.length == 0'>
+      <h2>No food offered at {{place.name}} right now!</h2>
+      <h2>Check back between 8 PM - 12 AM.</h2>
+      <div class='no-content-available'></div>
     </div>
   </div>
-</div>
+
+  <div class='modal-cover' id='order-food' ng-show='orderingFood' ng-controller='OrderFoodCtrl' ng-click='close()' ng-keydown='closeOnEsc($event)'>
+    <div class='modal-container'>
+      <div class='modal' prevent-click-delegation>
+
+        <div class='header'>
+          <span class='close' ng-click='close()'></span>
+          <span class='title'>Confirm Order</span>
+        </div>
+
+        <div class='content with-food'>
+
+          <div class='overlay with-background' ng-if='food' ng-style="{ 'background-image': 'url({{food.header_image_url}})' }">
+            <div class='sheet'></div>
+            <img class='avatar' ng-if='food.seller' ng-style="{ 'background-image': 'url({{food.seller.logo_url}})' }" />
+            <div class='person'>
+              <h3 class='name'>{{food.title}}</h3>
+              <h5 class='email'>By {{food.seller.name}}</h5>
+            </div>
+          </div>
+
+          <div class='body'>
+            <div class="info error" ng-if='error'><i class="fa fa-info-circle"></i>{{error}}</div>
+            <form ng-submit='placeOrder()' class='confirm-form'>
+
+              <p class='quantity' ng-if='food.quantity == 1'>You're ordering <strong>one</strong> for a total of:</p>
+              <p class='quantity' ng-if='food.quantity > 1'>You're ordering <strong>{{food.quantity}}</strong> for a total of:</p>
+
+              <h2 class='price' ng-if='!priceChecking'>{{price | currency}}</h2>
+              <fading-circle-spinner ng-if='priceChecking'></fading-circle-spinner>
+
+              <button ng-if='!placing'>Confirm</button>
+              <p class='muted' ng-if='!placing'>By clicking "Confirm", you agree to pick up your food in the lobby of <strong>{{place.name}}</strong> when the courier arrives.</p>
+              <fading-circle-spinner ng-if='placing'></fading-circle-spinner>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
