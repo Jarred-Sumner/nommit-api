@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
   end
 
   validates :name, presence: true
-  validates :email, presence: true, uniqueness: true
+  validates :email, uniqueness: { allow_blank: true }
   validates :facebook_uid, presence: true, uniqueness: true
 
   phony_normalize :phone, default_country_code: 'US'
