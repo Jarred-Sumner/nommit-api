@@ -1,6 +1,12 @@
 <div class='container' id='orders-container'>
   <fading-circle-spinner ng-if='!fetchedOrders'></fading-circle-spinner>
 
+  <div class='no-content' ng-if='fetchedOrders && orders.length == 0'>
+    <h2>You haven't placed any orders!</h2>
+    <h2>Place an order at the <a ui-sref="foods()">Menu</a>.</h2>
+    <div class='no-content-available'></div>
+  </div>
+
   <div class='rows' id='orders'>
     <div class='row-container' ng-repeat='order in orders'>
 

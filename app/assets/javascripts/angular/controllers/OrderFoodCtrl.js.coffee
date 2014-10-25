@@ -31,6 +31,6 @@
       resetData()
       $state.transitionTo("orders")
     error = (error) ->
-      resetData()
+      $scope.placing = false
       $scope.error = error.data.message
     Orders.save(params, success, error)

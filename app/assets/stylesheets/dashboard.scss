@@ -6,6 +6,12 @@
 
 @import "dashboard/third-party/angular-spinkit.min";
 
+
+$faded-text: #959595;
+$brand-green: #228B8F;
+$error-color: #D82D2D;
+$link-color: #404040;
+
 * {
   font-family: "Helvetica Neue", "Helvetica", "Arial";
   @include box-sizing(border-box);
@@ -26,15 +32,15 @@ p,div {
 }
 
 a {
-  color: #404040;
+  color: $link-color;
   text-decoration: none;
-  border-bottom: 1px dotted #404040;
+  border-bottom: 1px dotted $link-color;
   width: auto;
   &:hover {
     cursor: pointer;
-    border-bottom: 1px solid #404040;
+    border-bottom: 1px solid $link-color;
   }
-  &:visited { color: #404040; }
+  &:visited { color: $link-color; }
 }
 
 body {
@@ -57,10 +63,6 @@ input, button {
 strong {
   font-weight: 500;
 }
-
-$faded-text: #959595;
-$brand-green: #228B8F;
-
 
 
 #content-container {
@@ -320,7 +322,7 @@ $row-border-color: #E9E9E9;
         text-shadow: 0px 1px 0px white;
         color: #6F6F79;
         &.error {
-          color: #D82D2D;
+          color: $error-color;
         }
         .fa {
           margin-right: 5px;
@@ -387,7 +389,23 @@ span.input-label { display: inline-block }
   }
 }
 
-
+.no-content {
+  margin-top: 25px;
+  text-align: center;
+  h2 {
+    margin: 10px;
+    color: #858585;
+    text-decoration: none;
+  }
+  .no-content-available {
+    margin: 40px auto;
+    width: 178px;
+    height: 242px;
+    display: block;
+    background-image: url(image-path("dashboard/no-content-available.png"));
+    background-size: contain;
+  }
+}
 
 @media only screen and (max-width: 675px) {
   .row-container {

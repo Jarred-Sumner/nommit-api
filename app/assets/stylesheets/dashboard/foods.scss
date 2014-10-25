@@ -227,6 +227,15 @@
       }
     }
   }
+  .error {
+    text-align: left;
+    color: $error-color;
+    margin-left: 75px;
+    margin-top: -15px;
+    width: 100%;
+    .fa { margin-right: 5px; }
+  }
+
   .confirm-form {
     text-align: center;
     .price {

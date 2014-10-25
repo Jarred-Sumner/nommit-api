@@ -1,7 +1,6 @@
 <div class='container' id='foods-container'>
   <fading-circle-spinner ng-if='!fetchedFoods'></fading-circle-spinner>
   <div class='rows' id='foods'>
-
     <div class='row-container' ng-repeat='food in foods'>
 
       <div class='preview'>
@@ -59,6 +58,11 @@
     </div>
 
   </div>
+  <div class='no-content' ng-if='fetchedFoods && foods.length == 0'>
+    <h2>No food offered at {{place.name}} right now!</h2>
+    <h2>Check back between 8 PM - 12 AM.</h2>
+    <div class='no-content-available'></div>
+  </div>
 </div>
 
 <div class='modal-cover' id='order-food' ng-show='orderingFood' ng-controller='OrderFoodCtrl' ng-click='close()' ng-keydown='closeOnEsc($event)'>
@@ -79,10 +83,10 @@
             <h3 class='name'>{{food.title}}</h3>
             <h5 class='email'>By {{food.seller.name}}</h5>
           </div>
-          <div class="info error" ng-if='error'><i class="fa fa-info-circle"></i>{{error}}</div>
         </div>
 
         <div class='body'>
+          <div class="info error" ng-if='error'><i class="fa fa-info-circle"></i>{{error}}</div>
           <form ng-submit='placeOrder()' class='confirm-form'>
 
             <p class='quantity' ng-if='food.quantity == 1'>You're ordering <strong>one</strong> for a total of:</p>
@@ -92,7 +96,6 @@
             <fading-circle-spinner ng-if='placing'></fading-circle-spinner>
             <button ng-if='!placing'>Confirm</button>
             <p class='muted' ng-if='!placing'>By clicking "Confirm", you agree to pick up your food in the lobby of <strong>{{place.name}}</strong> when the courier arrives.</p>
-
           </form>
         </div>
 

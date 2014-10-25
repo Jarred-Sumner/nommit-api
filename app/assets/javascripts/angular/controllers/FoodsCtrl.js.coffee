@@ -14,10 +14,11 @@
 
       $scope.foods = _.chain(place.delivery_places)
         .map (deliveryPlace) ->
-          _.map deliveryPlace.foods, (food) ->
+          _.filter deliveryPlace.foods, (food) ->
             food.rating = Math.round(food.rating )
             food.quantity = 1
-            food
+            console.log(food)
+            food.state_id == 1
         .flatten()
         .value()
       $scope.fetchedFoods = true

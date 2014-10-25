@@ -80,14 +80,27 @@ $nav-max-width: 800px;
   footer {
     margin-top: 14px;
     height: 79px;
-    a {
+
+    a, p {
+      margin-top: 0px;
+      margin-bottom: 10px;
       color: #BABABA;
-      font-size: 14pt;
+      font-size: 12pt;
       font-weight: 200;
       text-shadow: none;
+    }
+    a {
       border-bottom: 1px dotted #BABABA;
       &:hover {
         border-bottom: 1px solid #BABABA;
+      }
+    }
+
+    .apply a {
+      color: $brand-green;
+      border-bottom: 1px dotted $brand-green;
+      &:hover {
+        border-bottoM: 1px solid $brand-green;
       }
     }
 

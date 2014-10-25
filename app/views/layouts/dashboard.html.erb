@@ -1,89 +1,92 @@
-<!DOCTYPE html>
-<html ng-app='nommit'>
-<head>
-  <base href="/"></base>
-  <title>Nommit</title>
-  <%= stylesheet_link_tag    'application', media: 'all' %>
-  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-  <%= render 'config' %>
-  <%= javascript_include_tag 'application'  %>
-  <%= csrf_meta_tags %>
-  <meta name="apple-itunes-app" content="app-id=928890698" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-</head>
-<body>
+<% cache "dashboard" do %>
+    <!DOCTYPE html>
+    <html ng-app='nommit'>
+    <head>
+      <base href="/"></base>
+      <title>Nommit</title>
+      <%= stylesheet_link_tag    'application', media: 'all' %>
+      <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+      <%= render 'config' %>
+      <%= javascript_include_tag 'application'  %>
+      <%= csrf_meta_tags %>
+      <meta name="apple-itunes-app" content="app-id=928890698" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    </head>
+    <body>
 
-<div ng-controller='HeaderCtrl'>
-  <div id='header-container' class='nav-container' ng-class='{ sticky: changingPlace }'>
-    <header id='header'>
-      <div ui-sref="foods()" class='brand'>
-        <div class='nommit-logo logo'></div>
-        <div class='tagline'>food in under 15 minutes.</div>
+    <div ng-controller='HeaderCtrl'>
+      <div id='header-container' class='nav-container' ng-class='{ sticky: changingPlace }'>
+        <header id='header'>
+          <div ui-sref="foods()" class='brand'>
+            <div class='nommit-logo logo'></div>
+            <div class='tagline'>food in under 15 minutes.</div>
+          </div>
+
+          <div class='delivery-box' ng-if='page == "foods"'>
+            <span ng-if='choosingPlace'>Now Delivering To:</span>
+            <span ng-if='!choosingPlace'>Delivering To:</span>
+            <div id='place' ng-click='showPlaces()'>{{place.name || "Pick a Place"}}</div>
+          </div>
+
+          <div class='delivery-box' ng-if='page != "foods"'>
+            <span>{{page | titleize}}</span>
+          </div>
+
+          <nav class='account' ng-if='!loggedIn'>
+            <a ui-sref='foods()' ng-class='{ active: page == "foods" }'>Menu</a>
+            <a ng-click='showLogin()'>Login</a>
+          </nav>
+
+          <nav class='account' ng-if='loggedIn'>
+            <a ui-sref='foods()' ng-class='{ active: page == "foods" }'>Menu</a>
+            <a ui-sref='orders()' ng-class='{ active: page == "orders" }'>Orders</a>
+            <a ui-sref='account()' ng-class='{ active: page == "account" }'>Account</a>
+          </nav>
+        </header>
+
+        <div ng-if='changingPlace' id='place-select-container' ng-keydown='closeOnEsc($event)' ng-click='hidePlaces()'>
+          <form name='changingPlaceForm' prevent-click-delegation>
+            <input id="place-input" type='text' name="search" ng-model='search.query' placeholder="Building you're in" ng-change='filterPlaces()' focus='{{changingPlace}}'>
+          </form>
+          <ul id='place-select' prevent-click-delegation>
+            <li class='place' ng-repeat='place in search.places' ng-click='setCurrentPlace(place.id)'>
+              <span class='name' ng-bind='place.name'></span>
+              <i class="fa fa-arrow-circle-o-right"></i>
+            </li>
+          </ul>
+          <div class="footer" prevent-click-delegation>Can't find the building you're in? <a href="mailto:support@getnommit.com">Contact us</a>.</div>
+        </div>
+
+        <%= render 'dashboard/login' %>
+        <%= render 'dashboard/activation' %>
+        <%= render 'dashboard/confirm_phone' %>
       </div>
-
-      <div class='delivery-box' ng-if='page == "foods"'>
-        <span ng-if='choosingPlace'>Now Delivering To:</span>
-        <span ng-if='!choosingPlace'>Delivering To:</span>
-        <div id='place' ng-bind='place.name' ng-click='showPlaces()'></div>
-      </div>
-
-      <div class='delivery-box' ng-if='page != "foods"'>
-        <span>{{page | titleize}}</span>
-      </div>
-
-      <nav class='account' ng-if='!loggedIn'>
-        <a ui-sref='foods()' ng-class='{ active: page == "foods" }'>Menu</a>
-        <a ng-click='showLogin()'>Login</a>
-      </nav>
-
-      <nav class='account' ng-if='loggedIn'>
-        <a ui-sref='foods()' ng-class='{ active: page == "foods" }'>Menu</a>
-        <a ui-sref='orders()' ng-class='{ active: page == "orders" }'>Orders</a>
-        <a ui-sref='account()' ng-class='{ active: page == "account" }'>Account</a>
-      </nav>
-    </header>
-
-    <div ng-if='changingPlace' id='place-select-container' ng-keydown='closeOnEsc($event)' ng-click='hidePlaces()'>
-      <form name='changingPlaceForm' prevent-click-delegation>
-        <input id="place-input" type='text' name="search" ng-model='search.query' placeholder="Building you're in" ng-change='filterPlaces()' focus='{{changingPlace}}'>
-      </form>
-      <ul id='place-select' prevent-click-delegation>
-        <li class='place' ng-repeat='place in search.places' ng-click='setCurrentPlace(place.id)'>
-          <span class='name' ng-bind='place.name'></span>
-          <i class="fa fa-arrow-circle-o-right"></i>
-        </li>
-      </ul>
-      <div class="footer" prevent-click-delegation>Can't find the building you're in? <a href="mailto:support@getnommit.com">Contact us</a>.</div>
     </div>
 
-    <%= render 'dashboard/login' %>
-    <%= render 'dashboard/activation' %>
-    <%= render 'dashboard/confirm_phone' %>
-  </div>
-</div>
+    <div id='content-container'>
+      <div class='ribbon'>
+        <%= image_tag "dashboard/only-available-at-cmu.png" %>
+      </div>
 
-<div id='content-container'>
-  <div class='ribbon'>
-    <%= image_tag "dashboard/only-available-at-cmu.png" %>
-  </div>
-
-  <div ui-view></div>
-  <%= yield %>
-</div>
-
-<div id='footer-container' class='nav-container'>
-  <footer>
-    <a href="https://itunes.apple.com/us/app/nommit/id928890698?ls=1&mt=8" class='appstore-button appstore'></a>
-    <div class='copyright'>
-      <span>© 2014 Blah Labs, Inc.</span>
+      <div ui-view></div>
+      <%= yield %>
     </div>
 
-    <nav>
-      <a ui-sref='support()'>Support</a>
-    </nav>
-  </footer>
+    <div id='footer-container' class='nav-container'>
+      <footer>
+        <a href="https://itunes.apple.com/us/app/nommit/id928890698?ls=1&mt=8" class='appstore-button appstore'></a>
+        <div class='copyright'>
+          <p class='apply'>Interested in selling food on Nommit? <a href='mailto:support@getnommit.com'>Email us</a></p>
+          <span>© <%= DateTime.now.year %> Blah Labs, Inc.</span>
+        </div>
 
-</div>
+        <nav>
+          <a ui-sref='support()'>Support</a>
+        </nav>
+      </footer>
 
-</body>
-</html>
+    </div>
+
+    </body>
+  </html>
+<% end %>
