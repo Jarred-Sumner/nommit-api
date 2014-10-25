@@ -31,6 +31,7 @@
           $scope.isActivating = false
         else
           success = (user) ->
+            Sessions.setCurrentUser(user)
             $scope.isActivating = false
             $scope.close ->
               $rootScope.$emit("requireValidation", $scope.callback)
