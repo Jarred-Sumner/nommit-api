@@ -178,6 +178,46 @@
 }
 
 #order-food {
+  .with-background {
+    margin: 0px -21px;
+    padding: 10px;
+    text-align: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-top: 1px solid rgba(100,100,100,0.35);
+    border-bottom: 1px solid rgba(100,100,100,0.35);
+    position: relative;
+    height: 70px;
+    margin-bottom: 20px;
+    .sheet {
+      position: absolute;
+      height: 69px;
+      display: block;
+      width: 100%;
+      top: 0px;
+      left: 0px;
+      background-color: rgba(0,0,0,0.35);
+    }
+    .avatar {
+      position: absolute;
+      bottom: -32px;
+      border: 2px solid white;
+      box-shadow: 0px 0px 1px #CCC;
+      left: 12px;
+    }
+    .person {
+      position: absolute;
+      bottom: 4px;
+      text-align: left;
+      left: 90px;
+
+      .name, .email {
+        text-shadow: 0px 1px 0px rgba(0,0,0,.35 );
+        color: white;
+      }
+    }
+  }
   .confirm-form {
     text-align: center;
     p {

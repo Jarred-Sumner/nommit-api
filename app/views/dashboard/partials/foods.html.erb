@@ -72,11 +72,12 @@
 
       <div class='content'>
 
-        <div class='overlay'>
-          <img class='avatar' ng-if='user' ng-style="{ 'background-image': 'url(https://graph.facebook.com/{{user.id}}/picture?type=large)' }" />
+        <div class='overlay with-background' ng-if='food' ng-style="{ 'background-image': 'url({{food.header_image_url}})' }">
+          <div class='sheet'></div>
+          <img class='avatar' ng-if='food.seller' ng-style="{ 'background-image': 'url({{food.seller.logo_url}})' }" />
           <div class='person'>
-            <h3 class='name'>{{user.full_name}}</h3>
-            <h5 class='email'>{{user.email}}</h5>
+            <h3 class='name'>{{food.title}}</h3>
+            <h5 class='email'>By {{food.seller.name}}</h5>
           </div>
           <div class="info error" ng-if='error'><i class="fa fa-info-circle"></i>{{error}}</div>
         </div>
