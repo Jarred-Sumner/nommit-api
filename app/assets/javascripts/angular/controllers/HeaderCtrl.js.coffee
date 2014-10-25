@@ -50,6 +50,7 @@
       $scope.changingPlace = false
 
   $rootScope.$on "CurrentUser", (event, user) ->
+    console.log(user)
     $scope.user = user
     $scope.loggedIn = Sessions.isLoggedIn()
 

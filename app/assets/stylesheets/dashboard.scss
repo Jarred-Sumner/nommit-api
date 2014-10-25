@@ -58,7 +58,13 @@ fieldset {
 
 input, button {
   outline: none;
+  &.ng-dirty.ng-invalid {
+    border: 1px solid #A61818 !important;
+  }
 }
+
+
+
 
 strong {
   font-weight: 500;
@@ -67,7 +73,6 @@ strong {
 .apply {
   text-align: center;
 }
-
 
 #content-container {
   background-color: #F8F8F8;
