@@ -4,6 +4,7 @@
     $scope.place = null
     $scope.price = null
     $scope.error = null
+    $scope.info = null
     $scope.user = null
     $scope.placing = false
   setVanillaPrice = ->
@@ -28,17 +29,17 @@
         setVanillaPrice()
         if promo.active && !promo.usable
           if promo.referral
-            $scope.error = "Promo only usable for first order"
+            $scope.info = "Promo only usable for first order"
           else
-            $scope.error = "Promo already applied to your account"
+            $scope.info = "Promo already applied to your account"
         else if promo.isExpired()
-          $scope.error = "Promo has expired"
+          $scope.info = "Promo has expired"
         else
-          $scope.error = "Promo cannot be used"
+          $scope.info = "Promo cannot be used"
       $scope.priceChecking = false
     failure = (error) ->
       $scope.priceChecking = false
-      $scope.error = error.data.message
+      $scope.info = error.data.message
       setVanillaPrice()
     Promos.get(id: food.promo, success, failure)
 
@@ -73,5 +74,6 @@
       $state.transitionTo("orders")
     error = (error) ->
       $scope.placing = false
+      $scope.info = null
       $scope.error = error.data.message
     Orders.save(params, success, error)

@@ -1,4 +1,12 @@
-@nommit.controller 'HeaderCtrl', ($scope, Places, $rootScope, Facebook, Sessions) ->
+@nommit.controller 'HeaderCtrl', ($scope, Places, $rootScope, Facebook, Sessions, Orders) ->
+  checkForOrdersThatNeedToBeRated = ->
+    Orders.query state_id: 2,  (orders) ->
+      if orders.length > 0
+        order = orders[0]
+        console.log(order)
+        $rootScope.$emit "RateFood", order: order
+        $scope.isRatingFood = true
+
   $scope.search =
     places: []
     query: ""
@@ -76,8 +84,9 @@
   $rootScope.$on "confirmOrder", (event, food) ->
     $scope.isShowingConfirmOrder = true
 
-  $rootScope.$on "HideLogin", (event, obj) ->
+  $rootScope.$on "HideLogin", (event, data) ->
     $scope.isShowingLogin = false
+    obj = data.callback
     obj.callback(obj.object) if obj.callback
   $rootScope.$on "HideActivation", (event, obj) ->
     $scope.isShowingActivation = false
@@ -85,3 +94,9 @@
   $rootScope.$on "HideConfirmPhone", (event, obj) ->
     $scope.isShowingConfirmPhone = false
     obj.callback(obj.object) if obj
+  $rootScope.$on "HideRateFood", ->
+    $scope.isRatingFood = false
+
+  postInit = ->
+    checkForOrdersThatNeedToBeRated()
+  postInit()

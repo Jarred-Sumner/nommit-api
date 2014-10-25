@@ -22,15 +22,15 @@
           <div class="info error" ng-if='error'><i class="fa fa-info-circle"></i>{{error}}</div>
           <form ng-submit='rate()'>
 
-            <p>{{order.courier.name}} delivered a quantity of {{order.quantity}} for a total of (including tip):</p>
+            <p><strong>{{courier.user.name}}</strong> delivered a <strong>quantity of {{order.quantity}}</strong> for a total of (including tip):</p>
 
-            <div ng-click='decrementTip()' class='fa fa-minus-cicle' ng-disabled='price < order.cost()'></div>
+            <span class='tip'><i class='fa fa-minus-cicle' ng-disabled='price < order.cost()'></i></span>
             <h2 class='price'>{{order.cost() | currency}}</h2>
-            <div ng-click='incrementTip()' class='fa fa-plus-cicle'></div>
+            <span class='tip' ng-click='incrementTip()' ><i class='fa fa-plus-cicle'></i></span>
 
-            <rating score='order.rating' max='5' />
+            <rating score='order.rating' max='5'></rating>
 
-            <button ng-if='!rating'>Done</button>
+            <button ng-disabled='!rated' ng-if='!rating'>Done</button>
             <fading-circle-spinner ng-if='rating'></fading-circle-spinner>
 
           </form>

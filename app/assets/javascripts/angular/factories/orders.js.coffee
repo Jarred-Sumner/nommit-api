@@ -2,10 +2,6 @@
   Orders = $resource "api/v1/orders/:id", @id,
     update:
       method: "PUT"
-    delivered:
-      method: "GET"
-      transformRequest: (data, headers) ->
-        console.log(data)
 
   Orders::isCancelled = ->
     @state_id == -1
