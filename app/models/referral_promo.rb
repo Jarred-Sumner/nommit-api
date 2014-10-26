@@ -6,6 +6,7 @@ class ReferralPromo < Promo
   def usable_for?(user: nil)
     return false if self.user.id == user.id
     return false if user.orders.placed.count > 0
+    return false if user.applied_promos.referral_promos.where.not(promos: { user_id: user.id }).count > 1
     super
   end
 

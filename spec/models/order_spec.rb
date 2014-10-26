@@ -90,7 +90,6 @@ describe Order, type: :model do
         it "referer" do
           expect do
             subject
-          # from zero to one. :P
           end.to change { referrer.applied_promos.active.count }.from(0).to(1)
 
           expect(
