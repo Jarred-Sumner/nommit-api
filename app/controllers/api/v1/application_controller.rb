@@ -1,10 +1,10 @@
 class Api::V1::ApplicationController < ActionController::Base
   attr_writer :current_user
+  rescue_from Exception, with: :render_generic_error unless Rails.env.development?
   rescue_from ActiveRecord::RecordInvalid, with: :render_invalid_record
   rescue_from ActionController::ParameterMissing, with: :render_bad_request
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
   rescue_from ActionController::RoutingError, with: :render_not_found
-  rescue_from Exception, with: :render_generic_error unless Rails.env.development?
 
   before_action :set_format!, :require_current_user!
 
