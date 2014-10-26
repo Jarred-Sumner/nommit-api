@@ -49,9 +49,9 @@ class AppliedPromo < ActiveRecord::Base
     end
 
     def doesnt_already_have_referral_promo!
-      if user.applied_promos.referral_promos.where.not(promos: { user_id: user_id }).count > 1
-        self.errors.add(:base, "Only one referral code can be applied to an account")
-      end
+      # if user.applied_promos.referral_promos.where.not(promos: { user_id: user_id }).count > 1
+      #   self.errors.add(:base, "Only one referral code can be applied to an account")
+      # end
     end
 
 end
