@@ -42,11 +42,12 @@ describe Shift, type: :model do
     end
 
     it "updates delivery estimates" do
-      eta = shift.orders.first.delivered_at
+      order = shift.orders.first
+      eta = order.delivered_at
 
       shift.update_delivery_times!(1)
 
-      expect(shift.orders.first.delivered_at > eta).to eq(true)
+      expect(order.reload.delivered_at > eta).to eq(true)
     end
   end
 

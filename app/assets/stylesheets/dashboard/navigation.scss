@@ -1,6 +1,15 @@
 $nav-padding: 14px 14px;
 $nav-max-width: 800px;
 
+.wrapper {
+  min-height: 100%;
+  display: block;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto;
+  background-color: #F8F8F8;
+}
+
 .nav-container {
   header,footer {
     @include outer-container;

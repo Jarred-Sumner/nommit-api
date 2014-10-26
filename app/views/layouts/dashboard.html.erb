@@ -14,64 +14,68 @@
     </head>
     <body>
 
-    <div ng-controller='HeaderCtrl'>
-      <div id='header-container' class='nav-container' ng-class='{ sticky: changingPlace }'>
-        <header id='header'>
-          <div ui-sref="foods()" class='brand'>
-            <div class='nommit-logo logo'></div>
-            <div class='tagline'>food in under 15 minutes.</div>
+    <div class='wrapper'>
+
+      <div ng-controller='HeaderCtrl'>
+        <div id='header-container' class='nav-container' ng-class='{ sticky: changingPlace }'>
+          <header id='header'>
+            <div ui-sref="foods()" class='brand'>
+              <div class='nommit-logo logo'></div>
+              <div class='tagline'>food in under 15 minutes.</div>
+            </div>
+
+            <div class='delivery-box' ng-if='page == "foods"'>
+              <span ng-if='choosingPlace'>Now Delivering To:</span>
+              <span ng-if='!choosingPlace'>Delivering To:</span>
+              <div id='place' ng-click='showPlaces()'>{{place.name || "Pick a Place"}}</div>
+            </div>
+
+            <div class='delivery-box' ng-if='page != "foods"'>
+              <span>{{page | titleize}}</span>
+            </div>
+
+            <nav class='account' ng-if='!loggedIn'>
+              <a ui-sref='foods()' ng-class='{ active: page == "foods" }'>Menu</a>
+              <a ng-click='showLogin()'>Login</a>
+            </nav>
+
+            <nav class='account' ng-if='loggedIn'>
+              <a ui-sref='foods()' ng-class='{ active: page == "foods" }'>Menu</a>
+              <a ui-sref='orders()' ng-class='{ active: page == "orders" }'>Orders</a>
+              <a ui-sref='account()' ng-class='{ active: page == "account" }'>Account</a>
+            </nav>
+          </header>
+
+          <div ng-if='changingPlace' id='place-select-container' ng-keydown='closeOnEsc($event)' ng-click='hidePlaces()'>
+            <form name='changingPlaceForm' prevent-click-delegation>
+              <input id="place-input" type='text' name="search" ng-model='search.query' placeholder="Building you're in" ng-change='filterPlaces()' focus='{{changingPlace}}'>
+            </form>
+            <ul id='place-select' prevent-click-delegation>
+              <li class='place' ng-repeat='place in search.places' ng-click='setCurrentPlace(place.id)'>
+                <span class='name' ng-bind='place.name'></span>
+                <i class="fa fa-arrow-circle-o-right"></i>
+              </li>
+            </ul>
+            <div class="footer" prevent-click-delegation>Can't find the building you're in? <a href="mailto:support@getnommit.com">Contact us</a>.</div>
           </div>
 
-          <div class='delivery-box' ng-if='page == "foods"'>
-            <span ng-if='choosingPlace'>Now Delivering To:</span>
-            <span ng-if='!choosingPlace'>Delivering To:</span>
-            <div id='place' ng-click='showPlaces()'>{{place.name || "Pick a Place"}}</div>
-          </div>
+          <%= render 'dashboard/login' %>
+          <%= render 'dashboard/activation' %>
+          <%= render 'dashboard/confirm_phone' %>
+          <%= render 'dashboard/rate_order'%>
+        </div>
+      </div>
 
-          <div class='delivery-box' ng-if='page != "foods"'>
-            <span>{{page | titleize}}</span>
-          </div>
-
-          <nav class='account' ng-if='!loggedIn'>
-            <a ui-sref='foods()' ng-class='{ active: page == "foods" }'>Menu</a>
-            <a ng-click='showLogin()'>Login</a>
-          </nav>
-
-          <nav class='account' ng-if='loggedIn'>
-            <a ui-sref='foods()' ng-class='{ active: page == "foods" }'>Menu</a>
-            <a ui-sref='orders()' ng-class='{ active: page == "orders" }'>Orders</a>
-            <a ui-sref='account()' ng-class='{ active: page == "account" }'>Account</a>
-          </nav>
-        </header>
-
-        <div ng-if='changingPlace' id='place-select-container' ng-keydown='closeOnEsc($event)' ng-click='hidePlaces()'>
-          <form name='changingPlaceForm' prevent-click-delegation>
-            <input id="place-input" type='text' name="search" ng-model='search.query' placeholder="Building you're in" ng-change='filterPlaces()' focus='{{changingPlace}}'>
-          </form>
-          <ul id='place-select' prevent-click-delegation>
-            <li class='place' ng-repeat='place in search.places' ng-click='setCurrentPlace(place.id)'>
-              <span class='name' ng-bind='place.name'></span>
-              <i class="fa fa-arrow-circle-o-right"></i>
-            </li>
-          </ul>
-          <div class="footer" prevent-click-delegation>Can't find the building you're in? <a href="mailto:support@getnommit.com">Contact us</a>.</div>
+      <div id='content-container'>
+        <div class='ribbon'>
+          <%= image_tag "dashboard/only-available-at-cmu.png" %>
         </div>
 
-        <%= render 'dashboard/login' %>
-        <%= render 'dashboard/activation' %>
-        <%= render 'dashboard/confirm_phone' %>
-        <%= render 'dashboard/rate_order'%>
-      </div>
-    </div>
-
-    <div id='content-container'>
-      <div class='ribbon'>
-        <%= image_tag "dashboard/only-available-at-cmu.png" %>
+        <div ui-view></div>
+        <%= yield %>
+        <p class='apply'>Interested in selling food on Nommit? <a href='mailto:support@getnommit.com'>Email us</a></p>
       </div>
 
-      <div ui-view></div>
-      <%= yield %>
-      <p class='apply'>Interested in selling food on Nommit? <a href='mailto:support@getnommit.com'>Email us</a></p>
     </div>
 
 

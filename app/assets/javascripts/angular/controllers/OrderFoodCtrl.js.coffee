@@ -6,6 +6,7 @@
     $scope.error = null
     $scope.info = null
     $scope.user = null
+    $scope.isPromoUsable = false
     $scope.placing = false
   setVanillaPrice = ->
     price = $scope.food.prices[$scope.food.quantity - 1].price * 100 - $scope.user.credit_in_cents
@@ -24,6 +25,7 @@
         else
           price = 0
         $scope.price = price
+        $scope.isPromoUsable = true
       else
         setVanillaPrice()
         if promo.active && !promo.usable
@@ -67,7 +69,7 @@
       price_id: price.id
       food_id: $scope.food.id
       place_id: $scope.place.id
-    params.promo_code = $scope.food.promo if $scope.food.promo
+    params.promo_code = $scope.food.promo if $scope.food.promo && $scope.isPromoUsable
     success = (order) ->
       resetData()
       $state.transitionTo("orders")
