@@ -22,13 +22,15 @@ class Api::V1::ApplicationController < ActionController::Base
 
   def apply_promo_to_user!(name: nil)
     promo = Promo.active.find_by!(name: name)
-    if promo.usable_for?(user: current_user)
-      current_user.applied_promos.create!(promo_id: promo.id)
-    else
-      if promo.class == ReferralPromo && current_user.orders.placed.count > 0
-        return render_bad_request("Referral codes are only available for new users")
+    if promo.class == ReferralPromo && current_user.orders.placed.count > 0
+      return render_bad_request("Referral codes are only available for new users")
+    elsif current_user.applied_promos.referral_promos.where
+      if promo.usable_for?(user: current_user)
+        current_user.applied_promos.create!(promo_id: promo.id)
+      elsif promo.class == ReferralPromo
+        return render_bad_request("Referral codes can only be used once")
       else
-        return render_bad_request("Promo code already in use or unavailable")
+        return render_bad_request("Promo code already in use or invalid")
       end
     end
   rescue ActiveRecord::RecordNotFound
