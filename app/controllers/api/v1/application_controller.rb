@@ -1,6 +1,6 @@
 class Api::V1::ApplicationController < ActionController::Base
   attr_writer :current_user
-  rescue_from Exception, with: :render_generic_error
+  rescue_from Exception, with: :render_generic_error unless Rails.env.development?
   rescue_from ActiveRecord::RecordInvalid, with: :render_invalid_record
   rescue_from ActionController::ParameterMissing, with: :render_bad_request
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
@@ -24,7 +24,9 @@ class Api::V1::ApplicationController < ActionController::Base
     promo = Promo.active.find_by!(name: name)
     if promo.class == ReferralPromo && current_user.orders.placed.count > 0
       return render_bad_request("Referral codes are only available for new users")
-    elsif current_user.applied_promos.referral_promos.where
+    elsif promo.user_id == current_user.id
+      return render_bad_request("Can't use your own referral code")
+    else
       if promo.usable_for?(user: current_user)
         current_user.applied_promos.create!(promo_id: promo.id)
       elsif promo.class == ReferralPromo

@@ -7,10 +7,10 @@ class AppliedPromo < ActiveRecord::Base
 
   enum state: [:active, :used_up, :inactive]
 
-  validates :user_id, uniqueness: { scope: [:promo_id], message: "has already applied this promo" }
   validates :amount_remaining_in_cents, presence: true
   validate :user_didnt_create_promo!, if: :active?
   validate :doesnt_already_have_referral_promo!
+  validates :promo_id, uniqueness: { scope: [:user_id] , message: "has already been applied" }, :if => Proc.new { promo.class != ReferralPromo && promo.user_id != user.id }
 
   scope :referral_promos, -> { joins(:promo).where(promos: { type: "ReferralPromo"} ) }
 
