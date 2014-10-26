@@ -30,10 +30,10 @@
       font-size: 12pt;
       color: #474747;
       max-width: 80%;
-      &:hover, &:focus {
-        cursor: pointer;
-        background-color: white;
-      }
+      // &:hover, &:focus {
+      //   cursor: pointer;
+      //   background-color: white;
+      // }
 
     }
 
@@ -73,6 +73,8 @@
       .edit {
         float: right;
         margin-right: 5px;
+        // TODO:
+        display: none;
       }
 
       &:before {
@@ -140,7 +142,7 @@
         display: inline-block;
       }
       input {
-        width: 70%;
+        width: 100%;
         float: left;
         text-align: center;
         @include calc(max-width, '#{$width} - 78px');
@@ -164,7 +166,7 @@
         border-radius: 3px;
         text-shadow: none;
         float: right;
-        margin-top: -12px;
+        margin-top: -11px;
         &:hover {
           cursor: pointer;
           background-color: darken(#7C7C7C, 10%);
@@ -176,6 +178,15 @@
       button[disabled] {
         opacity: 0.75;
         pointer-events: none;
+      }
+
+      .info {
+        float: left;
+        text-align: left;
+        margin-top: 10px;
+        display: block;
+        width: 100%;
+        .fa { margin-right: 5px; }
       }
 
     }

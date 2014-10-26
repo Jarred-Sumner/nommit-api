@@ -12,7 +12,7 @@
     @state_id == 0
 
   User::credit = ->
-    @credit_in_cents > 0 ? @credit_in_cents / 100 : 0
+    if @credit_in_cents > 0 then @credit_in_cents / 100 else 0
 
   User
 ]

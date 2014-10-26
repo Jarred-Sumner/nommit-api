@@ -6,7 +6,7 @@
 
 @import "dashboard/third-party/angular-spinkit.min";
 
-
+$asset-pipeline: true;
 $faded-text: #959595;
 $brand-green: #228B8F;
 $error-color: #D82D2D;
@@ -46,7 +46,7 @@ a {
 body {
   margin: 0 auto;
   padding: 0px;
-  background-color: #3e3e3e;
+  background-color: white;
 }
 
 fieldset {
@@ -61,6 +61,8 @@ input, button {
   &.ng-dirty.ng-invalid {
     border: 1px solid #A61818 !important;
   }
+  // So the dimensions don't change when you apply .ng-diry.ng-invalid
+  border: 1px solid transparent;
 }
 
 
@@ -255,7 +257,6 @@ $row-border-color: #E9E9E9;
       margin-top: 5px;
       padding: 8px;
       width: 100%;
-      border: none;
       background: white;
       font-size: 15px;
       color: #6F6F79;

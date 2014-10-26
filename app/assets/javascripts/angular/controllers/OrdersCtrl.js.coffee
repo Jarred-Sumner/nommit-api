@@ -1,22 +1,44 @@
 @nommit.controller 'OrdersCtrl', ($scope, Foods, Places, $rootScope, Orders, Sessions, $interval) ->
   $rootScope.$emit("requireLogin") unless Sessions.isLoggedIn()
 
-  refreshOrders = (silent) ->
-    $scope.fetchedOrders = false unless silent
-    Orders.query (orders) ->
+  clearData = ->
+    $scope.fetching = false
+    $scope.fetchedOrders = false
+
+  startRefreshing = ->
+    $interval.cancel($scope.refresherPromise) if $scope.refresherPromise
+    $scope.refresherPromise = $interval ->
+      refreshOrders()
+    , 10000
+  refreshOrders = ->
+    $scope.fetching = true
+    Orders.query().$promise.then (orders) ->
       $scope.orders = orders
-      $scope.fetchedOrders = true
-    , ->
-      $scope.fetchedOrders = true
+      $scope.fetching = false
+
+  startRefreshing()
+
+  $scope.orders = Orders.query (orders) ->
+    $scope.fetching = false
+    $scope.fetchedOrders = true
+  , ->
+    $scope.fetching = false
+    $scope.fetchedOrders = true
+
+
+
+
 
   $rootScope.$on "CurrentUser", ->
-    refreshOrders(false)
+    refreshOrders()
 
-  # Refresh orders every 10 seconds.
-  refresherPromise = $interval ->
-    refreshOrders(silent = true)
-  , 10000
-
-  $scope.$on "$destroy", ->
-    console.log("LAY")
-    $interval.cancel(refresherPromise)
+  $rootScope.$on "$stateChangeSuccess", (event, state) ->
+    if state.name == "orders"
+      clearData()
+      # Refresh orders every 10 seconds.
+      $interval.cancel($scope.refresherPromise) if $scope.refresherPromise
+      startRefreshing()
+    else
+      clearData()
+      $interval.cancel($scope.refresherPromise) if $scope.refresherPromise
+  clearData()

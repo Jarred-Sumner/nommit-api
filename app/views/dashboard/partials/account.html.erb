@@ -47,8 +47,10 @@
       </div>
 
       <form class='promo' name='promoForm' ng-submit='applyPromo()'>
-        <input type='text' class='input' ng-model='promo' required  placeholder='Enter Promo Code' />
+        <input type='text' class='input' ng-model='promo.code' required  placeholder='Enter Promo Code' />
         <button ng-disabled='promoForm.$invalid'>Apply</button>
+        <fading-circle-spinner ng-if='applying'></fading-circle-spinner>
+        <div class="info error" ng-if='error'><i class="fa fa-info-circle"></i>{{error}}</div>
       </form>
 
     </div>

@@ -77,10 +77,8 @@ $nav-max-width: 800px;
 }
 
 #footer-container {
+  background-color: #3e3e3e;
   footer {
-    margin-top: 14px;
-    height: 79px;
-
     a, p {
       margin-top: 0px;
       margin-bottom: 10px;
@@ -101,14 +99,14 @@ $nav-max-width: 800px;
       color: $brand-green;
       border-bottom: 1px dotted $brand-green;
       &:hover {
-        border-bottoM: 1px solid $brand-green;
+        border-bottom: 1px solid $brand-green;
       }
     }
 
     .appstore {
       @include span-columns(3);
-      margin-top: 0px;
       height: 40px;
+      margin-top: 9px;
       border: none;
       &:hover { border: none; }
 
@@ -120,16 +118,11 @@ $nav-max-width: 800px;
       font-size: 12pt;
       color: #BABABA;
       font-weight: 200;
-      margin-top: 13px;
-    }
-
-    .support {
-      @include span-columns(3);
-      text-shadow: none;
+      margin-top: 20px;
     }
 
     nav {
-      margin-top: 13px;
+      margin-top: 16px;
     }
 
   }

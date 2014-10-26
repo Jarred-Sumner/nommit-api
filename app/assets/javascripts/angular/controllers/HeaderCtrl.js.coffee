@@ -50,7 +50,6 @@
       $scope.changingPlace = false
 
   $rootScope.$on "CurrentUser", (event, user) ->
-    console.log(user)
     $scope.user = user
     $scope.loggedIn = Sessions.isLoggedIn()
 
@@ -82,7 +81,7 @@
 
   $rootScope.$on "requireValidation", ->
     $scope.isShowingConfirmPhone = true
-  $rootScope.$on "confirmOrder", (event, food) ->
+  $rootScope.$on "confirmOrder", ->
     $scope.isShowingConfirmOrder = true
 
   $rootScope.$on "HideLogin", (event, data) ->
@@ -91,9 +90,10 @@
     obj.callback(obj.object) if obj.callback
   $rootScope.$on "HideActivation", (event, obj) ->
     $scope.isShowingActivation = false
-    obj.callback(obj.object) if obj
-  $rootScope.$on "HideConfirmPhone", (event, obj) ->
+    obj.callback() if obj
+  $rootScope.$on "HideConfirmPhone", (event, data) ->
     $scope.isShowingConfirmPhone = false
+    obj = data.callback if data
     obj.callback(obj.object) if obj
   $rootScope.$on "HideRateFood", ->
     $scope.isRatingFood = false

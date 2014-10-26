@@ -2,7 +2,7 @@
   <div class='container' id='orders-container'>
     <fading-circle-spinner ng-if='!fetchedOrders'></fading-circle-spinner>
 
-    <div class='no-content' ng-if='fetchedOrders && orders.length == 0'>
+    <div class='no-content' ng-if='fetchedOrders && orders.length == 0 && !fetching'>
       <h2>You haven't placed any orders!</h2>
       <h2>Place an order at the <a ui-sref="foods()">Menu</a>.</h2>
       <div class='no-content-available'></div>
@@ -33,12 +33,12 @@
             </p>
           </div>
 
-          <div class='well' ng-if='!order.isLate()'>
+          <div class='well' ng-show='!order.isLate()'>
             <h3 class='muted'>Arriving at <strong>{{order.place.name}}</strong> in:</h3>
             <timer class='eta' end-time='order.deliveredAt().getTime()'>{{mminutes}}:{{sseconds}}</timer>
           </div>
 
-          <div class='well' ng-if='order.isLate()'>
+          <div class='well' ng-show='order.isLate()'>
             <h3 class='muted'>Arriving at <strong>{{order.place.name}}</strong> in:</h3>
             <h2 class='eta'>Any Minute now</h2>
           </div>
