@@ -9,6 +9,8 @@
     position: static;
     display: inline-block;
     left: 0px;
+    margin-right: 10px;
+    margin-left: 10px;
     &.price-container {
       background-color: $brand-green;
       color: white;
