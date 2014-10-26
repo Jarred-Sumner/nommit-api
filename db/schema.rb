@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141013224359) do
+ActiveRecord::Schema.define(version: 20141026233502) do
 
   create_table "applied_promos", force: true do |t|
     t.integer  "user_id"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20141013224359) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "referrer_id"
+    t.boolean  "from_referral"
   end
 
   add_index "applied_promos", ["promo_id"], name: "index_applied_promos_on_promo_id"
