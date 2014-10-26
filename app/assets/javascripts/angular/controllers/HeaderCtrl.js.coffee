@@ -34,7 +34,7 @@
       $scope.search.places = $scope.places
 
       $rootScope.$broadcast("placeIDChanged", placeID: $scope.place.id)
-    else
+    else if $scope.places.length > 0
       $scope.setCurrentPlace($scope.places[0].id)
   $scope.filterPlaces = ->
     if $scope.search.query.length > 0

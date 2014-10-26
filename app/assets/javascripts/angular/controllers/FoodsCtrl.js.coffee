@@ -9,17 +9,22 @@
   $scope.progressForFood = (food) ->
     (food.order_count / food.goal) * 100
   setPlace = (place) ->
-    Places.get id: window.settings.placeID(), (place) ->
-      $scope.place = place
+    if place
+      Places.get id: window.settings.placeID(), (place) ->
+        $scope.place = place
 
-      $scope.foods = _.chain(place.delivery_places)
-        .map (deliveryPlace) ->
-          _.filter deliveryPlace.foods, (food) ->
-            food.rating = Math.round(food.rating)
-            food.quantity = 1
-            food.state_id == 0
-        .flatten()
-        .value()
+        $scope.foods = _.chain(place.delivery_places)
+          .map (deliveryPlace) ->
+            _.filter deliveryPlace.foods, (food) ->
+              food.rating = Math.round(food.rating)
+              food.quantity = 1
+              food.state_id == 0
+          .flatten()
+          .value()
+        $scope.fetchedFoods = true
+    else
+      $scope.place = null
+      $scope.foods = []
       $scope.fetchedFoods = true
 
   $rootScope.$on "placeIDChanged", (event) ->
