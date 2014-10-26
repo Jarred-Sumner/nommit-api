@@ -7,8 +7,6 @@ class ReferralPromo < Promo
     return false if self.user.id == user.id
     return false if user.orders.placed.count > 0
 
-    # Can't use multiple referral promos
-    return false if user.applied_promos.referral_promos.count > 1
     super
   end
 
