@@ -15,13 +15,15 @@
 
   <div class='wrapper'>
 
-    <div ng-controller='HeaderCtrl'>
+    <div ng-controller='HeaderCtrl' class='header-controller'>
       <div id='header-container' class='nav-container' ng-class='{ sticky: changingPlace }'>
         <header id='header'>
           <div ui-sref="foods()" class='brand'>
             <div class='nommit-logo logo'></div>
             <div class='tagline'>food in under 15 minutes.</div>
           </div>
+
+          <div class='mobile-nav' ng-click='toggleMobileNav()'><i class='fa fa-bars'></i></div>
 
           <div class='delivery-box' ng-if='page == "foods"'>
             <span ng-if='choosingPlace'>Now Delivering To:</span>
@@ -33,16 +35,17 @@
             <span>{{page | titleize}}</span>
           </div>
 
-          <nav class='account' ng-if='!loggedIn'>
-            <a ui-sref='foods()' ng-class='{ active: page == "foods" }'>Menu</a>
-            <a ng-click='showLogin()'>Login</a>
+          <nav class='account' ng-if='!loggedIn' ng-class='{ mobileNavVisible: mobileNavVisible }'>
+            <a ui-sref='foods()' ng-class='{ active: page == "foods" }'>Menu <i class='fa fa-chevron-circle-right' ng-show='mobileNavVisible'></i></a>
+            <a ng-click='showLogin()'>Login <i class='fa fa-chevron-circle-right' ng-show='mobileNavVisible'></i></a>
           </nav>
 
-          <nav class='account' ng-if='loggedIn'>
-            <a ui-sref='foods()' ng-class='{ active: page == "foods" }'>Menu</a>
-            <a ui-sref='orders()' ng-class='{ active: page == "orders" }'>Orders</a>
-            <a ui-sref='account()' ng-class='{ active: page == "account" }'>Account</a>
+          <nav class='account' ng-if='loggedIn' ng-class='{ mobileNavVisible: mobileNavVisible }'>
+            <a ui-sref='foods()' ng-class='{ active: page == "foods" }'>Menu <i class='fa fa-chevron-circle-right' ng-show='mobileNavVisible'></i></a>
+            <a ui-sref='orders()' ng-class='{ active: page == "orders" }'>Orders <i class='fa fa-chevron-circle-right' ng-show='mobileNavVisible'></i></a>
+            <a ui-sref='account()' ng-class='{ active: page == "account" }'>Account <i class='fa fa-chevron-circle-right' ng-show='mobileNavVisible'></i></a>
           </nav>
+
         </header>
 
         <div ng-if='changingPlace' id='place-select-container' ng-keydown='closeOnEsc($event)' ng-click='hidePlaces()'>

@@ -8,7 +8,7 @@
   $scope.progressForFood = (food) ->
     (food.order_count / food.goal) * 100
   setPlace = (place) ->
-    if place
+    if place || window.settings.placeID()
       Places.get id: window.settings.placeID(), (place) ->
         $scope.place = place
 

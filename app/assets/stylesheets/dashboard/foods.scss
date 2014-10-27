@@ -82,6 +82,7 @@
       .promo {
         margin: 9px;
         position: relative;
+        z-index: 1;
         $placeholder-color: #999;
         &:before {
           @extend .fa;

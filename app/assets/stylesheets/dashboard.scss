@@ -12,12 +12,19 @@ $brand-green: #228B8F;
 $error-color: #D82D2D;
 $link-color: #404040;
 
+$mobile: new-breakpoint(max-width 400px 5);
+
 * {
   font-family: "Helvetica Neue", "Helvetica", "Arial";
   @include box-sizing(border-box);
 }
 
 html,body { height: 100%; }
+
+html {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-touch-callout: none;
+}
 
 h1,h2,h3,h4,h5,h6,p,a {
   margin-top: 10px;
@@ -134,14 +141,12 @@ $row-border-color: #E9E9E9;
         width: 100%;
         height: 172px;
         background-size: cover;
-        position: relative;
         .overlay {
           padding: 2px;
           background-color: white;
           border-radius: 30px;
-          position: absolute;
-          z-index: 10;
-          bottom: -50px;
+          position: relative;
+          bottom: -160px;
           width: 60px;
           height: 60px;
           box-shadow: 0px 0px 1px 0px #CCC;
@@ -184,7 +189,7 @@ $row-border-color: #E9E9E9;
   overflow: hidden;
   top: 0px;
   left: 0px;
-  z-index: 100;
+  z-index: 999;
   display: table;
   @include animation(fadeIn 0.5s ease-in-out);
   @include backface-visibility(visible);
@@ -194,6 +199,9 @@ $row-border-color: #E9E9E9;
   display: table-cell;
   vertical-align: middle;
   overflow: hidden;
+  position: relative;
+  z-index: 999;
+  height: 100%;
 }
 
 .modal {
@@ -436,12 +444,11 @@ $row-border-color: #E9E9E9;
 
 
 
-span.input-label { display: inline-block }
+span.input-label { display: inline-block; }
 .input-label {
   position: relative;
   $indent: 30px;
   .fa {
-    position: absolute;
     padding: 10px;
     pointer-events: none;
   }
@@ -517,6 +524,12 @@ span.input-label { display: inline-block }
 
 .rating {
   a { color: $brand-green; cursor: default; border-bottom: none; }
+}
+
+@include media($mobile) {
+  .ribbon {
+    margin-top: 5px;
+  }
 }
 
 @import "dashboard/navigation";

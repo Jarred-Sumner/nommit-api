@@ -4,7 +4,6 @@
     Orders.query state_id: 2,  (orders) ->
       if orders.length > 0
         order = orders[0]
-        console.log(order)
         $rootScope.$emit "RateFood", order: order
         $scope.isRatingFood = true
 
@@ -14,6 +13,9 @@
 
   $scope.places = Places.query (places) ->
     setCurrentPlace(window.settings.placeID())
+
+  $scope.toggleMobileNav = ->
+    $scope.mobileNavVisible = !$scope.mobileNavVisible
 
   $scope.setCurrentPlace = (placeID) ->
     window.settings.setPlaceID(placeID)
@@ -56,6 +58,7 @@
 
   $rootScope.$on "$stateChangeSuccess", (event, state) ->
     $scope.page = state.name
+    $scope.mobileNavVisible = false
 
     # Fetch current user
     # Notify all controllers that current user is available
@@ -63,6 +66,7 @@
 
   $scope.showLogin = ->
     $scope.isShowingLogin = true
+    $scope.mobileNavVisible = false
   $scope.hideLogin = ->
     $scope.isShowingLogin = false
   $scope.showActivation = ->
