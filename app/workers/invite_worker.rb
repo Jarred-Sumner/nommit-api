@@ -7,7 +7,7 @@ class InviteWorker
     code = user.referral_promo.name
     last_name = user.name.split(" ").last if user.name.split(" ").count > 1
     contacts.each do |contact|
-      message = "#{user.first_name}#{' ' + last_name[0] + '.' if last_name.present?} sent $5 credit to get food delivered to you in < 15 mins. Use code: JS873. Get Nommit at http://appstore.com/nommit. Only @ CMU."
+      message = "#{user.first_name}#{' ' + last_name[0] + '.' if last_name.present?} sent $5 credit to get food delivered to you in < 15 mins. Use code: #{code}. Get Nommit at http://appstore.com/nommit. Only @ CMU."
       begin
         Texter.run(message, contact['phone'])
       rescue Twilio::REST::RequestError => e
