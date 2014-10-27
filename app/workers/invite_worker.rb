@@ -6,10 +6,18 @@ class InviteWorker
     user = User.find(user_id)
     code = user.referral_promo.name
     last_name = user.name.split(" ").last if user.name.split(" ").count > 1
-    contacts.each do |contact|
-      message = "#{user.first_name}#{' ' + last_name[0] + '.' if last_name.present?} sent $5 credit to get food delivered to you in < 15 mins. Use code: #{code}. Get Nommit at http://www.getnommit.com/?i=#{code}. Only @ CMU."
+    contacts.collect do |contact|
+      phone = contact['phone']
+      first_name = contact['name']
+      first_name = contact['name'].split(" ")[0] if first_name.present?
+
+      if first_name.present?
+        @message = "Yo #{first_name}! #{user.first_name}#{' ' + last_name[0] + '.' if last_name.present?} sent you $5 on Nommit. Get food delivered to you in 15 mins - only @ CMU. Use code: #{code}. http://www.getnommit.com/?i=#{code}"
+      else
+        @message = "#{user.first_name}#{' ' + last_name[0] + '.' if last_name.present?} sent you $5 on Nommit. Get food delivered to you in 15 mins - only @ CMU. Use code: #{code}. http://www.getnommit.com/?i=#{code}"
+      end
       begin
-        Texter.run(message, contact['phone'])
+        Texter.run(@message, contact['phone'])
       rescue Twilio::REST::RequestError => e
         Bugsnag.notify(e)
       end

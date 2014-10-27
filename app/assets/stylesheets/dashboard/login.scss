@@ -80,16 +80,13 @@
     background-size: cover;
     background-position: 50%;
     .info {
-      font-size: 9pt;
       line-height: 18px;
       margin-top: 0px;
       margin-bottom: 20px;
     }
-    .error {
-
-    }
     .login-with-facebook {
       font-size: 12pt;
     }
+    .info, .error { font-size: 9pt; }
   }
 }
