@@ -1,6 +1,5 @@
-@nommit.controller 'FoodsCtrl', ($scope, Foods, Places, $rootScope, Sessions) ->
+@nommit.controller 'FoodsCtrl', ($scope, Foods, Places, $rootScope, Sessions, $stateParams, $http) ->
   $scope.orderingFood = false
-
   $scope.price = (food, quantity) ->
     if quantity
       food.prices[quantity - 1].price
@@ -32,8 +31,17 @@
   $rootScope.$on "CurrentUser", (event, user) ->
     $scope.user = user
 
+  applyPendingPromo = ->
+    unless _.str.isBlank($stateParams.i)
+      promo =
+        code: $stateParams.i
+        autoapply: true
+      $http.post("/api/v1/users/#{$scope.user.id}/promos", promo).success (user) ->
+        Sessions.setCurrentUser(user)
+
   Sessions.currentUser (user) ->
     $scope.user = user
+    applyPendingPromo() if user
 
 
   setPlace()

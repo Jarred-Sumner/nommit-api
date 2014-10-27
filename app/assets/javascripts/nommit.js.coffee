@@ -11,8 +11,12 @@ window.settings =
     localStorage["placeID"]
   setPlaceID: (id) ->
     localStorage['placeID'] = id
+  didRedirectOniOS: ->
+    localStorage["didRedirectOniOS"]
+  setDidRedirectOniOS: ->
+    localStorage["didRedirectOniOS"] = true
 
-@nommit = angular.module('nommit', ['ui.router', 'ngResource', 'facebook', 'angularPayments', 'angular-spinkit', 'timer', 'ngCacheBuster'])
+@nommit = angular.module('nommit', ['ui.router', 'ngResource', 'facebook', 'angularPayments', 'angular-spinkit', 'timer', 'ngCacheBuster', 'adaptive.detection'])
 
 # This routing directive tells Angular about the default
 # route for our application. The term "otherwise" here
@@ -21,10 +25,9 @@ window.settings =
 @nommit.config ($stateProvider, $urlRouterProvider, $httpProvider, FacebookProvider, $locationProvider, $compileProvider, httpRequestInterceptorCacheBusterProvider) ->
   $locationProvider.html5Mode(true);
   $urlRouterProvider.otherwise("/")
-
   $stateProvider
     .state('foods',
-      url: "/"
+      url: "/?i"
       templateUrl: 'dashboard/partials/foods'
       controller: 'FoodsCtrl'
     ).state('orders',

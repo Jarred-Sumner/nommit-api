@@ -1,4 +1,5 @@
-@nommit.controller 'HeaderCtrl', ($scope, Places, $rootScope, Facebook, Sessions, Orders) ->
+@nommit.controller 'HeaderCtrl', ($scope, Places, $rootScope, Facebook, Sessions, Orders, $stateParams, $detection) ->
+
   checkForOrdersThatNeedToBeRated = ->
     Orders.query state_id: 2,  (orders) ->
       if orders.length > 0
@@ -86,8 +87,9 @@
 
   $rootScope.$on "HideLogin", (event, data) ->
     $scope.isShowingLogin = false
-    obj = data.callback
-    obj.callback(obj.object) if obj.callback
+    if data && data.callback
+      obj = data.callback
+      obj.callback(obj.object) if obj.callback
   $rootScope.$on "HideActivation", (event, obj) ->
     $scope.isShowingActivation = false
     obj.callback() if obj
@@ -100,4 +102,9 @@
 
   postInit = ->
     checkForOrdersThatNeedToBeRated()
+
+    if $detection.isiOS() && !window.settings.didRedirectOniOS()
+      window.settings.setDidRedirectOniOS()
+      location.href = window.config.iTunesURL
+
   postInit()
