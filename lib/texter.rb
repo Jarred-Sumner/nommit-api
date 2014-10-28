@@ -4,7 +4,7 @@ class Texter < Struct.new(:message, :to, :phone)
     Texter.new(message, to, phone).perform
   end
 
-  def perform(phone = ENV["TWILIO_PHONE"])
+  def perform
     message << "\n - #{Rails.env.capitalize}" unless Rails.env.production?
     twilio.messages.create(
       from: phone,

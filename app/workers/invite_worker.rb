@@ -20,6 +20,7 @@ class InviteWorker
       begin
         Texter.run(@message, contact['phone'], INVITE_PHONE)
       rescue Twilio::REST::RequestError => e
+        raise e if Rails.env.test?
         Bugsnag.notify(e)
       end
     end
