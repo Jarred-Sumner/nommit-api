@@ -23,6 +23,16 @@ RSpec.describe ReferralPromo, type: :model do
         ).to eq(false)
       end
 
+      it "already applied a referral code" do
+        other = create(:user)
+        user.applied_promos.create!(promo_id: other.referral_promo.id)
+
+        second = create(:user)
+        expect do
+          user.applied_promos.create!(promo_id: second.referral_promo.id)
+        end.to raise_error(ActiveRecord::RecordInvalid)
+      end
+
     end
 
   end
