@@ -310,7 +310,7 @@ FactoryGirl.define do
   factory :user do
     name { Faker::Name.name }
     email { Faker::Internet.email }
-    phone { "+1#{rand(2222222222..9999999999)}" }
+    phone { "1925#{rand(1111111..9999999)}" }
     facebook_uid { String(rand(11111..99999)) }
     state 1
 

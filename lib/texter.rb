@@ -1,15 +1,13 @@
-class Texter < Struct.new(:message, :to)
-  PHONE = ENV["TWILIO_PHONE"] unless defined?(PHONE)
+class Texter < Struct.new(:message, :to, :phone)
 
-
-  def self.run(message, to)
-    Texter.new(message, to).perform
+  def self.run(message, to, phone = ENV["TWILIO_PHONE"])
+    Texter.new(message, to, phone).perform
   end
 
-  def perform
+  def perform(phone = ENV["TWILIO_PHONE"])
     message << "\n - #{Rails.env.capitalize}" unless Rails.env.production?
     twilio.messages.create(
-      from: PHONE,
+      from: phone,
       to: convert_to_e164(to),
       body: message
     )
