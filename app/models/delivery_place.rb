@@ -31,7 +31,7 @@ class DeliveryPlace < ActiveRecord::Base
   def arrive!
     transaction do
       current_dp = shift.delivery_places.active.first
-      orders.arrived.update_all(state: Order.states[:active])
+      shift.orders.arrived.update_all(state: Order.states[:active])
       shift
         .delivery_places
         .update_all(state: DeliveryPlace.states[:ready])
