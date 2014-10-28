@@ -4,10 +4,11 @@ describe Order, type: :model do
   let(:courier) { create(:active_courier) }
   let(:shift) { create(:active_shift, courier_id: courier.id) }
   let(:place) { create(:place) }
+  let(:food_price) { 500 }
   let(:delivery_place) { create(:delivery_place, shift_id: shift.id, place_id: place.id) }
   let(:food) do
     food = create(:food, seller_id: courier.seller_id)
-    food.set_prices!([500])
+    food.set_prices!([food_price])
     food
   end
 
@@ -36,37 +37,62 @@ describe Order, type: :model do
         user.applied_promos.create!(promo_id: promo.id)
       end
 
-      it "successfully" do
-        expect(subject.applied_promos.count).to eq(1)
-        expect(subject.discount_in_cents).to eq(discount)
-        expect(subject.applied_promos.first.reload.state).to eq('used_up')
+      context "successfully" do
+        specify { expect(subject.applied_promos.count).to eq(1) }
+        specify { expect(subject.discount_in_cents).to eq(discount) }
+        specify { expect(subject.applied_promos.first.reload.state).to eq('used_up') }
       end
 
-      it "with multiple" do
-        second_promo = create(:promo, discount_in_cents: 25)
-        user.applied_promos.create!(promo_id: second_promo.id)
+      context "with multiple" do
+        let(:second_promo) { create(:promo, discount_in_cents: 25) }
 
-        expect(subject.applied_promos.count).to eq(2)
-        expect(subject.discount_in_cents).to eq(discount + second_promo.discount_in_cents)
+        before :each do
+          user.applied_promos.create!(promo_id: second_promo.id)
+        end
+
+        specify { expect(subject.applied_promos.count).to eq(2) }
+        specify { expect(subject.discount_in_cents).to eq(discount + second_promo.discount_in_cents) }
 
         # All promos are used up
-        expect(subject.applied_promos.used_up.count).to eq(subject.applied_promos.count)
+        specify { expect(subject.applied_promos.used_up.count).to eq(subject.applied_promos.count) }
+
+        # None have negative credit
+        specify { expect(subject.applied_promos.where("amount_remaining_in_cents < ?", 0).count).to eq(0) }
       end
 
-      it "with multiple where some have left over credit" do
-        second_promo = create(:promo, discount_in_cents: price.price_in_cents + 100)
-        u_promo = user.applied_promos.create!(promo_id: second_promo.id)
+      context "with multiple where some have left over credit" do
+        let(:second_promo) { create(:promo, discount_in_cents: price.price_in_cents + 100) }
+        let(:u_promo) { user.applied_promos.new(promo_id: second_promo.id) }
 
-        expect(subject.applied_promos.count).to eq(2)
-        expect(subject.discount_in_cents).to eq(subject.price_in_cents)
+        before :each do
+          u_promo.save!
+        end
+
+        specify { expect(subject.applied_promos.count).to eq(2) }
+        specify { expect(subject.discount_in_cents).to eq(subject.price_in_cents) }
 
         # One promo is used up, the other isn't
-        expect(subject.applied_promos.used_up.count).to eq(1)
-        expect(subject.applied_promos.active.count).to eq(1)
+        specify { expect(subject.applied_promos.used_up.count).to eq(1) }
+        specify { expect(subject.applied_promos.active.count).to eq(1) }
 
         # The balance on this promo = original_balance - order_price - discount_on_first_promo
-        balance = second_promo.discount_in_cents - subject.price_in_cents - discount
-        expect(u_promo.reload.amount_remaining_in_cents).to eq(balance)
+        specify do
+          balance = second_promo.discount_in_cents - subject.price_in_cents - discount
+          expect(u_promo.reload.amount_remaining_in_cents).to eq(balance)
+        end
+      end
+
+      context "with multiple that have no left over credit after ordering" do
+        let(:other_promo) { create(:promo, discount_in_cents: food_price - discount) }
+        let(:applied) { other_promo.applied_promos.new(user_id: user.id) }
+
+        before :each do
+          applied.save!
+        end
+
+        specify { expect(subject.applied_promos.used_up.count).to eq(subject.applied_promos.count) }
+        specify { expect(subject.applied_promos.sum(:amount_remaining_in_cents)).to eq(0) }
+
       end
 
     end

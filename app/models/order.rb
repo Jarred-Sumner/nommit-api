@@ -107,8 +107,14 @@ class Order < ActiveRecord::Base
           next
         end
 
+        # If we somehow have caused the promo to have a negative balance, and still marked it as active
+        if promo.amount_remaining_in_cents <= 0
+          promo.update_attributes!(amount_remaining_in_cents: 0, state: "used_up")
+          next
+        end
+
         # Free order?
-        if promo.amount_remaining_in_cents >= price_in_cents - discount_in_cents
+        if promo.amount_remaining_in_cents > price_in_cents - discount_in_cents
           promo.amount_remaining_in_cents = promo.amount_remaining_in_cents - price_in_cents - discount_in_cents
           self.discount_in_cents = price_in_cents
         else
@@ -122,11 +128,11 @@ class Order < ActiveRecord::Base
         # Activate the referral credit of the referrer if it hasn't been all used up
         promo.referrer.active! if promo.referrer.present? && promo.referrer.state != 'used_up'
 
-        self.applied_promos << promo
+        applied_promos << promo
         break if discount_in_cents >= price_in_cents
       end
 
-      self.save!
+      save!
     end
 
     def charge!

@@ -32,7 +32,7 @@ class AppliedPromo < ActiveRecord::Base
   after_create :expire_user_cache!
 
   def expire_user_cache!
-    self.user.try(:touch)
+    user.try(:touch)
   end
 
   def usable?
