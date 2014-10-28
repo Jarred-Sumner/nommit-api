@@ -9,7 +9,7 @@ class AppliedPromo < ActiveRecord::Base
 
   validates :amount_remaining_in_cents, presence: true
   validate :user_didnt_create_promo!, if: :active?
-  validate :doesnt_already_have_referral_promo!, :if => Proc.new { promo.type == "ReferralPromo" && !from_referral? }
+  validate :doesnt_already_have_referral_promo!, on: :create
   validates :promo_id, uniqueness: { scope: [:user_id] , message: "has already been applied" }, :if => Proc.new { promo.class != ReferralPromo || !from_referral? }
 
   scope :referral_promos, -> { joins(:promo).where(promos: { type: "ReferralPromo"} ) }
@@ -49,6 +49,9 @@ class AppliedPromo < ActiveRecord::Base
     end
 
     def doesnt_already_have_referral_promo!
+      return false unless promo.type == "ReferralPromo"
+      return false if from_referral?
+
       if user.promos.referral.where.not(user_id: user.id).count > 0
         self.errors.add(:base, "Only one referral code can be applied to an account")
       end
