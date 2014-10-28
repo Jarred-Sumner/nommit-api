@@ -2,6 +2,7 @@ class Promo < ActiveRecord::Base
   has_many :applied_promos
   has_many :orders, through: :applied_promos
   scope :active, -> { where("expiration IS NULL OR expiration > ?", DateTime.now) }
+  scope :referral, -> { where(type: "ReferralPromo") }
 
   def usable_for?(user: nil)
     return false unless active?

@@ -28,9 +28,7 @@ RSpec.describe ReferralPromo, type: :model do
         user.applied_promos.create!(promo_id: other.referral_promo.id)
 
         second = create(:user)
-        expect do
-          user.applied_promos.create!(promo_id: second.referral_promo.id)
-        end.to raise_error(ActiveRecord::RecordInvalid)
+        expect(second.referral_promo.usable_for?(user: user)).to eq(false)
       end
 
     end

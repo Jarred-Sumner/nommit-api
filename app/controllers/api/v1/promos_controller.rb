@@ -10,7 +10,6 @@ class Api::V1::PromosController < Api::V1::ApplicationController
   end
 
   def create
-    return render_bad_request("Promo codes under maintenance! Check back in 30 minutes")
     render current_user
   end
 

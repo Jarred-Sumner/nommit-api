@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   has_many :couriers
   has_many :shifts, through: :couriers
   has_many :applied_promos
+  has_many :promos, through: :applied_promos
   has_one :payment_method, -> { where(state: PaymentMethod.states[:active]) }
   has_many :payment_methods
   has_one :referral_promo
