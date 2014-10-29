@@ -28,6 +28,7 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     addressable (2.3.6)
+    analytics-ruby (2.0.10)
     arel (5.0.1.20140414130214)
     aws-sdk (1.55.0)
       aws-sdk-v1 (= 1.55.0)
@@ -276,6 +277,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  analytics-ruby (~> 2.0.0)
   aws-sdk
   bourbon
   bugsnag

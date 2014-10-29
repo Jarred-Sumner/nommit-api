@@ -20,7 +20,11 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
 
   def create
     @order = Order.create!(order_params.merge(user_id: current_user.id))
-    @order.food.ended! if @order.food.remaining.zero?
+    track_placed_order(@order)
+    if @order.food.remaining.zero?
+      @order.food.ended!
+      track_food_sold_out(@order.food)
+    end
     render action: :show
   rescue ActiveRecord::RecordInvalid => e
     render_error(status: :bad_request, text: e.record.errors.full_messages.first)
@@ -38,6 +42,7 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
       rating = Float(update_params[:rating] || 4)
       tip    = Integer(update_params[:tip_in_cents] || 0)
       @order.update_attributes!(state: Order.states[:rated], rating: rating, tip_in_cents: tip)
+      track_rated_order(@order)
     elsif Integer(update_params[:state_id]) == Order.states[:delivered]
       @order = Order.find_by(courier: current_user.couriers, id: update_params[:id])
       return render_not_found if @order.nil? || @order.delivered?
@@ -46,6 +51,7 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
 
       # Send them a delivery notification on their first order.
       Sms::Notifications::DeliveryWorker.perform_async(@order.id) if @order.user.orders.count == 1
+      track_delivered_order(@order)
     end
 
     if @order.present?

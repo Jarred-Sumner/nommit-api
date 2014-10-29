@@ -140,6 +140,10 @@ class Order < ActiveRecord::Base
       ChargeWorker.perform_at(Charge::DELAY.hours.from_now, self.id)
     end
 
+    def send_arrival_text!
+      Sms::Notifications::ArrivalWorker.new.deliver_message!(self)
+    end
+
   validates :food, presence: true
   validates :user, presence: true
   validates :place, presence: true

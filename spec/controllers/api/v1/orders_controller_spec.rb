@@ -92,6 +92,7 @@ describe Api::V1::OrdersController, type: :controller do
       end
 
       it "succeeds" do
+        expect(controller).to receive(:track_placed_order)
         expect do
           post :create, food_id: food.id, place_id: place.id, price_id: food.prices.first.id
         end.to change(Order, :count).by(1)
@@ -100,6 +101,7 @@ describe Api::V1::OrdersController, type: :controller do
 
         order_id = JSON.parse(response.body)['id']
         expect(Order.find(order_id)).to be_present
+
       end
 
       context "with failed payment method" do
@@ -194,6 +196,11 @@ describe Api::V1::OrdersController, type: :controller do
           expect { subject }.to change { order.reload.state }.from("active").to("delivered")
         end
 
+        specify do
+          expect(controller).to receive(:track_delivered_order)
+          subject
+        end
+
         it "sends delivery notification on first order" do
           expect do
             subject
@@ -256,6 +263,7 @@ describe Api::V1::OrdersController, type: :controller do
       end
 
       it "sets rating on food" do
+        expect(controller).to receive(:track_rated_order)
         rating = 5.0
         put :update, id: order.id, state_id: Order.states[:rated], rating: rating
         expect(order.reload.rating).to eq(rating)

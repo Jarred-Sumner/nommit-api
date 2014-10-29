@@ -62,7 +62,12 @@ gem 'neat'
 # Icons!!!11
 gem 'font-awesome-sass', '~> 4.2.0'
 
+# Don't worry about annotating AngularJS anymore.
 gem 'ngannotate-rails'
+
+# Analytics
+gem 'analytics-ruby', '~> 2.0.0', :require => 'segment/analytics'
+
 
 group :test, :development do
 

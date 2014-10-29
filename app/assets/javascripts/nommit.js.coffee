@@ -42,5 +42,8 @@ window.settings =
 
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|http|sms|tel):/)
   FacebookProvider.init(window.config.facebook);
+
+  $httpProvider.defaults.headers.common["X-APP-VERSION"] = "MASTER"
+  $httpProvider.defaults.headers.common["X-APP-PLATFORM"] = "Website"
   $httpProvider.defaults.headers.common["X-SESSION-ID"] = window.settings.sessionID()
   httpRequestInterceptorCacheBusterProvider.setMatchlist [/users/, /partials/], true

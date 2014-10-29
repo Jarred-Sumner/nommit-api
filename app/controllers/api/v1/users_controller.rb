@@ -9,6 +9,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
       if update_params[:confirm_code].present?
         if current_user.confirm_code == Integer(update_params[:confirm_code].to_s)
           current_user.update_attributes!(confirm_code: nil, state: User.states[:activated])
+          track_activation
         else
           return render_invalid_confirm_code
         end
@@ -26,6 +27,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
     if update_params[:stripe_token].present?
       begin
         PaymentMethod.create_for(token: update_params[:stripe_token], user: current_user)
+        track_update_payment_method
       rescue Stripe::InvalidRequestError, Stripe::CardError, ArgumentError => e
         return render_bad_request("Couldn't validate credit card, please re-enter it and try again")
       end
@@ -51,6 +53,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
     def generate_confirm_code!
       Sms::ConfirmCodeSender.perform_async(current_user.id)
+      track_sent_confirm_code
     end
 
 end

@@ -37,6 +37,7 @@ describe Api::V1::ShiftsController, type: :controller do
 
     let(:places) { 5.times.collect { create(:place).id } }
     it "creates a shift successfully" do
+      expect(controller).to receive(:track_started_shift)
       expect do
         post :create, place_ids: places
       end.to change(Shift, :count).by(1)
@@ -88,6 +89,7 @@ describe Api::V1::ShiftsController, type: :controller do
       end
 
       it "ends the shift" do
+        expect(controller).to receive(:track_ended_shift)
         put :update, id: shift.id, state_id: Shift.states[:ended]
         expect(response.status).to eq(200)
         expect(shift.reload.state).to eq("ended")
@@ -104,6 +106,7 @@ describe Api::V1::ShiftsController, type: :controller do
         end
 
         it "halts the shift and all the delivery places" do
+          expect(controller).to receive(:track_halted_shift)
           put :update, id: shift.id, state_id: Shift.states[:ended]
           expect(response.status).to eq(422)
           expect(shift.reload.state).to eq("halt")
@@ -122,6 +125,7 @@ describe Api::V1::ShiftsController, type: :controller do
       end
 
       specify do
+        expect(controller).to receive(:track_shift_changed_delivery_places)
         expect do
           put :update, id: shift.id, place_ids: place_ids
         end.to change { shift.places.count }.by(5)

@@ -1,5 +1,6 @@
 class Api::V1::ApplicationController < ActionController::Base
   attr_writer :current_user
+  include Tracking
   rescue_from Exception, with: :render_generic_error if Rails.env.production?
   rescue_from ActiveRecord::RecordInvalid, with: :render_invalid_record
   rescue_from ActionController::ParameterMissing, with: :render_bad_request

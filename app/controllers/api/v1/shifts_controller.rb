@@ -11,6 +11,7 @@ class Api::V1::ShiftsController < Api::V1::ApplicationController
     ActiveRecord::Base.transaction do
       @shift = courier.shifts.create!
       @shift.deliver_to!(places: Array(place_ids))
+      track_started_shift(@shift)
     end
     render action: :show
   end
@@ -21,13 +22,16 @@ class Api::V1::ShiftsController < Api::V1::ApplicationController
       if Integer(shift_params[:state_id]) == Shift.states[:ended]
         if shift.orders.pending.count.zero?
           shift.ended!
+          track_ended_shift(@shift)
         else
           shift.halt!
+          track_halted_shift(@shift)
           return render_error(status: :unprocessable_entity, text: "Please fulfill the remaining #{shift.orders.active.count} order(s) before ending your shift.")
         end
       end
     elsif shift_params.has_key?(:place_ids)
       shift.deliver_to!(places: shift_params[:place_ids])
+      track_shift_changed_delivery_places(shift)
     # Changing the current delivery place?
     elsif delivery_place.present?
 
@@ -37,6 +41,7 @@ class Api::V1::ShiftsController < Api::V1::ApplicationController
       # So, it goes here.
       if Integer(dp_params[:delivery_place_state_id]) == DeliveryPlace.states[:arrived]
         delivery_place.arrive!
+        track_delivery_place_arrived(delivery_place)
       end
     end
     render action: :show

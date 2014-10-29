@@ -18,14 +18,19 @@ describe Api::V1::UsersController, type: :controller do
 
       let(:token) { "void_card_token" }
 
+      subject { put :update, stripe_token: token, id: user.id }
+
       it "creates a payment method" do
-        expect do
-          put :update, stripe_token: token, id: user.id
-        end.to change(PaymentMethod, :count)
+        expect { subject }.to change(PaymentMethod, :count)
         expect(response.status).to eq(200)
 
         json = JSON.parse(response.body)
         expect(json['payment_authorized']).to eq(true)
+      end
+
+      specify do
+        expect(controller).to receive(:track_update_payment_method)
+        subject
       end
 
     end
@@ -47,6 +52,7 @@ describe Api::V1::UsersController, type: :controller do
       let(:phone) { Faker::PhoneNumber.cell_phone }
 
       it "changes phone" do
+        expect(controller).to receive(:track_sent_confirm_code)
         put :update, id: user.id, phone: phone
         expect(response.status).to eq(200)
         expect(user.reload.phone).to eq(PhonyRails.normalize_number(phone, default_country_code: "US"))
@@ -60,13 +66,24 @@ describe Api::V1::UsersController, type: :controller do
         expect(Sms::ConfirmCodeSender.jobs.size).to eq(0)
       end
 
-      it "sets User to activated on confirm" do
-        expect do
-          put :update, id: user.id, confirm_code: user.confirm_code
-        end.to change { user.reload.state }.from("registered").to("activated")
+      context "sets User to activated on confirm" do
+        subject { put :update, id: user.id, confirm_code: user.confirm_code }
+
+        specify do
+          expect do
+            subject
+          end.to change { user.reload.state }.from("registered").to("activated")
+        end
+
+        specify do
+          expect(controller).to receive(:track_activation)
+          subject
+        end
+
       end
 
       it "resets confirm code on failed activation" do
+        expect(controller).to receive(:track_sent_confirm_code)
         expect do
           put :update, id: user.id, confirm_code: "bagel"
         end.to change { Sms::ConfirmCodeSender.jobs.size }

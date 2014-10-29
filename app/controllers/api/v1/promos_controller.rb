@@ -10,6 +10,7 @@ class Api::V1::PromosController < Api::V1::ApplicationController
   end
 
   def create
+    track_applied_promo
     render current_user
   end
 
