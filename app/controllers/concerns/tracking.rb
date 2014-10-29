@@ -5,7 +5,8 @@ module Tracking
     metadata = {
       'App Version' => request.headers["X-APP-VERSION"],
       'App Platform' => request.headers["X-APP-PLATFORM"],
-      'User Signed In' => current_user.present?
+      'User Signed In' => current_user.present?,
+      'User State' => current_user.try(:state)
     }
     Analytics.track(event: event_name, properties: properties.merge(metadata), user_id: current_user.try(:id))
   end
