@@ -63,7 +63,7 @@ class Shift < ActiveRecord::Base
 
   def eta_for(index, place_count)
     time_spent_in_place = LONGEST_DELIVER_TIME / place_count.to_f
-    eta = (time_spent_in_place * index).minutes.from_now
+    eta = (time_spent_in_place * (index + 1)).minutes.from_now
 
     if eta > 15.minutes.from_now
       eta = 15.minutes.from_now

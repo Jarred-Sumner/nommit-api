@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   has_many :sellers, through: :couriers
   include StateID
 
-  enum state: [:registered, :activated]
+  enum state: [:registered, :activated, :invited]
 
   attr_accessor :facebook
 
@@ -35,6 +35,7 @@ class User < ActiveRecord::Base
       user.facebook_uid = facebook['id']
       user.email = facebook['email']
       user.name = facebook['name']
+      user.state = 'registered' if user.invited?
       user.save!
     end
     user
@@ -46,9 +47,9 @@ class User < ActiveRecord::Base
     user
   end
 
-  validates :name, presence: true
+  validates :name, presence: true, if: -> { registered? || activated? }
   validates :email, uniqueness: { allow_blank: true }
-  validates :facebook_uid, presence: true, uniqueness: true
+  validates :facebook_uid, presence: true, uniqueness: true, if: -> { registered? || activated? }
 
   phony_normalize :phone, default_country_code: 'US'
   validates :phone, phony_plausible: true, uniqueness: true, if: :activated?

@@ -13,6 +13,12 @@ class InviteWorker
       normalized_phone = PhonyRails.normalize_number(phone, default_country_code: "US")
       next if User.where(phone: normalized_phone).count > 0
 
+      begin
+        User.create!(name: contact['name'], phone: normalized_phone, state: 'invited')
+      rescue Exception => e
+        Bugsnag.notify(e)
+      end
+
       first_name = contact['name']
       first_name = contact['name'].split(" ")[0] if first_name.present?
 
@@ -21,6 +27,9 @@ class InviteWorker
       else
         @message = "#{user.first_name}#{' ' + last_name[0] + '.' if last_name.present?} sent you $5 on Nommit. Get food delivered to you in 15 mins - only @ CMU. Use code: #{code}. http://www.getnommit.com/?i=#{code}"
       end
+
+
+
       begin
         Texter.run(@message, contact['phone'], INVITE_PHONE)
       rescue Twilio::REST::RequestError => e

@@ -4,7 +4,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
   end
 
   def update
-    if current_user.registered?
+    if current_user.registered? || current_user.invited?
 
       if update_params[:confirm_code].present?
         if current_user.confirm_code == Integer(update_params[:confirm_code].to_s)
@@ -16,7 +16,13 @@ class Api::V1::UsersController < Api::V1::ApplicationController
       elsif update_params[:phone].present?
         phone = PhonyRails.normalize_number(update_params[:phone], default_country_code: "US")
         raise Phony::NormalizationError unless Phony.plausible?(phone)
-        current_user.update_attributes(phone: phone)
+
+        ActiveRecord::Base.transaction do
+          if old_user = User.find_by(phone: phone)
+            old_user.destroy
+          end
+          current_user.update_attributes(phone: phone)
+        end
         generate_confirm_code!
       else
         return render_bad_request("To continue, please enter a phone number.")
