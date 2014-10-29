@@ -9,6 +9,10 @@ class InviteWorker
     last_name = user.name.split(" ").last if user.name.split(" ").count > 1
     contacts.collect do |contact|
       phone = contact['phone']
+
+      normalized_phone = PhonyRails.normalize_number(phone, default_country_code: "US")
+      next if User.where(phone: normalized_phone).count > 0
+
       first_name = contact['name']
       first_name = contact['name'].split(" ")[0] if first_name.present?
 
