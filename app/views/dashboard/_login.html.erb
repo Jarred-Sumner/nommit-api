@@ -3,7 +3,7 @@
     <div id='login-form' ng-controller='LoginCtrl' class='login' prevent-click-delegation>
       <div class='nommit-logo alt'></div>
       <p class='info'>Food delivered in under 15 minutes. <br /> Only available at CMU.</p>
-      <div class='btn login-with-facebook' ng-click='login()' ng-if='!isLoggingIn'>Login with Facebook</div>
+      <div class='btn login-with-facebook' ng-click='login()' ng-if='!isLoggingIn'>Connect with Facebook</div>
       <fading-circle-spinner ng-if='isLoggingIn'></fading-circle-spinner>
       <h3 class='error' ng-if='error'><i class='fa fa-exclamation-circle'></i> {{error}}</h3>
     </div>
