@@ -18,7 +18,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
         raise Phony::NormalizationError unless Phony.plausible?(phone)
 
         ActiveRecord::Base.transaction do
-          if old_user = User.find_by(phone: phone)
+          if old_user = User.invited.find_by(phone: phone)
             old_user.destroy
           end
           current_user.update_attributes(phone: phone)
