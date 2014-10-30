@@ -19,7 +19,6 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
   end
 
   def create
-    binding.pry
     @order = Order.create!(order_params.merge(user_id: current_user.id))
     track_placed_order(@order)
     if @order.food.remaining.zero?
