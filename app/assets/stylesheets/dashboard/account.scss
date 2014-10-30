@@ -42,19 +42,20 @@
       max-width: $width;
       width: 100%;
       text-align: center;
+      padding: 0 43px;
+      @include clearfix();
       .prof-pic {
         height: 63px;
         width: 63px;
         border-radius: 31px;
-        display: inline-block;
-        margin-right: 14px;
+        float: left;
+        margin-right: 10px;
       }
       .details {
-        display: inline-block;
+        margin-top: 5px;
         font-weight: 300;
         text-align: left;
-        position: relative;
-        top: -10px;
+        float: left;
       }
     }
 

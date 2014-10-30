@@ -81,14 +81,13 @@
       border-bottom: 1px solid #E9E9E9;
       .promo {
         margin: 9px;
-        position: relative;
-        z-index: 1;
         $placeholder-color: #999;
+        display: table;
         &:before {
           @extend .fa;
           @extend .fa-tag;
-          position: absolute;
-          top: 10px;
+          padding-left: 2px;
+          display: table-cell;
           color: $placeholder-color;
         }
         &:hover {
@@ -97,7 +96,8 @@
           }
         }
         input {
-          text-indent: 10px;
+          display: table-cell;
+          text-indent: 0px;
           padding: 8px;
           margin-top:  0px;
           margin-bottom: 0px;

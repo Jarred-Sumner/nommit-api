@@ -4,13 +4,16 @@
     margin: 0 auto;
     text-align: center;
   }
+  .overlays {
+    text-align: center;
+    @include clearfix();
+    padding: 0px 20px;
+  }
   .overlay {
     margin-top: 145px;
-    position: static;
-    display: inline-block;
-    left: 0px;
     margin-right: 10px;
     margin-left: 10px;
+    float: left;
     &.price-container {
       background-color: $brand-green;
       color: white;
@@ -21,8 +24,7 @@
       max-width: 61px;
       text-overflow: ellipsis;
       padding: 18px 6px;
-      position: relative;
-      top: -24px;
+
     }
   }
 
