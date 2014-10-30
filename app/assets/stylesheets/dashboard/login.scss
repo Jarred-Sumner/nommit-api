@@ -76,13 +76,13 @@
 
 @include media($mobile) {
   #login-form {
-    margin: 25px;
+    margin: 0px auto;
     background-size: cover;
     background-position: 50%;
     .info {
       line-height: 18px;
       margin-top: 0px;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
     .login-with-facebook {
       font-size: 12pt;

@@ -29,4 +29,4 @@
     if obj.callback
       $scope.loginCallback = obj
     if obj.error
-      $scope.error = "To continue, please login with Facebook"
+      $scope.error = "To continue, please connect with Facebook"

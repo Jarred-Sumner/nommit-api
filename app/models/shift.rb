@@ -78,7 +78,6 @@ class Shift < ActiveRecord::Base
       save!
       delivery_places.update_all(state: DeliveryPlace.states[:ended])
       courier.inactive!
-      Sms::Notifications::ShiftEndingWorker.perform_async(id)
     end
   end
 

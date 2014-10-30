@@ -530,6 +530,13 @@ span.input-label { display: inline-block; }
   .ribbon {
     margin-top: 5px;
   }
+
+  .modal-cover {
+    .modal-container {
+      vertical-align: top;
+      overflow: auto;
+    }
+  }
 }
 
 @import "dashboard/navigation";
