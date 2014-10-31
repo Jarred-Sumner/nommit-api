@@ -68,7 +68,18 @@ module Tracking
     track("Courier Changed Delivery Places", track_properties_for(shift: shift))
   end
 
-  ## Food Events
+  ## Place Events Events
+
+  def track_checked_for_food(place)
+    track("User Checked for Food", track_properties_for(place: place))
+  end
+
+  def track_looked_at_places
+    track("User Looked at Places")
+  end
+
+
+  # Food Devents
 
   def track_food_sold_out(food)
     track("Food Sold Out", track_properties_for(food: food))

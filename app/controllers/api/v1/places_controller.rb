@@ -13,11 +13,13 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
       @places = Place.where.not(id: these).order("id DESC")
     else
       @places = Place.active.order("id DESC").uniq
+      track_looked_at_places
     end
   end
 
   def show
     @place = Place.find(params[:id])
+    track_checked_for_food(@place)
   end
 
   private
