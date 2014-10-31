@@ -204,6 +204,8 @@ $row-border-color: #E9E9E9;
   height: 100%;
 }
 
+
+$content-color: #6F6F79;
 .modal {
   margin: 0 auto;
   text-align: center;
@@ -224,7 +226,7 @@ $row-border-color: #E9E9E9;
     @include linear-gradient(-179deg, white, #F1F1F1);
     border: 1px solid white;
     box-shadow: inset 0px 2px 1px 0px white;
-    color: #6F6F79;
+    color: $content-color;
     .title {
       margin-left: -11px;
       font-size: 13px;
@@ -256,7 +258,7 @@ $row-border-color: #E9E9E9;
 
     label, p, span, h3 ,h5, .info {
       font-size: 13px;
-      color: #6F6F79;
+      color: $content-color;
       line-height: 20px;
       text-shadow: 0px 1px 0px white;
     }
@@ -268,7 +270,7 @@ $row-border-color: #E9E9E9;
       width: 100%;
       background: white;
       font-size: 15px;
-      color: #6F6F79;
+      color: $content-color;
       line-height: 18px;
       outline: none;
       border-radius: 2px;
@@ -429,7 +431,7 @@ $row-border-color: #E9E9E9;
       padding: 20px;
       margin: 20px;
       font-size: 56px;
-      color: #6F6F79;
+      color: $content-color;
     }
     p {
       font-size: 10px;
@@ -543,6 +545,9 @@ span.input-label { display: inline-block; }
     }
     .fa {
       position: absolute;
+    }
+    .rating-normal, .rating-highlight {
+      .fa { position: static; }
     }
     .info .fa, p .fa {
       position: static;

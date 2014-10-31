@@ -1,5 +1,4 @@
 #rate-order {
-
   .body form {
 
     .description {
@@ -25,28 +24,31 @@
     }
 
     .total {
-      margin: 20px;
       @include user-select(none);
+      margin: 40px auto;
+      display: table;
+      text-align: center;
       h2 {
-        margin-left: 10px;
-        margin-right: 10px;
-        display: inline-block;
-        font-size: 47px;
+        padding: 0px;
+        font-size: 35pt;
+        display: table-cell;
       }
+      .tip, h2 { vertical-align: middle; height: 40px; padding: 0px 10px; }
       .tip {
+        padding-top: 1px;
         font-size: 20pt;
-        position: relative;
-        top: -4px;
+        display: table-cell;
         &:hover {
           color: $brand-green;
           cursor: pointer;
         }
         &[disabled] {
           opacity: 0.5;
+          color: $content-color;
           pointer-events: none;
         }
       }
-
+      .tip .fa { position: static; }
     }
 
 
