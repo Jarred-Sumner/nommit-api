@@ -329,7 +329,7 @@ FactoryGirl.define do
     description { Faker::Lorem.sentences(2).join(" ") }
     end_date 6.hours.from_now
     goal { rand(100..300) }
-    start_date 3.hours.from_now
+    start_date 3.hours.ago
     # preview { open(FOOD_IMAGES.sample) }
     seller_id { FactoryGirl.create(:seller).id }
 

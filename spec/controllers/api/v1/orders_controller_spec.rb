@@ -91,10 +91,12 @@ describe Api::V1::OrdersController, type: :controller do
         Delivery.create!(food: food, delivery_place: delivery_place)
       end
 
+      subject { post :create, food_id: food.id, place_id: place.id, price_id: food.prices.first.id }
+
       it "succeeds" do
         expect(controller).to receive(:track_placed_order)
         expect do
-          post :create, food_id: food.id, place_id: place.id, price_id: food.prices.first.id
+          subject
         end.to change(Order, :count).by(1)
 
         expect(response.status).to eq(200)
@@ -111,7 +113,7 @@ describe Api::V1::OrdersController, type: :controller do
 
         it "fails" do
           expect do
-            post :create, food_id: food.id, place_id: place.id, price_id: food.prices.first.id
+            subject
           end.not_to change(Order, :count)
 
           expect(response.status).to eq(400)
@@ -260,6 +262,25 @@ describe Api::V1::OrdersController, type: :controller do
         expect do
           put :update, id: order.id, state_id: Order.states[:rated], tip_in_cents: 100
         end.to_not change { order.reload.tip_in_cents }
+      end
+
+      context "with a day old order" do
+        before :each do
+          order.update_attributes(created_at: 1.day.ago)
+          order.charge.update_attributes(state: 'paid')
+        end
+
+        it "tipping fails" do
+          put :update, id: order.id, state_id: Order.states[:rated], tip_in_cents: 500
+          expect(order.reload.tip_in_cents).to eq(0)
+          expect(response.status).to eq(400)
+        end
+
+        it "rating works" do
+          put :update, id: order.id, state_id: Order.states[:rated], tip_in_cents: 0, rating: 2.0
+          expect(response.status).to eq(200)
+          expect(order.reload.rating).to eq(2.0)
+        end
       end
 
       it "sets rating on food" do
