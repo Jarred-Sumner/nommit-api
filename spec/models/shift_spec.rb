@@ -41,14 +41,6 @@ describe Shift, type: :model do
 
     end
 
-    it "updates delivery estimates" do
-      order = shift.orders.first
-      eta = order.delivered_at
-
-      shift.update_delivery_times!(1)
-
-      expect(order.reload.delivered_at > eta).to eq(true)
-    end
   end
 
   context "#eta_for" do

@@ -152,6 +152,12 @@ class Order < ActiveRecord::Base
       Sms::Notifications::ArrivalWorker.new.deliver_message!(self)
     end
 
+    def ensure_courier_isnt_delivering_to_self!
+      if seller.couriers.active.where(user_id: id).count > 0
+        self.errors.add(:base, "Can't place orders to yourself!")
+      end
+    end
+
   validates :food, presence: true
   validates :user, presence: true
   validates :place, presence: true
@@ -167,10 +173,13 @@ class Order < ActiveRecord::Base
   before_validation :set_delivery!, on: :create
   after_create :apply_pending_promotions!, :charge!
   after_commit :send_arrival_text!, on: :create, if: :arrived?
+
   validate :food_is_active!, on: :create
   validate :delivery_place_is_accepting_new_orders!, on: :create
+  validate :ensure_courier_isnt_delivering_to_self!, on: :create
   validate :food_is_being_sold!, on: :create
   validate :enough_food_is_left!, on: :create
   validate :ensure_user_has_activated!, on: :create
   validate :require_payment_method!, on: :create
+
 end
