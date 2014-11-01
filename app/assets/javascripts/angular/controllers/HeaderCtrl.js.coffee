@@ -113,13 +113,31 @@
   $rootScope.$on "HideRateFood", ->
     $scope.isRatingFood = false
 
+
+  params = ->
+    qs = ((a) ->
+      return {}  if a is ""
+      b = {}
+      i = 0
+
+      while i < a.length
+        p = a[i].split("=", 2)
+        if p.length is 1
+          b[p[0]] = ""
+        else
+          b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "))
+        ++i
+      b
+    )(window.location.search.substr(1).split("&"))
   postInit = ->
     checkForOrdersThatNeedToBeRated()
+
+    window.settings.setDidRedirectOnAndroid() if params()["android"] == "true"
 
     if $detection.isiOS() && !window.settings.didRedirectOniOS()
       window.settings.setDidRedirectOniOS()
       location.href = window.config.iTunesURL
-    if $detection.isAndroid() && !window.settings.didRedirectOnAndroid()
+    if $detection.isAndroid() && !window.settings.didRedirectOnAndroid() && !$stateParams.android
       window.settings.setDidRedirectOnAndroid()
       location.href = window.config.PlayStoreURL
 
