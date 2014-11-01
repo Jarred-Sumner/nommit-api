@@ -31,7 +31,7 @@
     if id
       old_place = $scope.place
       $scope.place = _.find $scope.places, (place) ->
-        String(id) == String(id)
+        String(id) == String(place.id)
       if $scope.place
         $scope.places.push(old_place) if old_place
 
