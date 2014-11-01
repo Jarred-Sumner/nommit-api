@@ -289,6 +289,7 @@ $nav-max-width: 800px;
 
     nav.mobileNavVisible {
       display: block;
+      visibility: visible;
       background-color: #464646;
       position: absolute;
       left: 0px;

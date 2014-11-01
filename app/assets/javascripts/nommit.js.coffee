@@ -8,9 +8,9 @@ window.settings =
   userID: ->
     localStorage["userID"]
   placeID: ->
-    localStorage["placeID"]
+    @_placeID
   setPlaceID: (id) ->
-    localStorage['placeID'] = id
+    @_placeID = id
   didRedirectOniOS: ->
     localStorage["didRedirectOniOS"]
   setDidRedirectOniOS: ->

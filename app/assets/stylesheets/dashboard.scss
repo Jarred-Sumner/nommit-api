@@ -515,12 +515,26 @@ span.input-label { display: inline-block; }
   }
 }
 
+
+
 @include keyframes(fadeIn) {
   0% {
+    visibility: visible;
     opacity: 0;
   }
   100% {
     opacity: 1;
+  }
+}
+
+@include keyframes(fadeOut) {
+  0% {
+    visibility: visible;
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
   }
 }
 

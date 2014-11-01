@@ -91,6 +91,14 @@ class Order < ActiveRecord::Base
       self.errors.add(:base, "No couriers available to fulfill this order - check back soon!") unless delivery.try(:active?)
     end
 
+    def food_is_being_sold!
+      if food.start_date.future?
+        self.errors.add(:base, "Food isn't being sold yet")
+      elsif food.end_date.past?
+        self.errors.add(:base, "Food is no longer being sold for tonight!")
+      end
+    end
+
     def price_belongs_to_food!
       self.errors.add(:price, "is unavailable for this food") unless price.food_id == food_id
     end
@@ -161,6 +169,7 @@ class Order < ActiveRecord::Base
   after_commit :send_arrival_text!, on: :create, if: :arrived?
   validate :food_is_active!, on: :create
   validate :delivery_place_is_accepting_new_orders!, on: :create
+  validate :food_is_being_sold!, on: :create
   validate :enough_food_is_left!, on: :create
   validate :ensure_user_has_activated!, on: :create
   validate :require_payment_method!, on: :create

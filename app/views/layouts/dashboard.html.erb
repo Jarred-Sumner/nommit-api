@@ -26,21 +26,27 @@
           <div class='mobile-nav' ng-click='toggleMobileNav()'><i class='fa fa-bars'></i></div>
 
           <div class='delivery-box' ng-if='page == "foods"'>
-            <span ng-if='choosingPlace'>Now Delivering To:</span>
-            <span ng-if='!choosingPlace'>Delivering To:</span>
-            <div id='place' ng-click='showPlaces()'>{{place.name || "Pick a Place"}}</div>
+            <span ng-if='places.length > 0'>
+              <span ng-if='choosingPlace'>Now Delivering To:</span>
+              <span ng-if='!choosingPlace'>Delivering To:</span>
+              <div id='place' ng-click='showPlaces()'>{{place.name || "Pick a Place"}}</div>
+            </span>
+
+            <span ng-if='places.length == 0'>
+              <span>No Food Available</span>
+            </span>
           </div>
 
           <div class='delivery-box' ng-if='page != "foods"'>
             <span>{{page | titleize}}</span>
           </div>
 
-          <nav class='account' ng-if='!loggedIn' ng-class='{ mobileNavVisible: mobileNavVisible }'>
+          <nav class='account' ng-if='!loggedIn' ng-class='{ mobileNavVisible: mobileNavVisible }' ng-click='hideMobileNav()'>
             <a ui-sref='foods()' ng-class='{ active: page == "foods" }'>Menu <i class='fa fa-chevron-circle-right' ng-show='mobileNavVisible'></i></a>
             <a ng-click='showLogin()'>Login/Register <i class='fa fa-chevron-circle-right' ng-show='mobileNavVisible'></i></a>
           </nav>
 
-          <nav class='account' ng-if='loggedIn' ng-class='{ mobileNavVisible: mobileNavVisible }'>
+          <nav class='account' ng-if='loggedIn' ng-class='{ mobileNavVisible: mobileNavVisible }' ng-click='hideMobileNav()'>
             <a ui-sref='foods()' ng-class='{ active: page == "foods" }'>Menu <i class='fa fa-chevron-circle-right' ng-show='mobileNavVisible'></i></a>
             <a ui-sref='orders()' ng-class='{ active: page == "orders" }'>Orders <i class='fa fa-chevron-circle-right' ng-show='mobileNavVisible'></i></a>
             <a ui-sref='account()' ng-class='{ active: page == "account" }'>Account <i class='fa fa-chevron-circle-right' ng-show='mobileNavVisible'></i></a>
@@ -58,7 +64,7 @@
               <i class="fa fa-arrow-circle-o-right"></i>
             </li>
           </ul>
-          <div class="footer" prevent-click-delegation>Can't find the building you're in? <a href="mailto:support@getnommit.com">Contact us</a>.</div>
+          <div ng-if='search.places.length > 0' class="footer" prevent-click-delegation>Can't find the building you're in? <a href="mailto:support@getnommit.com">Contact us</a>.</div>
         </div>
 
         <%= render 'dashboard/login' %>

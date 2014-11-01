@@ -1,4 +1,4 @@
-@nommit.controller 'HeaderCtrl', ($scope, Places, $rootScope, Facebook, Sessions, Orders, $stateParams, $detection) ->
+@nommit.controller 'HeaderCtrl', ($scope, Places, $rootScope, Facebook, Sessions, Orders, $stateParams, $detection, Foods) ->
 
   checkForOrdersThatNeedToBeRated = ->
     Orders.query state_id: 2,  (orders) ->
@@ -11,34 +11,36 @@
     places: []
     query: ""
 
-  $scope.places = Places.query (places) ->
+  Places.query (places) ->
+    $scope.places = _.select places, (place) ->
+      for dp in place.delivery_places
+        for food in dp.foods
+          food = new Foods(food)
+          return true if food.isOrderable()
+      false
     setCurrentPlace(window.settings.placeID())
 
   $scope.toggleMobileNav = ->
     $scope.mobileNavVisible = !$scope.mobileNavVisible
 
   $scope.setCurrentPlace = (placeID) ->
-    window.settings.setPlaceID(placeID)
     setCurrentPlace(placeID)
     $scope.changingPlace = false
   setCurrentPlace = (id) ->
+
     if id
-      $scope.places.push($scope.place) if $scope.place?
+      old_place = $scope.place
       $scope.place = _.find $scope.places, (place) ->
-        String(place.id) == String(id)
+        String(id) == String(id)
+      if $scope.place
+        $scope.places.push(old_place) if old_place
 
-      $scope.setCurrentPlace($scope.places[0].id) unless $scope.place
-
-      # Remove current place from array and alphabetize places
-      $scope.places = _.without($scope.places, $scope.place)
-      $scope.places = _.sortBy $scope.places, (place) ->
-        place.name
-
-      $scope.search.places = $scope.places
-
-      $rootScope.$broadcast("placeIDChanged", placeID: $scope.place.id)
-    else if $scope.places.length > 0
-      $scope.setCurrentPlace($scope.places[0].id)
+        # Remove current place from array
+        $scope.places = _.without($scope.places, $scope.place)
+        $scope.search.places = $scope.places
+        $rootScope.$broadcast("placeChanged", place: $scope.place)
+    else
+      $scope.showPlaces() if $scope.places && $scope.places.length > 0
   $scope.filterPlaces = ->
     if $scope.search.query.length > 0
       query = _.str.titleize($scope.search.query)
@@ -47,6 +49,9 @@
         _.str.include(name, query)
     else
       $scope.search.places = $scope.places
+
+    $scope.search.places = _.sortBy $scope.search.places, (place) ->
+      place.name
 
   $scope.closeOnEsc = ($event) ->
     if $event.keyCode == 27
@@ -57,21 +62,24 @@
     $scope.loggedIn = Sessions.isLoggedIn()
 
   $rootScope.$on "$stateChangeSuccess", (event, state) ->
+    $scope.hideMobileNav()
     $scope.page = state.name
-    $scope.mobileNavVisible = false
-
     # Fetch current user
     # Notify all controllers that current user is available
     Sessions.currentUser() if Sessions.isLoggedIn()
 
+  $scope.hideMobileNav = (manual) ->
+    $scope.mobileNavVisible = false
+
   $scope.showLogin = ->
     $scope.isShowingLogin = true
-    $scope.mobileNavVisible = false
+    $scope.hideMobileNav()
   $scope.hideLogin = ->
     $scope.isShowingLogin = false
   $scope.showActivation = ->
     $scope.isShowingActivation = true
   $scope.showPlaces = ->
+    $scope.filterPlaces()
     $scope.changingPlace = true
   $scope.hidePlaces = ->
     $scope.changingPlace = false
@@ -88,6 +96,7 @@
     $scope.isShowingConfirmPhone = true
   $rootScope.$on "confirmOrder", ->
     $scope.isShowingConfirmOrder = true
+
 
   $rootScope.$on "HideLogin", (event, data) ->
     $scope.isShowingLogin = false
@@ -110,5 +119,6 @@
     if $detection.isiOS() && !window.settings.didRedirectOniOS()
       window.settings.setDidRedirectOniOS()
       location.href = window.config.iTunesURL
+    # if $detection.isAndroid() && !window.settings.
 
   postInit()
