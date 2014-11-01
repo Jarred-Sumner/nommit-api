@@ -48,6 +48,11 @@ window.settings =
   FacebookProvider.init(window.config.facebook);
 
   $httpProvider.defaults.headers.common["X-APP-VERSION"] = "MASTER"
-  $httpProvider.defaults.headers.common["X-APP-PLATFORM"] = "Website"
+
+  if navigator.userAgent.toLowerCase().indexOf("android") > -1
+    $httpProvider.defaults.headers.common["X-APP-PLATFORM"] = "Android"
+  else
+    $httpProvider.defaults.headers.common["X-APP-PLATFORM"] = "Website"
+
   $httpProvider.defaults.headers.common["X-SESSION-ID"] = window.settings.sessionID()
   httpRequestInterceptorCacheBusterProvider.setMatchlist [/users/, /partials/], true
