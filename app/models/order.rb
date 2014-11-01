@@ -59,8 +59,7 @@ class Order < ActiveRecord::Base
     end
 
     def set_delivery!
-      if self.delivery = Delivery.for(place_id: self.place_id, food_id: food_id).first
-        self.delivered_at = delivery.delivery_place.arrives_at
+      if self.delivery = Delivery.for(place_id: place_id, food_id: food_id).first
         set_courier!
 
         if delivery.delivery_place.arrived?
