@@ -119,6 +119,8 @@
     if $detection.isiOS() && !window.settings.didRedirectOniOS()
       window.settings.setDidRedirectOniOS()
       location.href = window.config.iTunesURL
-    # if $detection.isAndroid() && !window.settings.
+    if $detection.isAndroid() && !window.settings.didRedirectOnAndroid()
+      window.settings.setDidRedirectOnAndroid()
+      location.href = window.config.PlayStoreURL
 
   postInit()

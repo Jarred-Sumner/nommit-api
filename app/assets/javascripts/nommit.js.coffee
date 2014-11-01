@@ -15,6 +15,10 @@ window.settings =
     localStorage["didRedirectOniOS"]
   setDidRedirectOniOS: ->
     localStorage["didRedirectOniOS"] = true
+  didRedirectOnAndroid: ->
+    localStorage["didRedirectOnAndroid"]
+  setDidRedirectOnAndroid: ->
+    localStorage["didRedirectOnAndroid"] = true
 
 @nommit = angular.module('nommit', ['ui.router', 'ngResource', 'facebook', 'angularPayments', 'angular-spinkit', 'timer', 'ngCacheBuster', 'adaptive.detection'])
 
