@@ -1,5 +1,6 @@
 class Sms::Notifications::ArrivalWorker
   include Sidekiq::Worker
+  sidekiq_options retry: false
 
   def perform(shift_id)
     shift = Shift.find(shift_id)
