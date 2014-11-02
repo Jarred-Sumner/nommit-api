@@ -11,6 +11,9 @@ class Texter < Struct.new(:message, :to, :phone)
       to: convert_to_e164(to),
       body: message
     )
+  rescue Twilio::REST::RequestError => e
+    raise e if Rails.env.test? || Rails.env.development?
+    Bugsnag.notify(e)
   end
 
   def twilio

@@ -28,14 +28,7 @@ class InviteWorker
         @message = "#{user.first_name}#{' ' + last_name[0] + '.' if last_name.present?} sent you $5 on Nommit. Get food delivered to you in 15 mins - only @ CMU. Use code: #{code}. http://www.getnommit.com/?i=#{code}"
       end
 
-
-
-      begin
-        Texter.run(@message, contact['phone'], INVITE_PHONE)
-      rescue Twilio::REST::RequestError => e
-        raise e if Rails.env.test?
-        Bugsnag.notify(e)
-      end
+      Texter.run(@message, contact['phone'], INVITE_PHONE)
     end
   end
 end
