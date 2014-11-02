@@ -391,8 +391,9 @@ FactoryGirl.define do
     place_id { FactoryGirl.create(:place).id }
     shift_id { FactoryGirl.create(:shift).id }
     arrives_at 15.minutes.from_now
-    current_index 0
-    start_index 0
+    current_index -1
+    start_index -1
+    state DeliveryPlace.states[:pending]
   end
 
   factory :location do

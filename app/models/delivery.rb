@@ -13,7 +13,7 @@ class Delivery < ActiveRecord::Base
   end
 
   def active?
-    self.delivery_place.ready? || self.delivery_place.arrived?
+    delivery_place.ready? || delivery_place.arrived? || delivery_place.pending?
   end
 
   private

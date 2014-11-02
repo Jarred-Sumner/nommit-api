@@ -134,4 +134,101 @@ describe Order, type: :model do
     end
   end
 
+  context "doesn't let you place an order when" do
+
+    context "food has" do
+
+      subject { build(:order, food_id: food.id, place_id: place.id) }
+
+      context "ended" do
+        before :each do
+          food.update_attributes(state: 'ended')
+        end
+
+        specify do
+          expect do
+            subject.save!
+          end.to raise_error(ActiveRecord::RecordInvalid)
+        end
+      end
+
+      context "not started" do
+        before :each do
+          food.update_attributes(start_date: 1.day.from_now)
+        end
+
+        specify do
+          expect do
+            subject.save!
+          end.to raise_error(ActiveRecord::RecordInvalid)
+        end
+      end
+
+      context "stopped being sold" do
+        before :each do
+          food.update_attributes(end_date: 1.day.ago)
+        end
+
+        specify do
+          expect do
+            subject.save!
+          end.to raise_error(ActiveRecord::RecordInvalid)
+        end
+      end
+
+      context "run out" do
+        before :each do
+          food.update_attributes(goal: 0)
+        end
+
+        specify do
+          expect do
+            subject.save!
+          end.to raise_error(ActiveRecord::RecordInvalid)
+        end
+      end
+
+    end
+
+    context "delivery place is" do
+
+      context "halted" do
+        before :each do
+          delivery_place.update_attributes!(state: 'halted')
+        end
+
+        specify do
+          expect do
+            subject.save!
+          end.to raise_error
+        end
+      end
+
+      context "ended" do
+        before :each do
+          delivery_place.update_attributes!(state: 'ended')
+        end
+
+        specify do
+          expect do
+            subject.save!
+          end.to raise_error
+        end
+      end
+
+    end
+
+  end
+
+  context "after create" do
+    subject { build(:order, place_id: place.id, food_id: food.id) }
+
+    it "marks delivery_place as active" do
+      expect do
+        subject.save!
+      end.to change { delivery_place.reload.active? }.from(false).to(true)
+    end
+
+
+  end
 end

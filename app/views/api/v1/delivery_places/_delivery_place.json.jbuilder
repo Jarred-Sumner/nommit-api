@@ -1,7 +1,7 @@
 json.(delivery_place, :id, :state_id)
 
 json.index delivery_place.current_index
-json.arrives_at delivery_place.arrives_at.iso8601
+json.arrives_at delivery_place.arrives_at.try(:iso8601)
 
 if !hide_place ||= false
 

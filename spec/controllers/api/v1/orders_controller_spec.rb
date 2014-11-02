@@ -123,24 +123,42 @@ describe Api::V1::OrdersController, type: :controller do
       context "and a promo" do
         let(:promo) { create(:promo, discount_in_cents: 75) }
 
-        it "succeeds" do
-          expect do
+        context "succeeds" do
+
+          subject do
             post :create, {
               'food_id' => food.id,
               'place_id' => place.id,
               'price_id' => food.prices.first.id,
               'promo_code' => promo.name
             }
-          end.to change(Order, :count).by(1)
+          end
 
-          order_id = JSON.parse(response.body)['id']
-          order = Order.find_by(id: order_id)
+          specify do
+            expect do
+              subject
+            end.to change(Order, :count).by(1)
 
-          expect(response.status).to eq(200)
+            order_id = JSON.parse(response.body)['id']
+            order = Order.find_by(id: order_id)
 
-          expect(order).to be_present
-          expect(order.discount_in_cents).to eq(promo.discount_in_cents)
-          expect(order.applied_promos.first.state).to eq("used_up")
+            expect(response.status).to eq(200)
+
+            expect(order).to be_present
+            expect(order.discount_in_cents).to eq(promo.discount_in_cents)
+            expect(order.applied_promos.first.state).to eq("used_up")
+          end
+
+          context "activates the place" do
+
+            specify do
+              expect do
+                subject
+              end.to change { delivery_place.reload.state }.from('pending').to('ready')
+            end
+
+          end
+
         end
 
       end
@@ -214,6 +232,27 @@ describe Api::V1::OrdersController, type: :controller do
           expect do
             subject
           end.to_not change(Sms::Notifications::DeliveryWorker.jobs, :size)
+        end
+
+        context "with multiple pending orders" do
+
+          before :each do
+            TestHelpers::Order.create_for(params: { place_id: place.id, food_id: food.id, price_id: food.prices.first.id })
+          end
+
+          specify do
+            expect do
+              subject
+            end.to_not change { delivery_place.reload.active? }
+          end
+        end
+
+
+        context "with one pending order to place" do
+          it "marks delivery place as pending" do
+            subject
+            expect(delivery_place.reload.state).to eq("pending")
+          end
         end
 
       end

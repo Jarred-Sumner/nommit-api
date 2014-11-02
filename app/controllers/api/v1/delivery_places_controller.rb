@@ -5,7 +5,7 @@ class Api::V1::DeliveryPlacesController < Api::V1::ApplicationController
     if Integer(delivery_place_params[:state_id]) == DeliveryPlace.states[:active]
       delivery_place.shift.delivery_places.update_all(state: DeliveryPlaces.states[:ready])
       delivery_place.arrived!
-      delivery_place.shift.update_delivery_times!
+      delivery_place.shift.update_arrival_times!
     end
     render action: :show
   end

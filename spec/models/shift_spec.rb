@@ -7,38 +7,51 @@ describe Shift, type: :model do
   let(:shift) do
     shift = create(:shift, courier_id: courier.id)
     dp_ids = []
-    3.times { |i| dp_ids << create(:delivery_place, shift_id: shift.id, current_index: i).id }
+    3.times { |i| dp_ids << create(:delivery_place, shift_id: shift.id).id }
 
     dp_ids.each { |id| Delivery.create(food_id: food.id, delivery_place_id: id) }
     shift
   end
 
-  context "#update_delivery_times" do
+  context "#update_arrival_times!" do
+    let(:order) { build(:order, place_id: shift.delivery_places.pending.last.place_id, food_id: food.id, delivered_at: 1.minute.ago) }
+    let(:dps) { shift.delivery_places.active }
 
     before :each do
-      create(:order, place_id: shift.delivery_places.sample.place_id, food_id: food.id, delivered_at: 1.minute.ago)
+      place_ids = shift.delivery_places.pending.limit(2).pluck(:place_id)
+
+      place_ids.each do |id|
+        create(:order, place_id: id, food_id: food.id)
+      end
     end
 
-    context "swaps the order of delivery places" do
-      let(:dps) { shift.delivery_places.order("current_index ASC") }
+    it "appends new delivery places to the active list" do
+      expect do
+        order.save!
+      end.to change(shift.delivery_places.active, :count).by(1)
+    end
 
-      before :each do
-        shift.update_delivery_times!(1)
+    it "reduces arrival times for existing delivery places" do
+      orig_arrival_times = shift.delivery_places.active.pluck(:arrives_at)
+      order.save!
+
+      expect(orig_arrival_times.length > 0).to eq(true)
+      expect(shift.delivery_places.active.count > 0).to eq(true)
+      orig_arrival_times.each_with_index do |time, index|
+        expect(dps[0].arrives_at < time).to eq(true)
       end
+    end
 
-      specify do
-        expect(dps.first.start_index).to eq(1)
-        expect(dps.second.start_index).to eq(2)
-        expect(dps.third.start_index).to eq(0)
+    it "increases arrival times when delivery places are completed" do
+      orig_arrival_times = shift.delivery_places.active.pluck(:arrives_at)
+
+      shift.delivery_places.active.first.orders.first.delivered!
+
+      expect(orig_arrival_times.length > 0).to eq(true)
+      expect(shift.delivery_places.active.count > 0).to eq(true)
+      shift.delivery_places.active.pluck(:arrives_at).each_with_index do |time, index|
+        expect(time > orig_arrival_times[index]).to eq(true)
       end
-
-      it "except for the same delivery place" do
-        shift.update_delivery_times!(0)
-        expect(dps.first.start_index).to eq(1)
-        expect(dps.second.start_index).to eq(2)
-        expect(dps.third.start_index).to eq(0)
-      end
-
     end
 
   end

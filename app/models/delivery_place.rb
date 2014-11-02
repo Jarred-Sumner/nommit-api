@@ -8,8 +8,16 @@ class DeliveryPlace < ActiveRecord::Base
   has_one :courier, through: :shift
 
   include StateID
-  enum state: [:ready, :arrived, :halted, :ended]
-  scope :active, lambda { where("state = ? OR state = ?", DeliveryPlace.states[:ready], DeliveryPlace.states[:arrived]) }
+  enum state: [:ready, :arrived, :halted, :ended, :pending]
+  scope :deliverable, -> do
+    states = [ DeliveryPlace.states[:ready], DeliveryPlace.states[:arrived], DeliveryPlace.states[:pending] ]
+    where(state: states)
+  end
+
+  scope :active, -> do
+    states = [ DeliveryPlace.states[:ready], DeliveryPlace.states[:arrived] ]
+    where(state: states).order("current_index ASC")
+  end
 
   validates :shift, presence: true
   validates :place, presence: true, uniqueness: { scope: :shift_id }
@@ -31,7 +39,12 @@ class DeliveryPlace < ActiveRecord::Base
   def arrive!
     transaction do
       current_dp = shift.delivery_places.active.first
-      shift.orders.arrived.update_all(state: Order.states[:active])
+
+      shift
+        .orders
+        .arrived
+        .update_all(state: Order.states[:active])
+
       shift
         .delivery_places
         .update_all(state: DeliveryPlace.states[:ready])
@@ -39,14 +52,38 @@ class DeliveryPlace < ActiveRecord::Base
       arrived!
       orders.pending.update_all(state: Order.states[:arrived])
 
-      shift.update_delivery_times!(current_index)
+      shift.update_arrival_times!(current_index)
       Sms::Notifications::ArrivalWorker.perform_async(shift_id)
+    end
+  end
+
+  def active?
+    ready? || arrived?
+  end
+
+  def accepting_new_deliveries?
+    active? || pending?
+  end
+
+  def activate!
+    transaction do
+      index = shift.delivery_places.active.last.try(:current_index) || -1
+      new_index = index + 1
+      update_attributes!(state: 'ready', current_index: new_index, start_index: new_index)
+      shift.update_arrival_times!
+    end
+  end
+
+  def pending!
+    transaction do
+      update_attributes(state: 'pending', current_index: -1, arrives_at: nil)
+      shift.update_arrival_times!
     end
   end
 
   validate :isnt_handled_by_another_courier!, on: :create
   def isnt_handled_by_another_courier!
-    if self.seller.delivery_places.active.where(place_id: place_id).count > 0
+    if seller.delivery_places.active.where(place_id: place_id).count > 0
       errors.add(:base, "#{place.name} is already being handled by another courier")
     end
   end

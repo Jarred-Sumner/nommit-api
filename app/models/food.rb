@@ -12,7 +12,7 @@ class Food < ActiveRecord::Base
 
   include StateID
   enum state: { active: 0, halted: 1, ended: 2 }
-  scope :visible, lambda { where("end_date > ?", DateTime.now) }
+  scope :visible, lambda { where("? BETWEEN start_date AND end_date", DateTime.now) }
 
   scope :orderable, -> do
     active.visible
@@ -37,8 +37,6 @@ class Food < ActiveRecord::Base
   validates :seller_id, presence: true
   validates :start_date, presence: true
   validates :end_date, presence: true
-
-  scope :ongoing, lambda { where("? BETWEEN start_date AND end_date", DateTime.now).active }
 
   def remaining
     self.goal - sold

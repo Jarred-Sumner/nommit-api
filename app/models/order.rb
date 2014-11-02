@@ -7,6 +7,8 @@ class Order < ActiveRecord::Base
   belongs_to :price
   has_one :charge, dependent: :destroy
   has_one :seller, through: :food
+  has_one :delivery_place, through: :delivery
+  has_one :shift, through: :delivery_place
   has_and_belongs_to_many :applied_promos
 
   include StateID
@@ -46,6 +48,13 @@ class Order < ActiveRecord::Base
     price.quantity
   end
 
+  def delivered!
+    transaction do
+      update_attributes!(state: "delivered")
+      delivery_place.pending! if delivery_place.orders.pending.count.zero?
+    end
+  end
+
   private
 
     def require_payment_method!
@@ -55,7 +64,7 @@ class Order < ActiveRecord::Base
     end
 
     def food_is_active!
-      errors.add(:food, "doesn't have couriers delivering right now. Try again in a few minutes!") unless food.active?
+      errors.add(:food, "doesn't have couriers delivering right now. Try again in a few minutes!") unless food.try(:active?)
     end
 
     def set_delivery!
@@ -71,6 +80,10 @@ class Order < ActiveRecord::Base
       end
     end
 
+    def set_estimate!
+      self.delivered_at = 15.minutes.from_now
+    end
+
 
     def set_courier!
       self.courier_id = delivery.delivery_place.shift.courier_id
@@ -83,23 +96,23 @@ class Order < ActiveRecord::Base
     end
 
     def ensure_user_has_activated!
-      self.errors.add(:base, "Please confirm your phone number before placing an order") if user.registered?
+      errors.add(:base, "Please confirm your phone number before placing an order") if user.registered?
     end
 
     def delivery_place_is_accepting_new_orders!
-      self.errors.add(:base, "No couriers available to fulfill this order - check back soon!") unless delivery.try(:active?)
+      errors.add(:base, "No couriers available to fulfill this order - check back soon!") unless delivery.try(:active?)
     end
 
     def food_is_being_sold!
       if food.start_date.future?
-        self.errors.add(:base, "Food isn't being sold yet")
+        errors.add(:base, "Food isn't being sold yet")
       elsif food.end_date.past?
-        self.errors.add(:base, "Food is no longer being sold for tonight!")
+        errors.add(:base, "Food is no longer being sold for tonight!")
       end
     end
 
     def price_belongs_to_food!
-      self.errors.add(:price, "is unavailable for this food") unless price.food_id == food_id
+      errors.add(:price, "is unavailable for this food") unless price.try(:food_id) == food_id
     end
 
     def apply_pending_promotions!
@@ -153,8 +166,12 @@ class Order < ActiveRecord::Base
 
     def ensure_courier_isnt_delivering_to_self!
       if seller.couriers.active.where(user_id: id).count > 0
-        self.errors.add(:base, "Can't place orders to yourself!")
+        errors.add(:base, "Can't place orders to yourself!")
       end
+    end
+
+    def activate_place!
+      delivery_place.activate! if delivery_place.pending?
     end
 
   validates :food, presence: true
@@ -169,8 +186,10 @@ class Order < ActiveRecord::Base
   validates :rating, presence: true, if: :rated?
   validates :state, presence: true
 
-  before_validation :set_delivery!, on: :create
+  before_validation :set_delivery!, :set_estimate!, on: :create
+
   after_create :apply_pending_promotions!, :charge!
+  after_create :activate_place!
   after_commit :send_arrival_text!, on: :create, if: :arrived?
 
   validate :food_is_active!, on: :create

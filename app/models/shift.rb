@@ -23,16 +23,16 @@ class Shift < ActiveRecord::Base
     end
 
     if halt? && places.count != delivery_places.count
-      raise ArgumentError, "Your shift is about to end! I can't let you start delivering to more places until the next shift."
+      raise ArgumentError, "Your shift is about to end! Can't deliver to more places until the next shift."
     end
 
-    foods = seller.foods.active.pluck(:id)
+    foods = seller.foods.orderable.pluck(:id)
 
     transaction do
-      places.each_with_index do |place_id, index|
+      places.each do |place_id, index|
         next if delivery_places.where(place_id: place_id).count > 0
 
-        dp = delivery_places.create!(place_id: place_id, arrives_at: eta_for(index, places.count), current_index: index)
+        dp = delivery_places.create!(place_id: place_id, arrives_at: nil, current_index: -1, state: DeliveryPlace.states[:pending])
         foods.each { |food_id| dp.deliveries.create!(food_id: food_id) }
       end
     end
@@ -46,19 +46,22 @@ class Shift < ActiveRecord::Base
   # Given [1,2,3,4,5,6]
   # If new_zero_index's value was 3
   # Then, array should return [3,4,5,6,1,2]
-  def update_delivery_times!(zero = current_delivery_place.current_index)
-    places = delivery_places.order("current_index ASC").to_a
-    count = places.count
+  def update_arrival_times!(zero = current_delivery_place.try(:current_index))
+    if current_delivery_place.present?
+      places = delivery_places
+        .active
+        .order("current_index ASC")
+      count = places.count
 
-    places = places[zero..count - 1] | places
+      places = places[zero..count - 1] | places
 
-    transaction do
-      places.each_with_index do |place, index|
-        place.update_attributes!(current_index: index, arrives_at: eta_for(index, count))
-        place.orders.pending.update_all(delivered_at: eta_for(index, count) + DELIVERY_PADDING.minutes)
+      transaction do
+        places.each_with_index do |place, index|
+          place.update_attributes!(current_index: index, arrives_at: eta_for(index, count))
+        end
       end
-    end
 
+    end
   end
 
   def eta_for(index, place_count)

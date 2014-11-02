@@ -39,6 +39,7 @@ class ChargeWorker
     )
 
     if stripe_charge.paid
+      charge.charge = stripe_charge.id
       charge.state = :paid
     else
       charge.state = :failed

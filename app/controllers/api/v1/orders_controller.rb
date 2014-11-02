@@ -50,10 +50,10 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
       @order = Order.find_by(courier: current_user.couriers, id: update_params[:id])
       return render_not_found if @order.nil? || @order.delivered?
 
-      @order.update_attributes!(state: Order.states[:delivered])
+      @order.delivered!
 
       # Send them a delivery notification on their first order.
-      Sms::Notifications::DeliveryWorker.perform_async(@order.id) if @order.user.orders.count == 1
+      Sms::Notifications::DeliveryWorker.perform_at(20.minutes.from_now, @order.id) if @order.user.orders.count == 1
       track_delivered_order(@order)
     end
 

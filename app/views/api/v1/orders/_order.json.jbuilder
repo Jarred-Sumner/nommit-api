@@ -1,5 +1,6 @@
-json.(order, :id, :quantity, :price_in_cents, :tip_in_cents)
+json.(order, :id, :price_in_cents, :tip_in_cents)
 
+json.quantity order.price.quantity
 json.rating order.rating.to_f
 
 json.delivered_at order.delivered_at.try(:iso8601)
