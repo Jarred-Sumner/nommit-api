@@ -13,7 +13,7 @@ class PushNotifications::FoodAvailableWorker
     end
   end
 
-  def pusher[[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
+  def pusher
     @pusher ||= Grocer.pusher(certificate: CERTIFICATE_PATH)
   end
 
