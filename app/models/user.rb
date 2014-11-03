@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
   end
 
   def last_ordered
-    orders.order("created_at ASC").first.try(:created_at)
+    orders.order("created_at DESC").first.try(:created_at)
   end
 
   validates :name, presence: true, if: -> { registered? || activated? }

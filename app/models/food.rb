@@ -18,6 +18,10 @@ class Food < ActiveRecord::Base
     active.visible
   end
 
+  def orderable?
+    active? && end_date.future? && start_date.past?
+  end
+
   def set_prices!(prices)
     transaction do
       self.prices.destroy_all
@@ -32,8 +36,8 @@ class Food < ActiveRecord::Base
   end
 
   def ended!
-    food.update_attributes!(state: 'ended')
-    PushNotifications::FoodAvailableWorker.perform_async(food.id)
+    update_attributes!(state: 'ended')
+    PushNotifications::FoodAvailableWorker.perform_async(id)
   end
 
   validates :title, presence: true

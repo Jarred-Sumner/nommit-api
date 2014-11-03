@@ -7,6 +7,8 @@ class Api::V1::DevicesController < Api::V1::ApplicationController
       d.user_id = current_user.id
       d.registered = true
     end
+    track_registered_for_push
+
     render json: {}
   end
 
