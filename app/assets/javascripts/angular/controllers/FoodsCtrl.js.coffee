@@ -8,21 +8,27 @@
   $scope.progressForFood = (food) ->
     (food.order_count / food.goal) * 100
   setPlace = (place) ->
-    if place
-      $scope.place = place
+    if place || window.settings.placeID()
 
-      $scope.foods = _.chain(place.delivery_places)
-        .map (deliveryPlace) ->
-          _.filter deliveryPlace.foods, (food) ->
-            food.rating = Math.round(food.rating)
-            food.quantity = 1
-            food.state_id == 0
-          _.select deliveryPlace.foods, (food) ->
-            food = new Foods(food)
-            food.isOrderable()
-        .flatten()
-        .value()
-      $scope.fetchedFoods = true
+      if !place && window.settings.placeID()
+        Places.get id: window.settings.placeID(), (place) ->
+          setPlace(place)
+      else if place
+        $scope.place = place
+
+        $scope.foods = _.chain(place.delivery_places)
+          .map (deliveryPlace) ->
+            _.filter deliveryPlace.foods, (food) ->
+              food.rating = Math.round(food.rating)
+              food.quantity = 1
+              food.state_id == 0
+            _.select deliveryPlace.foods, (food) ->
+              food = new Foods(food)
+              food.isOrderable()
+          .flatten()
+          .value()
+
+        $scope.fetchedFoods = true
     else
       $scope.place = null
       $scope.foods = []
@@ -44,7 +50,6 @@
   Sessions.currentUser (user) ->
     $scope.user = user
     applyPendingPromo() if user
-
 
   setPlace()
 

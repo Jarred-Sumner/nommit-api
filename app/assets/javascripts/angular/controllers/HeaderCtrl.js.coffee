@@ -27,17 +27,19 @@
     setCurrentPlace(placeID)
     $scope.changingPlace = false
   setCurrentPlace = (id) ->
-
     if id
       old_place = $scope.place
       $scope.place = _.find $scope.places, (place) ->
-        String(id) == String(id)
+        String(id) == String(place.id)
       if $scope.place
-        $scope.places.push(old_place) if old_place
+        $scope.places.push(old_place) if old_place && old_place.id != id
+
+        window.settings.setPlaceID(id)
 
         # Remove current place from array
         $scope.places = _.without($scope.places, $scope.place)
         $scope.search.places = $scope.places
+
         $rootScope.$broadcast("placeChanged", place: $scope.place)
     else
       $scope.showPlaces() if $scope.places && $scope.places.length > 0
@@ -67,6 +69,8 @@
     # Fetch current user
     # Notify all controllers that current user is available
     Sessions.currentUser() if Sessions.isLoggedIn()
+
+    setCurrentPlace(window.settings.placeID())
 
   $scope.hideMobileNav = (manual) ->
     $scope.mobileNavVisible = false

@@ -42,6 +42,14 @@ class Api::V1::ApplicationController < ActionController::Base
 
   private
 
+    def platform
+      request.headers["X-APP-PLATFORM"]
+    end
+
+    def version
+      request.headers["X-APP-VERSION"]
+    end
+
     def require_current_user!
       render_error(status: :unauthorized, text: "Oops! It looks like you need to login again :(") if current_user.nil?
     end

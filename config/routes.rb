@@ -4,13 +4,16 @@ Rails.application.routes.draw do
 
     namespace :v1 do
       resources :foods, only: [:index, :show]
-      resources :shifts, only: [:index, :create, :update, :show]
+      resources :shifts, only: [:index, :create, :update, :show] do
+        resources :orders, only: [:index]
+      end
       resources :sessions, only: [:create, :destroy]
       resources :payment_methods, only: [:update, :show]
 
       resources :users, only: [:update] do
         resources :promos, only: [:create]
       end
+      resources :devices, only: [:create]
       resources :promos, only: [:show]
 
       resources :orders, only: [:create, :index, :update, :show]

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141026233502) do
+ActiveRecord::Schema.define(version: 20141102215420) do
 
   create_table "applied_promos", force: true do |t|
     t.integer  "user_id"
@@ -101,6 +101,18 @@ ActiveRecord::Schema.define(version: 20141026233502) do
   add_index "delivery_places", ["place_id"], name: "index_delivery_places_on_place_id"
   add_index "delivery_places", ["seller_id"], name: "index_delivery_places_on_seller_id"
   add_index "delivery_places", ["shift_id"], name: "index_delivery_places_on_shift_id"
+
+  create_table "devices", force: true do |t|
+    t.text     "token",                         null: false
+    t.boolean  "registered",    default: false, null: false
+    t.datetime "last_notified"
+    t.integer  "user_id"
+    t.integer  "platform",                      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "devices", ["user_id"], name: "index_devices_on_user_id"
 
   create_table "foods", force: true do |t|
     t.string   "title"

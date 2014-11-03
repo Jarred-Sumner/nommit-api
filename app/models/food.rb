@@ -18,6 +18,10 @@ class Food < ActiveRecord::Base
     active.visible
   end
 
+  def orderable?
+    active? && end_date.future? && start_date.past?
+  end
+
   def set_prices!(prices)
     transaction do
       self.prices.destroy_all
@@ -29,6 +33,11 @@ class Food < ActiveRecord::Base
       end
 
     end
+  end
+
+  def ended!
+    update_attributes!(state: 'ended')
+    PushNotifications::FoodAvailableWorker.perform_async(id)
   end
 
   validates :title, presence: true
@@ -46,4 +55,11 @@ class Food < ActiveRecord::Base
     sold = orders.placed.joins(:price).sum("prices.quantity")
     sold > 0 ? sold : 1
   end
+
+  after_commit :notify_users!
+
+  def notify_users!
+    PushNotifications::FoodAvailableWorker.perform_async(id)
+  end
+
 end
