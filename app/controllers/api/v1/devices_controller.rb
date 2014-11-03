@@ -7,6 +7,7 @@ class Api::V1::DevicesController < Api::V1::ApplicationController
       d.user_id = current_user.id
       d.registered = true
     end
+    render json: {}
   end
 
   private

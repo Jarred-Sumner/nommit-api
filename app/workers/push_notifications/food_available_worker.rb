@@ -8,24 +8,27 @@ class PushNotifications::FoodAvailableWorker
 
     Device.registered.find_each do |device|
       next if device.last_notified.present? && device.last_notified < 12.hours.ago
-
-      notification_params = {
-        device_token: device.token,
-        badge: Food.orderable.count,
-        expiry: food.end_date.to_time
-      }
-
-      if !device.user.last_ordered || device.user.last_ordered < 3.days.ago
-        notification_params[:alert] = "Get #{food.title} delivered to you in under 15 minutes right now"
-      end
-
-      pusher.push(notification_params)
+      pusher.push(notification_params(device))
       device.touch(:last_notified)
     end
   end
 
-  def pusher
+  def pusher[[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
     @pusher ||= Grocer.pusher(certificate: CERTIFICATE_PATH)
+  end
+
+  def notification_params(device)
+    notification_params = {
+      device_token: device.token,
+      badge: Food.orderable.count,
+      expiry: food.end_date.to_time
+    }
+
+    if !device.user.last_ordered || device.user.last_ordered < 3.days.ago
+      notification_params[:alert] = "Get #{food.title} delivered to you in under 15 minutes right now"
+    end
+
+    notification_params
   end
 
 end

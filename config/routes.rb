@@ -1,12 +1,6 @@
 Rails.application.routes.draw do
 
   namespace :api do
-  namespace :v1 do
-    get 'devices/create'
-    end
-  end
-
-  namespace :api do
 
     namespace :v1 do
       resources :foods, only: [:index, :show]
@@ -17,6 +11,7 @@ Rails.application.routes.draw do
       resources :users, only: [:update] do
         resources :promos, only: [:create]
       end
+      resources :devices, only: [:create]
       resources :promos, only: [:show]
 
       resources :orders, only: [:create, :index, :update, :show]

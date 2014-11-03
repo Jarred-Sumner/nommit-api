@@ -2,10 +2,10 @@
 
 FactoryGirl.define do
   factory :device do
-    token "MyText"
-    registered false
+    token { SecureRandom.urlsafe_base64 }
+    registered true
     last_notified "2014-11-02 16:54:20"
-    user nil
+    user { create(:user) }
     platform 1
   end
 end

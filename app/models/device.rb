@@ -1,6 +1,6 @@
 class Device < ActiveRecord::Base
   belongs_to :user
-  enum :platform, [:ios, :android]
+  enum :platform => [:ios, :android]
   scope :registered, -> { where(registered: true) }
 
   validate :platform, presence: true
