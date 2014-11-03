@@ -68,6 +68,8 @@ gem 'ngannotate-rails'
 # Analytics
 gem 'analytics-ruby', '~> 2.0.0', :require => 'segment/analytics'
 
+# Push Notifications
+gem 'grocer'
 
 group :test, :development do
 

@@ -36,6 +36,12 @@ module Tracking
     track("User Sent Confirm Code")
   end
 
+  ## Device Events
+
+  def track_registered_for_push
+    track("Registered for Push Notifications")
+  end
+
   ## Order Events
 
   def track_placed_order(order)
@@ -79,7 +85,7 @@ module Tracking
   end
 
 
-  # Food Devents
+  # Food Events
 
   def track_food_sold_out(food)
     track("Food Sold Out", track_properties_for(food: food))

@@ -48,4 +48,11 @@ class Food < ActiveRecord::Base
     sold = orders.placed.joins(:price).sum("prices.quantity")
     sold > 0 ? sold : 1
   end
+
+  after_commit :notify_users!
+
+  def notify_users!
+    PushNotifications::FoodAvailableWorker.perform_async(id)
+  end
+
 end

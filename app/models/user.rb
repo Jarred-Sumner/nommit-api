@@ -47,6 +47,10 @@ class User < ActiveRecord::Base
     user
   end
 
+  def last_ordered
+    orders.order("created_at ASC").first.try(:created_at)
+  end
+
   validates :name, presence: true, if: -> { registered? || activated? }
   validates :email, uniqueness: { allow_blank: true }
   validates :facebook_uid, presence: true, uniqueness: true, if: -> { registered? || activated? }
