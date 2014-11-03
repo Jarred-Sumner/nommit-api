@@ -31,6 +31,11 @@ class Food < ActiveRecord::Base
     end
   end
 
+  def ended!
+    food.update_attributes!(state: 'ended')
+    PushNotifications::FoodAvailableWorker.perform_async(food.id)
+  end
+
   validates :title, presence: true
   validates :description, presence: true
   validates :goal, presence: true
