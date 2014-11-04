@@ -51,7 +51,7 @@ class Order < ActiveRecord::Base
   def delivered!
     transaction do
       update_attributes!(state: "delivered")
-      delivery_place.pending! if delivery_place.orders.pending.count.zero?
+      shift.update_arrival_times!
     end
   end
 
@@ -170,8 +170,8 @@ class Order < ActiveRecord::Base
       end
     end
 
-    def activate_place!
-      delivery_place.activate! if delivery_place.pending?
+    def refresh_arrival_times!
+      shift.update_arrival_times!
     end
 
   validates :food, presence: true
@@ -189,7 +189,7 @@ class Order < ActiveRecord::Base
   before_validation :set_delivery!, :set_estimate!, on: :create
 
   after_create :apply_pending_promotions!, :charge!
-  after_create :activate_place!
+  after_create :refresh_arrival_times!
   after_commit :send_arrival_text!, on: :create, if: :arrived?
 
   validate :food_is_active!, on: :create

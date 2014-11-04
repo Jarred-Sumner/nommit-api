@@ -14,12 +14,14 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
     else
       @places = Place.active.order("id DESC").uniq
       track_looked_at_places
+      @for_orders_page = true
     end
   end
 
   def show
     @place = Place.find(params[:id])
     track_checked_for_food(@place)
+    @for_orders_page = true
   end
 
   private

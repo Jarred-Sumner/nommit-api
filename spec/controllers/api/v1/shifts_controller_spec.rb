@@ -144,8 +144,10 @@ describe Api::V1::ShiftsController, type: :controller do
     end
 
     context "lets you notify users of active delivery place" do
-      let(:delivery_place) { shift.delivery_places.sample }
-      let(:place) { delivery_place.place }
+      let(:order) { TestHelpers::Order.create_for }
+      let(:delivery_place) { order.delivery_place }
+      let(:shift) { delivery_place.shift }
+      let(:user) { shift.courier.user }
 
       specify do
         expect do

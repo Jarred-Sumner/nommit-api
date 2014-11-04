@@ -56,6 +56,10 @@ class Food < ActiveRecord::Base
     sold > 0 ? sold : 1
   end
 
+  def rating
+    orders.rated.average(:rating)
+  end
+
   after_commit :notify_users!
 
   def notify_users!

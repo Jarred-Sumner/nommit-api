@@ -46,27 +46,30 @@ class Shift < ActiveRecord::Base
   # Given [1,2,3,4,5,6]
   # If new_zero_index's value was 3
   # Then, array should return [3,4,5,6,1,2]
-  def update_arrival_times!(zero = current_delivery_place.try(:current_index))
-    if current_delivery_place.present?
-      places = delivery_places
-        .active
-        .order("current_index ASC")
-      count = places.count
+  def update_arrival_times!
+    active = delivery_places
+      .joins(:orders)
+      .where(orders: { state: [ Order.states[:active], Order.states[:arrived] ] })
+      .uniq
 
-      places = places[zero..count - 1] | places
-
+    unless active.pluck("delivery_places.id").uniq.sort == delivery_places.active.pluck(:id).uniq.sort
+      count = active.count
+      inactive = delivery_places.pluck(:id).uniq.sort - active.pluck('delivery_places.id').uniq.sort
       transaction do
-        places.each_with_index do |place, index|
-          place.update_attributes!(current_index: index, arrives_at: eta_for(index, count))
+        DeliveryPlace.where(id: inactive).update_all(state: DeliveryPlace.states[:pending], arrives_at: nil, current_index: -1)
+        active.each_with_index do |dp, index|
+          state = dp.state
+          state = "ready" if dp.pending?
+          dp.update_attributes!(current_index: index + 1, arrives_at: eta_for(index + 1, count), state: state)
         end
       end
-
     end
+
   end
 
   def eta_for(index, place_count)
     time_spent_in_place = LONGEST_DELIVER_TIME / place_count.to_f
-    eta = (time_spent_in_place * (index + 1)).minutes.from_now
+    eta = (time_spent_in_place * index).minutes.from_now
 
     if eta > 15.minutes.from_now
       eta = 15.minutes.from_now
@@ -111,6 +114,5 @@ class Shift < ActiveRecord::Base
   after_create do
     courier.active! if active?
   end
-
 
 end

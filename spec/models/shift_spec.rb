@@ -54,6 +54,16 @@ describe Shift, type: :model do
       end
     end
 
+    it "is idempotent" do
+      orig_arrival_times = shift.delivery_places.active.pluck(:arrives_at)
+      shift.update_arrival_times!
+      orig_arrival_times.each_with_index do |time, index|
+        new_time = shift.delivery_places.active.pluck(:arrives_at)[index]
+        expect(time).to eq(new_time)
+      end
+
+    end
+
   end
 
   context "#eta_for" do

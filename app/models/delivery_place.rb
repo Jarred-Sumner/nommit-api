@@ -38,8 +38,6 @@ class DeliveryPlace < ActiveRecord::Base
 
   def arrive!
     transaction do
-      current_dp = shift.delivery_places.active.first
-
       shift
         .orders
         .arrived
@@ -47,12 +45,13 @@ class DeliveryPlace < ActiveRecord::Base
 
       shift
         .delivery_places
+        .active
         .update_all(state: DeliveryPlace.states[:ready])
 
       arrived!
       orders.pending.update_all(state: Order.states[:arrived])
 
-      shift.update_arrival_times!(current_index)
+      shift.update_arrival_times!
       Sms::Notifications::ArrivalWorker.perform_async(shift_id)
     end
   end
@@ -65,26 +64,18 @@ class DeliveryPlace < ActiveRecord::Base
     active? || pending?
   end
 
-  def activate!
-    transaction do
-      index = shift.delivery_places.active.last.try(:current_index) || -1
-      new_index = index + 1
-      update_attributes!(state: 'ready', current_index: new_index, start_index: new_index)
-      shift.update_arrival_times!
-    end
-  end
-
-  def pending!
-    transaction do
-      update_attributes(state: 'pending', current_index: -1, arrives_at: nil)
-      shift.update_arrival_times!
-    end
-  end
-
   validate :isnt_handled_by_another_courier!, on: :create
   def isnt_handled_by_another_courier!
     if seller.delivery_places.active.where(place_id: place_id).count > 0
       errors.add(:base, "#{place.name} is already being handled by another courier")
+    end
+  end
+
+  def buyer_state_id
+    if state_id == DeliveryPlace.states[:pending]
+      DeliveryPlace.states[:ready]
+    else
+      state_id
     end
   end
 
