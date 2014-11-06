@@ -16,11 +16,14 @@ describe Shift, type: :model do
   context "#update_arrival_times!" do
     let(:order) { build(:order, place_id: shift.delivery_places.pending.last.place_id, food_id: food.id, delivered_at: 1.minute.ago) }
     let(:dps) { shift.delivery_places.active }
+    let(:place_order) { [] }
 
     before :each do
+      shift.update_attributes(state: "active")
       place_ids = shift.delivery_places.pending.limit(2).pluck(:place_id)
 
       place_ids.each do |id|
+        place_order.push id
         create(:order, place_id: id, food_id: food.id)
       end
     end
@@ -61,7 +64,14 @@ describe Shift, type: :model do
         new_time = shift.delivery_places.active.pluck(:arrives_at)[index]
         expect(time).to eq(new_time)
       end
+    end
 
+    it 'orders delivery places properly' do
+      order.save!
+      place_order.push order.place_id
+
+      # The correct order is where the first place has the "oldest" order and the last one has the "newest" order
+      expect(shift.delivery_places.active.pluck(:place_id)).to eq(place_order)
     end
 
   end

@@ -39,9 +39,16 @@ class Api::V1::ShiftsController < Api::V1::ApplicationController
       # Well, this change affects all the DeliveryPlaces in the Shift model.
       # We need the latest version of all DeliveryPlaces for this Shift immediately afterwards, and it would be improper to return that in DeliveryPlaces#update
       # So, it goes here.
+
       if Integer(dp_params[:delivery_place_state_id]) == DeliveryPlace.states[:arrived]
-        delivery_place.arrive!
+        if delivery_place.ready?
+          delivery_place.arrive!
+        else
+          delivery_place.notify_pending_orders!
+        end
         track_delivery_place_arrived(delivery_place)
+      elsif Integer(dp_params[:delivery_place_state_id]) == DeliveryPlace.states[:ready]
+        delivery_place.left!
       end
     end
     render action: :show
@@ -59,7 +66,7 @@ class Api::V1::ShiftsController < Api::V1::ApplicationController
     end
 
     def delivery_place
-      @delivery_place ||= shift.delivery_places.find_by(id: dp_params[:delivery_place_id])
+      @delivery_place ||= shift.delivery_places.find_by(id: Integer(dp_params[:delivery_place_id]))
     end
 
     def shift_params

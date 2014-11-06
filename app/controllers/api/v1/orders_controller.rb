@@ -57,6 +57,12 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
       # Send them a delivery notification on their first order.
       Sms::Notifications::DeliveryWorker.perform_at(20.minutes.from_now, @order.id) if @order.user.orders.count == 1
       track_delivered_order(@order)
+
+      # End the shift automatically when the shift is halted and there are no more pending orders
+      if @order.shift.halt? && @order.shift.orders.pending.count.zero?
+        @order.shift.ended!
+      end
+
     end
 
     if @order.present?

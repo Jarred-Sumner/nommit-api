@@ -370,7 +370,7 @@ FactoryGirl.define do
       after(:create) do |shift|
         4.times do |i|
           place = FactoryGirl.create(:place)
-          dp = FactoryGirl.create(:delivery_place, place_id: FactoryGirl.create(:place).id, shift_id: shift.id, current_index: i, start_index: i)
+          dp = FactoryGirl.create(:delivery_place, place_id: FactoryGirl.create(:place).id, shift_id: shift.id, current_index: i)
           dp.deliveries.create!(food_id: create(:food, seller_id: shift.seller_id).id)
         end
       end
@@ -391,8 +391,7 @@ FactoryGirl.define do
     place_id { FactoryGirl.create(:place).id }
     shift_id { FactoryGirl.create(:shift).id }
     arrives_at 15.minutes.from_now
-    current_index -1
-    start_index -1
+    current_index nil
     state DeliveryPlace.states[:pending]
   end
 

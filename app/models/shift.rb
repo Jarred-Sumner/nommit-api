@@ -32,7 +32,7 @@ class Shift < ActiveRecord::Base
       places.each do |place_id, index|
         next if delivery_places.where(place_id: place_id).count > 0
 
-        dp = delivery_places.create!(place_id: place_id, arrives_at: nil, current_index: -1, state: DeliveryPlace.states[:pending])
+        dp = delivery_places.create!(place_id: place_id, arrives_at: nil, state: DeliveryPlace.states[:pending])
         foods.each { |food_id| dp.deliveries.create!(food_id: food_id) }
       end
     end
@@ -47,20 +47,47 @@ class Shift < ActiveRecord::Base
   # If new_zero_index's value was 3
   # Then, array should return [3,4,5,6,1,2]
   def update_arrival_times!
+    # We don't update arrival times for shifts that are ended or halted.
+    return unless active?
+
     active = delivery_places
       .joins(:orders)
       .where(orders: { state: [ Order.states[:active], Order.states[:arrived] ] })
+      .order("orders.delivered_at ASC")
       .uniq
 
     unless active.pluck("delivery_places.id").uniq.sort == delivery_places.active.pluck(:id).uniq.sort
       count = active.count
       inactive = delivery_places.pluck(:id).uniq.sort - active.pluck('delivery_places.id').uniq.sort
       transaction do
-        DeliveryPlace.where(id: inactive).update_all(state: DeliveryPlace.states[:pending], arrives_at: nil, current_index: -1)
+        DeliveryPlace.where(id: inactive).update_all(state: DeliveryPlace.states[:pending], arrives_at: nil, current_index: nil)
         active.each_with_index do |dp, index|
           state = dp.state
           state = "ready" if dp.pending?
-          dp.update_attributes!(current_index: index + 1, arrives_at: eta_for(index + 1, count), state: state)
+
+          eta = nil
+
+          # Courier *needs* to arrive by this point for them to be on time
+          ceiling = dp.orders.pending.order("delivered_at ASC").first.try(:delivered_at)
+
+          # Courier *should* be there by this time.
+          recommended = eta_for(index + 1, count)
+
+          if recommended.present? && ceiling.present?
+
+            # If they're running slow, and the recommended ETA is past the time they *need* to be there by
+            # We defer to the time they *need* to be there by
+            if recommended > ceiling
+              eta = ceiling
+            else
+              eta = recommended
+            end
+
+          else
+            eta = recommended || ceiling
+          end
+
+          dp.update_attributes!(current_index: index + 1, arrives_at: eta, state: state)
         end
       end
     end

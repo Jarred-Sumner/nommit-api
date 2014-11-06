@@ -9,7 +9,8 @@ class Delivery < ActiveRecord::Base
   validate :food_is_owned_by_seller!
 
   def self.for(place_id: nil, food_id: nil)
-    Delivery.joins(:delivery_place).where(delivery_places: { place_id: place_id }, food_id: food_id).order("delivery_places.state ASC")
+    deliverable = [ DeliveryPlace.states[:ready], DeliveryPlace.states[:arrived], DeliveryPlace.states[:pending] ]
+    Delivery.joins(:delivery_place).where(delivery_places: { place_id: place_id, state: deliverable }, food_id: food_id)
   end
 
   def active?

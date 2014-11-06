@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141102215420) do
+ActiveRecord::Schema.define(version: 20141105005604) do
 
   create_table "applied_promos", force: true do |t|
     t.integer  "user_id"
@@ -89,9 +89,8 @@ ActiveRecord::Schema.define(version: 20141102215420) do
     t.integer  "shift_id"
     t.integer  "place_id"
     t.datetime "arrives_at"
-    t.integer  "current_index",             null: false
+    t.integer  "current_index"
     t.integer  "state",         default: 0, null: false
-    t.integer  "start_index",               null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "seller_id"

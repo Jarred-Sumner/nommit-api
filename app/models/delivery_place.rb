@@ -23,12 +23,10 @@ class DeliveryPlace < ActiveRecord::Base
   validates :place, presence: true, uniqueness: { scope: :shift_id }
   validates :state, uniqueness: { scope: :shift_id }, if: :arrived?
 
-  validates :current_index, presence: true, uniqueness: { :scope => [:shift_id, :place_id] }
-  validates :start_index, presence: true, uniqueness: { :scope => [:shift_id, :place_id] }
+  validates :current_index, uniqueness: { :scope => [:shift_id, :place_id], allow_nil: true }
 
   before_validation on: :create do
     self.seller_id = courier.seller_id
-    self.start_index = current_index
   end
 
   validate :no_orders_remaining, if: :ended?
@@ -49,10 +47,23 @@ class DeliveryPlace < ActiveRecord::Base
         .update_all(state: DeliveryPlace.states[:ready])
 
       arrived!
-      orders.pending.update_all(state: Order.states[:arrived])
+      shift.update_arrival_times!
+      notify_pending_orders!
+    end
+  end
+
+  def notify_pending_orders!
+    orders.pending.update_all(state: Order.states[:arrived])
+    Sms::Notifications::ArrivalWorker.perform_async(shift_id)
+  end
+
+  def left!
+    transaction do
+      orders.pending.update_all(state: Order.states[:active])
+      ready!
 
       shift.update_arrival_times!
-      Sms::Notifications::ArrivalWorker.perform_async(shift_id)
+      Sms::Notifications::LeavingWorker.perform_async(id)
     end
   end
 
