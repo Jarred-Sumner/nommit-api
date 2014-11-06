@@ -56,7 +56,9 @@ class Shift < ActiveRecord::Base
       .order("orders.delivered_at ASC")
       .uniq
 
-    unless active.pluck("delivery_places.id").uniq.sort == delivery_places.active.pluck(:id).uniq.sort
+    ids = active.collect { |dp| dp.id }.uniq.sort
+
+    unless ids == delivery_places.active.pluck(:id).uniq.sort
       count = active.count
       inactive = delivery_places.pluck(:id).uniq.sort - active.pluck('delivery_places.id').uniq.sort
       transaction do
