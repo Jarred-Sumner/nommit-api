@@ -71,10 +71,12 @@ gem 'analytics-ruby', '~> 2.0.0', :require => 'segment/analytics'
 # Push Notifications
 gem 'grocer'
 
-group :test, :development do
+# We use PostgreSQL in Production
+gem 'pg'
 
-  # Use sqlite3 as the database for Active Record
-  gem 'sqlite3'
+gem 'test_after_commit', group: :test
+
+group :test, :development do
 
   # Debugging
   gem 'pry-rails'
@@ -86,8 +88,6 @@ group :test, :development do
   gem 'stripe-ruby-mock', '~> 1.10.1.7', require: "stripe_mock"
 
   gem 'database_cleaner'
-
-  gem 'test_after_commit'
 
   # Deployment
   gem 'capistrano', '~> 3.1.0'
@@ -103,9 +103,7 @@ end
 
 group :production do
 
-  # We use PostgreSQL in Production
-  gem 'pg'
-
   # And, therubyracer, because it's difficult to get working on OS X.
   gem 'therubyracer'
+
 end
