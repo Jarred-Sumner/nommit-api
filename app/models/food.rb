@@ -26,12 +26,12 @@ class Food < ActiveRecord::Base
 
   def set_prices!(prices)
     transaction do
-      prices.destroy_all
+      self.prices.destroy_all
 
       default_price = prices[0]
       9.times do |index|
         price = prices[index] || default_price * (index + 1)
-        prices.create!(quantity: index + 1, price_in_cents: price)
+        self.prices.create!(quantity: index + 1, price_in_cents: price)
       end
 
     end
