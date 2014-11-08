@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   has_one :payment_method, -> { where(state: PaymentMethod.states[:active]) }
   has_many :payment_methods
   has_one :referral_promo
+  has_many :devices
   belongs_to :location
   has_many :sellers, through: :couriers
   include StateID

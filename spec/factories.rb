@@ -341,6 +341,15 @@ FactoryGirl.define do
       state Food.states[:ended]
     end
 
+    factory :pending_food do
+      start_date 3.weeks.from_now
+      end_date 6.weeks.from_now
+    end
+
+    factory :expired_food do
+      end_date 2.hours.ago
+    end
+
     after(:create) do |food|
       food.set_prices!([rand(300..500)])
     end

@@ -41,6 +41,5 @@ Rails.application.routes.draw do
   get 'account' => 'dashboard#index'
   root to: 'dashboard#index'
 
-  get 'support' => redirect('mailto:support@getnommit.com')
   get 'download' => redirect("https://itunes.apple.com/us/app/nommit/id928890698?mt=8")
 end

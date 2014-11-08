@@ -39,6 +39,10 @@ class Api::V1::UsersController < Api::V1::ApplicationController
       end
     end
 
+    if update_params[:push_notifications] == "reset"
+      current_user.devices.update_all(last_notified: nil)
+    end
+
     render action: :me
   rescue ArgumentError
     render_invalid_confirm_code
@@ -49,7 +53,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
   private
 
     def update_params
-      params.permit(:id, :confirm_code, :stripe_token, :phone, :promo_code)
+      params.permit(:id, :confirm_code, :stripe_token, :phone, :promo_code, :push_notifications)
     end
 
     def render_invalid_confirm_code

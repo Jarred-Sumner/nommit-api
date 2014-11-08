@@ -12,7 +12,9 @@ class Food < ActiveRecord::Base
 
   include StateID
   enum state: { active: 0, halted: 1, ended: 2 }
-  scope :visible, lambda { where("? BETWEEN start_date AND end_date", DateTime.now) }
+
+  # Foods are visible for awhile.
+  scope :visible, lambda { where("start_date > ? AND end_date > ?", 1.day.ago, 1.day.ago) }
 
   scope :orderable, -> do
     active.visible
@@ -24,12 +26,12 @@ class Food < ActiveRecord::Base
 
   def set_prices!(prices)
     transaction do
-      self.prices.destroy_all
+      prices.destroy_all
 
       default_price = prices[0]
       9.times do |index|
         price = prices[index] || default_price * (index + 1)
-        self.prices.create!(quantity: index + 1, price_in_cents: price)
+        prices.create!(quantity: index + 1, price_in_cents: price)
       end
 
     end
@@ -63,7 +65,7 @@ class Food < ActiveRecord::Base
   after_commit :notify_users!
 
   def notify_users!
-    PushNotifications::FoodAvailableWorker.perform_async(id)
+    PushNotifications::FoodAvailableWorker.perform_at(start_date + 2.minutes, id)
   end
 
 end

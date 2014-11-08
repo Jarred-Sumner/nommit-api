@@ -1,7 +1,7 @@
 json.(food, :id, :title, :description, :goal)
 
-json.start_date food.start_date.iso8601
-json.end_date food.end_date.iso8601
+json.start_date food.start_date.try(:iso8601)
+json.end_date food.end_date.try(:iso8601)
 json.state_id food.state_id
 
 json.prices do

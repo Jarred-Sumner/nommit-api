@@ -160,10 +160,6 @@ class Order < ActiveRecord::Base
       ChargeWorker.perform_at(Charge::DELAY.hours.from_now, self.id)
     end
 
-    def send_arrival_text!
-      Sms::Notifications::ArrivalWorker.new.deliver_message!(self)
-    end
-
     def ensure_courier_isnt_delivering_to_self!
       if seller.couriers.active.where(user_id: id).count > 0
         errors.add(:base, "Can't place orders to yourself!")
@@ -190,7 +186,6 @@ class Order < ActiveRecord::Base
 
   after_create :apply_pending_promotions!, :charge!
   after_create :refresh_arrival_times!
-  after_commit :send_arrival_text!, on: :create, if: :arrived?
 
   validate :food_is_active!, on: :create
   validate :delivery_place_is_accepting_new_orders!, on: :create

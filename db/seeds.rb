@@ -57,6 +57,9 @@ nuggets = Food.create! do |f|
 end
 nuggets.set_prices!([300, 400, 400])
 
+expired = FactoryGirl.create(:expired_food, seller_id: trisigma.id)
+pending = FactoryGirl.create(:pending_food, seller_id: trisigma.id)
+
 shared_place_one = Place.random.id
 shared_place_two = Place.random.id
 
