@@ -18,6 +18,6 @@ class Place < ActiveRecord::Base
   end
 
   def food_count
-    delivery_places.deliverable.joins(:foods).uniq.count
+    delivery_places.deliverable.joins(:foods).where("foods.state = ? AND ? BETWEEN foods.start_date AND foods.end_date", Food.states[:active], DateTime.now).uniq.count
   end
 end
