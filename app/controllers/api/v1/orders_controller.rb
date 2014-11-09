@@ -63,6 +63,12 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
         @order.shift.ended!
       end
 
+    elsif Integer(update_params[:state_id]) == Order.states[:cancelled]
+      @order = current_user.orders.find(update_params[:id])
+      return render_bad_request("Can only cancel within two minutes of placing the order.") if @order.created_at < 2.minutes.ago
+      return render_bad_request("Can't cancel an order that's been delivered") if @order.delivered? || @order.rated?
+
+      @order.cancelled!
     end
 
     if @order.present?

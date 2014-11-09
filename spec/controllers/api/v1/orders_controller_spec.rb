@@ -2,7 +2,7 @@ require_relative "../../../rails_helper"
 
 describe Api::V1::OrdersController, type: :controller do
   let(:user) { create(:user) }
-  let(:session) { create(:session) }
+  let(:session) { create(:session, user_id: user.id) }
 
   before :each do
     request.headers["X-SESSION-ID"] = session.token
@@ -327,6 +327,33 @@ describe Api::V1::OrdersController, type: :controller do
         rating = 5.0
         put :update, id: order.id, state_id: Order.states[:rated], rating: rating
         expect(order.reload.rating).to eq(rating)
+      end
+
+    end
+
+    describe "cancels" do
+      subject { put :update, id: order.id, state_id: Order.states[:cancelled] }
+
+      specify do
+        order.update_attributes(created_at: 15.minutes.from_now)
+        expect do
+          subject
+        end.to change { order.reload.state }.from("active").to("cancelled")
+        expect(response).to be_successful
+      end
+
+      it "can't cancel an order that's been delivered" do
+        order.delivered!
+
+        subject
+        expect(response).to_not be_successful
+      end
+
+      it "can't cancel an order after two minutes" do
+        order.update_attributes(created_at: 3.minutes.ago)
+
+        subject
+        expect(response).to_not be_successful
       end
 
     end
