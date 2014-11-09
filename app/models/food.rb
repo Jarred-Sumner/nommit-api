@@ -14,7 +14,7 @@ class Food < ActiveRecord::Base
   enum state: { active: 0, halted: 1, ended: 2 }
 
   # Foods are visible for awhile.
-  scope :visible, lambda { where("start_date > ? AND end_date > ?", 1.day.ago, 1.day.ago) }
+  scope :visible, lambda { where("end_date > ?", 1.day.ago) }
 
   scope :orderable, -> do
     active.visible
@@ -54,8 +54,7 @@ class Food < ActiveRecord::Base
   end
 
   def sold
-    sold = orders.placed.joins(:price).sum("prices.quantity")
-    sold > 0 ? sold : 1
+    orders.placed.joins(:price).sum("prices.quantity")
   end
 
   def rating
