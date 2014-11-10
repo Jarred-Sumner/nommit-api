@@ -21,7 +21,11 @@ class Food < ActiveRecord::Base
   end
 
   def orderable?
-    active? && end_date.future? && start_date.past?
+    active? && end_date.future? && start_date.past? && !sold_out?
+  end
+
+  def sold_out?
+    orders.placed.count < goal
   end
 
   def set_prices!(prices)
