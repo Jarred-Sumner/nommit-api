@@ -28,21 +28,6 @@ window.settings =
 # sense as we add more routes to our application.
 @nommit.config ($stateProvider, $urlRouterProvider, $httpProvider, FacebookProvider, $locationProvider, $compileProvider, httpRequestInterceptorCacheBusterProvider) ->
   $locationProvider.html5Mode(true);
-  $urlRouterProvider.otherwise("/")
-  $stateProvider
-    .state('foods',
-      url: "/?i"
-      templateUrl: 'dashboard/partials/foods'
-      controller: 'FoodsCtrl'
-    ).state('orders',
-      url: '/orders'
-      templateUrl: 'dashboard/partials/orders'
-      controller: 'OrdersCtrl'
-    ).state("account",
-      url: "/account"
-      templateUrl: 'dashboard/partials/account'
-      controller: "AccountCtrl"
-    )
 
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|http|sms|tel):/)
   FacebookProvider.init(window.config.facebook);
