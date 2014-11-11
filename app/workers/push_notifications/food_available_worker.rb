@@ -16,13 +16,9 @@ class PushNotifications::FoodAvailableWorker < PushNotifications::BaseWorker
     params = super
     params[:badge] = Food.orderable.count
 
-    if food.try(:orderable?)
-      if device.user.last_ordered.nil? || device.user.last_ordered < 2.days.ago
-
-        params[:expiry] = food.end_date.to_time
-        params[:alert] = "Hungry? #{food.seller.name} is delivering food. It'll arrive in under 15 minutes. Order Now!"
-
-      end
+    if food.orderable?
+      params[:expiry] = food.end_date.to_time
+      params[:alert] = "Hungry? #{food.seller.name} is delivering food. It'll arrive in under 15 minutes. Order Now!"
     end
 
     params

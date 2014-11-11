@@ -25,7 +25,7 @@ class Food < ActiveRecord::Base
   end
 
   def sold_out?
-    orders.placed.count < goal
+    orders.placed.count >= goal
   end
 
   def set_prices!(prices)
