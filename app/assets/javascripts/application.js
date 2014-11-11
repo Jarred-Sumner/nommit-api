@@ -14,6 +14,8 @@
 //= require jquery_ujs
 //= require angular/angular.min
 //= require angular/angular-ui-router
+//= require angular/angular-touch
+//= require angular/angular-animate
 //= require angular/angular-resource
 //= require angular/angular-payments
 //= require angular/angular-facebook

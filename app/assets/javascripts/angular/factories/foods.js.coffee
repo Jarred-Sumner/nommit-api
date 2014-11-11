@@ -13,6 +13,8 @@
     new Date() > this.startDate() && new Date() < this.endDate()
   Foods::isOrderable = ->
     this.isActive() && this.isOngoing()
+  Foods::remaining = ->
+    this.goal - this.order_count
 
   Foods
 ]

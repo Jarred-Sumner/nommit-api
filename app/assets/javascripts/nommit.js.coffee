@@ -20,7 +20,7 @@ window.settings =
   setDidRedirectOnAndroid: ->
     localStorage["didRedirectOnAndroid"] = true
 
-@nommit = angular.module('nommit', ['ui.router', 'ngResource', 'facebook', 'angularPayments', 'angular-spinkit', 'timer', 'ngCacheBuster', 'adaptive.detection'])
+@nommit = angular.module('nommit', ['ui.router', 'ngResource', 'facebook', 'angularPayments', 'angular-spinkit', 'timer', 'ngCacheBuster', 'adaptive.detection', 'ngAnimate', 'ngTouch'])
 
 # This routing directive tells Angular about the default
 # route for our application. The term "otherwise" here
@@ -31,6 +31,37 @@ window.settings =
 
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|http|sms|tel):/)
   FacebookProvider.init(window.config.facebook);
+
+  $urlRouterProvider.otherwise("/")
+  $stateProvider
+    .state 'foods',
+      url: "/?place_id"
+      templateUrl: "/dashboard/partials/foods"
+    .state "foods.places",
+      url: "/places"
+      templateUrl: "/dashboard/partials/places"
+    .state "order",
+      url: "/order?food_id&place_id"
+      templateUrl: "/dashboard/partials/orders/new"
+    .state "deliver",
+      url: "/deliver"
+      templateUrl: "/dashboard/partials/deliver"
+    .state "account",
+      url: "/account"
+      templateUrl: "/dashboard/partials/account"
+    .state "invite",
+      url: "/invite"
+      templateUrl: "/dashboard/partials/invite"
+    .state "support",
+      url: "/support"
+      templateUrl: "/dashboard/partials/support"
+    .state "fundraise",
+      url: "/fundraise"
+      templateUrl: "/dashboard/partials/fundraise"
+    .state "orders",
+      url: "/orders/:id"
+      tmeplateUrl: "/dashboard/partials/orders/show"
+
 
   $httpProvider.defaults.headers.common["X-APP-VERSION"] = "MASTER"
 

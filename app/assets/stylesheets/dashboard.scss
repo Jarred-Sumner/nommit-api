@@ -5,5 +5,306 @@
 @import "neat";
 
 @import "dashboard/third-party/angular-spinkit.min";
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,700);
+
+html,body {
+  margin: 0 0;
+  padding: 0px;
+  min-height: 100%;
+  height: 100%;
+}
+
+h1,h2,h3,h4,h5,h6 { margin: 0 0; padding: 0px; }
+
+* {
+  @include box-sizing(border-box);
+  font-family: "Roboto Slab", serif;
+}
 
 $asset-pipeline: true;
+
+$default-color: #836864;
+$selected-color: #4EC2C7;
+$light-color: #767676;
+$ultralight-color: #828282;
+
+$brand-green: #42B7BB;
+
+$light-font: 300;
+$thin-font: 200;
+
+
+$header-width: 288px;
+$header-background: rgba(25,17,16,.5);
+
+.header-container {
+  margin: 0 auto;
+  text-align: left;
+  background-color: $header-background;
+  position: fixed;
+  width: 100%;
+  min-height: 100% !important;
+  height: auto;
+  display: block;
+  header {
+    background-color: white;
+    color: $default-color;
+    font-size: 14pt;
+    min-height: 100% !important;
+    height: auto;
+    display: block;
+    width: $header-width;
+    position: absolute;
+    .brand {
+      @include retina-image("dashboard/header/top", $header-width 187px);
+      height: 187px;
+      width: $header-width;
+    }
+
+
+    nav {
+      padding: 0px 17px;
+      list-style: none;
+
+      .page {
+        margin: 34px 0px;
+        .fa {
+          width: 20px;
+        }
+        span {
+          margin: 0px 28px;
+        }
+        &:hover, &:active {
+          color: $selected-color;
+          cursor: pointer;
+        }
+      }
+
+    }
+
+    .pending-orders {
+
+      h5 {
+        padding: 3px 17px;
+        background-color: #B9AFAD;
+        margin: 0 auto;
+        color: white;
+        font-weight: normal;
+        text-align: left;
+      }
+
+    }
+
+  }
+
+
+  &.ng-hide {
+    display: none;
+  }
+
+  &.ng-hide-remove {
+    @include animation(fadeInHeader 0.2s linear);
+    background-color: rgba(0,0,0,.0);
+    header {
+      @include animation(slideInHeader 0.2s linear);
+      @include transform(translateX(0px));
+    }
+  }
+
+  &.ng-hide-add {
+    @include animation(fadeOut 0.2s linear);
+    display: block !important;
+    header {
+      @include animation(slideOutHeader 0.2s linear);
+    }
+  }
+
+
+}
+
+@include keyframes(slideInHeader) {
+  0% {
+    @include transform(translateX(-$header-width));
+  }
+  100% {
+    @include transform(translateX(0px));
+  }
+}
+
+@include keyframes(fadeInHeader) {
+  0% {
+    background-color: rgba(0,0,0,.0);
+  }
+  100% {
+    background-color: $header-background;
+  }
+}
+
+@include keyframes(slideOutHeader) {
+  0% {
+    @include transform(translateX(0px));
+  }
+
+  100% {
+    @include transform(translateX(-$header-width));
+  }
+}
+
+@include keyframes(fadeOut) {
+  100% {
+    background-color: rgba(0,0,0,0.0);
+    display: none;
+  }
+}
+
+
+article {
+  .nav-bar {
+    margin: 0 auto;
+    background-color: $brand-green;
+    padding: 12px 20px;
+    font-size: 20pt;
+    text-align: center;
+    color: white;
+    .dashboard-button {
+      float: left;
+    }
+    .place {
+      font-weight: $light-font;
+      .fa { margin-left: 20px; }
+    }
+  }
+
+  .foods {
+    margin: 0px auto;
+    padding: 16px 0px;
+    list-style: none;
+    text-align: center;
+  }
+
+  .food-container {
+    margin: 16px;
+    text-align: center;
+    display: inline-block;
+
+    .seller-logo {
+      margin-top: 8px;
+      margin-right: 13px;
+      height: 38px;
+      width: 38px;
+      border-radius: 19px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    .food {
+      margin: 0 auto;
+      min-width: 252px;
+      display: inline-block;
+      $border-radius: 3px;
+
+      .top-bar {
+        font-weight: $light-font;
+        font-size: 11pt;
+        color: $light-color;
+        text-align: left;
+        padding: 5px 0px;
+        .time-left { float: right; }
+      }
+
+      .preview {
+        background-size: cover;
+        background-position: 50% 50%;
+        min-width: 100%;
+        width: auto;
+        height: 142px;
+        background-repeat: no-repeat;
+        text-align: right;
+
+        border-top-left-radius: $border-radius;
+        border-top-right-radius: $border-radius;
+      }
+
+      .details-container {
+        border: 1px solid #E9E9E9;
+        border-top: none;
+        background-color: white;
+        box-shadow: 0px 1px 4px rgba(232,232,232,.5);
+        font-weight: $light-font;
+        text-align: left;
+        padding: 8px 13px;
+        color: $light-color;
+        border-bottom-left-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
+
+        .info {
+          margin: 0px 0px;
+          overflow: hidden;
+          h3 {
+            margin: 0px;
+            padding: 0px;
+            font-weight: $light-font;
+            font-size: 12pt;
+            display: inline-block;
+          }
+          .name {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            max-width: 80%;
+          }
+          .price {
+            max-width: 20%;
+            float: right;
+          }
+        }
+
+        .status {
+          font-size: 10pt;
+          font-weight: $thin-font;
+          .rating { float: right; }
+          .quantity { color: $ultralight-color; }
+        }
+
+        .progress-bar {
+          display: block;
+          background-color: #F0F0F0;
+          border: 1px solid #E0E0E0;
+          height: 8px;
+          border-radius: 4px;
+          width: 100%;
+          margin-bottom: 5px;
+
+          .progress {
+            border: 1px solid #379A9E;
+            background-color: $brand-green;
+            height: 8px !important;
+            max-width: 100%;
+            display: block;
+            margin: -1px;
+            border-radius: 4px;
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+
+}
+
+$mobile: new-breakpoint(max-width 480px);
+
+@include media($mobile) {
+
+  .food-container .seller-logo {
+    margin-left: -13px;
+  }
+
+}

@@ -4,31 +4,76 @@
     <base href="/"></base>
     <title>Nommit</title>
     <%= stylesheet_link_tag    'application', media: 'all' %>
-    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-    <%= render 'config' %>
-    <%= javascript_include_tag 'application'  %>
     <%= csrf_meta_tags %>
     <meta name="apple-itunes-app" content="app-id=928890698" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   </head>
 
-  <body>
+  <body ng-controller='CoordinatorCtrl' ng-swipe-right='toggleDashboard()'>
 
-    <div class='header-container'>
+    <div class='header-container' ng-show='isDashboardVisible' ng-click='toggleDashboard()'>
 
-      <header>
+      <header ng-controller='HeaderCtrl' disable-click-propagation ng-animate-children>
 
         <div class='brand'></div>
+
         <nav>
-          <li class='page'><i class=''
+
+          <li class='page' ui-sref='foods'>
+            <i class="fa fa-cutlery"></i>
+            <span>Menu</span>
+          </li>
+
+          <li class='page' ui-sref='deliver'>
+            <i class="fa fa-truck"></i>
+            <span>Deliver</span>
+          </li>
+
+          <li class='page' ui-sref='account'>
+            <i class="fa fa-user"></i>
+            <span>Account</span>
+          </li>
+
+          <li class='page' ui-sref='invite'>
+            <i class="fa fa-users"></i>
+            <span>Invite</span>
+          </li>
+
+          <li class='page' ui-sref='support'>
+            <i class="fa fa-phone"></i>
+            <span>Support</span>
+          </li>
+
+          <li class='page' ui-sref='fundraise'>
+            <i class="fa fa-money"></i>
+            <span>Sell on Nommit</span>
+          </li>
+
         </nav>
+
+        <div class='pending-orders' ng-controller='OrdersCtrl'>
+
+          <h5>Active Orders</h5>
+
+          <ul class='orders'>
+
+            <li ng-repeat='order in orders' ui-sref='orders({ id: order.id })'>{{order.food.title}}</li>
+
+          </ul>
+
+        </div>
 
       </header>
 
     </div>
 
+    <div ui-view></div>
 
 
 
   </body>
+
+  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+  <%= render 'config' %>
+  <%= javascript_include_tag 'application'  %>
 </html>

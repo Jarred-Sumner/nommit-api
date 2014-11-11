@@ -1,13 +1,30 @@
 class Dashboard::PartialsController < DashboardController
   layout false
 
-  def foods
-  end
-
-  def orders
-  end
-
   def account
+  end
+
+  def fundraise
+  end
+
+  def support
+  end
+
+  def places
+  end
+
+  def deliver
+  end
+
+  def invite
+  end
+
+  def new_order
+    render "orders/new"
+  end
+
+  def show_order
+    render 'orders/show'
   end
 
 end

@@ -1,0 +1,57 @@
+<article ng-controller='FoodsCtrl'>
+
+  <div class='nav-bar' ng-if='!place'>
+    <span class='dashboard-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
+    <span class='place' ui-sref='foods.places'>Pick a Place <i class='fa fa-caret-down'></i></span>
+  </div>
+
+  <div class='nav-bar' ng-if='place'>
+    <span class='dashboard-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
+    <span class='place' ui-sref='foods.places'>{{place | titleize }} <i class='fa fa-caret-down'></i></span>
+  </div>
+
+  <ul class='foods'>
+
+    <li class='food-container' ng-repeat='food in foods'>
+
+      <div class='seller-logo' ng-style='{ "background-image": url({{food.seller.logo_url}})'></div>
+
+      <div class='food'>
+
+        <div class='top-bar'>
+          <span class='seller-name'>{{ food.seller.name }}</span>
+
+          <span class='time-left'>
+            <i class='fa fa-clock-o'></i>
+            <span>{{ food.endDate() | date: "hh:mm:ss"}}</span>
+          </span>
+        </div>
+
+        <div class='preview' ng-style='{ "background-image": url({{ food.thumbnail_image_url }})'></div>
+
+        <div class='details-container'>
+
+          <div class='info'>
+            <h3 class='name'>{{ food.title }}</h3>
+            <h3 class='price'>{{ food.price() | currency }}</h3>
+          </div>
+
+          <div class='status'>
+            <span class='quantity'>{{ food.remaining() }}/{{ food.goal }} left</span>
+            <span class='rating'>55555</span>
+          </div>
+
+          <div class='progress-bar'>
+            <span class='progress' ng-style='{ "width": {{ food.remaining() / food.goal }}%;'></span>
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </li>
+
+  </ul>
+
+</article>

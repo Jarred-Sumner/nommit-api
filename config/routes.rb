@@ -30,8 +30,15 @@ Rails.application.routes.draw do
 
   namespace :dashboard do
     get 'partials/foods'
-    get 'partials/orders'
     get 'partials/account'
+    get 'partials/fundraise'
+    get 'partials/support'
+    get 'partials/places'
+    get 'partials/deliver'
+    get 'partials/invite'
+
+    get 'partials/orders/new' => 'partials#new_order'
+    get 'partials/orders/show' => 'partials#show_order'
   end
 
   post 'twilio/sms' => "twilio#sms"
@@ -39,6 +46,14 @@ Rails.application.routes.draw do
   get 'foods' => 'dashboard#index'
   get 'orders' => 'dashboard#index'
   get 'account' => 'dashboard#index'
+  get 'fundraise' => "dashboard#index"
+  get 'places' => 'dashboard#index'
+  get 'deliver' => 'dashboard#index'
+  get 'order' => 'dashboard#index'
+  get 'order/:id' => 'dashboard#index'
+  get 'support' => 'dashboard#index'
+  get 'invite' => 'dashboard#index'
+
   root to: 'dashboard#index'
 
   get 'download' => redirect("https://itunes.apple.com/us/app/nommit/id928890698?mt=8")
