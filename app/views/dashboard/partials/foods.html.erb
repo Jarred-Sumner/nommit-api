@@ -12,6 +12,8 @@
 
   <ul class='content foods'>
 
+    <fading-circle-spinner ng-if='!foods'></fading-circle-spinner>
+
     <li class='food-container' ng-repeat='food in foods' ng-class="{ 'sold-out': {{ food.isSoldOut() }}, 'expired': {{ food.isExpired() }}, 'ended': {{ food.isSaleOver() }}  }">
 
       <div class='seller-logo' ng-style='{ "background-image": "url({{ food.seller.logo_url }})" }'></div>

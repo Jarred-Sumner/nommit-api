@@ -12,6 +12,8 @@
       <input type='search' class='search' ng-change='searchPlaces()' ng-model='query' placeholder='Search your location'></input>
     </div>
 
+    <fading-circle-spinner ng-if='!places'></fading-circle-spinner>
+
     <ul class='places' ng-if='places && places.length > 0'>
 
       <li class='place' ng-repeat='place in places' ui-sref='foods({ place_id: place.id })'>
@@ -25,7 +27,7 @@
       </li>
     </ul>
 
-    <div class='no-food' ng-show='!places || places.length == 0'>
+    <div class='no-food' ng-show='places && places.length == 0'>
       <div>Not currently offering food!</div>
       <div>Please check back tonight at 8 PM</div>
     </div>

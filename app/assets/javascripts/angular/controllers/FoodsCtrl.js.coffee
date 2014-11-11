@@ -1,9 +1,22 @@
-@nommit.controller "FoodsCtrl", ($state, Foods, Places, $stateParams, DeliveryPlaces, $scope) ->
+@nommit.controller "FoodsCtrl", ($state, Foods, Places, $stateParams, DeliveryPlaces, $scope, $timeout) ->
+  didAutoPresentPlaces = false
+
   retrieveFoods = ->
     Foods.query (foods) ->
       $scope.foods = _.map foods, (food) ->
         food.quantity = 1
         new Foods(food)
+
+      # Auto-show places
+      # But, don't do immediately because browsers are slow.
+      # Wait 500ms
+      $timeout ->
+        unless didAutoPresentPlaces
+          for food in $scope.foods
+            if food.isOrderable()
+              $state.go("foods.places")
+              didAutopresentPlaces = true
+      , 500
 
   retrievePlace = (id) ->
     Places.get id: id, (place) ->
@@ -30,7 +43,6 @@
           food
         # Return only the foods we can order
         .select (food) ->
-          console.log(food.isOrderable())
           food.isOrderable()
         # Remove duplicates, just in case.
         .uniq()

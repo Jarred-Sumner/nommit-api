@@ -18,13 +18,13 @@
   Foods::isSaleOver = ->
     !this.isActive()
   Foods::isSoldOut = ->
-    this.remaining() < 0
+    this.order_count == 0
   Foods::isOrderable = ->
     this.isActive() && this.isOngoing() && !this.isSoldOut()
   Foods::remaining = ->
-    this.order_count
+    this.goal - this.order_count
   Foods::progress = ->
-    (this.order_count / this.goal) * 100.0
+    (this.remaining() / this.goal) * 100.0
 
   Foods
 ]
