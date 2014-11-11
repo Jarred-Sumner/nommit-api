@@ -1,4 +1,4 @@
-@nommit.controller "CoordinatorCtrl", ($state, Foods, Places, $scope, $rootScope) ->
+@nommit.controller "CoordinatorCtrl", ($state, Foods, Places, $scope, $rootScope, Users) ->
   $rootScope.$on "$stateChangeSuccess", ->
     $scope.isDashboardVisible = false
     $scope.page = $state.current.name
@@ -6,6 +6,9 @@
     $scope.isDashboardVisible = false
   $rootScope.$on "$viewContentLoading", ->
     $scope.isDashboardVisible = false
+
+  Users.get id: "me", (user) ->
+    $scope.user = new Users(user)
 
   isDashboardDisabled = ->
     disabled = [

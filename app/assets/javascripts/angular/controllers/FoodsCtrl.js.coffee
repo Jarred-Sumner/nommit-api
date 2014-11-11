@@ -20,7 +20,7 @@
 
   retrievePlace = (id) ->
     Places.get id: id, (place) ->
-
+      window.settings.setPlaceID(id)
       $scope.place = new Places(place)
 
       # There are way smarter ways to do this.
@@ -47,7 +47,6 @@
         # Remove duplicates, just in case.
         .uniq()
         .value()
-      console.log($scope.foods)
 
 
 

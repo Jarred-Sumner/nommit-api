@@ -17,7 +17,7 @@
 
         <div class='brand'></div>
 
-        <nav>
+        <nav ng-if='user'>
 
           <li class='page' ui-sref='foods({ place_id: null })' ui-sref-active='active'>
             <i class="fa fa-cutlery"></i>
@@ -47,6 +47,20 @@
           <li class='page' ui-sref='fundraise' ui-sref-active='active'>
             <i class="fa fa-money"></i>
             <span>Sell on Nommit</span>
+          </li>
+
+        </nav>
+
+        <nav ng-if='!user'>
+
+          <li class='page' ui-sref='foods({ place_id: null })' ui-sref-active='active'>
+            <i class="fa fa-cutlery"></i>
+            <span>Menu</span>
+          </li>
+
+          <li class='page' ng-click='presentLogin()'>
+            <i class="fa fa-user"></i>
+            <span>Login</span>
           </li>
 
         </nav>
