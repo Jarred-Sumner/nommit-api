@@ -1,0 +1,35 @@
+<article ng-controller='PlacesCtrl'>
+
+  <div class='nav-bar'>
+    <span class='left-button' ui-sref='foods()'><i class='fa fa-close'></i></span>
+    <span class='title'>Delivery Locations</span>
+  </div>
+
+  <div class='content'>
+
+    <div class='search-container'>
+      <i class='fa fa-search'></i>
+      <input type='search' class='search' ng-change='searchPlaces()' ng-model='query' placeholder='Search your location'></input>
+    </div>
+
+    <ul class='places' ng-if='places && places.length > 0'>
+
+      <li class='place' ng-repeat='place in places' ui-sref='foods({ place_id: place.id })'>
+        <span class='name'>{{place.name}}</span>
+
+        <span class='right-bar'>
+          <span>{{place.food_count}}</span>
+          <i class='fa fa-cutlery'></i>
+        </span>
+
+      </li>
+    </ul>
+
+    <div class='no-food' ng-show='!places || places.length == 0'>
+      <div>Not currently offering food!</div>
+      <div>Please check back tonight at 8 PM</div>
+    </div>
+
+  </div>
+
+</article>

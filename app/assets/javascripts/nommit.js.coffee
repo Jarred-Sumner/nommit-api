@@ -38,7 +38,7 @@ window.settings =
       url: "/?place_id"
       templateUrl: "/dashboard/partials/foods"
     .state "foods.places",
-      url: "/places"
+      url: "places"
       templateUrl: "/dashboard/partials/places"
     .state "order",
       url: "/order?food_id&place_id"
@@ -60,7 +60,7 @@ window.settings =
       templateUrl: "/dashboard/partials/fundraise"
     .state "orders",
       url: "/orders/:id"
-      tmeplateUrl: "/dashboard/partials/orders/show"
+      templateUrl: "/dashboard/partials/orders/show"
 
 
   $httpProvider.defaults.headers.common["X-APP-VERSION"] = "MASTER"

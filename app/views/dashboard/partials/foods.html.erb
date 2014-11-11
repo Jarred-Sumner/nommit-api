@@ -1,33 +1,33 @@
-<article ng-controller='FoodsCtrl'>
+<article ng-controller='FoodsCtrl' class='foods-page'>
 
   <div class='nav-bar' ng-if='!place'>
-    <span class='dashboard-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
-    <span class='place' ui-sref='foods.places'>Pick a Place <i class='fa fa-caret-down'></i></span>
+    <span class='left-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
+    <span class='title' ui-sref='foods.places'>Pick a Place <i class='fa fa-caret-down'></i></span>
   </div>
 
   <div class='nav-bar' ng-if='place'>
-    <span class='dashboard-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
-    <span class='place' ui-sref='foods.places'>{{place | titleize }} <i class='fa fa-caret-down'></i></span>
+    <span class='left-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
+    <span class='title place' ui-sref='foods.places'>{{place.name | titleize }} <i class='fa fa-caret-down'></i></span>
   </div>
 
-  <ul class='foods'>
+  <ul class='content foods'>
 
-    <li class='food-container' ng-repeat='food in foods'>
+    <li class='food-container' ng-repeat='food in foods' ng-class="{ 'sold-out': {{ food.isSoldOut() }}, 'expired': {{ food.isExpired() }}, 'ended': {{ food.isSaleOver() }}  }">
 
-      <div class='seller-logo' ng-style='{ "background-image": url({{food.seller.logo_url}})'></div>
+      <div class='seller-logo' ng-style='{ "background-image": "url({{ food.seller.logo_url }})" }'></div>
 
-      <div class='food'>
+      <div class='food' ng-if='food.isOrderable()'>
 
         <div class='top-bar'>
           <span class='seller-name'>{{ food.seller.name }}</span>
 
           <span class='time-left'>
             <i class='fa fa-clock-o'></i>
-            <span>{{ food.endDate() | date: "hh:mm:ss"}}</span>
+            <timer end-time='food.endDate()'>{{hhours}}:{{mminutes}}:{{sseconds}}</timer>
           </span>
         </div>
 
-        <div class='preview' ng-style='{ "background-image": url({{ food.thumbnail_image_url }})'></div>
+        <div class='preview' ng-style='{ "background-image": "url({{ food.thumbnail_image_url }})" }'></div>
 
         <div class='details-container'>
 
@@ -37,21 +37,55 @@
           </div>
 
           <div class='status'>
-            <span class='quantity'>{{ food.remaining() }}/{{ food.goal }} left</span>
-            <span class='rating'>55555</span>
+            <span class='quantity'>{{ food.order_count }}/{{ food.goal }} left</span>
+            <rating class='rating' score='food.rating' max='5' readonly='true'></rating>
           </div>
 
           <div class='progress-bar'>
-            <span class='progress' ng-style='{ "width": {{ food.remaining() / food.goal }}%;'></span>
+            <span class='progress' ng-style='{ "width": "{{ food.progress() }}%" }'></span>
           </div>
 
         </div>
 
       </div>
 
+      <div class='food' ng-if='food.isSoldOut() || food.isExpired() || food.isSaleOver()'>
+
+        <div class='top-bar'>
+          <span class='seller-name'>{{ food.seller.name }}</span>
+
+          <span class='time-left'>
+            <i class='fa fa-clock-o'></i>
+            <span class='end-date'>{{ food.endDate() | date:"mediumTime"}}
+          </span>
+        </div>
+
+        <div class='preview' ng-style='{ "background-image": "url({{ food.thumbnail_image_url }})" }'></div>
+
+        <div class='details-container'>
+
+          <div class='info'>
+            <h3 class='name'>{{ food.title }}</h3>
+            <h3 class='price'>{{ food.price() | currency }}</h3>
+          </div>
+
+          <div class='status'>
+            <span class='quantity'>{{ food.order_count }}/{{ food.goal }} left</span>
+            <rating class='rating' score='food.rating' max='5' readonly='true'></rating>
+          </div>
+
+          <div class='progress-bar'>
+            <span class='progress' ng-style='{ "width": "{{ food.progress() }}%" }'></span>
+          </div>
+
+        </div>
+
+      </div>
 
     </li>
 
   </ul>
+
+  <div class='places-container' ng-if="page == 'foods.places'" ui-view></div>
 
 </article>

@@ -6,15 +6,25 @@
   Foods::isActive = ->
     @state_id == 0
   Foods::startDate = ->
-    new Date(@start_date)
+    @_startDate ||= new Date(@start_date)
   Foods::endDate = ->
-    new Date(@end_date)
+    @_endDate ||= new Date(@end_date)
   Foods::isOngoing = ->
-    new Date() > this.startDate() && new Date() < this.endDate()
+    !this.isPending() && !this.isExpired()
+  Foods::isPending = ->
+    this.startDate() > new Date()
+  Foods::isExpired = ->
+    new Date() > this.endDate()
+  Foods::isSaleOver = ->
+    !this.isActive()
+  Foods::isSoldOut = ->
+    this.remaining() < 0
   Foods::isOrderable = ->
-    this.isActive() && this.isOngoing()
+    this.isActive() && this.isOngoing() && !this.isSoldOut()
   Foods::remaining = ->
-    this.goal - this.order_count
+    this.order_count
+  Foods::progress = ->
+    (this.order_count / this.goal) * 100.0
 
   Foods
 ]

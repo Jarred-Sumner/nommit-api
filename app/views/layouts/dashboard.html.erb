@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   </head>
 
-  <body ng-controller='CoordinatorCtrl' ng-swipe-right='toggleDashboard()'>
+  <body ng-controller='CoordinatorCtrl' ng-swipe-right='toggleDashboard()' ng-class='{ "modal-visible": isModalVisible() }'>
 
     <div class='header-container' ng-show='isDashboardVisible' ng-click='toggleDashboard()'>
 
@@ -19,32 +19,32 @@
 
         <nav>
 
-          <li class='page' ui-sref='foods'>
+          <li class='page' ui-sref='foods({ place_id: null })' ui-sref-active='active'>
             <i class="fa fa-cutlery"></i>
             <span>Menu</span>
           </li>
 
-          <li class='page' ui-sref='deliver'>
+          <li class='page' ui-sref='deliver' ui-sref-active='active'>
             <i class="fa fa-truck"></i>
             <span>Deliver</span>
           </li>
 
-          <li class='page' ui-sref='account'>
+          <li class='page' ui-sref='account' ui-sref-active='active'>
             <i class="fa fa-user"></i>
             <span>Account</span>
           </li>
 
-          <li class='page' ui-sref='invite'>
+          <li class='page' ui-sref='invite' ui-sref-active='active'>
             <i class="fa fa-users"></i>
             <span>Invite</span>
           </li>
 
-          <li class='page' ui-sref='support'>
+          <li class='page' ui-sref='support' ui-sref-active='active'>
             <i class="fa fa-phone"></i>
             <span>Support</span>
           </li>
 
-          <li class='page' ui-sref='fundraise'>
+          <li class='page' ui-sref='fundraise' ui-sref-active='active'>
             <i class="fa fa-money"></i>
             <span>Sell on Nommit</span>
           </li>
