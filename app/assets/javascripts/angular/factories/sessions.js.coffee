@@ -2,15 +2,11 @@
   Sessions = $resource "api/v1/sessions"
 
   angular.extend Sessions,
-    login: (user, cb) ->
-      Sessions.save access_token: user.accessToken, (user, headers) ->
-        user = new Users(user)
-        sessionID = headers()["x-session-id"]
-        $http.defaults.headers.common["X-SESSION-ID"] = sessionID
-        window.settings.setSessionID(sessionID)
-
-        Sessions.setCurrentUser(user)
-        cb(user)
+    setSessionID: (id) ->
+      console.log("Session: #{id}")
+      $http.defaults.headers.common["X-SESSION-ID"] = id
+      window.settings.setSessionID(id)
+      Sessions.currentUser()
     setCurrentUser: (user) ->
       user = new Users(user)
       $rootScope.$broadcast("CurrentUser", user)

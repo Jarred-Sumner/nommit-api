@@ -76,6 +76,10 @@ gem 'pg'
 
 gem 'test_after_commit', group: :test
 
+# Login with FB on the Web
+gem 'omniauth'
+gem 'omniauth-facebook'
+
 group :test, :development do
 
   # Debugging

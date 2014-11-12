@@ -68,6 +68,85 @@ $header-background: rgba(25,17,16,.5);
 
 }
 
+.modal {
+  text-align: left;
+  min-height: 100%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: $topmost-z-index;
+  height: auto;
+  display: block;
+  width: 100%;
+  overflow-y: scroll;
+  height: 100%;
+  &.ng-enter {
+    @include animation(slideUpModal 0.4s ease-out);
+  }
+
+  &.ng-leave {
+    @include animation(slideDownModal 0.4s ease-in);
+  }
+
+  .error {
+    .fa-info-circle { margin-right: 4px; }
+    color: #AD0505;
+  }
+}
+
+.subview {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  min-height: 100%;
+  height: auto;
+  width: 100%;
+  display: block;
+  background-color: white;
+
+  &.ng-enter {
+    @include animation(slideInModal 0.35s ease-out);
+  }
+  &.ng-leave {
+    @include animation(slideOutModal 0.35s ease-in);
+  }
+}
+
+@include keyframes(slideOutModal) {
+  0% {
+    @include transform(translateX(0%));
+  }
+  100% {
+    @include transform(translateX(-100%));
+  }
+}
+
+@include keyframes(slideInModal) {
+  0% {
+    @include transform(translateX(100%));
+  }
+  100% {
+    @include transform(translateX(0%));
+  }
+}
+@include keyframes(slideUpModal) {
+  0% {
+    @include transform(translateY(100%));
+  }
+  100% {
+    @include transform(translateY(0px));
+  }
+}
+
+@include keyframes(slideDownModal) {
+  0% {
+    @include transform(translateY(0%));
+  }
+  100% {
+    @include transform(translateY(100%));
+  }
+}
+
 .header-container {
   margin: 0 auto;
   text-align: left;
@@ -213,7 +292,9 @@ $header-background: rgba(25,17,16,.5);
 article {
 
   .nav-bar {
-    .title:hover { cursor: pointer; }
+    .place:hover, .place:active {
+      cursor: pointer; color: $default-color;
+    }
   }
 
   .foods {
@@ -391,36 +472,14 @@ $desktop: new-breakpoint(min-width 480px);
 
 }
 
-
 .places-container {
-  text-align: left;
+  @extend .modal;
   background-color: #FAFAFA;
-  min-height: 100%;
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  z-index: $topmost-z-index;
-  height: auto;
-  display: block;
-  width: 100%;
-  overflow-y: scroll;
-  height: 100%;
-
   $border-color: #E5E5E5;
-
-  &.ng-enter {
-    @include animation(slideUpModal 0.4s ease-out);
-  }
-
-  &.ng-leave {
-    @include animation(slideDownModal 0.4s ease-in);
-  }
-
 
   .content {
     margin: 0 auto;
     padding: 28px 20px;
-
     * {
       font-size: 16pt;
       font-weight: $thin-font;
@@ -458,6 +517,11 @@ $desktop: new-breakpoint(min-width 480px);
     text-align: left;
     border-bottom: 1px solid $border-color;
 
+    &:hover, &:active {
+      background-color: #EEE;
+      cursor: pointer;
+    }
+
     .name {
       text-overflow: ellipsis;
       overflow: hidden;
@@ -493,20 +557,105 @@ $desktop: new-breakpoint(min-width 480px);
 
 }
 
-@include keyframes(slideUpModal) {
-  0% {
-    @include transform(translateY(100%));
+.login-container {
+  @extend .modal;
+  background-color: white;
+  margin: 0 auto;
+  text-align: center;
+
+  .food-preview {
+    height: 284px;
+    display: block;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+
+    .fa-close {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      font-size: 18pt;
+      color: white;
+      padding-top: 7px;
+      background-color: $brand-green;
+      border-radius: 19px;
+      height: 38px;
+      width: 38px;
+      opacity: 0.65;
+
+      &:hover, &:active {
+        color: $brand-green;
+        background-color: white;
+        opacity: 1;
+        cursor: pointer;
+      }
+
+    }
+    &:after {
+      position: absolute;
+      display: block;
+      content: "";
+      max-width: 100%;
+      width: 100%;
+      height: 7px;
+      bottom: 0px;
+
+      background-image: image-url("dashboard/triangle.png");
+      @include retina-image(dashboard/triangle, 15px 7px);
+    }
   }
-  100% {
-    @include transform(translateY(0px));
+
+  h1 {
+    padding: 38px 10px;
+    font-size: 22pt;
+    font-weight: $thin-font;
+    color: $light-color;
   }
+
+  .button.facebook {
+    $fb-blue: #3C5193;
+    background-color: $fb-blue;
+    color: white;
+    padding: 10px 64px;
+    font-size: 14pt;
+    text-align: center;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    position: relative;
+
+    span {
+      font-weight: $thin-font;
+    }
+
+    &:hover, &:active {
+      background-color: darken($fb-blue, 10%);
+      cursor: pointer;
+    }
+
+    .fa-facebook {
+      margin: 0 0;
+      padding: 0px;
+      position: absolute;
+      left: 21px;
+      top: 14px;
+    }
+
+  }
+
 }
 
-@include keyframes(slideDownModal) {
-  0% {
-    @include transform(translateY(0%));
+
+.order-container {
+  @extend .subview;
+}
+
+.order-page {
+
+  .preview {
+
   }
-  100% {
-    @include transform(translateY(100%));
-  }
+
 }

@@ -1,0 +1,15 @@
+<div class='login-container' ng-if='isLoginVisible' ng-controller='LoginCtrl'>
+  <div class='food-preview' ng-style="{ 'background-image': 'url( {{food_image}} )' }">
+
+    <div class='fa fa-close' ng-click='hideLogin()'></div>
+
+  </div>
+
+  <h1>Sign in with Facebook to <br /> complete your order</h1>
+
+  <button ng-click='login(food_id, place_id)' class='button facebook'>
+    <i class='fa fa-facebook'></i>
+    <span>Sign in with Facebook</span>
+  </button>
+
+</div>

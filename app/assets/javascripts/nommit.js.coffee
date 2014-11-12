@@ -20,29 +20,53 @@ window.settings =
   setDidRedirectOnAndroid: ->
     localStorage["didRedirectOnAndroid"] = true
 
-@nommit = angular.module('nommit', ['ui.router', 'ngResource', 'facebook', 'angularPayments', 'angular-spinkit', 'timer', 'ngCacheBuster', 'adaptive.detection', 'ngAnimate', 'ngTouch'])
+@nommit = angular.module('nommit', ['ui.router', 'ngResource', 'angularPayments', 'angular-spinkit', 'timer', 'ngCacheBuster', 'adaptive.detection', 'ngAnimate', 'ngTouch', 'ngCookies'])
 
 # This routing directive tells Angular about the default
 # route for our application. The term "otherwise" here
 # might seem somewhat awkward, but it will make more
 # sense as we add more routes to our application.
-@nommit.config ($stateProvider, $urlRouterProvider, $httpProvider, FacebookProvider, $locationProvider, $compileProvider, httpRequestInterceptorCacheBusterProvider) ->
+@nommit.config ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider, $compileProvider, httpRequestInterceptorCacheBusterProvider) ->
   $locationProvider.html5Mode(true);
 
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|http|sms|tel):/)
-  FacebookProvider.init(window.config.facebook);
 
-  $urlRouterProvider.otherwise("/")
+  $urlRouterProvider.otherwise("/foods")
   $stateProvider
     .state 'foods',
-      url: "/?place_id"
+      url: "/foods?place_id"
       templateUrl: "/dashboard/partials/foods"
     .state "foods.places",
-      url: "places"
+      url: "/places"
       templateUrl: "/dashboard/partials/places"
-    .state "order",
-      url: "/order?food_id&place_id"
+    .state "foods.order",
+      url: "/:food_id/order"
       templateUrl: "/dashboard/partials/orders/new"
+      resolve:
+        food: (Foods, $stateParams, $q, $timeout, $rootScope) ->
+          if $rootScope.food && $rootScope.food.id == $stateParams.food_id
+            deferred = $q.defer()
+            $timeout ->
+              deferred.resolve($rootScope.food)
+            , 1
+          else
+            Foods.get(id: $stateParams.food_id).$promise
+        place: ($rootScope, Places, $stateParams, $q, $timeout) ->
+          if $rootScope.place
+            deferred = $q.defer()
+            $timeout ->
+              deferred.resolve($rootScope.place)
+            , 1
+          else
+            Places.get(id: $stateParams.place_id).$promise
+      controller: ($scope, food, place, $rootScope) ->
+        $scope.food = food
+        $scope.place = place
+
+        # Remove globals, because globals can cause unexpected issues
+        $rootScope.food = null
+        $rootScope.place = null
+
     .state "deliver",
       url: "/deliver"
       templateUrl: "/dashboard/partials/deliver"

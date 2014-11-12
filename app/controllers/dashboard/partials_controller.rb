@@ -20,11 +20,11 @@ class Dashboard::PartialsController < DashboardController
   end
 
   def new_order
-    render "orders/new"
+    render "dashboard/partials/orders/new"
   end
 
   def show_order
-    render 'orders/show'
+    render 'dashboard/partials/orders/new'
   end
 
 end

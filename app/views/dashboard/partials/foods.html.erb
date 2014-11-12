@@ -2,7 +2,7 @@
 
   <div class='nav-bar' ng-if='!place'>
     <span class='left-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
-    <span class='title' ui-sref='foods.places'>Pick a Place <i class='fa fa-caret-down'></i></span>
+    <span class='title place' ui-sref='foods.places'>Pick a Place <i class='fa fa-caret-down'></i></span>
   </div>
 
   <div class='nav-bar' ng-if='place'>
@@ -18,14 +18,14 @@
 
       <div class='seller-logo' ng-style='{ "background-image": "url({{ food.seller.logo_url }})" }'></div>
 
-      <div class='food' ng-if='food.isOrderable()'>
+      <div class='food' ng-if='food.isOrderable()' ng-click='order(food)'>
 
         <div class='top-bar'>
           <span class='seller-name'>{{ food.seller.name }}</span>
 
           <span class='time-left'>
             <i class='fa fa-clock-o'></i>
-            <timer end-time='food.endDate()'>{{hhours}}:{{mminutes}}:{{sseconds}}</timer>
+            <timer end-time='food.endDate()'>{{hhours}}:{{mminutes}}:{{sseconds}} left</timer>
           </span>
         </div>
 
@@ -88,6 +88,6 @@
 
   </ul>
 
-  <div class='places-container' ng-if="page == 'foods.places'" ui-view></div>
-
+  <div ui-view class='order-container' ng-if='page == "foods.order"'></div>
+  <div ui-view class='places-container' ng-if='page == "foods.places"'></div>
 </article>

@@ -1,11 +1,22 @@
-@nommit.controller "FoodsCtrl", ($state, Foods, Places, $stateParams, DeliveryPlaces, $scope, $timeout) ->
+@nommit.controller "FoodsCtrl", ($state, Foods, Places, $stateParams, DeliveryPlaces, $scope, $timeout, $rootScope) ->
   didAutoPresentPlaces = false
+
+  $scope.order = (food) ->
+    $rootScope.food = food
+    $rootScope.place = $scope.place
+    $state.go("foods.order", { place_id: $rootScope.place.id, food_id: food.id })
 
   retrieveFoods = ->
     Foods.query (foods) ->
-      $scope.foods = _.map foods, (food) ->
-        food.quantity = 1
-        new Foods(food)
+      $scope.foods = _.chain(foods)
+        .map (food) ->
+          food.quantity = 1
+          new Foods(food)
+        # Make the orderable foods appear at the top
+        .sortBy (food) ->
+          !food.isOrderable()
+        .value()
+
 
       # Auto-show places
       # But, don't do immediately because browsers are slow.

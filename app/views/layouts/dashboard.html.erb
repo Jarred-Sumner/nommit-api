@@ -58,11 +58,6 @@
             <span>Menu</span>
           </li>
 
-          <li class='page' ng-click='presentLogin()'>
-            <i class="fa fa-user"></i>
-            <span>Login</span>
-          </li>
-
         </nav>
 
         <div class='pending-orders' ng-controller='OrdersCtrl'>
@@ -81,10 +76,11 @@
 
     </div>
 
-    <div ui-view></div>
+    <div class='view' ui-view></div>
 
-
-
+    <%= render 'login' %>
+    <%= render 'activate' %>
+    <%= render 'confirm_phone' %>
   </body>
 
   <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
