@@ -17,7 +17,7 @@ class PushNotifications::FoodAvailableWorker < PushNotifications::BaseWorker
 
     if food.orderable?
       params[:expiry] = food.end_date.to_time
-      params[:alert] = "Hungry? #{food.seller.name} is delivering food. It'll arrive in under 15 minutes. Order Now!"
+      params[:alert] = "Hungry? #{food.seller.name} is delivering food"
     end
 
     params
