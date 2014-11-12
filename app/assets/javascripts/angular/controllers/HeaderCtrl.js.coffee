@@ -134,7 +134,7 @@
       b
     )(window.location.search.substr(1).split("&"))
   postInit = ->
-    checkForOrdersThatNeedToBeRated()
+    # checkForOrdersThatNeedToBeRated()
 
     window.settings.setDidRedirectOnAndroid() if params()["android"] == "true"
 
