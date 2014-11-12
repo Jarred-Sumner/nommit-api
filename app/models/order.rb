@@ -15,29 +15,41 @@ class Order < ActiveRecord::Base
   enum state: { cancelled: -1, active: 0, arrived: 1, delivered: 2, rated: 3 }
 
   scope :placed, -> do
-    states = [
-      Order.states[:active],
-      Order.states[:arrived],
-      Order.states[:delivered],
-      Order.states[:rated]
-    ]
-    where(state: states)
+    where(state: placed_states)
   end
 
   scope :pending, -> do
-    states = [
-      Order.states[:active],
-      Order.states[:arrived]
-    ]
-    where(state: states)
+    where(state: pending_states)
   end
 
   scope :completed, -> do
-    states = [
+    where(state: completed_states)
+  end
+
+  def self.pending_states
+    [
+      Order.states[:active],
+      Order.states[:arrived]
+    ]
+  end
+
+  def self.completed_states
+    [
       Order.states[:delivered],
       Order.states[:rated]
     ]
-    where(state: states)
+  end
+
+  def self.placed_states
+    pending_states.zip(completed_states)
+  end
+
+  def pending?
+    self.class.pending_states.include? state_id
+  end
+
+  def completed?
+    self.class.completed_states.include? state_id
   end
 
   def price_in_cents
@@ -155,23 +167,10 @@ class Order < ActiveRecord::Base
       save!
     end
 
-    def charge!
-      Charge.create!(order_id: self.id, payment_method_id: user.payment_method.id)
-      ChargeWorker.perform_at(Charge::DELAY.hours.from_now, self.id)
-    end
-
     def ensure_courier_isnt_delivering_to_self!
       if seller.couriers.active.where(user_id: id).count > 0
         errors.add(:base, "Can't place orders to yourself!")
       end
-    end
-
-    def refresh_arrival_times!
-      shift.update_arrival_times!
-    end
-
-    def notify_courier!
-      PushNotifications::DeliveryWorker.perform_async(id)
     end
 
   validates :food, presence: true
@@ -187,9 +186,20 @@ class Order < ActiveRecord::Base
   validates :state, presence: true
 
   before_validation :set_delivery!, :set_estimate!, on: :create
+  after_create do
+    apply_pending_promotions!
 
-  after_create :apply_pending_promotions!, :charge!
-  after_create :refresh_arrival_times!
+    Charge.create!(order_id: self.id, payment_method_id: user.payment_method.id)
+    ChargeWorker.perform_at(Charge::DELAY.hours.from_now, self.id)
+
+    shift.update_arrival_times!
+
+    # Let the courier know there's a new order pending delivery
+    PushNotifications::Courier::DeliveryWorker.perform_async(id)
+
+    # Send the courier a push notification 3 minutes before the order is set to arrive
+    PushNotifications::Courier::HurryUpWorker.perform_at(delivered_at - 3.minutes, id)
+  end
   after_commit :notify_courier!, on: :create
 
   validate :food_is_active!, on: :create

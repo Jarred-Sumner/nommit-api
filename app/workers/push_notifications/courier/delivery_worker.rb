@@ -1,4 +1,4 @@
-class PushNotifications::DeliveryWorker < PushNotifications::BaseWorker
+class PushNotifications::Courier::DeliveryWorker < PushNotifications::BaseWorker
   include Sidekiq::Worker
 
   def perform(order_id)
