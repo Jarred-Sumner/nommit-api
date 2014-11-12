@@ -1,7 +1,10 @@
 require_relative "../../rails_helper"
 
 describe PushNotifications::FoodAvailableWorker do
-  let(:food) { create(:food) }
+  let(:food) do
+    order = TestHelpers::Order.create_for
+    order.food
+  end
   let(:device) { build(:device) }
   subject { PushNotifications::FoodAvailableWorker.new }
 

@@ -65,7 +65,12 @@ class Food < ActiveRecord::Base
     orders.rated.average(:rating)
   end
 
-  after_commit :notify_users!
+  after_commit :notify_users!, on: :create
+  after_create :send_end_food!
+
+  def send_end_food!
+    EndFoodWorker.perform_at(end_date + 5.minutes, id)
+  end
 
   def notify_users!
     PushNotifications::FoodAvailableWorker.perform_at(start_date + 2.minutes, id)
