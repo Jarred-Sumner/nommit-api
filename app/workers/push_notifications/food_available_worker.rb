@@ -5,7 +5,6 @@ class PushNotifications::FoodAvailableWorker < PushNotifications::BaseWorker
     @food = Food.find_by(id: food_id)
 
     Device.registered.find_each do |device|
-      # next if device.last_notified.present? && device.last_notified < 12.hours.ago
       notification = Grocer::Notification.new(notification_params(device))
       pusher.push(notification)
       device.touch(:last_notified)

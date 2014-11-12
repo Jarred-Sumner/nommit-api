@@ -223,10 +223,16 @@ describe Order, type: :model do
   context "after create" do
     subject { build(:order, place_id: place.id, food_id: food.id) }
 
-    it "marks delivery_place as active" do
+    specify do
       expect do
         subject.save!
-      end.to change { delivery_place.reload.active? }.from(false).to(true)
+      end.to change { delivery_place.reload.state }.from("pending").to("ready")
+    end
+
+    it "queues a notification to the courier" do
+      expect do
+        subject.save!
+      end.to change(PushNotifications::DeliveryWorker.jobs, :size).from(0).to(1)
     end
 
 

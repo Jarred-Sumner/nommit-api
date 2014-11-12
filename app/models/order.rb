@@ -170,6 +170,10 @@ class Order < ActiveRecord::Base
       shift.update_arrival_times!
     end
 
+    def notify_courier!
+      PushNotifications::DeliveryWorker.perform_async(id)
+    end
+
   validates :food, presence: true
   validates :user, presence: true
   validates :place, presence: true
@@ -186,6 +190,7 @@ class Order < ActiveRecord::Base
 
   after_create :apply_pending_promotions!, :charge!
   after_create :refresh_arrival_times!
+  after_commit :notify_courier!, on: :create
 
   validate :food_is_active!, on: :create
   validate :delivery_place_is_accepting_new_orders!, on: :create
