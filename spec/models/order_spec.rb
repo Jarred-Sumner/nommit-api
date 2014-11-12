@@ -229,10 +229,16 @@ describe Order, type: :model do
       end.to change { delivery_place.reload.state }.from("pending").to("ready")
     end
 
-    it "queues a notification to the courier" do
+    it "queues a delivery notification to the courier" do
       expect do
         subject.save!
-      end.to change(PushNotifications::DeliveryWorker.jobs, :size).from(0).to(1)
+      end.to change(PushNotifications::Courier::DeliveryWorker.jobs, :size).from(0).to(1)
+    end
+
+    it "queues a hurry up notification to the courier" do
+      expect do
+        subject.save!
+      end.to change(PushNotifications::Courier::HurryUpWorker.jobs, :size).from(0).to(1)
     end
 
 

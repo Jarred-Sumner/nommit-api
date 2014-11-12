@@ -1,6 +1,6 @@
 require_relative "../../../rails_helper"
 
-describe PushNotiifcations::Courier::DeliveryWorker do
+describe PushNotifications::Courier::DeliveryWorker do
   subject { PushNotifications::Courier::DeliveryWorker.new }
   let(:order) { TestHelpers::Order.create_for }
 
