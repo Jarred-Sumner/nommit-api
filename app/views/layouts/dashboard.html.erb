@@ -15,7 +15,9 @@
 
       <header ng-controller='HeaderCtrl' disable-click-propagation ng-animate-children>
 
-        <div class='brand'></div>
+        <div class='brand'>
+          <div class='fa fa-close back-button' ng-click='toggleDashboard()'></div>
+        </div>
 
         <nav ng-if='user'>
 
@@ -64,9 +66,14 @@
 
           <h5>Active Orders</h5>
 
+          <fading-circle-spinner ng-show='isLoadingOrders'></fading-circle-spinner>
+
           <ul class='orders'>
 
-            <li ng-repeat='order in orders' ui-sref='orders({ id: order.id })'>{{order.food.title}}</li>
+            <li ng-repeat='order in orders' ui-sref='orders({ order_id: order.id })'>
+              <i class='fa fa-spoon'></i>
+              <span>{{order.food.title}}</span>
+            </li>
 
           </ul>
 

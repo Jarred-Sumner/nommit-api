@@ -15,7 +15,7 @@
           height = size.split("x")[1]
           url = "https://graph.facebook.com/#{profileID}/picture?width=#{width}&height=#{height}"
 
-        attrs.$set("src", url)
+        element.css("background-image", "url(#{url})")
 
       scope.$watch ->
         [attrs.profilePic, attrs.size]

@@ -1,11 +1,18 @@
-<article ng-controller='OrderCtrl' class='order-page'>
+<article ng-controller='NewOrderCtrl' class='new-order'>
 
-  <div class='preview' ng-style="{ 'background-image': 'url( {{ food.header_image_url }} )'}">
-    <div class='fa fa-arrow-left back-arrow' ui-sref="foods( { place_id: place.id } )" ></div>
+  <div class='food-preview full-screen' ng-style="{ 'background-image': 'url( {{ food.header_image_url }} )'}">
 
+    <div class='overlay'>
+      <div class='fa fa-arrow-left back-button' ui-sref="foods( { place_id: place.id } )" ></div>
+
+      <div class='headings'>
+        <h1 class='title' ng-bind='food.title'></h1>
+        <h3 class='seller-name'>by {{ food.seller.name }} </h3>
+      </div>
+
+    </div>
     <div class='badge seller' ng-style="{ 'background-image': 'url( {{ food.seller.logo_url }})' }"></div>
-    <div class='title' ng-bind='food.title'></div>
-    <div class='seller-name' ng-bind='food.seller.name'></div>
+
   </div>
 
   <section class='info'>
@@ -14,44 +21,44 @@
   </section>
 
   <section class='pricing'>
-    <i class='fa fa-dollar'></i>
 
     <div class='price-container'>
-      <label>Price (before promo)</label>
-      <div class='price'>{{ price | currency }}</div>
+      <i class='fa fa-dollar'></i>
+      <label>Price:</label>
+      <h2 class='price'>{{ price() | currency }}</h2>
     </div>
 
     <div class='quantity-container'>
       <label>QTY</label>
-      <select name="quantity" ng-model='order.price_id' ng-init="order.price_id = order.price_id || food.prices[0].id">
-        <option ng-repeat='price in food.prices' ng-value="{{price.id}}" ng-bind='price.quantity'></option>
+      <select name="quantity" ng-model='order.price_id' ng-options="price.id as price.quantity for price in food.prices">
       </select>
+      <span class='select-caret'></span>
     </div>
 
   </section>
 
-  <section class='stats-container'>
+  <section class='stats'>
 
-    <div class='stats'>
-      <div class='left'>{{ food.order_count }} / {{ food.goal }} left</div>
+    <div class='stats-container'>
+      <p class='left'>{{ food.order_count }} / {{ food.goal }} left</p>
       <rating class='rating' score='food.rating' max='5' readonly='true'></rating>
+    </div>
 
-      <div class='progress-bar'>
-        <span class='progress' ng-style='{ "width": "{{ food.progress() }}%" }'></span>
-      </div>
+    <div class='progress-bar'>
+      <span class='progress' ng-style='{ "width": "{{ food.progress() }}%" }'></span>
     </div>
 
   </section>
 
-  <section class='promo-container'>
-
+  <section class='promo'>
+    <i class='fa fa-ticket'></i>
     <input type='text' ng-bind='order.promo_code' optional placeholder='Enter Promo Code' />
 
   </section>
 
   <section class='sticky button-container'>
 
-    <button class='button button-primary'>Order Food</button>
+    <button class='button button-primary' ng-click='placeOrder()'>Order Food</button>
 
   </section>
 

@@ -24,7 +24,7 @@ class Dashboard::PartialsController < DashboardController
   end
 
   def show_order
-    render 'dashboard/partials/orders/new'
+    render 'dashboard/partials/orders/show'
   end
 
 end

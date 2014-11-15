@@ -7,11 +7,36 @@
 @import "dashboard/third-party/angular-spinkit.min";
 @import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,700);
 
+$sticky-z-index: 11;
+$modal-z-index: 10;
+$popup-z-index: 20;
+$content-z-index: 5;
+
+$asset-pipeline: true;
+
+$default-color: #836864;
+$selected-color: #4EC2C7;
+$light-color: #767676;
+$ultralight-color: #828282;
+
+$offwhite-background: #F9F9F9;
+
+$brand-green: #42B7BB;
+
+$bold-font: bold;
+$light-font: 300;
+$thin-font: 200;
+
+$header-width: 288px;
+$header-background: rgba(25,17,16,.5);
+
+
 html,body {
   margin: 0 0;
   padding: 0px;
   min-height: 100%;
   height: 100%;
+  overflow-y: scroll;
 }
 
 body.modal-visible {
@@ -22,26 +47,87 @@ h1,h2,h3,h4,h5,h6 { margin: 0 0; padding: 0px; }
 
 * {
   @include box-sizing(border-box);
-  font-family: "Roboto Slab", serif;
+  font-family: "Roboto Slab", "Helvetica Neue", "Helvetica", "Arial", serif;
+  -webkit-touch-callout: none;
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
 }
 
-$topmost-z-index: 999;
+select {
+  @include appearance(none);
 
-$asset-pipeline: true;
+  display: block;
+  margin-top: 10px;
+  padding: 4px 4px;
+  padding-right: 25px;
+  padding-left: 10px;
+  text-align: center;
+  border-radius: 0px;
 
-$default-color: #836864;
-$selected-color: #4EC2C7;
-$light-color: #767676;
-$ultralight-color: #828282;
+  font-size: 14pt;
+  font-weight: normal;
+  color: black;
 
-$brand-green: #42B7BB;
+  background-color: white;
+  border: 1px solid #E5E5E5;
+  outline: none;
 
-$bold-font: bold;
-$light-font: 300;
-$thin-font: 200;
+  &:hover, &:active {
+    border: 1px solid darken(#E5E5E5, 15%);
+    cursor: pointer;
+    color: $brand-green;
+  }
 
-$header-width: 288px;
-$header-background: rgba(25,17,16,.5);
+}
+.select-caret {
+  @extend .fa;
+  @extend .fa-caret-down;
+
+  font-size: 10pt;
+  display: block;
+  color: black;
+  position: relative;
+  left: -10px;
+  top: -23px;
+
+  pointer-events: none;
+}
+
+label {
+  font-size: 10pt;
+  color: #B9AFAD;
+}
+
+p {
+  margin: 0 auto;
+  padding: 0px;
+  font-size: 12pt;
+  font-weight: 400;
+}
+
+.button-primary {
+  color: white;
+  background-color: $brand-green;
+  text-align: center;
+  padding: 10px 0px;
+  display: block;
+  width: 100%;
+
+  font-size: 16pt;
+
+  @include transition(background-color 0.15s ease-out);
+  @include appearance(none);
+  outline: none;
+  border: none;
+
+  @include user-select(none);
+
+  &:hover, &:active {
+    background-color: darken($brand-green, 5%);
+    cursor: pointer;
+  }
+
+}
 
 
 .rating {
@@ -68,13 +154,86 @@ $header-background: rgba(25,17,16,.5);
 
 }
 
+.food-preview.full-screen {
+  position: relative;
+  height: 192px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  &:after {
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 192px;
+    width: 100%;
+    @include linear-gradient(-179deg, rgba(0,0,0,0.00) 30%, rgba(0,0,0,0.15) 44%, rgba(0,0,0,0.13) 71%, rgba(0,0,0,0.80) 100%);
+    z-index: 2;
+    content: " ";
+  }
+
+  .overlay {
+    position: absolute;
+    height: 192px;
+    z-index: 3;
+    padding: 15px;
+    max-width: 100%;
+    width: 100%;
+    // border-bottom: 1px solid
+  }
+
+  .back-button {
+    font-size: 16pt;
+    color: white;
+  }
+
+  .badge {
+    height: 86px;
+    width: 86px;
+    padding: 0px;
+    border-radius: 43px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: 2px solid white;
+
+    &.price {
+      background-color: $brand-green;
+      color: white;
+      font-size: 18pt;
+    }
+  }
+
+}
+
+.badge-list {
+  margin: 0 auto;
+
+  text-align: center;
+  display: table;
+
+  border-collapse: separate;
+  border-spacing: 15px;
+  padding-left: 0px;
+
+  .badge {
+    margin-left: 15px;
+
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+  }
+
+}
+
 .modal {
   text-align: left;
   min-height: 100%;
   position: fixed;
   top: 0px;
   left: 0px;
-  z-index: $topmost-z-index;
+  z-index: $modal-z-index;
   height: auto;
   display: block;
   width: 100%;
@@ -108,16 +267,26 @@ $header-background: rgba(25,17,16,.5);
     @include animation(slideInModal 0.35s ease-out);
   }
   &.ng-leave {
-    @include animation(slideOutModal 0.35s ease-in);
+    @include backface-visibility(visible);
+    @include animation(slideOut 0.35s ease-in);
   }
 }
 
-@include keyframes(slideOutModal) {
+@include keyframes(fadeOut) {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@include keyframes(slideOut) {
   0% {
     @include transform(translateX(0%));
   }
   100% {
-    @include transform(translateX(-100%));
+    @include transform(translateX(100%));
   }
 }
 
@@ -152,11 +321,12 @@ $header-background: rgba(25,17,16,.5);
   text-align: left;
   background-color: $header-background;
   position: fixed;
-  z-index: $topmost-z-index;
+  z-index: $modal-z-index;
   width: 100%;
   min-height: 100% !important;
   height: auto;
   display: block;
+  overflow-y: scroll;
   header {
     background-color: white;
     color: $default-color;
@@ -166,35 +336,59 @@ $header-background: rgba(25,17,16,.5);
     display: block;
     width: $header-width;
     position: absolute;
-    z-index: $topmost-z-index;
+
+    z-index: $modal-z-index;
     .brand {
       @include retina-image("dashboard/header/top", $header-width 187px);
       height: 187px;
       width: $header-width;
-    }
 
-
-    nav {
-      padding: 0px 17px;
-      list-style: none;
-
-      .page {
-        margin: 34px 0px;
-        .fa {
-          width: 20px;
-        }
-        span {
-          margin: 0px 28px;
-        }
-        &:hover, &:active, &.active {
-          color: $selected-color;
+      .back-button {
+        padding: 15px;
+        color: white;
+        font-size: 18pt;
+        &:hover {
           cursor: pointer;
+          color: $selected-color;
         }
       }
+    }
 
+    li {
+      margin: 34px 0px;
+      .fa {
+        width: 20px;
+        display: inline-block;
+        vertical-align: middle;
+      }
+      span {
+        margin: 0px auto;
+        margin-left: 28px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        display: inline-block;
+
+        max-width: 200px;
+        overflow: hidden;
+        vertical-align: middle;
+      }
+      &:hover, &.active {
+        color: $selected-color;
+        cursor: pointer;
+      }
+    }
+
+    nav, .orders {
+      padding: 0px 17px;
+      list-style: none;
     }
 
     .pending-orders {
+
+      .fading-circle-spinner {
+        margin: 25px auto;
+      }
 
       h5 {
         padding: 3px 17px;
@@ -223,7 +417,7 @@ $header-background: rgba(25,17,16,.5);
   }
 
   &.ng-hide-add {
-    @include animation(fadeOut 0.2s ease-out);
+    @include animation(fadeOutBackground 0.2s ease-out);
     display: block !important;
     header {
       @include animation(slideOutHeader 0.2s ease-out);
@@ -261,7 +455,7 @@ $header-background: rgba(25,17,16,.5);
   }
 }
 
-@include keyframes(fadeOut) {
+@include keyframes(fadeOutBackground) {
   100% {
     background-color: rgba(0,0,0,0.0);
     display: none;
@@ -292,7 +486,7 @@ $header-background: rgba(25,17,16,.5);
 article {
 
   .nav-bar {
-    .place:hover, .place:active {
+    .place:hover {
       cursor: pointer; color: $default-color;
     }
   }
@@ -323,9 +517,11 @@ article {
 
     .food {
       margin: 0 auto;
-      min-width: 252px;
+      min-width: 245px;
       display: inline-block;
       $border-radius: 3px;
+
+      &:hover { cursor: pointer; }
 
       .top-bar {
         font-weight: $light-font;
@@ -357,6 +553,7 @@ article {
         font-weight: $light-font;
         text-align: left;
         padding: 8px 13px;
+        max-width: 245px;
         color: $light-color;
         border-bottom-left-radius: $border-radius;
         border-bottom-right-radius: $border-radius;
@@ -412,8 +609,9 @@ article {
         overflow: hidden;
         min-height: 100%;
         height: auto;
-        width: 266px;
+        width: 245px;
         content: " ";
+        z-index: $content-z-index;
       }
 
       .food .preview {
@@ -425,7 +623,7 @@ article {
           top: 55px; left: 0px; right: 0px; bottom: 0px;
           display: block;
           width: 100%;
-          z-index: 11;
+          z-index: 5;
           color: #5F5F5F;
           font-weight: $bold-font;
           font-size: 24pt;
@@ -517,7 +715,7 @@ $desktop: new-breakpoint(min-width 480px);
     text-align: left;
     border-bottom: 1px solid $border-color;
 
-    &:hover, &:active {
+    &:hover {
       background-color: #EEE;
       cursor: pointer;
     }
@@ -585,7 +783,7 @@ $desktop: new-breakpoint(min-width 480px);
       width: 38px;
       opacity: 0.65;
 
-      &:hover, &:active {
+      &:hover {
         color: $brand-green;
         background-color: white;
         opacity: 1;
@@ -630,7 +828,7 @@ $desktop: new-breakpoint(min-width 480px);
       font-weight: $thin-font;
     }
 
-    &:hover, &:active {
+    &:hover {
       background-color: darken($fb-blue, 10%);
       cursor: pointer;
     }
@@ -650,12 +848,249 @@ $desktop: new-breakpoint(min-width 480px);
 
 .order-container {
   @extend .subview;
+
+  background-color: $offwhite-background;
 }
 
-.order-page {
+.new-order {
+  .badge {
+    position: absolute;
+    z-index: 3;
+    bottom: -43px;
+    left: 15px;
+  }
 
-  .preview {
+}
+
+.show-order {
+  text-align: center;
+
+  .overlay {
+    text-align: left;
+  }
+
+  .badge-list {
+    margin: 0 auto;
+    margin-top: 100px;
+    text-align: center;
+  }
+
+  .info {
+    margin-top: 40px;
+    font-weight: $thin-font;
+    text-align: left;
+    line-height: 23px;
+  }
+
+  p {
+    color: $light-color;
+    font-weight: $thin-font;
+  }
+  strong { font-weight: $light-font; }
+
+  .arrival {
+    background-color: white;
+
+    p {
+      font-size: 14pt;
+    }
+
+    .eta {
+      margin: 20px;
+      display: block;
+      font-weight: normal;
+      font-size: 22pt;
+
+      &.ng-enter {
+
+      }
+
+      &.ng-leave {
+
+      }
+
+    }
+  }
+
+}
+
+.new-order, .show-order {
+  background-color: $offwhite-background;
+  color: $light-color;
+
+  // Enough room for sticky footer
+  margin-bottom: 48px;
+
+  .overlay {
+    padding: 0px;
+    top: 0px;
+    left: 0px;
+  }
+
+  .food-preview.full-screen {
+
+    .headings {
+      margin: 0px auto;
+      margin-left: 94px;
+      margin-top: 124px;
+      text-align: left;
+    }
+
+    h1 {
+      font-size: 16pt;
+      color: white;
+      font-weight: normal;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    h3 {
+      margin-top: 14px;
+      font-size: 10pt;
+      font-weight: $thin-font;
+    }
+  }
+
+  section {
+    border-bottom: 1px solid #CCCCCC;
+    padding: 18px;
+
+    font-size: 13pt;
+    font-weight: normal;
+
+    &.info {
+
+      i { opacity: 0.7; float: left; padding-top: 5px; }
+
+      i, .description {
+        margin-top: 30px;
+      }
+
+      .description {
+        margin-left: 38px;
+        margin-right: 19px;
+        margin-bottom: 0px;
+      }
+
+    }
+
+    &.pricing {
+
+      margin: 0 auto;
+      text-align: left;
+      background-color: white;
+
+      i {
+        opacity: 0.7;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        padding-top: 5px;
+        border-radius: 10px;
+        background-color: #B9AFAD;
+        color: white;
+        font-size: 8pt;
+        margin-right: 14px;
+      }
+
+      .price-container {
+
+        h2 {
+          margin-left: 36px;
+          font-weight: normal;
+          color: $brand-green;
+          font-size: 34px;
+        }
+
+      }
+
+      .quantity-container {
+        float: right;
+        text-align: right;
+        select, label {
+          display: block;
+        }
+        &:hover {
+          label {
+            color: black;
+          }
+        }
+      }
+
+      .price-container, .quantity-container, i {
+        display: inline-block;
+      }
+
+    }
+
+    &.stats {
+      padding: 19px;
+      .left, .rating {
+        font-weight: $thin-font;
+        display: inline-block;
+      }
+      .rating {
+        margin-top: 4px;
+        float: right;
+      }
+      .progress-bar {
+        margin-top: 6px;
+        height: 12px;
+        .progress { height: 12px !important; }
+      }
+    }
+
+    &.promo {
+      padding: 0px;
+      position: relative;
+
+      input {
+        padding: 19px;
+        text-indent: 29px;
+        background-color: white;
+
+        border: none;
+
+        display: block;
+        width: 100%;
+        outline: none;
+
+        font-weight: $thin-font;
+      }
+
+      .fa-ticket {
+        position: absolute;
+        top: 23px;
+        left: 19px;
+        @include transform(rotate(-45deg));
+      }
+
+    }
+
+    &.delivery-location, &.arrival {
+      margin-bottom: 50px;
+    }
+
+    &.sticky {
+      position: absolute;
+      bottom: 0px;
+      left: 0px;
+      padding: 0px;
+      display: block;
+      width: 100%;
+    }
+
 
   }
+
+  section:first-child {
+    border-top: 1px solid #CCCCCC;
+  }
+
+  section:last-child {
+    border-bottom: none;
+  }
+
+
 
 }

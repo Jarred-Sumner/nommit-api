@@ -10,6 +10,8 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
         .order("users.name")
     elsif shift.present?
       @orders = shift.orders
+    elsif index_params[:state_id] == "pending"
+      @orders = Order.pending.where(user: current_user)
     else
       @orders = Order.where(user: current_user).order("created_at DESC").limit(10)
       @orders = @orders.where(state: Integer(index_params[:state_id])) if index_params[:state_id].present?

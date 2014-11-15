@@ -50,7 +50,7 @@ Rails.application.routes.draw do
   get 'foods/places' => 'dashboard#index'
   get 'deliver' => 'dashboard#index'
   get 'foods/:food_id/order' => 'dashboard#index', as: :new_order
-  get 'order/:id' => 'dashboard#index'
+  get 'orders/:id' => 'dashboard#index'
   get 'support' => 'dashboard#index'
   get 'invite' => 'dashboard#index'
 

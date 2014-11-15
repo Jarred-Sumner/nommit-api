@@ -49,14 +49,16 @@ window.settings =
             $timeout ->
               deferred.resolve($rootScope.food)
             , 1
+            deferred.promise
           else
             Foods.get(id: $stateParams.food_id).$promise
         place: ($rootScope, Places, $stateParams, $q, $timeout) ->
-          if $rootScope.place
+          if $rootScope.place && $rootScope.place_id == $stateParams.place_id
             deferred = $q.defer()
             $timeout ->
               deferred.resolve($rootScope.place)
             , 1
+            deferred.promise
           else
             Places.get(id: $stateParams.place_id).$promise
       controller: ($scope, food, place, $rootScope) ->
@@ -64,8 +66,8 @@ window.settings =
         $scope.place = place
 
         # Remove globals, because globals can cause unexpected issues
-        $rootScope.food = null
-        $rootScope.place = null
+        delete $rootScope.food
+        delete $rootScope.place
 
     .state "deliver",
       url: "/deliver"
@@ -83,8 +85,20 @@ window.settings =
       url: "/fundraise"
       templateUrl: "/dashboard/partials/fundraise"
     .state "orders",
-      url: "/orders/:id"
+      url: "/orders/:order_id"
       templateUrl: "/dashboard/partials/orders/show"
+      resolve:
+        order: (Orders, $stateParams, $q, $timeout, $rootScope) ->
+          if $rootScope.order && $rootScope.order.id == $stateParams.order_id
+            deferred = $q.defer()
+            $timeout ->
+              deferred.resolve($rootScope.order)
+            , 1
+            deferred.promise
+          else
+            Orders.get(id: $stateParams.order_id).$promise
+      controller: (order, $scope, $rootScope, Orders) ->
+        $rootScope.order = order
 
 
   $httpProvider.defaults.headers.common["X-APP-VERSION"] = "MASTER"
