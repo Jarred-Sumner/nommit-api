@@ -129,6 +129,9 @@ p {
       cursor: pointer;
     }
   }
+  &[disabled] {
+    opacity: 0.5;
+  }
   text-align: center;
   padding: 10px 0px;
   display: block;
@@ -136,7 +139,8 @@ p {
 
   font-size: 16pt;
 
-  @include transition(background-color 0.15s ease-out);
+  @include transition(all 0.15s ease-out);
+  // @include transition(background-color 0.15s ease-out);
   @include appearance(none);
   outline: none;
   border: 1px solid ;
@@ -146,6 +150,12 @@ p {
   border: 1px solid #929292;
   background-color: #F3F3F3;
   color: $light-color;
+
+  &:hover {
+    border: 1px solid darken(#929292, 5%);
+    background-color: lighten(#F3F3F3, 10%);
+    cursor: pointer;
+  }
 }
 
 
@@ -300,6 +310,12 @@ p {
       margin: 20px auto;
       padding: 25px;
       .fading-circle::before { background-color: $brand-green; }
+    }
+
+    .fa-check-circle {
+      padding: 15px;
+      font-size: 32pt;
+      color: $brand-green;
     }
 
     .header {
@@ -758,6 +774,116 @@ article {
 
   }
 
+  section {
+
+    .header {
+      color: $brand-green;
+      text-transform: uppercase;
+      border-bottom: 1px solid $brand-green;
+      display: block;
+      width: 100%;
+
+      font-size: 12pt;
+    }
+
+  }
+
+}
+
+article.edit {
+
+  color: #5F5F5F;
+  font-weight: $light-font;
+  font-size: 10pt;
+
+  section {
+    margin: 20px;
+    .header {
+      margin-bottom: 10px;
+    }
+  }
+
+  .profile {
+
+    .pic {
+      height: 90px;
+      width: 90px;
+      border-radius: 45px;
+
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;
+
+    }
+
+    .pic, .contact {
+      display: inline-block;
+    }
+
+    .contact {
+      margin-left: 10px;
+      padding-top: 14px;
+      vertical-align: top;
+      height: 90px;
+    }
+
+  }
+
+  .credit-card {
+    font-size: 14pt;
+    border: 1px solid #CCC;
+    padding: 5px;
+    text-align: center;
+
+    .edit {
+      margin-top: 3px;
+      float: right;
+    }
+
+    .type {
+      margin-top: 3px;
+      float: left;
+    }
+
+    &:hover {
+      color: $brand-green;
+      border: 1px solid $brand-green;
+      cursor: pointer;
+    }
+
+  }
+
+  .credit {
+    margin: 10px;
+    text-align: center;
+    line-height: 20px;
+  }
+
+  form {
+    text-align: center;
+    .button, input {
+      height: auto;
+      display: inline-block;
+      width: auto;
+      vertical-align: top;
+      padding: 6px;
+
+      outline: none;
+
+      font-size: 12pt;
+    }
+    input {
+      min-width: 75%;
+    }
+    .button {
+      padding: 8px 10px;
+      font-size: 10pt;
+    }
+
+
+  }
+
+
 
 }
 
@@ -921,6 +1047,10 @@ $desktop: new-breakpoint(min-width 480px);
     font-size: 22pt;
     font-weight: $thin-font;
     color: $light-color;
+  }
+
+  .button-container {
+    margin: 15px;
   }
 
   .button.facebook {

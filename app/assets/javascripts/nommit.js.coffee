@@ -75,6 +75,9 @@ window.settings =
     .state "account",
       url: "/account"
       templateUrl: "/dashboard/partials/account"
+    .state "account.payment_method",
+      url: "/payment_method"
+      templateUrl: "/dashboard/partials/payment_method"
     .state "invite",
       url: "/invite"
       templateUrl: "/dashboard/partials/invite"

@@ -19,6 +19,9 @@ class Dashboard::PartialsController < DashboardController
   def invite
   end
 
+  def payment_method
+  end
+
   def new_order
     render "dashboard/partials/orders/new"
   end

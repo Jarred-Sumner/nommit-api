@@ -8,7 +8,7 @@
     $scope.requireLogin($scope.food, $scope.place)
 
   $scope.quantity = ->
-    $scope.food.prices[$scope.order.price_id].quantity
+    $scope.food.quantityByID($scope.order.price_id)
   $scope.price = ->
     $scope.food.priceByID($scope.order.price_id)
 

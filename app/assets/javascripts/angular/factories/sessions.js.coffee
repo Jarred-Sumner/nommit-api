@@ -3,7 +3,6 @@
 
   angular.extend Sessions,
     setSessionID: (id) ->
-      console.log("Session: #{id}")
       $http.defaults.headers.common["X-SESSION-ID"] = id
       window.settings.setSessionID(id)
       Sessions.currentUser()

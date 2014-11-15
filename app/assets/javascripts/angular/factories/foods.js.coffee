@@ -25,11 +25,13 @@
     this.goal - this.order_count
   Foods::progress = ->
     (this.remaining() / this.goal) * 100.0
-  Foods::priceByID = (id) ->
-    price = _.find @prices, (price) ->
+  Foods::pricingByID = (id) ->
+    _.find @prices, (price) ->
       price.id == id
-    price.price
-
+  Foods::priceByID = (id) ->
+    this.pricingByID(id).price
+  Foods::quantityByID = (id) ->
+    this.pricingByID(id).quantity
 
   Foods
 ]

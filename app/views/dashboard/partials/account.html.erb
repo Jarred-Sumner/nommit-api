@@ -1,0 +1,77 @@
+<article ng-controller='AccountCtrl' class='account-page edit'>
+  <div class='nav-bar'>
+    <span class='left-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
+    <span class='title'>Account</span>
+  </div>
+
+  <section class='profile'>
+    <div class='header'>Profile</div>
+
+    <span class='pic' profile-pic="{{ user.id }}" size='90x90'></span>
+
+    <span class='contact'>
+      <div class='name' ng-bind='user.full_name'></div>
+      <div class='email' ng-bind='user.email'></div>
+      <div class='phone'>{{ user.phone | tel }}</div>
+    </span>
+  </section>
+
+  <section class='payment'>
+    <div class='header'>Your Card</div>
+
+    <div class='credit-card' ui-sref='account.payment_method'>
+      <i class='type fa' ng-class='{ "fa-cc-visa": {{ user.card_type == "visa" }}, "fa-cc-discover": {{ user.card_type == "discover" }}, "fa-cc-mastercard": {{ user.card_type == "mastercard" }}, "fa-cc-amex": {{ user.card_type == "amex" }}  }'></i>
+
+      <span class='number'>
+        &middot;&middot;&middot;&middot;&nbsp;
+        &middot;&middot;&middot;&middot;&nbsp;
+        &middot;&middot;&middot;&middot;&nbsp;
+        {{ user.last_four }}&nbsp;
+      </span>
+
+      <i class='fa fa-pencil edit'></i>
+    </div>
+
+  </section>
+
+  <section ng-class='promos'>
+    <div class='header'>Promos</div>
+
+    <form name='promoForm' ng-submit='applyPromo()'>
+      <input type='text' ng-model='promo.code' placeholder='Enter Promo Code' required />
+      <button class='button' type='submit' ng-disabled='promoForm.$invalid'>Apply</button>
+    </form>
+
+    <div class='credit'>
+      <div>Account Credit: {{ user.credit() | currency }}</div>
+      <div>Share your code with friends: <strong ng-bind='user.referral_code'></strong></div>
+    </div>
+
+  </section>
+
+  <section class='logout'>
+    <button class='button button-primary' ng-click='logout()'>Logout</button>
+  </section>
+
+  <div class='popup-container' ng-if='isApplyingPromo'>
+
+    <div class='popup' ng-show='isApplying'>
+      <h2 class='header'>Applying...</h2>
+      <fading-circle-spinner></fading-circle-spinner>
+    </div>
+
+    <div class='popup' ng-show='didApply'>
+      <h2 class='header'>Applied!</h2>
+      <i class='fa fa-check-circle'></i>
+    </div>
+
+    <div class='popup' ng-show='error'>
+      <h2 class='error'>An error occurred</h2>
+      <p class='message'>{{ error }}</p>
+      <button class='button button-primary' ng-click='reset()'>Okay</button>
+    </div>
+
+  </div>
+
+
+</article>
