@@ -123,6 +123,12 @@ describe Order, type: :model do
           ).to eq(referral_promo.discount_in_cents)
         end
 
+        it "queues notification to referrer" do
+          expect do
+            subject
+          end.to change(SMS::Notifications::ReferralCreditAppliedWorker.jobs, :size).from(0).to(1)
+        end
+
       end
 
       it "applies only once to order" do

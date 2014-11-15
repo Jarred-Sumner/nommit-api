@@ -128,6 +128,8 @@ class Order < ActiveRecord::Base
     end
 
     def apply_pending_promotions!
+      activated_referrals = []
+
       # Grab all the active pending promotions
       user.applied_promos.active.order("created_at ASC").find_each do |u_p|
         # Create a copy of it so it becomes mutable
@@ -158,13 +160,20 @@ class Order < ActiveRecord::Base
         promo.save!
 
         # Activate the referral credit of the referrer if it hasn't been all used up
-        promo.referrer.active! if promo.referrer.present? && promo.referrer.state != 'used_up'
+        if promo.referrer.present? && promo.referrer.state != 'used_up'
+          promo.referrer.active!
+          activated_referrals << promo.id
+        end
 
         applied_promos << promo
         break if discount_in_cents >= price_in_cents
       end
 
       save!
+
+      # Send only if applying promos was successful.
+      # Don't want to tell people they got credit when they may not have.
+      activated_referrals.each { |referral| SMS::Notifications::ReferralCreditAppliedWorker.perform_async(referral) }
     end
 
     def ensure_courier_isnt_delivering_to_self!
