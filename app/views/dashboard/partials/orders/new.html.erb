@@ -52,7 +52,7 @@
 
   <section class='promo'>
     <i class='fa fa-ticket'></i>
-    <input type='text' ng-bind='order.promo_code' optional placeholder='Enter Promo Code' />
+    <input type='text' ng-model='order.promo_code' optional placeholder='Enter Promo Code' />
 
   </section>
 
@@ -61,5 +61,36 @@
     <button class='button button-primary' ng-click='placeOrder()'>Order Food</button>
 
   </section>
+
+  <div class='popup-container' ng-if='isOrdering'>
+
+    <div class='popup' ng-hide='isConfirmed'>
+      <h2 class='header'>Confirm Delivery Location</h2>
+      <p class='message'>
+        Your order for
+        <strong>{{ quantity() }}</strong>
+        will be delivered to
+        <strong> {{ place.name }}</string>
+      </p>
+
+      <div class='button-group'>
+        <button class='button' ng-click='reset()'>Cancel</button>
+        <button class='button button-primary' ng-click='confirmOrder()'>Confirm</button>
+      </div>
+
+    </div>
+
+    <div class='popup' ng-show='isPlacing'>
+      <h2 class='header'>Placing Order</h2>
+      <fading-circle-spinner></fading-circle-spinner>
+    </div>
+
+    <div class='popup' ng-show='error'>
+      <h2 class='error'>An error occurred</h2>
+      <p class='message'>{{ error }}</p>
+      <button class='button button-primary' ng-click='reset()'>Okay</button>
+    </div>
+
+  </div>
 
 </article>

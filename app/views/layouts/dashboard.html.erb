@@ -11,7 +11,7 @@
 
   <body ng-controller='CoordinatorCtrl' ng-swipe-right='toggleDashboard()' ng-class='{ "modal-visible": isModalVisible() }'>
 
-    <div class='header-container' ng-show='isDashboardVisible' ng-click='toggleDashboard()'>
+    <div class='header-container' ng-show='isDashboardVisible' ng-click='toggleDashboard()' ng-swipe-left='toggleDashboard()'>
 
       <header ng-controller='HeaderCtrl' disable-click-propagation ng-animate-children>
 
@@ -88,6 +88,8 @@
     <%= render 'login' %>
     <%= render 'activate' %>
     <%= render 'confirm_phone' %>
+
+
   </body>
 
   <script type="text/javascript" src="https://js.stripe.com/v2/"></script>

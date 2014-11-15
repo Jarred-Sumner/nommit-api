@@ -7,10 +7,27 @@
   if !$scope.user
     $scope.requireLogin($scope.food, $scope.place)
 
+  $scope.quantity = ->
+    $scope.food.prices[$scope.order.price_id].quantity
   $scope.price = ->
     $scope.food.priceByID($scope.order.price_id)
 
   $scope.placeOrder = ->
+    $scope.isOrdering = true
+  $scope.confirmOrder = ->
+    $scope.isConfirmed = true
+    $scope.isPlacing = true
     Orders.save $scope.order, (order) ->
+      $scope.isPlacing = false
       $rootScope.order = order
       $state.go("orders", { order_id: order.id })
+    , (error) ->
+      $scope.isPlacing = false
+      $scope.error = error.data.message
+  $scope.reset = ->
+    $scope.isOrdering = false
+    $scope.isPlacing = false
+    $scope.isConfirmed = false
+    $scope.error = null
+
+  $scope.reset()

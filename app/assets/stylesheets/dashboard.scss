@@ -7,6 +7,7 @@
 @import "dashboard/third-party/angular-spinkit.min";
 @import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,700);
 
+$popup-z-index: 12;
 $sticky-z-index: 11;
 $modal-z-index: 10;
 $popup-z-index: 20;
@@ -23,12 +24,22 @@ $offwhite-background: #F9F9F9;
 
 $brand-green: #42B7BB;
 
+$popup-paragraph: #3C3C3C;
+
 $bold-font: bold;
 $light-font: 300;
 $thin-font: 200;
 
 $header-width: 288px;
 $header-background: rgba(25,17,16,.5);
+
+@mixin vertical-align {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
 
 
 html,body {
@@ -105,9 +116,19 @@ p {
   font-weight: 400;
 }
 
-.button-primary {
-  color: white;
-  background-color: $brand-green;
+
+.button {
+  &.button-primary {
+    background-color: $brand-green;
+    border: 1px solid darken($brand-green, 5%);
+    color: white;
+
+    &:hover, &:active {
+      background-color: darken($brand-green, 5%);
+      border: 1px solid darken($brand-green, 10%);
+      cursor: pointer;
+    }
+  }
   text-align: center;
   padding: 10px 0px;
   display: block;
@@ -118,15 +139,13 @@ p {
   @include transition(background-color 0.15s ease-out);
   @include appearance(none);
   outline: none;
-  border: none;
+  border: 1px solid ;
 
   @include user-select(none);
 
-  &:hover, &:active {
-    background-color: darken($brand-green, 5%);
-    cursor: pointer;
-  }
-
+  border: 1px solid #929292;
+  background-color: #F3F3F3;
+  color: $light-color;
 }
 
 
@@ -227,6 +246,94 @@ p {
 
 }
 
+.back-button {
+  color: white;
+  &:hover {
+    cursor: pointer;
+    color: $brand-green;
+  }
+}
+
+.popup-container {
+  margin: 0 auto;
+  text-align: center;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: $popup-z-index;
+
+  background-color: rgba(25,17,16,0.5);
+  width: 100%;
+  min-height: 100%;
+  height: 100%;
+  overflow-y: scroll;
+
+  &.ng-enter {
+    @include backface-visibility(visible);
+    opacity: 0;
+    @include animation(fadeIn 0.25s ease-in);
+  }
+
+  &.ng-leave {
+    @include backface-visibility(visible);
+    @include animation(fadeOut 0.25s ease-in);
+  }
+
+  .popup {
+    text-align: center;
+    padding: 15px;
+    @include vertical-align;
+
+    background-color: white;
+
+    display: inline-block;
+
+    border-radius: 2px;
+    border: 1px solid #979797;
+    box-shadow: 0px 0px 25px 2px rgba(35,35,35,0.5);
+
+    width: 296px;
+
+    overflow: hidden;
+
+    .fading-circle-spinner {
+      margin: 20px auto;
+      padding: 25px;
+      .fading-circle::before { background-color: $brand-green; }
+    }
+
+    .header {
+      margin: 0px auto;
+      color: black;
+      font-size: 14pt;
+    }
+
+    .message {
+      color: $popup-paragraph;
+      font-weight: $light-font;
+      font-size: 12pt;
+      margin: 15px auto;
+      strong {
+        color: $default-color;
+      }
+    }
+
+    .button {
+      font-size: 12pt;
+      font-weight: $light-font;
+    }
+
+    .button-group {
+      button {
+        display: inline-block;
+        width: 45%;
+        margin-right: 5px;
+      }
+    }
+
+  }
+}
+
 .modal {
   text-align: left;
   min-height: 100%;
@@ -278,6 +385,15 @@ p {
   }
   100% {
     opacity: 0;
+  }
+}
+
+@include keyframes(fadeIn) {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
 
@@ -345,12 +461,7 @@ p {
 
       .back-button {
         padding: 15px;
-        color: white;
         font-size: 18pt;
-        &:hover {
-          cursor: pointer;
-          color: $selected-color;
-        }
       }
     }
 
