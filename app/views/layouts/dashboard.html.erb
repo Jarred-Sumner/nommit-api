@@ -63,6 +63,11 @@
               <span>Menu</span>
             </li>
 
+            <li class='page' ng-click='navigate("fundraise")' ui-sref-active='active' ng-class="{ active: page == 'fundraise' }">
+              <i class="fa fa-money"></i>
+              <span>Sell on Nommit</span>
+            </li>
+
           </nav>
 
           <div class='pending-orders' ng-controller='OrdersCtrl'>
