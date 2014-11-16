@@ -4,7 +4,7 @@ json.(user, :email, :phone, :last_signin, :created_at, :updated_at, :state_id)
 json.full_name user.name
 json.name user.first_name
 json.referral_code user.referral_promo.name
-json.credit_in_cents user.applied_promos.active.sum(:amount_remaining_in_cents)
+json.credit_in_cents user.credit
 
 json.is_courier user.couriers.count > 0
 

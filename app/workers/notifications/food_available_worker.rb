@@ -1,0 +1,49 @@
+class Notifications::FoodAvailableWorker
+  include Sidekiq::Worker
+  attr_accessor :food
+  TEXT_THRESHOLD = 1 unless defined?(TEXT_THRESHOLD)
+
+  def perform(food_id)
+    self.food = Food.find(food_id)
+
+    User.where(state: [ User.states[:registered], User.states[:activated] ]).find_each do |user|
+      notify_user!(user)
+    end
+  end
+
+  def notify_user!(user)
+    notification = user.notification || Notification.new(user_id: user.id)
+    # If they haven't ordered in TEXT_THRESHOLD weeks
+    if user.phone.present? && (user.orders.count.zero? || user.orders.placed.where("created_at < ?", TEXT_THRESHOLD.weeks.ago).count > 0)
+      # If we've never texted them
+      # OR If we haven't texted them in over a week
+      if notification.last_texted.nil? || notification.last_texted < TEXT_THRESHOLD.weeks.ago
+        send_text!(user.id)
+        notification.last_texted = DateTime.now
+      end
+
+    end
+
+    if user.email.present?
+      send_email!(user.id)
+      notification.last_emailed = DateTime.now
+    end
+
+    send_push_notification!(user.id) if user.devices.registered.count > 0
+
+    notification.save!
+  end
+
+  def send_text!(user_id)
+    SMS::Notifications::FoodAvailableWorker.perform_async(user_id, food.id)
+  end
+
+  def send_email!(user_id)
+
+  end
+
+  def send_push_notification!(user_id)
+    PushNotifications::FoodAvailableWorker.perform_async(food.id, user_id)
+  end
+
+end

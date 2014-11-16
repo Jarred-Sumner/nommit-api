@@ -43,7 +43,7 @@ class Food < ActiveRecord::Base
 
   def ended!
     update_attributes!(state: 'ended')
-    PushNotifications::FoodAvailableWorker.perform_async(id)
+    PushNotifications::FoodUnavailableWorker.perform_async(id)
   end
 
   validates :title, presence: true
@@ -65,15 +65,14 @@ class Food < ActiveRecord::Base
     orders.rated.average(:rating)
   end
 
-  after_commit :notify_users!, on: :create
-  after_create :send_end_food!
+  after_commit :notify_users!, :send_end_food!, on: :create
 
   def send_end_food!
-    EndFoodWorker.perform_at(end_date + 5.minutes, id)
+    PushNotifications::FoodUnavailableWorker.perform_at(end_date + 5.seconds, id)
   end
 
   def notify_users!
-    PushNotifications::FoodAvailableWorker.perform_at(start_date + 2.minutes, id)
+    Notifications::FoodAvailableWorker.perform_at(start_date, id)
   end
 
 end

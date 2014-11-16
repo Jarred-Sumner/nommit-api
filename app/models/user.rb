@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   has_many :devices
   belongs_to :location
   has_many :sellers, through: :couriers
+  has_one :notification
   include StateID
 
   enum state: [:registered, :activated, :invited]
@@ -61,8 +62,8 @@ class User < ActiveRecord::Base
 
   validates :confirm_code, presence: true, uniqueness: true, length: { is: 6 }, if: :registered?
 
-  # TODO
-  def referral_credit
+  def credit
+    applied_promos.active.sum(:amount_remaining_in_cents)
   end
 
   after_create :generate_promo_code!, on: :create

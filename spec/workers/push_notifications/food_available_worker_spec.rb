@@ -21,7 +21,7 @@ describe PushNotifications::FoodAvailableWorker do
 
     it "sends a push notification" do
       expect(subject.pusher).to receive(:push)
-      subject.perform(food.id)
+      subject.perform(food.id, User.first.id)
     end
 
   end

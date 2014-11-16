@@ -6,6 +6,6 @@ FactoryGirl.define do
     registered true
     last_notified "2014-11-02 16:54:20"
     user { create(:user) }
-    platform 1
+    platform 0
   end
 end

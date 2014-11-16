@@ -1,5 +1,6 @@
 class PushNotifications::BaseWorker
   include Sidekiq::Worker
+  attr_accessor :user
   CERTIFICATE_PATH = ENV["APN_CERTIFICATE_PATH"] unless defined?(CERTIFICATE_PATH)
 
   def pusher
