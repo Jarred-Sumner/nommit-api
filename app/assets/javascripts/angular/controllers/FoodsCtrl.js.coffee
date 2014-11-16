@@ -1,5 +1,21 @@
-@nommit.controller "FoodsCtrl", ($state, Foods, Places, $stateParams, DeliveryPlaces, $scope, $timeout, $rootScope) ->
+@nommit.controller "FoodsCtrl", ($state, Foods, Places, $stateParams, DeliveryPlaces, $scope, $timeout, $rootScope, Users) ->
   didAutoPresentPlaces = false
+
+  $scope.notifyMe = ->
+    $scope.notifying = true
+    Users.update id: $scope.user.id,
+      push_notifications: "reset"
+    , (user) ->
+      $scope.notified = true
+      $timeout ->
+        $scope.notifying = false
+      , 250
+    , (error) ->
+      $scope.notified = true
+      $timeout ->
+        $scope.notifying = false
+      , 250
+
 
   $scope.order = (food) ->
     $rootScope.food = food
@@ -14,7 +30,8 @@
           new Foods(food)
         # Make the orderable foods appear at the top
         .sortBy (food) ->
-          !food.isOrderable()
+          food.startDate()
+        .reverse()
         .value()
 
 

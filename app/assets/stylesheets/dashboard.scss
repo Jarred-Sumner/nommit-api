@@ -630,14 +630,15 @@ fieldset {
   color: white;
 
   .left-button {
-    left: 20px;
+    float: left;
   }
   .title {
+    margin-left: 20px;
     font-weight: $light-font;
     .fa-caret-down { margin-left: 20px; }
   }
   .right-button {
-    right: 20px;
+    float: right;
   }
 
   button {
@@ -646,8 +647,7 @@ fieldset {
   }
 
   .left-button, .right-button {
-    position: absolute;
-    z-index: 1;
+    width: 20px;
     &:hover {
       cursor: pointer;
       color: $default-color;
@@ -749,6 +749,7 @@ article {
           .price {
             max-width: 20%;
             float: right;
+            color: $brand-green;
           }
         }
 
@@ -766,42 +767,67 @@ article {
 
     }
 
-    &.sold-out, &.expired, &.ended {
+    &.sold-out, &.expired, &.ended, &.pending {
       position: relative;
       pointer-events: none;
 
-      .food::before {
-        text-align: right;
-        position: absolute;
-        right: 0px;
-        z-index: 10;
-        display: block;
-        background-color: rgba(255,255,255,0.6);
-        vertical-align: middle;
-        overflow: hidden;
-        min-height: 100%;
-        height: auto;
+        .food::before {
+          text-align: right;
+          position: absolute;
+          top: 29px;
+          right: 0px;
+          display: block;
+          background-color: rgba(0,0,0,0.15);
+          vertical-align: middle;
+          overflow: hidden;
+          height: 215px;
+          width: 245px;
+          content: " ";
+          z-index: $content-z-index;
+          border-radius: 3px;
+        }
+
+      .button-primary {
+        margin-top: 2px;
+        font-size: 12pt;
+        float: left;
+        margin-left: -14px;
         width: 245px;
-        content: " ";
-        z-index: $content-z-index;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+        &[disabled] { opacity: 1; pointer-events: none; }
       }
 
       .food .preview {
         position: relative;
-        &:after {
+        &:after, .pending-overlay {
           margin: 0 auto;
           text-align: center;
           position: absolute;
           top: 55px; left: 0px; right: 0px; bottom: 0px;
           display: block;
           width: 100%;
-          z-index: 5;
-          color: #5F5F5F;
-          font-weight: $bold-font;
-          font-size: 24pt;
+          color: white;
+          opacity: 0.9;
+          font-weight: bold;
+          font-size: 28pt;
+          z-index: $content-z-index + 1;
+        }
+        .pending-overlay {
+          font-size: 35pt;
+          top: 40px;
         }
       }
 
+    }
+
+    &.pending {
+      pointer-events: auto;
+      .food::before {
+        min-height: 0px;
+        height: 142px;
+        top: 29px;
+      }
     }
 
     &.expired, &.ended {

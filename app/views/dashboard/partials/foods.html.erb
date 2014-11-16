@@ -14,7 +14,7 @@
 
     <fading-circle-spinner ng-if='!foods'></fading-circle-spinner>
 
-    <li class='food-container' ng-repeat='food in foods' ng-class="{ 'sold-out': {{ food.isSoldOut() }}, 'expired': {{ food.isExpired() }}, 'ended': {{ food.isSaleOver() }}  }">
+    <li class='food-container' ng-repeat='food in foods' ng-class="{ 'sold-out': {{ food.isSoldOut() }}, 'expired': {{ food.isExpired() }}, 'ended': {{ food.isSaleOver() }}, 'pending': {{ food.isPending() }}  }">
 
       <div class='seller-logo' ng-style='{ "background-image": "url({{ food.seller.logo_url }})" }'></div>
 
@@ -84,10 +84,53 @@
 
       </div>
 
+      <div class='food pending' ng-if='food.isPending()'>
+
+        <div class='top-bar'>
+          <span class='seller-name'>{{ food.seller.name }}</span>
+
+          <span class='time-left'>
+            <i class='fa fa-clock-o'></i>
+            <span class='end-date'>{{ food.startDate() | date:"mediumTime"}}
+          </span>
+        </div>
+
+        <div class='preview' ng-style='{ "background-image": "url({{ food.thumbnail_image_url }})" }'>
+          <div class='pending-overlay' ng-if='food.isPending()'><timer end-time='food.startDate()'>{{hhours}}:{{mminutes}}:{{sseconds}}</timer></div>
+        </div>
+
+        <div class='details-container'>
+
+          <div class='info'>
+            <h3 class='name'>{{ food.title }}</h3>
+            <h3 class='price'>{{ food.price() | currency }}</h3>
+          </div>
+
+          <button class='button button-primary' ng-disabled='notified' ng-click='notifyMe()'>{{ notified ? "We'll Notify You" : "Notify Me" }}</div>
+
+        </div>
+
+
+      </div>
+
     </li>
 
   </ul>
 
   <div ui-view class='order-container' ng-if='page == "foods.order"'></div>
   <div ui-view class='places-container' ng-if='page == "foods.places"'></div>
+
+  <div class='popup-container' ng-if='isNotifying'>
+
+    <div class='popup' ng-show='!notified'>
+      <h2 class='header'>Updating...</h2>
+      <fading-circle-spinner></fading-circle-spinner>
+    </div>
+
+    <div class='popup' ng-show='notified'>
+      <h2 class='header'>We'll Notify You!</h2>
+      <i class='fa fa-check-circle'></i>
+    </div>
+
+  </div>
 </article>

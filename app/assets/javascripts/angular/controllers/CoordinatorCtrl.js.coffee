@@ -1,6 +1,7 @@
 @nommit.controller "CoordinatorCtrl", ($state, Foods, Places, $scope, $rootScope, Users, Sessions, $cookies) ->
   $rootScope.$on "$stateChangeSuccess", ->
     $scope.isDashboardVisible = false
+    console.log($state.current)
     $scope.page = $state.current.name
   $rootScope.$on "$stateChangeError", ->
     $scope.isDashboardVisible = false
