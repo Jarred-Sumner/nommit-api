@@ -5,8 +5,10 @@
     <title>Nommit</title>
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= csrf_meta_tags %>
+
     <meta name="apple-itunes-app" content="app-id=928890698" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
   </head>
 
   <body ng-controller='CoordinatorCtrl' ng-swipe-right='toggleDashboard()' ng-class='{ "modal-visible": isModalVisible() }'>

@@ -119,6 +119,9 @@ p {
 
 input {
   border: 1px solid #BABABA;
+  box-shadow: none;
+  @include appearance(none);
+  border-radius: 0px;
 }
 
 fieldset {
@@ -825,6 +828,8 @@ article {
   }
 
   .logo {
+    margin: 0 auto;
+    text-align: center;
     margin-top: 20px;
     padding: 0px 50px;
   }
@@ -1514,5 +1519,6 @@ $desktop: new-breakpoint(min-width 480px);
 }
 
 .logo {
-  max-width: 100%;
+  max-width: 300px;
+  display: block;
 }
