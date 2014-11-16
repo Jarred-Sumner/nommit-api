@@ -607,7 +607,8 @@ input {
   color: white;
 
   .left-button {
-    float: left;
+    position: absolute;
+    left: 15px;
   }
   .title {
     font-weight: $light-font;
