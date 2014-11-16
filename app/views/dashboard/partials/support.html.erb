@@ -1,0 +1,42 @@
+<article ng-controller='SupportCtrl'>
+  <div class='nav-bar'>
+    <span class='left-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
+    <span class='title'>Support</span>
+  </div>
+
+  <%= image_tag "nommit-logo.png", class: "logo" %>
+  <p class='muted'>Have a problem or question? Contact us to talk</p>
+
+  <section class='button-group'>
+
+    <button class='button' ng-click='call()'>Call Us</button>
+    <button class='button button-primary' ng-click='text()'>Text Us</button>
+    <button class='button' ng-click='email()'>Email Us</button>
+
+  </section>
+
+  <div class='popup-container' ng-if='popup'>
+
+    <div class='popup' ng-show='calling'>
+      <h2 class='header'>Support Line</h2>
+      <p class='message'>Call us at: <strong>{{ phone | tel }}</strong</p>
+
+      <button class='button button-primary' ng-click='reset()'>Okay</button>
+    </div>
+
+    <div class='popup' ng-show='texting'>
+      <h2 class='header'>Text Us</h2>
+      <p class='message'>Text us at: <strong>{{ phone | tel }}</strong</p>
+
+      <button class='button button-primary' ng-click='reset()'>Okay</button>
+    </div>
+
+    <div class='popup' ng-show='emailing'>
+      <h2 class='header'>Email Us</h2>
+      <p class='message'>Email us at: <strong>support@getnommit.com</strong></p>
+
+      <button class='button button-primary' ng-click='reset()'>Okay</button>
+    </div>
+
+  </div>
+</article>
