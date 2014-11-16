@@ -20,16 +20,34 @@
     Sessions.currentUser()
 
   $scope.isLoginVisible = false
+  $scope.isConfirmPhoneVisible = false
+  $scope.isActivateVisible = false
 
   $rootScope.requireLogin = (food, place) ->
+    $scope.isConfirmPhoneVisible = false
+    $scope.isActivationVisible = false
+
     $scope.food_id = food.id
     $scope.place_id = place.id
 
     $scope.food_image = food.header_image_url
     $scope.isLoginVisible = true
+  $rootScope.requireActivation = ->
+    $scope.isLoginVisible = false
+    $scope.isConfirmPhoneVisible = false
 
+    $scope.isActivateVisible = true
+  $rootScope.requireConfirm = ->
+    $scope.isLoginVisible = false
+    $scope.isActivateVisible = false
+
+    $scope.isConfirmPhoneVisible = true
   $scope.hideLogin = ->
     $scope.isLoginVisible = false
+  $rootScope.hideConfirmPhone = ->
+    $scope.isLoginVisible = false
+    $scope.isConfirmPhoneVisible = false
+    $scope.isActivateVisible = false
 
   isDashboardDisabled = ->
     disabled = [

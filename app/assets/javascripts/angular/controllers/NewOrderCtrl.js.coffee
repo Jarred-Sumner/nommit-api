@@ -6,6 +6,8 @@
     promo_code: null
   if !$scope.user
     $scope.requireLogin($scope.food, $scope.place)
+  if !$scope.user.isActivated()
+    $scope.requireActivation()
 
   $scope.quantity = ->
     $scope.food.quantityByID($scope.order.price_id)

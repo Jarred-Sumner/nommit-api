@@ -1,0 +1,39 @@
+<article ng-controller='ConfirmPhoneCtrl' class='edit modal' ng-if='isConfirmPhoneVisible'>
+  <form ng-submit='confirm()'>
+    <div class='nav-bar' ng-show='isConfirmPhoneVisible'>
+      <span class='title'>Confirm Phone</span>
+      <span class='right-button'><button type='submit' class='fa fa-check'></button></span>
+    </div>
+
+    <section>
+      <div class='header'>Confirm Code</div>
+      <fieldset>
+        <i class='fa fa-send'></i>
+        <input type='text' required ng-model='confirm_code' min='6' max='6' focus />
+      </fieldset>
+    </section>
+
+    <p class='muted'>You've been <strong>texted a 6 digit confirm code</strong>. <br /> Please enter it above</p>
+
+  </form>
+
+  <div class='popup-container' ng-if='isConfirming'>
+
+    <div class='popup' ng-hide='error || didConfirm'>
+      <h2 class='header'>Checking...</h2>
+      <fading-circle-spinner></fading-circle-spinner>
+    </div>
+
+    <div class='popup' ng-show='didConfirm'>
+      <h2 class='header'>Confirmed!</h2>
+      <i class='fa fa-check-circle'></i>
+    </div>
+
+    <div class='popup' ng-show='error'>
+      <h2 class='header'>An error occurred</h2>
+      <p class='message'>{{ error }}</p>
+      <button class='button button-primary' ng-click='reset()'>Okay</button>
+    </div>
+
+  </div>
+</article>
