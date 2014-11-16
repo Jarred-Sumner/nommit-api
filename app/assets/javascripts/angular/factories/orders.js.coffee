@@ -17,7 +17,7 @@
   Orders::isLate = ->
     this.deliveredAt() < new Date()
   Orders::deliveredAt = ->
-    new Date(@delivered_at)
+    @_deliveredAt ||= new Date(@delivered_at)
 
   Orders::cost = ->
     @price_charged_in_cents / 100.0

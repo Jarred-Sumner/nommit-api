@@ -1,46 +1,39 @@
-@nommit.controller 'ActivateCtrl', ($scope, Sessions, Places, $rootScope, Users, $timeout) ->
-  $scope.close = (cb) ->
-    $rootScope.$emit("HideActivation", callback: cb)
-  $rootScope.$on "requireActivation", (event, cb) ->
-    $scope.callback = cb
-    $scope.error = "To continue, activate your account."
-  $rootScope.$on "CurrentUser", (event, user) ->
-    $scope.user = user
-
-  $scope.payment =
-    card: null
-    expiry: null
-    cvc: null
-  $scope.activation =
-    stripe_token: null
-    phone: null
-    state_id: 1
-
-  $scope.activate = ->
+@nommit.controller "ActivateCtrl", ($scope, Users, Sessions, $rootScope, $timeout) ->
+  $scope.startActivating = ->
     $scope.isActivating = true
-    window.Stripe.card.createToken
-      number: $scope.payment.card
-      cvc: $scope.payment.cvc
-      exp_month: $scope.payment.expiry.split("/")[0]
-      exp_year: $scope.payment.expiry.split("/")[1]
-    , (status, response) ->
-      # Wrap in timeout to fix issues with Angular context vs Window context
-      $timeout( ->
-        if response.error
-          $scope.error = response.error.message
-          $scope.isActivating = false
-        else
-          success = (user) ->
-            Sessions.setCurrentUser(user)
-            $scope.isActivating = false
-            $scope.close ->
-              $rootScope.$emit("requireValidation", callback: $scope.callback)
-          error = (error) ->
-            $scope.error = error.data.message
-            $scope.isActivating = false
-          params =
-            state_id: 1
-            phone: $scope.activation.phone
-            stripe_token: response.id
-          Users.update(id: $scope.user.id, params, success, error)
-      , 1)
+
+    if $scope.activateForm.$invalid
+      $scope.error = "Please re-enter your information and try again"
+    else
+      $scope.isActivating = true
+  $scope.activate = (status, response) ->
+    return false if $scope.activateForm.$invalid
+    $scope.isActivating = true
+
+    if status == 200
+      $timeout ->
+        Users.update id: $scope.user.id,
+          stripe_token: response.id
+          phone: $scope.phone
+          email: $scope.email
+        , (user) ->
+          Sessions.setCurrentUser(user)
+          $rootScope.user = new Users(user)
+          $rootScope.requireConfirm()
+          $scope.reset()
+        , (error) ->
+          $scope.error = error.data.message
+      , 1
+    else
+      $scope.error = response.error.message
+
+  $scope.reset = ->
+    $scope.isActivating = false
+    $scope.error = null
+    $scope.card = null
+    $scope.expiry = null
+    $scope.phone = null
+    $scope.email = $scope.user.email
+    $scope.cvc = null
+
+  $scope.reset()

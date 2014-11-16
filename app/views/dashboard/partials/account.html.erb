@@ -1,58 +1,77 @@
-<div class='container full' id='accounts-container'>
-  <fading-circle-spinner ng-if='!fetchedUser'></fading-circle-spinner>
+<article ng-controller='AccountCtrl' class='account-page edit'>
+  <div class='nav-bar'>
+    <span class='left-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
+    <span class='title'>Account</span>
+  </div>
 
-  <div class='account' ng-if='fetchedUser'>
-    <h2>Account Information</h2>
+  <section class='profile'>
+    <div class='header'>Profile</div>
 
-    <div class='profile'>
-      <img profile-pic='{{user.id}}' class='prof-pic' size='126x126' />
+    <span class='pic' profile-pic="{{ user.id }}" size='90x90'></span>
 
-      <div class='details'>
-        <div class='name'>{{user.full_name}}</div>
-        <div class='email'>{{user.email}}</div>
-        <div class='phone'>{{user.phone | tel}}</div>
-      </div>
+    <span class='contact'>
+      <div class='name' ng-bind='user.full_name'></div>
+      <div class='email' ng-bind='user.email'></div>
+      <div class='phone'>{{ user.phone | tel }}</div>
+    </span>
+  </section>
+
+  <section class='payment'>
+    <div class='header'>Your Card</div>
+
+    <div class='credit-card' ui-sref='account.payment_method'>
+      <i class='type fa' ng-class='{ "fa-cc-visa": user.card_type == "visa", "fa-cc-discover": user.card_type == "discover", "fa-cc-mastercard": user.card_type == "mastercard", "fa-cc-amex": user.card_type == "amex"  }'></i>
+
+      <span class='number'>
+        &middot;&middot;&middot;&middot;&nbsp;
+        &middot;&middot;&middot;&middot;&nbsp;
+        &middot;&middot;&middot;&middot;&nbsp;
+        {{ user.last_four }}&nbsp;
+      </span>
+
+      <i class='fa fa-pencil edit'></i>
     </div>
 
-    <h2>Payment Information</h2>
-    <div class='input payment-info'
-        ng-click='editPayment()'
-        ng-class='{
-          visa: user.card_type == "visa",
-          mastercard: user.card_type == "mastercard",
-          amex: user.card_type == "amex",
-          discover: user.card_type == "discover"
-        }'>
-         &bull;&bull;&bull;&bull;&nbsp;
-         &bull;&bull;&bull;&bull;&nbsp;
-         &bull;&bull;&bull;&bull;&nbsp;
-         {{user.last_four}}
+  </section>
 
-         <i class='fa fa-pencil edit'></i>
-    </div>
+  <section ng-class='promos'>
+    <div class='header'>Promos</div>
 
-    <div class='two-col'>
-
-      <div class='one-col'>
-        <h2>Nommit Credit</h2>
-        <h3 class='credit'>{{user.credit() | currency }}</h3>
-      </div>
-
-      <div class='one-col'>
-        <h2>Referral Code</h2>
-        <h3 class='code'>{{user.referral_code}}</h3>
-      </div>
-
-    </div>
-
-    <form class='promo' name='promoForm' ng-submit='applyPromo()'>
-      <input type='text' class='input' ng-model='promo.code' required  placeholder='Enter Promo Code' />
-      <button ng-disabled='promoForm.$invalid'>Apply</button>
-      <fading-circle-spinner ng-if='applying'></fading-circle-spinner>
-      <div class="info error" ng-if='error'><i class="fa fa-info-circle"></i>{{error}}</div>
+    <form name='promoForm' ng-submit='applyPromo()'>
+      <input type='text' ng-model='promo.code' placeholder='Enter Promo Code' required />
+      <button class='button' type='submit' ng-disabled='promoForm.$invalid'>Apply</button>
     </form>
+
+    <div class='credit'>
+      <div>Account Credit: {{ user.credit() | currency }}</div>
+      <div>Share your code with friends: <strong ng-bind='user.referral_code'></strong></div>
+    </div>
+
+  </section>
+
+  <section class='logout'>
+    <button class='button button-primary' ng-click='logout()'>Logout</button>
+  </section>
+
+  <div class='popup-container' ng-if='isApplyingPromo'>
+
+    <div class='popup' ng-show='isApplying'>
+      <h2 class='header'>Applying...</h2>
+      <fading-circle-spinner></fading-circle-spinner>
+    </div>
+
+    <div class='popup' ng-show='didApply'>
+      <h2 class='header'>Applied!</h2>
+      <i class='fa fa-check-circle'></i>
+    </div>
+
+    <div class='popup' ng-show='error'>
+      <h2 class='error'>An error occurred</h2>
+      <p class='message'>{{ error }}</p>
+      <button class='button button-primary' ng-click='reset()'>Okay</button>
+    </div>
 
   </div>
 
-
-</div>
+  <div ui-view class='payment-method-container' ng-if='page == "account.payment_method"'></div>
+</article>

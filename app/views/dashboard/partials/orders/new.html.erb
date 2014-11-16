@@ -1,0 +1,96 @@
+<article ng-controller='NewOrderCtrl' class='new-order'>
+
+  <div class='food-preview full-screen' ng-style="{ 'background-image': 'url( {{ food.header_image_url }} )'}">
+
+    <div class='overlay'>
+      <div class='fa fa-arrow-left back-button' ui-sref="foods( { place_id: place.id } )" ></div>
+
+      <div class='headings'>
+        <h1 class='title' ng-bind='food.title'></h1>
+        <h3 class='seller-name'>by {{ food.seller.name }} </h3>
+      </div>
+
+    </div>
+    <div class='badge seller' ng-style="{ 'background-image': 'url( {{ food.seller.logo_url }})' }"></div>
+
+  </div>
+
+  <section class='info'>
+    <i class='fa fa-paragraph'></i>
+    <p class='description' ng-bind='food.description'></p>
+  </section>
+
+  <section class='pricing'>
+
+    <div class='price-container'>
+      <i class='fa fa-dollar'></i>
+      <label>Price:</label>
+      <h2 class='price'>{{ price() | currency }}</h2>
+    </div>
+
+    <div class='quantity-container'>
+      <label>QTY</label>
+      <select name="quantity" ng-model='order.price_id' ng-options="price.id as price.quantity for price in food.prices">
+      </select>
+      <span class='select-caret'></span>
+    </div>
+
+  </section>
+
+  <section class='stats'>
+
+    <div class='stats-container'>
+      <p class='left'>{{ food.order_count }} / {{ food.goal }} left</p>
+      <rating class='rating' score='food.rating' max='5' readonly='true'></rating>
+    </div>
+
+    <div class='progress-bar'>
+      <span class='progress' ng-style='{ "width": "{{ food.progress() }}%" }'></span>
+    </div>
+
+  </section>
+
+  <section class='promo'>
+    <i class='fa fa-ticket'></i>
+    <input type='text' ng-model='order.promo_code' optional placeholder='Enter Promo Code' />
+
+  </section>
+
+  <section class='sticky button-container'>
+
+    <button class='button button-primary' ng-click='placeOrder()'>Order Food</button>
+
+  </section>
+
+  <div class='popup-container' ng-if='isOrdering'>
+
+    <div class='popup' ng-hide='isConfirmed'>
+      <h2 class='header'>Confirm Delivery Location</h2>
+      <p class='message'>
+        Your order for
+        <strong>{{ quantity() }}</strong>
+        will be delivered to
+        <strong> {{ place.name }}</string>
+      </p>
+
+      <div class='button-group'>
+        <button class='button' ng-click='reset()'>Cancel</button>
+        <button class='button button-primary' ng-click='confirmOrder()'>Confirm</button>
+      </div>
+
+    </div>
+
+    <div class='popup' ng-show='isPlacing'>
+      <h2 class='header'>Placing Order</h2>
+      <fading-circle-spinner></fading-circle-spinner>
+    </div>
+
+    <div class='popup' ng-show='error'>
+      <h2 class='header'>An error occurred</h2>
+      <p class='message'>{{ error }}</p>
+      <button class='button button-primary' ng-click='reset()'>Okay</button>
+    </div>
+
+  </div>
+
+</article>

@@ -20,32 +20,89 @@ window.settings =
   setDidRedirectOnAndroid: ->
     localStorage["didRedirectOnAndroid"] = true
 
-@nommit = angular.module('nommit', ['ui.router', 'ngResource', 'facebook', 'angularPayments', 'angular-spinkit', 'timer', 'ngCacheBuster', 'adaptive.detection'])
+@nommit = angular.module('nommit', ['ui.router', 'ngResource', 'angularPayments', 'angular-spinkit', 'timer', 'ngCacheBuster', 'adaptive.detection', 'ngAnimate', 'ngTouch', 'ngCookies'])
 
 # This routing directive tells Angular about the default
 # route for our application. The term "otherwise" here
 # might seem somewhat awkward, but it will make more
 # sense as we add more routes to our application.
-@nommit.config ($stateProvider, $urlRouterProvider, $httpProvider, FacebookProvider, $locationProvider, $compileProvider, httpRequestInterceptorCacheBusterProvider) ->
+@nommit.config ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider, $compileProvider, httpRequestInterceptorCacheBusterProvider) ->
   $locationProvider.html5Mode(true);
-  $urlRouterProvider.otherwise("/")
-  $stateProvider
-    .state('foods',
-      url: "/?i"
-      templateUrl: 'dashboard/partials/foods'
-      controller: 'FoodsCtrl'
-    ).state('orders',
-      url: '/orders'
-      templateUrl: 'dashboard/partials/orders'
-      controller: 'OrdersCtrl'
-    ).state("account",
-      url: "/account"
-      templateUrl: 'dashboard/partials/account'
-      controller: "AccountCtrl"
-    )
 
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|http|sms|tel):/)
-  FacebookProvider.init(window.config.facebook);
+
+  $urlRouterProvider.otherwise("/foods")
+  $stateProvider
+    .state 'foods',
+      url: "/foods?place_id"
+      templateUrl: "/dashboard/partials/foods"
+    .state "foods.places",
+      url: "/places"
+      templateUrl: "/dashboard/partials/places"
+    .state "foods.order",
+      url: "/:food_id/order"
+      templateUrl: "/dashboard/partials/orders/new"
+      resolve:
+        food: (Foods, $stateParams, $q, $timeout, $rootScope) ->
+          if $rootScope.food && $rootScope.food.id == $stateParams.food_id
+            deferred = $q.defer()
+            $timeout ->
+              deferred.resolve($rootScope.food)
+            , 1
+            deferred.promise
+          else
+            Foods.get(id: $stateParams.food_id).$promise
+        place: ($rootScope, Places, $stateParams, $q, $timeout) ->
+          if $rootScope.place && $rootScope.place_id == $stateParams.place_id
+            deferred = $q.defer()
+            $timeout ->
+              deferred.resolve($rootScope.place)
+            , 1
+            deferred.promise
+          else
+            Places.get(id: $stateParams.place_id).$promise
+      controller: ($scope, food, place, $rootScope) ->
+        $scope.food = food
+        $scope.place = place
+
+        # Remove globals, because globals can cause unexpected issues
+        delete $rootScope.food
+        delete $rootScope.place
+
+    .state "deliver",
+      url: "/deliver"
+      templateUrl: "/dashboard/partials/deliver"
+    .state "account",
+      url: "/account"
+      templateUrl: "/dashboard/partials/account"
+    .state "account.payment_method",
+      url: "/payment_method"
+      templateUrl: "/dashboard/partials/payment_method"
+    .state "invite",
+      url: "/invite"
+      templateUrl: "/dashboard/partials/invite"
+    .state "support",
+      url: "/support"
+      templateUrl: "/dashboard/partials/support"
+    .state "fundraise",
+      url: "/fundraise"
+      templateUrl: "/dashboard/partials/fundraise"
+    .state "orders",
+      url: "/orders/:order_id"
+      templateUrl: "/dashboard/partials/orders/show"
+      resolve:
+        order: (Orders, $stateParams, $q, $timeout, $rootScope) ->
+          if $rootScope.order && $rootScope.order.id == $stateParams.order_id
+            deferred = $q.defer()
+            $timeout ->
+              deferred.resolve($rootScope.order)
+            , 1
+            deferred.promise
+          else
+            Orders.get(id: $stateParams.order_id).$promise
+      controller: (order, $scope, $rootScope, Orders) ->
+        $rootScope.order = order
+
 
   $httpProvider.defaults.headers.common["X-APP-VERSION"] = "MASTER"
 

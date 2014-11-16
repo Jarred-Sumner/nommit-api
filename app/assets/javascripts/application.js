@@ -14,11 +14,13 @@
 //= require jquery_ujs
 //= require angular/angular.min
 //= require angular/angular-ui-router
+//= require angular/angular-touch
+//= require angular/angular-animate
 //= require angular/angular-resource
 //= require angular/angular-payments
-//= require angular/angular-facebook
 //= require angular/angular-cache-buster
 //= require angular/angular-adaptive-detection.min
+//= require angular/angular-cookies
 //= require underscore-min
 //= require underscore.string.min.js
 //= require_tree ./mixins

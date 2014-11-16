@@ -1,0 +1,46 @@
+<article class='show-order' ng-controller='ShowOrderCtrl'>
+
+  <section class='food-preview full-screen' ng-style="{ 'background-image': 'url( {{ food.header_image_url }} )'}">
+
+    <div class='overlay'>
+      <div class='fa fa-bars back-button' ng-click='toggleDashboard()'></div>
+
+      <ol class='badge-list'>
+        <div class='badge courier' profile-pic="{{ courier.user.id }}" size='172x172'></div>
+        <div class='badge seller' ng-style="{ 'background-image': 'url( {{ seller.logo_url }} )' }"></div>
+        <div class='badge price'>{{ order.cost() | currency }}</div>
+      </ol>
+    </div>
+
+  </section>
+
+  <section class='description'>
+
+    <p class='info'>
+      <strong>{{ courier.user.name }}</strong>
+      is delivering
+      <strong>{{ order.quantity }}</strong>
+      orders of
+      <strong>{{ food.title }}</strong>
+      from
+      <strong>{{ seller.name }}</strong>
+      for
+      <strong>{{ order.cost() | currency }}</strong>.
+    </p>
+
+  </section>
+
+  <section ng-show='order.isActive()' class='arrival'>
+
+    <p>Arriving at <strong>{{ place.name | titleize }}</strong> in</p>
+
+    <timer class='eta' end-time='order.deliveredAt()' ng-if='!order.isLate()'>{{mminutes}}:{{sseconds}}</timer>
+    <h2 class='eta' ng-if='order.isLate()'>Any Minute Now</h2>
+
+  </section>
+
+  <section class='sticky order'>
+    <div class='button button-primary' ng-click='call()'>Call {{ courier.user.name }}</div>
+  </section>
+
+</article>

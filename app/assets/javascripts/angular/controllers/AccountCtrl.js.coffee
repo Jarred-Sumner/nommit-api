@@ -1,25 +1,40 @@
-@nommit.controller 'AccountCtrl', ($scope, Users, $rootScope, Sessions, $http) ->
-  $rootScope.$emit "requireLogin" unless Sessions.isLoggedIn()
-  $scope.promo =
-    code: ""
-  $rootScope.$on "$stateChangeSuccess", ->
-    $scope.error = null
+@nommit.controller "AccountCtrl", ($scope, Users, $rootScope, Sessions, $timeout, $state) ->
+  $state.go "foods" unless Sessions.isLoggedIn()
 
-  Sessions.currentUser (user) ->
-    $scope.user = user
-    $scope.fetchedUser = true
   $rootScope.$on "CurrentUser", (event, user) ->
     $scope.user = user
 
-  $scope.editPayment = ->
-
+  $scope.logout = ->
+    Sessions.setSessionID(null)
+    Sessions.setCurrentUser(null)
+    $rootScope.user = null
+    $state.go "foods"
   $scope.applyPromo = ->
-    $scope.applying = true
-    $http.post("api/v1/users/#{$scope.user.id}/promos", $scope.promo).success( (user) ->
+    $scope.isApplying = true
+    $scope.isApplyingPromo = true
+    Users.promo id: $scope.user.id,
+      $scope.promo,
+    , (user) ->
+      $scope.isApplying = false
+      $scope.didApply = true
+
       Sessions.setCurrentUser(user)
-      $scope.applying = false
-      $scope.error = null
-    ).error((error) ->
-      $scope.applying = false
-      $scope.error = error.message
-    )
+      $scope.user = user
+
+      $timeout ->
+        $scope.reset()
+      , 1500
+
+    , (error) ->
+      $scope.isApplying = false
+      $scope.error = error.data.message
+
+  $scope.reset = ->
+    $scope.didApply = false
+    $scope.isApplying = false
+    $scope.isApplyingPromo = false
+    $scope.error = null
+    $scope.promo =
+      code: null
+
+  $scope.reset()

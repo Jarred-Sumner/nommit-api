@@ -1,73 +1,67 @@
-@nommit.controller 'FoodsCtrl', ($scope, Foods, Places, $rootScope, Sessions, $stateParams, $http) ->
-  $scope.orderingFood = false
-  $scope.price = (food, quantity) ->
-    if quantity
-      food.prices[quantity - 1].price
-    else
-      food.prices[0].price
-  $scope.progressForFood = (food) ->
-    (food.order_count / food.goal) * 100
-  setPlace = (place) ->
-    if place || window.settings.placeID()
+@nommit.controller "FoodsCtrl", ($state, Foods, Places, $stateParams, DeliveryPlaces, $scope, $timeout, $rootScope) ->
+  didAutoPresentPlaces = false
 
-      if !place && window.settings.placeID()
-        Places.get id: window.settings.placeID(), (place) ->
-          setPlace(place)
-      else if place
-        $scope.place = place
-
-        $scope.foods = _.chain(place.delivery_places)
-          .map (deliveryPlace) ->
-            _.filter deliveryPlace.foods, (food) ->
-              food.rating = Math.round(food.rating)
-              food.quantity = 1
-              food.state_id == 0
-            _.select deliveryPlace.foods, (food) ->
-              food = new Foods(food)
-              food.isOrderable()
-          .flatten()
-          .value()
-
-        $scope.fetchedFoods = true
-    else
-      $scope.place = null
-      $scope.foods = []
-      $scope.fetchedFoods = true
-
-  $rootScope.$on "placeChanged", (event, obj) ->
-    setPlace(obj.place)
-  $rootScope.$on "CurrentUser", (event, user) ->
-    $scope.user = user
-
-  applyPendingPromo = ->
-    unless _.str.isBlank($stateParams.i)
-      promo =
-        code: $stateParams.i
-        autoapply: true
-      $http.post("/api/v1/users/#{$scope.user.id}/promos", promo).success (user) ->
-        Sessions.setCurrentUser(user)
-
-  Sessions.currentUser (user) ->
-    $scope.user = user
-    applyPendingPromo() if user
-
-  setPlace()
-
-  $rootScope.$on "HideOrderFood", ->
-    $scope.orderingFood = false
-  $rootScope.$on "CurrentUser", (event, user) ->
-    $scope.user = user
   $scope.order = (food) ->
-    if $scope.user
-      if $scope.user.isActivated()
-        $scope.orderingFood = true
-        $rootScope.$emit "OrderFood", food: food, place: $scope.place, user: $scope.user
-      else if $scope.user.isRegistered()
-        $rootScope.$emit "requireActivation",
-          callback: $scope.order
-          object: food
-    else
-      $rootScope.$broadcast "requireLogin",
-        callback: $scope.order
-        object: food
-        error: true
+    $rootScope.food = food
+    $rootScope.place = $scope.place
+    $state.go("foods.order", { place_id: $rootScope.place.id, food_id: food.id })
+
+  retrieveFoods = ->
+    Foods.query (foods) ->
+      $scope.foods = _.chain(foods)
+        .map (food) ->
+          food.quantity = 1
+          new Foods(food)
+        # Make the orderable foods appear at the top
+        .sortBy (food) ->
+          !food.isOrderable()
+        .value()
+
+
+      # Auto-show places
+      # But, don't do immediately because browsers are slow.
+      # Wait 500ms
+      $timeout ->
+        unless didAutoPresentPlaces
+          for food in $scope.foods
+            if food.isOrderable()
+              $state.go("foods.places")
+              didAutopresentPlaces = true
+      , 500
+
+  retrievePlace = (id) ->
+    Places.get id: id, (place) ->
+      window.settings.setPlaceID(id)
+      $scope.place = new Places(place)
+
+      # There are way smarter ways to do this.
+      # But, given that we're only dealing with a max of...3 foods?
+      # It really does not matter at all.
+      $scope.foods = _.chain(place.delivery_places)
+        # Get the delivery places we can order from
+        .select (dp) ->
+          dp = new DeliveryPlaces(dp)
+          dp.isOrderable()
+        # Grab their foods
+        .map (dp) ->
+          dp.foods
+        # Get rid of the array of arrays of foods
+        .flatten()
+        # Turn them into food objects
+        .map (food) ->
+          food = new Foods(food)
+          food.quantity = 1
+          food
+        # Return only the foods we can order
+        .select (food) ->
+          food.isOrderable()
+        # Remove duplicates, just in case.
+        .uniq()
+        .value()
+
+
+
+  if $stateParams.place_id
+    retrievePlace($stateParams.place_id)
+  else
+    retrieveFoods()
