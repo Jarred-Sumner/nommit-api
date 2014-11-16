@@ -502,6 +502,9 @@ fieldset {
       @include retina-image("dashboard/header/top", $header-width 187px);
       height: 187px;
       width: $header-width;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
 
       .back-button {
         padding: 15px;

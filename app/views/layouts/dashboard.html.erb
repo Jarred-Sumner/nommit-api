@@ -22,7 +22,7 @@
             <div class='fa fa-close back-button' ng-click='toggleDashboard()'></div>
           </div>
 
-          <nav ng-if='user'>
+          <nav ng-if='user' ng-click='toggleDashboard()'>
 
             <li class='page' ui-sref='foods({ place_id: null })' ui-sref-active='active'>
               <i class="fa fa-cutlery"></i>
