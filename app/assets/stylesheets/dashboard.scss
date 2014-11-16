@@ -630,7 +630,6 @@ fieldset {
   color: white;
 
   .left-button {
-    position: absolute;
     left: 20px;
   }
   .title {
@@ -638,7 +637,6 @@ fieldset {
     .fa-caret-down { margin-left: 20px; }
   }
   .right-button {
-    position: absolute;
     right: 20px;
   }
 
@@ -648,6 +646,8 @@ fieldset {
   }
 
   .left-button, .right-button {
+    position: absolute;
+    z-index: 1;
     &:hover {
       cursor: pointer;
       color: $default-color;
