@@ -14,7 +14,7 @@
   <body ng-controller='CoordinatorCtrl' ng-swipe-right='toggleDashboard()' ng-class='{ "modal-visible": isModalVisible() }'>
     <div ng-cloak>
 
-      <div class='header-container' ng-show='isDashboardVisible' ng-swipe-left='toggleDashboard()'>
+      <div class='header-container' ng-show='isDashboardVisible' ng-swipe-left='toggleDashboard()' ng-click='toggleDashboard()'>
 
         <header ng-controller='HeaderCtrl' disable-click-propagation ng-animate-children>
 
