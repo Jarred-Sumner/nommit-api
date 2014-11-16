@@ -20,7 +20,7 @@
     <div class='header'>Your Card</div>
 
     <div class='credit-card' ui-sref='account.payment_method'>
-      <i class='type fa' ng-class='{ "fa-cc-visa": {{ user.card_type == "visa" }}, "fa-cc-discover": {{ user.card_type == "discover" }}, "fa-cc-mastercard": {{ user.card_type == "mastercard" }}, "fa-cc-amex": {{ user.card_type == "amex" }}  }'></i>
+      <i class='type fa' ng-class='{ "fa-cc-visa": user.card_type == "visa", "fa-cc-discover": user.card_type == "discover", "fa-cc-mastercard": user.card_type == "mastercard", "fa-cc-amex": user.card_type == "amex"  }'></i>
 
       <span class='number'>
         &middot;&middot;&middot;&middot;&nbsp;
@@ -73,5 +73,5 @@
 
   </div>
 
-
+  <div ui-view class='payment-method-container' ng-if='page == "account.payment_method"'></div>
 </article>

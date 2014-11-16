@@ -1,6 +1,9 @@
 @nommit.controller "AccountCtrl", ($scope, Users, $rootScope, Sessions, $timeout, $state) ->
   $state.go "foods" unless Sessions.isLoggedIn()
 
+  $rootScope.$on "CurrentUser", (event, user) ->
+    $scope.user = user
+
   $scope.logout = ->
     Sessions.setSessionID(null)
     Sessions.setCurrentUser(null)

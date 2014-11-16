@@ -116,6 +116,10 @@ p {
   font-weight: 400;
 }
 
+input {
+  border: 1px solid #BABABA;
+}
+
 
 .button {
   &.button-primary {
@@ -362,6 +366,7 @@ p {
   width: 100%;
   overflow-y: scroll;
   height: 100%;
+  background-color: #FBFBFB;
   &.ng-enter {
     @include animation(slideUpModal 0.4s ease-out);
   }
@@ -597,17 +602,30 @@ p {
   font-size: 20pt;
   text-align: center;
   color: white;
+
   .left-button {
     float: left;
-    &:hover {
-      cursor: pointer;
-      color: $default-color;
-    }
   }
   .title {
     font-weight: $light-font;
     .fa-caret-down { margin-left: 20px; }
   }
+  .right-button {
+    float: right;
+  }
+
+  button {
+    background: transparent;
+    border: none;
+  }
+
+  .left-button, .right-button {
+    &:hover {
+      cursor: pointer;
+      color: $default-color;
+    }
+  }
+
 }
 
 article {
@@ -791,7 +809,7 @@ article {
 }
 
 article.edit {
-
+  background-color: #FBFBFB;
   color: #5F5F5F;
   font-weight: $light-font;
   font-size: 10pt;
@@ -1333,5 +1351,114 @@ $desktop: new-breakpoint(min-width 480px);
   }
 
 
+
+}
+
+.payment-method-container {
+  @extend .modal;
+}
+
+.edit {
+
+  .payment {
+    text-align: left;
+    font-size: 14pt;
+
+    input {
+      text-indent: 35px;
+      padding: 10px;
+      width: 100%;
+      border: 1px solid #BABABA;
+      &:hover, &:active {
+        border: 1px solid $brand-green;
+      }
+    }
+
+    fieldset, span {
+      &:hover, &:active, &:focus {
+        .fa { color: $brand-green; }
+      }
+    }
+
+    fieldset {
+      border: none;
+      text-align: left;
+      padding: 0px;
+      margin: 0px;
+      .fa {
+        vertical-align: middle;
+        position: absolute;
+        left: 10px;
+        top: 12px;
+        float: left;
+      }
+      input {
+        margin-left: -1px;
+        border-bottom: none !important;
+      }
+    }
+    span {
+      padding: 0px;
+      width: 50%;
+      margin: 0 auto;
+      margin-top: -2px;
+      display: inline-block;
+      input {
+        text-indent: 15px;
+        width: 100%;
+        box-shadow: none;
+        outline: none;
+        @include box-sizing(border-box);
+        display: inline-block;
+      }
+    }
+    .expiration {
+      left: -1px;
+
+      .fa-calendar {
+        height: 19px;
+        width: 24px;
+
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        display: block;
+      }
+
+      input {
+        border-right: none !important;
+        text-indent: 35px;
+      }
+    }
+    .ng-dirty.ng-invalid {
+      border: 1px solid red;
+    }
+    .cvc {
+      margin-left: -6px;
+
+      .fa-lock {
+        position: absolute;
+        top: 12px;
+        left: 10px;
+        display: block;
+      }
+      input { text-indent: 25px; }
+
+    }
+
+    span, fieldset {
+      position: relative;
+    }
+
+  }
+
+  .muted {
+    margin: 15px auto;
+    opacity: 0.85;
+    text-align: center;
+    font-size: 10pt;
+
+
+  }
 
 }
