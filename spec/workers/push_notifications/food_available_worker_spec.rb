@@ -28,19 +28,29 @@ describe PushNotifications::FoodAvailableWorker do
 
   context "#notification_params" do
 
-    it "generates alert for devices that haven't been notified in awhile" do
-      device.last_notified = nil
-      device.save!
+    subject do
+      worker = PushNotifications::FoodAvailableWorker.new
+      worker.food = food
+      worker.notification_params(device)
+    end
 
-      params = subject.notification_params(device)
-      expect(params[:alert]).to be_present
+    before :each do
+      device.save!
+    end
+
+    it "set alert" do
+      device.update_attributes!(last_notified: nil)
+
+      expect(subject[:alert]).to be_present
+      expect(subject[:alert].include?(food.title)).to eq(true)
+    end
+
+    it "sets device token" do
+      expect(subject[:device_token]).to eq(device.device_token)
     end
 
     it "sets the expiration properly" do
-      device.save!
-
-      params = subject.notification_params(device)
-      expect(params[:expiry]).to eq(food.end_date.to_time)
+      expect(subject[:expiry]).to eq(food.end_date.to_time)
     end
 
   end
