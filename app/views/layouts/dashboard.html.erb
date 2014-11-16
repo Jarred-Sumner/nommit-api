@@ -14,7 +14,7 @@
   <body ng-controller='CoordinatorCtrl' ng-swipe-right='toggleDashboard()' ng-class='{ "modal-visible": isModalVisible() }'>
     <div ng-cloak>
 
-      <div class='header-container' ng-show='isDashboardVisible' ng-click='toggleDashboard()' ng-swipe-left='toggleDashboard()'>
+      <div class='header-container' ng-show='isDashboardVisible' ng-swipe-left='toggleDashboard()'>
 
         <header ng-controller='HeaderCtrl' disable-click-propagation ng-animate-children>
 
@@ -22,34 +22,34 @@
             <div class='fa fa-close back-button' ng-click='toggleDashboard()'></div>
           </div>
 
-          <nav ng-if='user' ng-click='toggleDashboard()'>
+          <nav ng-if='user'>
 
-            <li class='page' ui-sref='foods({ place_id: null })' ui-sref-active='active'>
+            <li class='page' ng-click='navigate("foods", { place_id: null })' ng-class="{ active: page == 'foods' }">
               <i class="fa fa-cutlery"></i>
               <span>Menu</span>
             </li>
 
-            <li class='page' ui-sref='deliver' ui-sref-active='active' ng-hide='true'>
+            <li class='page' ng-click='navigate("deliver")' ui-sref-active='active' ng-hide='true' ng-class="{ active: page == 'deliver' }">
               <i class="fa fa-truck"></i>
               <span>Deliver</span>
             </li>
 
-            <li class='page' ui-sref='account' ui-sref-active='active'>
+            <li class='page' ng-click='navigate("account")' ui-sref-active='active' ng-hide='!user' ng-class="{ active: page == 'account' }">
               <i class="fa fa-user"></i>
               <span>Account</span>
             </li>
 
-            <li class='page' ui-sref='invite' ui-sref-active='active' ng-hide='true'>
+            <li class='page' ng-click='navigate("invite")' ui-sref- ng-hide='true' ng-class="{ active: page == 'invite' }">
               <i class="fa fa-users"></i>
               <span>Invite</span>
             </li>
 
-            <li class='page' ui-sref='support' ui-sref-active='active'>
+            <li class='page' ng-click='navigate("support")' ui-sref-active='active' ng-class="{ active: page == 'support' }">
               <i class="fa fa-phone"></i>
               <span>Support</span>
             </li>
 
-            <li class='page' ui-sref='fundraise' ui-sref-active='active'>
+            <li class='page' ng-click='navigate("fundraise")' ui-sref-active='active' ng-class="{ active: page == 'fundraise' }">
               <i class="fa fa-money"></i>
               <span>Sell on Nommit</span>
             </li>

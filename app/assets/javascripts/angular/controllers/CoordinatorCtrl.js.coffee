@@ -60,6 +60,8 @@
     ]
     modals.indexOf($state.current.name) > -1 || $scope.isLoginVisible
 
+  $rootScope.hideDashboard = ->
+    $scope.isDashboardVisible = false
   $scope.toggleDashboard = ->
     unless isDashboardDisabled()
       $scope.isDashboardVisible = !$scope.isDashboardVisible

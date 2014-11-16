@@ -937,6 +937,8 @@ article.edit {
 
   form {
     text-align: center;
+    margin-right: 58px;
+    position: relative;
     .button, input {
       height: auto;
       display: inline-block;
@@ -949,11 +951,15 @@ article.edit {
       font-size: 12pt;
     }
     input {
-      min-width: 75%;
+      width: 100%;
     }
     .button {
       padding: 8px 10px;
+      padding-top: 7px;
       font-size: 10pt;
+      position: absolute;
+      right: -58px;
+      top: 0px;
     }
 
 
@@ -1417,6 +1423,18 @@ $desktop: new-breakpoint(min-width 480px);
 }
 
 .edit {
+
+  .promos {
+
+    input {
+      width: 100%;
+      margin-right: 58px;
+    }
+    button {
+      float: right;
+    }
+
+  }
 
   .payment {
     text-align: left;
