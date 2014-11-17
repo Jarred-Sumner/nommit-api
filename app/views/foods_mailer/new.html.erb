@@ -6,11 +6,11 @@
   <p><%= @food.seller.name %> is delivering food on <%= link_to "Nommit", "http://www.getnommit.com" %>! It'll only be available until <%= @food.end_date.strftime("%I:%M %p") %> today.</p>
 <% end %>
 
-<p style='text-align: center; margin: 0 auto;'>
+<p style='text-align: center; margin: 15px auto;'>
   <%= link_to "http://www.getnommit.com", style: "margin: 0 auto; text-align: center; display: block;" do %>
     <div><%= image_tag @food.preview.url, style: "max-width: 350px; border-radius: 3px;" %></div>
     <h2 style='margin: 0 auto; margin-top: 10px; padding: 0px;'><%= @food.title %> for <%= number_to_currency @food.prices.first.price_in_cents / 100 %></h2>
-    <h6 style='text-align: center; display: block; margin: 0px auto; padding: 0px; margin-top: 5px;'>By <%= @food.seller.name %></h6>
+    <h6 style='text-align: center; display: block; margin: 0px auto; padding: 0px; margin-top: 5px; text-decoration: none; color: black;'>By <%= @food.seller.name %></h6>
   <% end %>
 </p>
 
