@@ -72,7 +72,7 @@ class Food < ActiveRecord::Base
   end
 
   def notify_users!
-    Notifications::FoodAvailableWorker.perform_at(start_date, id)
+    Notifications::FoodAvailableWorker.perform_at(start_date + 2.minutes, id)
   end
 
 end
