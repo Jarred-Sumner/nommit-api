@@ -11,9 +11,9 @@ class SMS::Notifications::FoodAvailableWorker
     if food.orderable? && user.phone.present?
 
       if food.seller.name.include?("Nommit")
-        @message = "Yo #{user.first_name}! Hungry? #{food.title} is being delivered on Nommit right now"
+        @message = "Yo #{user.first_name}! Hungry? #{food.title} is being delivered to CMU on Nommit right now - http://getnommit.com"
       else
-        @message = "Yo #{user.first_name}! #{food.seller.name} is delivering #{food.title} on Nommit right now"
+        @message = "Yo #{user.first_name}! #{food.seller.name} is delivering #{food.title} on Nommit right now - http://getnommit.com"
       end
 
       if user.credit > 0

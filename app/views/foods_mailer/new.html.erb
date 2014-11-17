@@ -3,7 +3,7 @@
 <% if @food.seller.name.include? "Nommit" %>
   <p>Nommit is delivering food! It'll only be available until <%= @food.end_date.strftime("%I:%M %p") %> today.</p>
 <% else %>
-  <p><%= @food.seller.name %> is delivering food on <%= link_to "Nommit", "http://www.getnommit.com" %>! It'll only be available until <%= @food.end_date.strftime("%I:%M %p") %> today.</p>
+  <p><%= @food.seller.name %> is delivering food on <%= link_to "Nommit", "http://www.getnommit.com" %>! Only available until <%= @food.end_date.strftime("%I:%M %p") %> today.</p>
 <% end %>
 
 <p style='text-align: center; margin: 15px auto;'>

@@ -18,8 +18,8 @@
 
         <header ng-controller='HeaderCtrl' disable-click-propagation ng-animate-children>
 
-          <div class='brand'>
-            <div class='fa fa-close back-button' ng-click='toggleDashboard()'></div>
+          <div class='brand' ng-click='toggleDashboard()'>
+            <div class='fa fa-close back-button'></div>
           </div>
 
           <nav ng-if='user'>

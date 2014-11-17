@@ -13,7 +13,7 @@ describe PushNotifications::FoodUnavailableWorker do
     end
 
     it "doesnt end the food" do
-      food = create(:food, end_date: 1.week.ago)
+      food = create(:food, end_date: 1.week.from_now)
       expect do
         subject.perform(food.id)
       end.to_not change { food.reload.state }
