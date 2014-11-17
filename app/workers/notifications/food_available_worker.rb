@@ -15,7 +15,7 @@ class Notifications::FoodAvailableWorker
     notification = user.notification || Notification.new(user_id: user.id)
 
     # If they haven't ordered in TEXT_THRESHOLD weeks
-    if user.phone.present? && (user.orders.count.zero? || user.orders.placed.where("created_at < ?", TEXT_THRESHOLD.weeks.ago).count > 0)
+    if user.phone.present? && notification.phone_subscribed? && (user.orders.count.zero? || user.orders.placed.where("created_at < ?", TEXT_THRESHOLD.weeks.ago).count > 0)
       # If we've never texted them
       # OR If we haven't texted them in over a week
       if notification.last_texted.nil? || notification.last_texted < TEXT_THRESHOLD.weeks.ago
@@ -25,7 +25,7 @@ class Notifications::FoodAvailableWorker
 
     end
 
-    if user.email.present?
+    if user.email.present? && notification.email_subscribed?
       send_email!(user.id)
       notification.last_emailed = DateTime.now
     end

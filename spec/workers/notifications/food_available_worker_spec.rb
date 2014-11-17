@@ -57,11 +57,43 @@ describe Notifications::FoodAvailableWorker do
         end.to_not change(SMS::Notifications::FoodAvailableWorker.jobs, :size)
       end
 
+      it "unless they're unsubscribed" do
+        user.notification = Notification.create!(user_id: user.id, phone_subscribed: false)
+        expect do
+          subject.notify_user!(user)
+        end.to_not change(SMS::Notifications::FoodAvailableWorker.jobs, :size)
+      end
+
       it "when they haven't ordered recently" do
         TestHelpers::Order.create_for(user: user, params: { created_at: 1.year.ago })
         expect do
           subject.notify_user!(user)
         end.to change(SMS::Notifications::FoodAvailableWorker.jobs, :size).from(0).to(1)
+      end
+
+    end
+
+    context "emails user" do
+      let(:user) { create(:user) }
+
+      subject do
+        worker = Notifications::FoodAvailableWorker.new
+        worker.food = food
+        worker.notify_user!(user)
+      end
+
+      it "successfully" do
+        expect do
+          subject
+        end.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).from(0).to(1)
+      end
+
+      it "unless they've unsubscribed" do
+        user.notification = Notification.create!(user_id: user.id, email_subscribed: false)
+        expect do
+          subject
+        end.to_not change(Sidekiq::Extensions::DelayedMailer.jobs, :size)
+
       end
 
     end

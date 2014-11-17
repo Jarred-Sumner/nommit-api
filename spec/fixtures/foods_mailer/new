@@ -1,3 +1,11 @@
-FoodsMailer#new
+Hey <%= @user.first_name %>,
 
-Hi, find me in app/views/foods_mailer/new
+<% if @food.seller.name.include? "Nommit" %>
+
+<%= link_to "Nommit", root_url %> is delivering <%= @food.title %>! It'll only be available until <%= @food.end_date.strftime("%I:%M %p") %> today.
+
+<% else %>
+
+<%= @food.seller.name %> is delivering <%= @food.title %> on <%= link_to "Nommit", "http://www.getnommit.com" %>! Only available until <%= @food.end_date.strftime("%I:%M %p") %> today.
+
+<% end %>

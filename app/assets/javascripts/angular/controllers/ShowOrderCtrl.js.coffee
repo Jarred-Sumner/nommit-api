@@ -21,4 +21,7 @@
       $interval.cancel($scope.timer)
       delete $scope.timer
 
+  $scope.call = ->
+    location.href = "tel://#{$scope.courier.user.phone}"
+
   startTimer()

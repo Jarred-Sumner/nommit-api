@@ -1,7 +1,11 @@
 <p>Hey <%= @user.first_name %>,</p>
 
+<% if @user.credit > 0 %>
+  <p>You have <strong><%= number_to_currency @user.credit / 100 %> in free credit</strong> left on <%= link_to "Nommit", "http://www.getnommit.com" %>.</p>
+<% end %>
+
 <% if @food.seller.name.include? "Nommit" %>
-  <p>Nommit is delivering food! It'll only be available until <%= @food.end_date.strftime("%I:%M %p") %> today.</p>
+  <p>Get <%= @food.title %> delivered to CMU! It'll only be available until <%= @food.end_date.strftime("%I:%M %p") %> today.</p>
 <% else %>
   <p><%= @food.seller.name %> is delivering food on <%= link_to "Nommit", "http://www.getnommit.com" %>! Only available until <%= @food.end_date.strftime("%I:%M %p") %> today.</p>
 <% end %>

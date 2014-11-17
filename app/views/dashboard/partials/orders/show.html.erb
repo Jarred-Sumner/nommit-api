@@ -39,6 +39,23 @@
 
   </section>
 
+  <section ng-show='order.isArrived()' class='arrival'>
+
+    <p>Arrived at <strong>{{ place.name | titleize }}</strong>!</p>
+
+    <h2 class='eta' ng-if='order.isLate()'>Pick Up in Lobby</h2>
+
+  </section>
+
+
+  <section ng-show='order.isDelivered() || order.isRated()' class='arrival'>
+
+    <p>Arrived at <strong>{{ place.name | titleize }}</strong></p>
+
+    <h2 class='eta'>Delivered at {{ order.deliveredAt() | date:"shortTime" }}!</h2>
+
+  </section>
+
   <section class='sticky order'>
     <div class='button button-primary' ng-click='call()'>Call {{ courier.user.name }}</div>
   </section>
