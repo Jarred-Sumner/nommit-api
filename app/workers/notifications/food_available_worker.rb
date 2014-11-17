@@ -4,7 +4,7 @@ class Notifications::FoodAvailableWorker
   TEXT_THRESHOLD = 1 unless defined?(TEXT_THRESHOLD)
 
   def perform(food_id)
-    self.food = Food.find(food_id)
+    self.food = Food.orderable.find(food_id)
 
     User.where(state: [ User.states[:registered], User.states[:activated] ]).find_each do |user|
       notify_user!(user)
@@ -21,6 +21,7 @@ class Notifications::FoodAvailableWorker
       ordered_recently = user.orders.placed.where("created_at > ?", TEXT_THRESHOLD.weeks.ago).count > 0
 
       # If they haven't ordered recently but have ordered in the past
+      # Or, they just never ordered
       if (ordered_awhile_ago && !ordered_recently) || user.orders.placed.count.zero?
 
         # If we've never texted them
