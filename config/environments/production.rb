@@ -89,5 +89,5 @@ Rails.application.configure do
     }
   }
   config.action_mailer.default_url_options = { host: "www.getnommit.com" }
-  config.asset_host = "http://www.getnommit.com/assets"
+  config.asset_host = "http://www.getnommit.com/"
 end
