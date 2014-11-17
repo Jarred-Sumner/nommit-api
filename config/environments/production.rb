@@ -88,4 +88,6 @@ Rails.application.configure do
       :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']
     }
   }
+  config.action_mailer.default_url_options = { host: "www.getnommit.com" }
+  config.asset_host = "http://www.getnommit.com/assets"
 end

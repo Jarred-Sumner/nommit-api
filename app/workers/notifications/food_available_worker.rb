@@ -13,6 +13,7 @@ class Notifications::FoodAvailableWorker
 
   def notify_user!(user)
     notification = user.notification || Notification.new(user_id: user.id)
+
     # If they haven't ordered in TEXT_THRESHOLD weeks
     if user.phone.present? && (user.orders.count.zero? || user.orders.placed.where("created_at < ?", TEXT_THRESHOLD.weeks.ago).count > 0)
       # If we've never texted them
@@ -39,7 +40,7 @@ class Notifications::FoodAvailableWorker
   end
 
   def send_email!(user_id)
-
+    FoodsMailer.delay.new(food.id, user_id)
   end
 
   def send_push_notification!(user_id)

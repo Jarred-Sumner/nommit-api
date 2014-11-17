@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   include StateID
 
   enum state: [:registered, :activated, :invited]
+  scope :emailable, -> { where("email IS NOT NULL") }
 
   attr_accessor :facebook
 
