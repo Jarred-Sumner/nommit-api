@@ -14,13 +14,22 @@ class Notifications::FoodAvailableWorker
   def notify_user!(user)
     notification = user.notification || Notification.new(user_id: user.id)
 
+
     # If they haven't ordered in TEXT_THRESHOLD weeks
-    if user.phone.present? && notification.phone_subscribed? && (user.orders.count.zero? || user.orders.placed.where("created_at < ?", TEXT_THRESHOLD.weeks.ago).count > 0)
-      # If we've never texted them
-      # OR If we haven't texted them in over a week
-      if notification.last_texted.nil? || notification.last_texted < TEXT_THRESHOLD.weeks.ago
-        send_text!(user.id)
-        notification.last_texted = DateTime.now
+    if user.phone.present? && notification.phone_subscribed?
+      ordered_awhile_ago = user.orders.placed.where("created_at < ?", TEXT_THRESHOLD.weeks.ago).count > 0
+      ordered_recently = user.orders.placed.where("created_at > ?", TEXT_THRESHOLD.weeks.ago).count > 0
+
+      # If they haven't ordered recently but have ordered in the past
+      if (ordered_awhile_ago && !ordered_recently) || user.orders.placed.count.zero?
+
+        # If we've never texted them
+        # OR If we haven't texted them in over a week
+        if notification.last_texted.nil? || notification.last_texted < TEXT_THRESHOLD.weeks.ago
+          send_text!(user.id)
+          notification.last_texted = DateTime.now
+        end
+
       end
 
     end

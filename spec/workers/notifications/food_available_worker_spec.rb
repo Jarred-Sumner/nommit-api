@@ -44,7 +44,21 @@ describe Notifications::FoodAvailableWorker do
         end.to change(SMS::Notifications::FoodAvailableWorker.jobs, :size).from(0).to(1)
       end
 
+      it "when they ordered awhile ago" do
+        order.update_attributes(created_at: 8.days.ago)
+        expect do
+          subject.notify_user!(user)
+        end.to change(SMS::Notifications::FoodAvailableWorker.jobs, :size).from(0).to(1)
+      end
+
       it "unless they recently ordered" do
+        expect do
+          subject.notify_user!(order.user)
+        end.to_not change(SMS::Notifications::FoodAvailableWorker.jobs, :size)
+      end
+
+      it "unless they ordered recently and awhile ago" do
+        TestHelpers::Order.create_for(user: order.user, params: { created_at: 1.year.ago } )
         expect do
           subject.notify_user!(order.user)
         end.to_not change(SMS::Notifications::FoodAvailableWorker.jobs, :size)
