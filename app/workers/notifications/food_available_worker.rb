@@ -1,6 +1,7 @@
 class Notifications::FoodAvailableWorker
   include Sidekiq::Worker
   attr_accessor :food
+  sidekiq_options retry: false
   TEXT_THRESHOLD = 1 unless defined?(TEXT_THRESHOLD)
 
   def perform(food_id)
@@ -32,7 +33,6 @@ class Notifications::FoodAvailableWorker
         end
 
       end
-
     end
 
     if user.email.present? && notification.email_subscribed?
@@ -43,6 +43,9 @@ class Notifications::FoodAvailableWorker
     send_push_notification!(user.id) if user.devices.registered.count > 0
 
     notification.save!
+  rescue Exception => e
+    Bugsnag.notify(e)
+    Rails.logger.info "Exception while notifying: #{e.inspect}"
   end
 
   def send_text!(user_id)
