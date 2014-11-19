@@ -13,7 +13,7 @@ class Food < ActiveRecord::Base
   include StateID
   enum state: { active: 0, halted: 1, ended: 2 }
 
-  # Foods are visible for awhile.
+  # Foods are visible for awhile
   scope :visible, lambda { where("end_date > ?", 1.day.ago) }
 
   scope :orderable, -> do

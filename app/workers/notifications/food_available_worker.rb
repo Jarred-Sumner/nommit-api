@@ -7,8 +7,12 @@ class Notifications::FoodAvailableWorker
   def perform(food_id)
     self.food = Food.orderable.find(food_id)
 
-    User.where(state: [ User.states[:registered], User.states[:activated] ]).find_each do |user|
-      notify_user!(user)
+    if food.orderable?
+      User.where(state: [ User.states[:registered], User.states[:activated] ]).find_each do |user|
+        notify_user!(user)
+      end
+    elsif food.start_date.future?
+      Notifications::FoodAvailableWorker.perform_at(food.start_date + 2.minutes, food.id)
     end
   end
 

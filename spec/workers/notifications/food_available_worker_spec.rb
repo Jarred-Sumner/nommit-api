@@ -22,6 +22,21 @@ describe Notifications::FoodAvailableWorker do
       create(:registered_user)
     end
 
+    it "skips food that isn't orderable yet" do
+      food.update_attributes(start_date: 2.hours.from_now)
+      subject.food = food
+      expect(subject).to_not receive(:notify_user!)
+      subject.perform(food.id)
+    end
+
+    it "reschedules food that isn't orderable yet" do
+      food.update_attributes(start_date: 2.hours.from_now)
+      subject.food = food
+      expect do
+        subject.perform(food.id)
+      end.to change(Notifications::FoodAvailableWorker.jobs, :size)
+    end
+
     it "creates a Notification for each user who doesn't have one" do
       food.save!
       expect do
