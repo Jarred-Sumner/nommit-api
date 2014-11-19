@@ -30,7 +30,7 @@ class ChargeWorker
       customer: charge.payment_method.customer,
       receipt_email: order.user.email,
       description: description,
-      statement_description: "#{order.quantity}x - #{order.food.title}".truncate(15),
+      statement_description: "#{order.quantity}x - #{order.food.title}".truncate(15, omission: ''),
       metadata: {
         email: order.user.email,
         order_id: order.id,
