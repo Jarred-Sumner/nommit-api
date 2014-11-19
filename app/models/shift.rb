@@ -5,8 +5,6 @@ class Shift < ActiveRecord::Base
   has_many :places, through: :delivery_places
   has_many :orders, through: :delivery_places
   has_many :foods, lambda { uniq }, through: :delivery_places
-  LONGEST_DELIVER_TIME = 15.0 unless defined?(LONGEST_DELIVER_TIME)
-  DELIVERY_PADDING = 2 unless defined?(DELIVERY_PADDING)
 
   # Active means ongoing
   # Halted means courier isn't accepting new orders, but in process of delivering old ones
@@ -47,61 +45,42 @@ class Shift < ActiveRecord::Base
   # If new_zero_index's value was 3
   # Then, array should return [3,4,5,6,1,2]
   def update_arrival_times!
-    # We don't update arrival times for shifts that are ended or halted.
-    return unless active?
-
-    active = delivery_places
-      .joins(:orders)
-      .where(orders: { state: [ Order.states[:active], Order.states[:arrived] ] })
-      .order("orders.delivered_at ASC")
+    active = delivery_places.with_pending_orders
 
     unless active.collect(&:id).uniq.sort == delivery_places.active.pluck(:id).uniq.sort
       count = active.count
       inactive = delivery_places.pluck(:id).uniq.sort - active.pluck('delivery_places.id').uniq.sort
       transaction do
-        DeliveryPlace.where(id: inactive).update_all(state: DeliveryPlace.states[:pending], arrives_at: nil, current_index: nil)
+
+        state = :pending
+        if halt?
+          state = :ended
+        end
+
+        DeliveryPlace
+          .where(id: inactive)
+          .update_all(state: DeliveryPlace.states[state], arrives_at: nil, current_index: nil)
+
         active.each_with_index do |dp, index|
           state = dp.state
-          state = "ready" if dp.pending?
 
-          eta = nil
-
-          # Courier *needs* to arrive by this point for them to be on time
-          ceiling = dp.orders.pending.order("delivered_at ASC").first.try(:delivered_at)
-
-          # Courier *should* be there by this time.
-          recommended = eta_for(index + 1, count)
-
-          if recommended.present? && ceiling.present?
-
-            # If they're running slow, and the recommended ETA is past the time they *need* to be there by
-            # We defer to the time they *need* to be there by
-            if recommended > ceiling
-              eta = ceiling
+          if dp.pending?
+            if halt?
+              state = "halted"
             else
-              eta = recommended
+              state = "ready"
             end
-
-          else
-            eta = recommended || ceiling
           end
 
-          dp.update_attributes!(current_index: index + 1, arrives_at: eta, state: state)
+          dp.current_index = index
+          dp.generate_eta!
+          dp.state = state
+          dp.save!
         end
+
       end
     end
 
-  end
-
-  def eta_for(index, place_count)
-    time_spent_in_place = LONGEST_DELIVER_TIME / place_count.to_f
-    eta = (time_spent_in_place * index).minutes.from_now
-
-    if eta > 15.minutes.from_now
-      eta = 15.minutes.from_now
-    else
-      eta
-    end
   end
 
   def ended!
@@ -117,7 +96,13 @@ class Shift < ActiveRecord::Base
     transaction do
       self.state = :halt
       save!
-      delivery_places.update_all(state: DeliveryPlace.states[:halted])
+      delivery_places
+        .with_pending_orders
+        .update_all(state: DeliveryPlace.states[:halted])
+      delivery_places
+        .where.not(state: DeliveryPlace.states[:halted])
+        .update_all(state: DeliveryPlace.states[:ended])
+      update_arrival_times!
     end
   end
 

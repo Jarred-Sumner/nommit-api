@@ -90,6 +90,27 @@ describe Shift, type: :model do
 
   context "#halt!" do
 
+    before :each do
+      food = shift.foods.sample
+      shift.delivery_places[0..1].each do |dp|
+        TestHelpers::Order.create_for(params: { place_id: dp.place.id, food_id: food.id , price_id: food.prices.first.id })
+      end
+    end
+
+    subject { shift.halt! }
+
+    it "marks delivery places with orders as halted" do
+      expect do
+        subject
+      end.to change { shift.delivery_places.halted.reload.count }.from(0).to(2)
+    end
+
+    it "marks delivery places without orders as ended" do
+      expect do
+        subject
+      end.to change { shift.delivery_places.ended.reload.count }.from(0).to(shift.delivery_places.count - 2)
+    end
+
   end
 
 end

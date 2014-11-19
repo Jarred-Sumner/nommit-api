@@ -6,6 +6,7 @@ class DeliveryPlace < ActiveRecord::Base
   has_many :foods, through: :deliveries
   has_many :orders, through: :deliveries
   has_one :courier, through: :shift
+  LONGEST_DELIVER_TIME = 15.0 unless defined?(LONGEST_DELIVER_TIME)
 
   include StateID
   enum state: [:ready, :arrived, :halted, :ended, :pending]
@@ -15,8 +16,14 @@ class DeliveryPlace < ActiveRecord::Base
   end
 
   scope :active, -> do
-    states = [ DeliveryPlace.states[:ready], DeliveryPlace.states[:arrived] ]
+    states = [ DeliveryPlace.states[:ready], DeliveryPlace.states[:arrived], DeliveryPlace.states[:halted] ]
     where(state: states).order("current_index ASC")
+  end
+
+  scope :with_pending_orders, -> do
+    joins(:orders)
+      .where(orders: { state: [ Order.states[:active], Order.states[:arrived] ] })
+      .order("orders.delivered_at ASC")
   end
 
   validates :shift, presence: true
@@ -87,6 +94,48 @@ class DeliveryPlace < ActiveRecord::Base
       DeliveryPlace.states[:ready]
     else
       state_id
+    end
+  end
+
+  def generate_eta!
+    eta = nil
+
+    # Courier *needs* to arrive by this point for them to be on time
+    ceiling = orders
+      .pending
+      .order("delivered_at ASC")
+      .first
+      .try(:delivered_at)
+
+    if recommended_eta.present? && ceiling.present?
+
+      # If they're running slow, and the recommended ETA is past the time they *need* to be there by
+      # We defer to the time they *need* to be there by
+      if recommended_eta > ceiling
+        eta = ceiling
+      else
+        eta = recommended_eta
+      end
+
+    else
+      eta = recommended_eta || ceiling
+    end
+
+    self.arrives_at = eta
+  end
+
+  private
+
+  def recommended_eta
+    place_count = shift.delivery_places.with_pending_orders.count
+
+    time_spent_in_place = LONGEST_DELIVER_TIME / place_count.to_f
+    @eta = (time_spent_in_place * (current_index + 1) ).minutes.from_now
+
+    if @eta > 15.minutes.from_now
+      @eta = 15.minutes.from_now
+    else
+      @eta
     end
   end
 

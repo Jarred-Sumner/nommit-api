@@ -62,7 +62,7 @@ class Order < ActiveRecord::Base
 
   def delivered!
     transaction do
-      update_attributes!(state: "delivered")
+      update_attributes!(state: "delivered", delivered_at: DateTime.now, original_delivered_at: delivered_at)
       shift.update_arrival_times!
     end
   end

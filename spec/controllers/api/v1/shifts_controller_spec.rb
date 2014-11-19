@@ -105,12 +105,21 @@ describe Api::V1::ShiftsController, type: :controller do
           create(:order, place_id: place_id, food_id: food_id)
         end
 
-        it "halts the shift and all the delivery places" do
+        it "halts the shift" do
           expect(controller).to receive(:track_halted_shift)
           put :update, id: shift.id, state_id: Shift.states[:ended]
           expect(response.status).to eq(422)
           expect(shift.reload.state).to eq("halt")
-          expect(shift.delivery_places.halted.count).to eq(shift.delivery_places.count)
+        end
+
+        it "ends the inactive delivery places" do
+          put :update, id: shift.id, state_id: Shift.states[:ended]
+          expect(shift.delivery_places.ended.count).to eq(shift.delivery_places.count - shift.delivery_places.with_pending_orders.count)
+        end
+
+        it "halts the active delivery places" do
+          put :update, id: shift.id, state_id: Shift.states[:ended]
+          expect(shift.delivery_places.halted.count).to eq(shift.delivery_places.with_pending_orders.count)
         end
 
       end
