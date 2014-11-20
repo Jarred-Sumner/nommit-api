@@ -1598,6 +1598,7 @@ $desktop: new-breakpoint(min-width 480px);
 .iphone-container {
   @extend .modal;
   background-color: white;
+  overflow-y: hidden !important;
 
   .food-preview {
     height: 100%;
@@ -1613,9 +1614,9 @@ $desktop: new-breakpoint(min-width 480px);
 
   .pitch {
     .logo {
-      max-width: 100%;
+      width: 300px;
+      max-width: 300px;
       display: block;
-      width: 100%;
     }
 
     div {
