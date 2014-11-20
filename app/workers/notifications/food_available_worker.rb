@@ -18,11 +18,11 @@ class Notifications::FoodAvailableWorker
   def notify_user!(user)
     user.notification ||= Notification.new(user_id: user.id, phone_subscribed: true, email_subscribed: true)
 
-    if should_text?(user)
+    if should_push?(user)
+      send_push_notification!(user.id)
+    elsif should_text?(user)
       send_text!(user.id)
       user.notification.last_texted = DateTime.now
-    elsif should_push?(user)
-      send_push_notification!(user.id)
     elsif should_email?(user)
       send_email!(user.id)
       user.notification.last_emailed = DateTime.now
