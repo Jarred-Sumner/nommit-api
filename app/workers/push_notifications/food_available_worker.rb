@@ -16,7 +16,7 @@ class PushNotifications::FoodAvailableWorker < PushNotifications::BaseWorker
 
   def notification_params(device)
     params = super
-    params[:badge] = Food.orderable.count
+    params[:badge] = 1
 
     if food.orderable?
       params[:expiry] = food.end_date.to_time

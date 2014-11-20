@@ -111,6 +111,10 @@ describe Notifications::FoodAvailableWorker do
         worker.notify_user!(user)
       end
 
+      before :each do
+        Notification.create!(user_id: user.id, phone_subscribed: false)
+      end
+
       it "successfully" do
         expect do
           subject
@@ -118,7 +122,7 @@ describe Notifications::FoodAvailableWorker do
       end
 
       it "unless they've unsubscribed" do
-        user.notification = Notification.create!(user_id: user.id, email_subscribed: false)
+        user.notification.update_attributes!(email_subscribed: false)
         expect do
           subject
         end.to_not change(Sidekiq::Extensions::DelayedMailer.jobs, :size)
@@ -130,6 +134,7 @@ describe Notifications::FoodAvailableWorker do
     context "sends push notification" do
       let(:user) do
         user = create(:user)
+        user.notification = Notification.create!(phone_subscribed: false, user_id: user.id)
         create(:device, user_id: user.id)
         user
       end

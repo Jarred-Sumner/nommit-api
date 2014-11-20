@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_many :sellers, through: :couriers
   has_one :notification
   include StateID
+  AWHILE = 1 unless defined?(TEXT_THRESHOLD)
 
   enum state: [:registered, :activated, :invited]
   scope :emailable, -> { where("email IS NOT NULL") }
@@ -27,6 +28,14 @@ class User < ActiveRecord::Base
 
   def first_name
     self.name.split(" ").first
+  end
+
+  def hasnt_ordered_in_awhile?
+    return true if orders.placed.count.zero?
+
+    ordered_recently = orders.placed.where("created_at > ?", AWHILE.weeks.ago).count > 0
+    ordered_awhile_ago = orders.placed.where("created_at < ?", AWHILE.weeks.ago).count > 0
+    !ordered_recently && ordered_awhile_ago
   end
 
   def self.from(access_token: nil)

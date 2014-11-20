@@ -2,7 +2,6 @@ class Notifications::FoodAvailableWorker
   include Sidekiq::Worker
   attr_accessor :food
   sidekiq_options retry: false
-  TEXT_THRESHOLD = 1 unless defined?(TEXT_THRESHOLD)
 
   def perform(food_id)
     self.food = Food.orderable.find(food_id)
@@ -17,39 +16,38 @@ class Notifications::FoodAvailableWorker
   end
 
   def notify_user!(user)
-    notification = user.notification || Notification.new(user_id: user.id)
+    user.notification ||= Notification.new(user_id: user.id, phone_subscribed: true, email_subscribed: true)
 
-
-    # If they haven't ordered in TEXT_THRESHOLD weeks
-    if user.phone.present? && notification.phone_subscribed?
-      ordered_awhile_ago = user.orders.placed.where("created_at < ?", TEXT_THRESHOLD.weeks.ago).count > 0
-      ordered_recently = user.orders.placed.where("created_at > ?", TEXT_THRESHOLD.weeks.ago).count > 0
-
-      # If they haven't ordered recently but have ordered in the past
-      # Or, they just never ordered
-      if (ordered_awhile_ago && !ordered_recently) || user.orders.placed.count.zero?
-
-        # If we've never texted them
-        # OR If we haven't texted them in over a week
-        if notification.last_texted.nil? || notification.last_texted < TEXT_THRESHOLD.weeks.ago
-          send_text!(user.id)
-          notification.last_texted = DateTime.now
-        end
-
-      end
-    end
-
-    if user.email.present? && notification.email_subscribed?
+    if should_text?(user)
+      send_text!(user.id)
+      user.notification.last_texted = DateTime.now
+    elsif should_push?(user)
+      send_push_notification!(user.id)
+    elsif should_email?(user)
       send_email!(user.id)
-      notification.last_emailed = DateTime.now
+      user.notification.last_emailed = DateTime.now
     end
 
-    send_push_notification!(user.id) if user.devices.registered.count > 0
-
-    notification.save!
+    user.notification.save!
   rescue Exception => e
     Bugsnag.notify(e)
     Rails.logger.info "Exception while notifying: #{e.inspect}"
+  end
+
+  def should_text?(user)
+    return false if user.phone.blank?
+    return false unless user.notification.phone_subscribed?
+    return false unless user.hasnt_ordered_in_awhile?
+    return false if user.notification.last_texted.present? && user.notification.last_texted > User::AWHILE.weeks.ago
+    true
+  end
+
+  def should_email?(user)
+    user.email.present? && user.notification.email_subscribed?
+  end
+
+  def should_push?(user)
+    user.devices.registered.count > 0
   end
 
   def send_text!(user_id)
