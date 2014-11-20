@@ -39,6 +39,7 @@ class Notifications::FoodAvailableWorker
     return false unless user.notification.phone_subscribed?
     return false unless user.hasnt_ordered_in_awhile?
     return false if user.notification.last_texted.present? && user.notification.last_texted > User::AWHILE.weeks.ago
+
     true
   end
 

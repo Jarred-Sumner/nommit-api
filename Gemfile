@@ -83,6 +83,9 @@ gem 'omniauth-facebook'
 # Fancypants email templates
 gem 'premailer-rails'
 
+# Cron
+gem 'whenever'
+
 group :test, :development do
 
   # Debugging
