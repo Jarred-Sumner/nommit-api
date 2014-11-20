@@ -20,11 +20,12 @@ class PushNotifications::FoodAvailableWorker < PushNotifications::BaseWorker
 
     if food.orderable?
       params[:expiry] = food.end_date.to_time
+      price = number_to_currency(food.prices.first.price_in_cents / 100)
 
       if food.seller.name.include?("Nommit")
-        params[:alert] = "Hungry? Get #{food.title} delivered in under 15 minutes"
+        params[:alert] = "Hungry? Get #{food.title} for #{price} delivered in under 15 minutes"
       else
-        params[:alert] = "Hungry? #{food.seller.name} is delivering #{food.title} right now"
+        params[:alert] = "Hungry? #{food.seller.name} is delivering #{food.title} for #{price} right now"
       end
 
       if user.present? && user.credit > 0
