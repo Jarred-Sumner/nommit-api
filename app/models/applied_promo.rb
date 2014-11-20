@@ -57,4 +57,8 @@ class AppliedPromo < ActiveRecord::Base
       end
     end
 
+    after_commit if: :active? do
+      AppliedPromosMailer.delay.new(id) if user.email.present?
+    end
+
 end

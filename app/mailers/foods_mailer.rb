@@ -1,5 +1,6 @@
 class FoodsMailer < ActionMailer::Base
   default from: '"Nommit" <support@getnommit.com>'
+  layout "email"
   include ActionView::Helpers::NumberHelper
 
   def new(food_id, user_id)

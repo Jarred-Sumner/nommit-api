@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <%= stylesheet_link_tag "email" %>
+  </head>
+  <body>
+
+    <div class='header'>
+      <%= link_to root_url, class: "clickable-area" do %>
+        <%= image_tag "nommit-logo.png", class: "logo" %>
+      <% end %>
+    </div>
+
+    <div class='content-container'>
+      <%= yield %>
+    </div>
+
+  </body>
+</html>

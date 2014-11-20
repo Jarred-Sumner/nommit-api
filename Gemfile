@@ -80,6 +80,9 @@ gem 'test_after_commit', group: :test
 gem 'omniauth'
 gem 'omniauth-facebook'
 
+# Fancypants email templates
+gem 'premailer-rails'
+
 group :test, :development do
 
   # Debugging
