@@ -1,0 +1,20 @@
+<article class='iphone-container' ng-if='isiOSBannerVisible'>
+  <div class='food-preview' style="background-image: url(<%= raw Food.last.preview.url %>)"></div>
+
+  <section class='pitch'>
+    <%= image_tag "nommit-logo.png", class: 'logo' %>
+    <div>Delivery in under 15 minutes.</div>
+  </section>
+
+  <section class='download'>
+    <%= link_to "itms://itunes.com/apps/nommit" do %>
+     <%= image_tag "dashboard/app-store-button.png" %>
+    <% end %>
+  </section>
+
+  <section class='cmu'>
+    <%= image_tag "dashboard/scottie-dog.png" %>
+    <span>Only available at CMU</span>
+  </section>
+
+</article>

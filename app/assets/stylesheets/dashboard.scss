@@ -19,6 +19,7 @@ $default-color: #836864;
 $selected-color: #4EC2C7;
 $light-color: #767676;
 $ultralight-color: #828282;
+$cmu-red: #C20929;
 
 $offwhite-background: #F9F9F9;
 
@@ -1098,6 +1099,22 @@ $desktop: new-breakpoint(min-width 480px);
 
 }
 
+.triangle-border {
+  position: relative;
+  &:after {
+    position: absolute;
+    display: block;
+    content: "";
+    max-width: 100%;
+    width: 100%;
+    height: 7px;
+    bottom: 0px;
+
+    background-image: image-url("dashboard/triangle.png");
+    @include retina-image(dashboard/triangle, 15px 7px);
+  }
+}
+
 .login-container {
   @extend .modal;
   background-color: white;
@@ -1111,7 +1128,7 @@ $desktop: new-breakpoint(min-width 480px);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    position: relative;
+    @extend .triangle-border;
 
     .fa-close {
       position: absolute;
@@ -1134,18 +1151,7 @@ $desktop: new-breakpoint(min-width 480px);
       }
 
     }
-    &:after {
-      position: absolute;
-      display: block;
-      content: "";
-      max-width: 100%;
-      width: 100%;
-      height: 7px;
-      bottom: 0px;
 
-      background-image: image-url("dashboard/triangle.png");
-      @include retina-image(dashboard/triangle, 15px 7px);
-    }
   }
 
   h1 {
@@ -1587,4 +1593,72 @@ $desktop: new-breakpoint(min-width 480px);
     width: 100px;
     margin-right: 3px;
   }
+}
+
+.iphone-container {
+  @extend .modal;
+  background-color: white;
+
+  .food-preview {
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    max-height: 150px;
+    display: block;
+    width: 100%;
+
+    @extend .triangle-border;
+  }
+
+  .pitch {
+    .logo {
+      max-width: 100%;
+      display: block;
+      width: 100%;
+    }
+
+    div {
+      margin-top: 10px;
+      color: $default-color;
+      font-size: 11pt;
+    }
+  }
+
+  section {
+    padding: 10px;
+    max-width: 100%;
+    display: block;
+    text-align: center;
+  }
+
+  .download {
+    margin: 20px auto;
+    border-top: 1px solid darken($offwhite-background, 5%);
+    border-bottom: 1px solid darken($offwhite-background, 5%);
+    padding: 35px;
+    background-color: $offwhite-background;
+    text-align: center;
+    a {
+      display: block;
+    }
+    a img {
+      width: 200px;
+    }
+  }
+
+  .cmu {
+    color: $cmu-red;
+    img {
+      height: 60px;
+      display: inline-block;
+    }
+    span {
+      vertical-align: top;
+      display: inline-block;
+      padding-top: 20px;
+      margin-left: 10px;
+    }
+  }
+
 }
