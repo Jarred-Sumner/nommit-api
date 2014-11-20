@@ -66,25 +66,25 @@ describe Notifications::FoodAvailableWorker do
         end.to change(SMS::Notifications::FoodAvailableWorker.jobs, :size).from(0).to(1)
       end
 
-      it "unless they recently ordered" do
-        expect do
-          subject.notify_user!(order.user)
-        end.to_not change(SMS::Notifications::FoodAvailableWorker.jobs, :size)
-      end
+      # it "unless they recently ordered" do
+      #   expect do
+      #     subject.notify_user!(order.user)
+      #   end.to_not change(SMS::Notifications::FoodAvailableWorker.jobs, :size)
+      # end
 
-      it "unless they ordered recently and awhile ago" do
-        TestHelpers::Order.create_for(user: order.user, params: { created_at: 1.year.ago } )
-        expect do
-          subject.notify_user!(order.user)
-        end.to_not change(SMS::Notifications::FoodAvailableWorker.jobs, :size)
-      end
+      # it "unless they ordered recently and awhile ago" do
+      #   TestHelpers::Order.create_for(user: order.user, params: { created_at: 1.year.ago } )
+      #   expect do
+      #     subject.notify_user!(order.user)
+      #   end.to_not change(SMS::Notifications::FoodAvailableWorker.jobs, :size)
+      # end
 
-      it "unless we texted them recently" do
-        user.notification = Notification.create!(user_id: user.id, last_texted: 6.days.ago)
-        expect do
-          subject.notify_user!(user)
-        end.to_not change(SMS::Notifications::FoodAvailableWorker.jobs, :size)
-      end
+      # it "unless we texted them recently" do
+      #   user.notification = Notification.create!(user_id: user.id, last_texted: 6.days.ago)
+      #   expect do
+      #     subject.notify_user!(user)
+      #   end.to_not change(SMS::Notifications::FoodAvailableWorker.jobs, :size)
+      # end
 
       it "unless they're unsubscribed" do
         user.notification = Notification.create!(user_id: user.id, phone_subscribed: false)
