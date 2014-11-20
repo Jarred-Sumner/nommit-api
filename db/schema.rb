@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141117215833) do
+ActiveRecord::Schema.define(version: 20141120055011) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -161,18 +161,6 @@ ActiveRecord::Schema.define(version: 20141117215833) do
   add_index "locations", ["latitude"], name: "index_locations_on_latitude", using: :btree
   add_index "locations", ["longitude"], name: "index_locations_on_longitude", using: :btree
 
-  create_table "notifications", force: true do |t|
-    t.datetime "last_texted"
-    t.datetime "last_emailed"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "email_subscribed", default: true, null: false
-    t.boolean  "phone_subscribed", default: true, null: false
-  end
-
-  add_index "notifications", ["user_id"], name: "index_notifications_on_user_id", using: :btree
-
   create_table "orders", force: true do |t|
     t.integer  "food_id"
     t.integer  "user_id"
@@ -282,6 +270,18 @@ ActiveRecord::Schema.define(version: 20141117215833) do
   add_index "shifts", ["courier_id"], name: "index_shifts_on_courier_id", using: :btree
   add_index "shifts", ["seller_id"], name: "index_shifts_on_seller_id", using: :btree
   add_index "shifts", ["state"], name: "index_shifts_on_state", using: :btree
+
+  create_table "subscriptions", force: true do |t|
+    t.datetime "last_texted"
+    t.datetime "last_emailed"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "email",        default: true, null: false
+    t.boolean  "sms",          default: true, null: false
+  end
+
+  add_index "subscriptions", ["user_id"], name: "index_subscriptions_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "facebook_uid"

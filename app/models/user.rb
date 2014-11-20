@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   has_many :devices
   belongs_to :location
   has_many :sellers, through: :couriers
-  has_one :notification
+  has_one :subscription
   include StateID
   AWHILE = 1 unless defined?(TEXT_THRESHOLD)
 

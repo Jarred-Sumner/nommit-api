@@ -13,15 +13,15 @@ class InviteWorker
       normalized_phone = PhonyRails.normalize_number(phone, default_country_code: "US")
       next if User
         .where(phone: normalized_phone)
-        .joins(:notification)
-        .where("notifications.last_texted > ?", 1.week.ago)
+        .joins(:subscription)
+        .where("subscriptions.last_texted > ?", 1.week.ago)
         .count > 0
 
       begin
         u = User.create!(name: contact['name'], phone: normalized_phone, state: 'invited')
-        u.notification = Notification.new
-        u.notification.last_texted = DateTime.now
-        u.notification.save!
+        u.subscription = Subscription.new
+        u.subscription.last_texted = DateTime.now
+        u.subscription.save!
       rescue Exception => e
         Bugsnag.notify(e)
       end

@@ -1,4 +1,4 @@
-class Notification < ActiveRecord::Base
+class Subscription < ActiveRecord::Base
   belongs_to :user
 
   validates :user, presence: true, uniqueness: true

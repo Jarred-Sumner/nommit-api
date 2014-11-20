@@ -68,7 +68,7 @@ gem 'ngannotate-rails'
 # Analytics
 gem 'analytics-ruby', '~> 2.0.0', :require => 'segment/analytics'
 
-# Push Notifications
+# Push Subscriptions
 gem 'grocer'
 
 # We use PostgreSQL in Production

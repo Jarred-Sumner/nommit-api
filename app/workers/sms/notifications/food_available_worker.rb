@@ -23,7 +23,8 @@ class SMS::Notifications::FoodAvailableWorker
 
       end
 
-      Texter.run(@message, user.phone)
+      # We use the invite phone here because this is the one where it's safe to overload it with text messages
+      Texter.run(@message, user.phone, InviteWorker::INVITE_PHONE)
     end
 
   end

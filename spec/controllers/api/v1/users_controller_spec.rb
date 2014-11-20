@@ -12,6 +12,34 @@ describe Api::V1::UsersController, type: :controller do
       allow_any_instance_of(Texter).to receive(:perform)
     end
 
+    context "email notifications" do
+
+      specify do
+        put :update, id: user.id, email_notifications: 0
+        expect(user.reload.subscription.email).to eq(false)
+      end
+
+      specify do
+        put :update, id: user.id, email_notifications: 1
+        expect(user.reload.subscription.email).to eq(true)
+      end
+
+    end
+
+    context "sms notifications" do
+
+      specify do
+        put :update, id: user.id, sms_notifications: 0
+        expect(user.reload.subscription.sms).to eq(false)
+      end
+
+      specify do
+        put :update, id: user.id, sms_notifications: 1
+        expect(user.reload.subscription.sms).to eq(true)
+      end
+
+    end
+
     context "given a valid token" do
       before { StripeMock.start }
       after { StripeMock.stop }

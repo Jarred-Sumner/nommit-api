@@ -16,19 +16,19 @@ class Notifications::FoodAvailableWorker
   end
 
   def notify_user!(user)
-    user.notification ||= Notification.new(user_id: user.id, phone_subscribed: true, email_subscribed: true)
+    user.subscription ||= Subscription.new(user_id: user.id, sms: true, email: true)
 
     if should_push?(user)
       send_push_notification!(user.id)
     elsif should_text?(user)
       send_text!(user.id)
-      user.notification.last_texted = DateTime.now
+      user.subscription.last_texted = DateTime.now
     elsif should_email?(user)
       send_email!(user.id)
-      user.notification.last_emailed = DateTime.now
+      user.subscription.last_emailed = DateTime.now
     end
 
-    user.notification.save!
+    user.subscription.save!
   rescue Exception => e
     Bugsnag.notify(e)
     Rails.logger.info "Exception while notifying: #{e.inspect}"
@@ -36,12 +36,12 @@ class Notifications::FoodAvailableWorker
 
   def should_text?(user)
     return false if user.phone.blank?
-    return false unless user.notification.phone_subscribed?
+    return false unless user.subscription.sms?
     true
   end
 
   def should_email?(user)
-    user.email.present? && user.notification.email_subscribed?
+    user.email.present? && user.subscription.email?
   end
 
   def should_push?(user)

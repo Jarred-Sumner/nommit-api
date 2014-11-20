@@ -41,7 +41,7 @@ describe Notifications::FoodAvailableWorker do
       food.save!
       expect do
         Notifications::FoodAvailableWorker.new.perform(food.id)
-      end.to change(Notification, :count).by(User.count)
+      end.to change(Subscription, :count).by(User.count)
     end
 
     it "texts everyone that hasn't recently ordered just once" do
@@ -80,14 +80,14 @@ describe Notifications::FoodAvailableWorker do
       # end
 
       # it "unless we texted them recently" do
-      #   user.notification = Notification.create!(user_id: user.id, last_texted: 6.days.ago)
+      #   user.subscription = Notification.create!(user_id: user.id, last_texted: 6.days.ago)
       #   expect do
       #     subject.notify_user!(user)
       #   end.to_not change(SMS::Notifications::FoodAvailableWorker.jobs, :size)
       # end
 
       it "unless they're unsubscribed" do
-        user.notification = Notification.create!(user_id: user.id, phone_subscribed: false)
+        user.subscription = Subscription.create!(user_id: user.id, sms: false)
         expect do
           subject.notify_user!(user)
         end.to_not change(SMS::Notifications::FoodAvailableWorker.jobs, :size)
@@ -112,7 +112,7 @@ describe Notifications::FoodAvailableWorker do
       end
 
       before :each do
-        Notification.create!(user_id: user.id, phone_subscribed: false)
+        Subscription.create!(user_id: user.id, sms: false)
       end
 
       it "successfully" do
@@ -122,7 +122,7 @@ describe Notifications::FoodAvailableWorker do
       end
 
       it "unless they've unsubscribed" do
-        user.notification.update_attributes!(email_subscribed: false)
+        user.subscription.update_attributes!(email: false)
         expect do
           subject
         end.to_not change(Sidekiq::Extensions::DelayedMailer.jobs, :size)
@@ -134,7 +134,7 @@ describe Notifications::FoodAvailableWorker do
     context "sends push notification" do
       let(:user) do
         user = create(:user)
-        user.notification = Notification.create!(phone_subscribed: false, user_id: user.id)
+        user.subscription = Subscription.create!(sms: false, user_id: user.id)
         create(:device, user_id: user.id)
         user
       end
