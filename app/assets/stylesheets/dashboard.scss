@@ -1599,6 +1599,8 @@ $desktop: new-breakpoint(min-width 480px);
   @extend .modal;
   background-color: white;
   overflow-y: hidden !important;
+  -webkit-overflow-scrolling: none;
+  overflow-scrolling: none;
 
   .food-preview {
     height: 100%;
