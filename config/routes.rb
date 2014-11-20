@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       resources :payment_methods, only: [:update, :show]
 
       resources :users, only: [:update] do
+        resources :subscriptions, only: [:create, :show]
         resources :promos, only: [:create]
       end
       resources :devices, only: [:create]
