@@ -17,10 +17,17 @@ quantity = food.goal - food.sold
 json.order_count quantity
 
 # Ratings default to 4. Because we want people to buy the food.
-json.rating food.orders.average(:rating).to_f || 4.to_f
+json.rating food.seller.rating
 
-json.seller do
-  json.partial!("api/v1/sellers/seller", seller: food.seller) if food.seller.present?
+# Until we update the API, we're just going to say that the seller is the restaurant
+if food.restaurant.present?
+  json.seller do
+    json.partial! food.restaurant
+  end
+elsif food.seller.present?
+  json.seller do
+    json.partial! food.seller
+  end
 end
 
 if !hide_delivery_places ||= false

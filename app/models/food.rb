@@ -8,6 +8,7 @@ class Food < ActiveRecord::Base
   has_many :places, lambda { uniq }, through: :delivery_places
   has_many :couriers, through: :shifts
   belongs_to :seller
+  belongs_to :restaurant
   has_many :prices
 
   include StateID

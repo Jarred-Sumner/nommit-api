@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141120055011) do
+ActiveRecord::Schema.define(version: 20141122193615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -130,8 +130,10 @@ ActiveRecord::Schema.define(version: 20141120055011) do
     t.integer  "goal"
     t.integer  "seller_id"
     t.datetime "start_date"
+    t.integer  "restaurant_id"
   end
 
+  add_index "foods", ["restaurant_id"], name: "index_foods_on_restaurant_id", using: :btree
   add_index "foods", ["seller_id"], name: "index_foods_on_seller_id", using: :btree
 
   create_table "foods_places", force: true do |t|
@@ -234,6 +236,16 @@ ActiveRecord::Schema.define(version: 20141120055011) do
   add_index "promos", ["name"], name: "index_promos_on_name", unique: true, using: :btree
   add_index "promos", ["type"], name: "index_promos_on_type", using: :btree
   add_index "promos", ["user_id"], name: "index_promos_on_user_id", using: :btree
+
+  create_table "restaurants", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "logo_file_name"
+    t.string   "logo_content_type"
+    t.integer  "logo_file_size"
+    t.datetime "logo_updated_at"
+  end
 
   create_table "sellers", force: true do |t|
     t.string   "name"
