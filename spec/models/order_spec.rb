@@ -75,9 +75,8 @@ describe Order, type: :model do
         specify { expect(subject.applied_promos.used_up.count).to eq(1) }
         specify { expect(subject.applied_promos.active.count).to eq(1) }
 
-        # The balance on this promo = original_balance - order_price - discount_on_first_promo
         specify do
-          balance = second_promo.discount_in_cents - subject.price_in_cents - discount
+          balance = second_promo.discount_in_cents - (subject.price_in_cents - discount)
           expect(u_promo.reload.amount_remaining_in_cents).to eq(balance)
         end
       end

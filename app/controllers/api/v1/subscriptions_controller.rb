@@ -6,7 +6,7 @@ class Api::V1::SubscriptionsController < Api::V1::ApplicationController
       state = Integer(create_params[:sms])
       if values.include?(state)
         state = state == 1 ? true : false
-        current_user.subscription.update_attributes!(sms: state)
+        subscription.update_attributes!(sms: state)
       end
     end
 
@@ -15,7 +15,7 @@ class Api::V1::SubscriptionsController < Api::V1::ApplicationController
       state = Integer(create_params[:email])
       if values.include?(state)
         state = state == 1 ? true : false
-        current_user.subscription.update_attributes!(email: state)
+        subscription.update_attributes!(email: state)
       end
     end
 

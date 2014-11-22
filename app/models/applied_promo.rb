@@ -39,6 +39,11 @@ class AppliedPromo < ActiveRecord::Base
     promo.active? && active?
   end
 
+  def active!
+    self.update_attributes(state: 'active')
+    AppliedPromosMailer.delay.new(id) if user.email.present?
+  end
+
   private
 
     def user_didnt_create_promo!
@@ -57,7 +62,7 @@ class AppliedPromo < ActiveRecord::Base
       end
     end
 
-    after_commit if: :active? do
+    after_commit if: :active?, on: :create do
       AppliedPromosMailer.delay.new(id) if user.email.present?
     end
 

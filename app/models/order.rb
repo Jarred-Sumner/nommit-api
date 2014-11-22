@@ -149,7 +149,7 @@ class Order < ActiveRecord::Base
 
         # Free order?
         if promo.amount_remaining_in_cents > price_in_cents - discount_in_cents
-          promo.amount_remaining_in_cents = promo.amount_remaining_in_cents - price_in_cents - discount_in_cents
+          promo.amount_remaining_in_cents = promo.amount_remaining_in_cents - (price_in_cents - discount_in_cents)
           self.discount_in_cents = price_in_cents
         else
           self.discount_in_cents = discount_in_cents + promo.amount_remaining_in_cents
