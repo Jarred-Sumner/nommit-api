@@ -1,7 +1,15 @@
-@nommit.controller "CoordinatorCtrl", ($state, Foods, Places, $scope, $rootScope, Users, Sessions, $cookies, $detection) ->
+@nommit.controller "CoordinatorCtrl", ($state, Foods, Places, $scope, $rootScope, Users, Sessions, $cookies, $detection, $timeout) ->
   if $detection.isiOS()
     $scope.isiOSBannerVisible = true
   $scope.isInstalled = window.settings.isInstalled()
+  if $scope.isInstalled && !window.settings.hasRequestedPushNotifications() && Sessions.isLoggedIn()
+    $timeout ->
+      $rootScope.requestPushNotifications = true
+      window.settings.setRequestedPushNotifications()
+    , 1000
+
+  $rootScope.cancelPushNotifications = ->
+    $rootScope.requestPushNotifications = false
 
   $rootScope.$on "$stateChangeSuccess", ->
     $scope.isDashboardVisible = false

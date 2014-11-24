@@ -16,16 +16,16 @@
   </section>
 
   <section class='invite-button'>
-    <button class='button button-primary'>Invite Friends</button>
+    <button class='button button-primary' ng-click='inviteFriends()'>Invite Friends</button>
   </section>
 
   <section class='social'>
     <div class='horizontal-rule'></div>
     <div class='share-your-code'>Share your code</div>
     <ul class='share-buttons'>
-      <span class='share facebook'><i class='fa fa-facebook'></i></span>
-      <span class='share messenger'><i class='fb-messenger'></i></span>
-      <span class='share twitter'><i class='fa fa-twitter'></i></span>
+      <span class='share facebook' ng-click='shareOnFacebook()'><i class='fa fa-facebook'></i></span>
+      <span class='share messenger' ng-click='shareOnMessenger()'><i class='fb-messenger'></i></span>
+      <span class='share twitter' ng-click='shareOnTwitter()'><i class='fa fa-twitter'></i></span>
     </ul>
   </section>
 

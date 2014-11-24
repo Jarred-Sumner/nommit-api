@@ -22,7 +22,11 @@ window.settings =
   setIsInstalled: ->
     localStorage.setItem("isInstalled", true)
   isInstalled: ->
-    localStorage["isInstalled"] == "true" 
+    localStorage["isInstalled"] == "true"
+  hasRequestedPushNotifications: ->
+    localStorage["didRequestPushNotifications"] == "true"
+  setRequestedPushNotifications: ->
+    localStorage.setItem("didRequestPushNotifications", true)
 
 @nommit = angular.module('nommit', ['ui.router', 'ngResource', 'angularPayments', 'angular-spinkit', 'timer', 'ngCacheBuster', 'adaptive.detection', 'ngAnimate', 'ngTouch', 'ngCookies'])
 

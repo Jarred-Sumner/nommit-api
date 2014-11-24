@@ -82,11 +82,6 @@ class Order < ActiveRecord::Base
     def set_delivery!
       if self.delivery = Delivery.for(place_id: place_id, food_id: food_id).first
         set_courier!
-
-        if delivery.delivery_place.arrived?
-          self.state = :arrived
-        end
-
       else
         errors.add(:base, "No couriers available to deliver to this location right now.")
       end

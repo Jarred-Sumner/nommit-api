@@ -1,0 +1,25 @@
+<div class='popup-container push-notifications' ng-controller='PushNotificationsCtrl' ng-if='requestPushNotifications'>
+
+  <div class='popup'>
+    <div class='close' ng-click='cancelPushNotifications()'><i class='fa fa-close'></i></div>
+
+    <div class='food-preview' style='background-image: url(<%= raw Food.last.preview.url %>)'>
+
+      <div class='icon'><span class='fa fa-calendar'></span></div>
+    </div>
+
+    <div class='content'>
+      <div class='header'>
+        <h2>Enable Push Notifications</h2>
+      </div>
+
+      <div class='description-container'>
+        <p class='description'>Hi {{ user.name }}, we'd love to let you know when food is available on Nommit. Please enable push notifications</p>
+      </div>
+
+    <div>
+
+    <button class='button button-primary' ng-click='notifyMe()'>Notify Me!</button>
+  </div>
+
+</div>

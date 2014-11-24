@@ -1770,3 +1770,94 @@ $desktop: new-breakpoint(min-width 480px);
   display: block;
   width: 100%;
 }
+
+
+.push-notifications {
+
+  .popup {
+    height: auto;
+    padding: 0px;
+    border: none;
+
+    .close {
+      position: absolute;
+      left: 5px;
+      top: 5px;
+      color: white;
+      background-color: $brand-green;
+      border: 2px solid white;
+      z-index: $popup-z-index + 1;
+
+      width: 30px;
+      height: 30px;
+      border-radius: 15px;
+      i { vertical-align: middle; }
+      opacity: 0.75;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    .food-preview {
+      height: 175px;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+
+      position: relative;
+      text-align: center;
+      .icon {
+        margin: 0 auto;
+
+        position: absolute;
+        color: white;
+        padding: 5px;
+        border-radius: 30px;
+        font-size: 24pt;
+        background-color: $brand-green;
+        bottom: -36px;
+        left: 0;
+        right: 0;
+        text-align: center;
+
+
+        width: 60px;
+        height: 60px;
+        border-radius: 30px;
+        border: 2px solid white;
+      }
+
+
+    }
+
+    .header {
+      margin: 25px auto;
+      margin-top: 45px;
+      h2 {
+
+        color: $brand-green;
+        font-weight: normal;
+        font-size: 14pt;
+      }
+    }
+
+
+    .description-container {
+      padding: 5px;
+      background-color: $offwhite-background;
+      line-height: 23px;
+      border-top: 1px solid darken($offwhite-background, 5%);
+
+      color: darken($light-color, 5%);
+      p { margin: 5px; font-weight: $thin-font; font-size: 10pt; }
+
+    }
+
+    .button-primary {
+      margin: 0px;
+    }
+
+  }
+
+}
