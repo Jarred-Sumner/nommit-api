@@ -1,6 +1,7 @@
 @nommit.controller "CoordinatorCtrl", ($state, Foods, Places, $scope, $rootScope, Users, Sessions, $cookies, $detection) ->
   if $detection.isiOS()
     $scope.isiOSBannerVisible = true
+  $scope.isInstalled = window.settings.isInstalled()
 
   $rootScope.$on "$stateChangeSuccess", ->
     $scope.isDashboardVisible = false

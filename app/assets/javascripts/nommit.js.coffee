@@ -19,6 +19,10 @@ window.settings =
     localStorage["didRedirectOnAndroid"]
   setDidRedirectOnAndroid: ->
     localStorage["didRedirectOnAndroid"] = true
+  setIsInstalled: ->
+    localStorage.setItem("isInstalled", true)
+  isInstalled: ->
+    localStorage["isInstalled"] == "true" 
 
 @nommit = angular.module('nommit', ['ui.router', 'ngResource', 'angularPayments', 'angular-spinkit', 'timer', 'ngCacheBuster', 'adaptive.detection', 'ngAnimate', 'ngTouch', 'ngCookies'])
 

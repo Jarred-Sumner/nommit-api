@@ -9,12 +9,9 @@ class SMS::Notifications::FoodAvailableWorker
     self.food = Food.find(food_id)
 
     if food.orderable? && user.phone.present?
+      return false unless user.subscription.sms?
       price = number_to_currency(food.prices.first.price_in_cents / 100)
-      if food.seller.name.include?("Nommit")
-        @message = "Yo #{user.first_name}! Hungry? Get #{food.title} for #{price} delivered on Nommit right now - http://getnommit.com"
-      else
-        @message = "Yo #{user.first_name}! #{food.seller.name} is delivering #{food.title} on Nommit right now - http://getnommit.com"
-      end
+      @message = "Hungry? Get #{food.title} from #{food.restaurant.name} for #{price} delivered to you on Nommit in < 15 min - http://getnommit.com?sms=true"
 
       if user.credit > 0
 

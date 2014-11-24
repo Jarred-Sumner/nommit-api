@@ -1,0 +1,2 @@
+@nommit.controller "InviteCtrl", ($scope) ->
+  

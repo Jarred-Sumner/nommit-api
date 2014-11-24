@@ -1,4 +1,4 @@
-@nommit.factory 'Sessions', ['$resource', 'Users', '$http', '$rootScope', ($resource, Users, $http, $rootScope) ->
+@nommit.factory 'Sessions', ($resource, Users, $http, $rootScope) ->
   Sessions = $resource "api/v1/sessions"
 
   angular.extend Sessions,
@@ -26,4 +26,3 @@
       window.settings.sessionID() && window.settings.sessionID().length > 0
 
   Sessions
-]

@@ -5,7 +5,7 @@
 <div class='content'>
   <%= link_to root_url, class: "clickable-area" do %>
     <h1><%= @food.title %></h1>
-    <h3>by <%= @food.seller.name %></h3>
+    <h3>by <%= @food.restaurant.name %></h3>
   <% end %>
   <p class='description'>Get <%= @food.title %> for <%= number_to_currency(@food.prices.first.price_in_cents / 100) %> delivered on Nommit. <%= @food.description %></p>
 

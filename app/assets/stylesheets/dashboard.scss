@@ -21,7 +21,7 @@ $light-color: #767676;
 $ultralight-color: #828282;
 $cmu-red: #C20929;
 
-$offwhite-background: #F9F9F9;
+$offwhite-background: #FBFBFB;
 
 $brand-green: #42B7BB;
 
@@ -59,7 +59,7 @@ html,body {
   min-height: 100%;
   height: 100%;
   overflow-y: scroll;
-  background-color: #FBFBFB;
+  background-color: $offwhite-background;
 }
 
 body.modal-visible {
@@ -880,8 +880,6 @@ article {
   }
 
 
-
-
 }
 
 article.edit {
@@ -962,7 +960,6 @@ article.edit {
 
   form {
     text-align: center;
-    margin-right: 58px;
     position: relative;
     .button, input {
       height: auto;
@@ -1432,8 +1429,6 @@ $desktop: new-breakpoint(min-width 480px);
       display: block;
       width: 100%;
     }
-
-
   }
 
   section:first-child {
@@ -1455,13 +1450,17 @@ $desktop: new-breakpoint(min-width 480px);
 .edit {
 
   .promos {
-
     input {
       width: 100%;
       margin-right: 58px;
     }
     button {
       float: right;
+    }
+
+
+    form {
+      margin-right: 58px;
     }
 
   }
@@ -1550,6 +1549,10 @@ $desktop: new-breakpoint(min-width 480px);
 
   }
 
+
+  .promo-form {
+    margin-right: 58px;
+  }
 
 }
 
@@ -1664,4 +1667,106 @@ $desktop: new-breakpoint(min-width 480px);
     }
   }
 
+}
+
+.invite-page {
+  text-align: center;
+
+  section {
+    margin: 25px;
+  }
+
+  .description {
+    .header {
+      margin: 15px auto;
+      display: inline;
+
+      text-align: center;
+      font-weight: bold;
+      font-size: 20pt;
+    }
+
+    p {
+      margin: 25px auto;
+      color: $light-color;
+      font-size: 12pt;
+    }
+  }
+
+  .invite-code {
+    color: $brand-green;
+    font-size: 24pt;
+  }
+
+  .social {
+    margin: 25px;
+    .share-your-code {
+      position: relative;
+      display: inline-block;
+      padding: 0px 10px;
+      top: -12px;
+      color: $light-color;
+      background-color: $offwhite-background;
+    }
+
+    .share-buttons {
+      margin: 5px auto;
+      padding: 0px;
+
+      width: 100%;
+      text-align: center;
+      .share {
+        display: inline-block;
+        text-align: left;
+        font-size: 18pt;
+        padding-top: 8px;
+        margin: 0px 10px;
+
+        border-radius: 23px;
+        width: 46px;
+        max-width: 46px;
+        text-align: center;
+        color: white;
+        height: 46px;
+        @include transition(background-color 0.15s ease-in);
+        overflow: hidden;
+      }
+      .share:first-child {
+        margin-left: -10px;
+      }
+
+      .facebook {
+        background-color: #3B5998;
+        &:hover {
+          background-color: darken(#3B5998, 5%);
+        }
+      }
+      .twitter {
+        background-color: #4099FF;
+        &:hover {
+          background-color: darken(#4099FF, 5%);
+        }
+      }
+      .messenger {
+        @include retina-image("dashboard/invite/fb-messenger", 24px 24px);
+        background-repeat: no-repeat;
+        background-position: center;
+
+        background-color: #00A4FF;
+        &:hover {
+          background-color: darken(#00A4FF, 5%);
+        }
+      }
+
+    }
+  }
+
+}
+
+.horizontal-rule {
+  border-bottom: 1px solid $default-color;
+  height: 1px;
+  content: " ";
+  display: block;
+  width: 100%;
 }

@@ -1,0 +1,32 @@
+<article ng-controller='InviteCtrl' class='invite-page'>
+
+  <div class='nav-bar'>
+    <span class='left-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
+    <span class='title'>Invite Friends</span>
+  </div>
+
+  <section class='description'>
+    <div class='header'>Give and Get</div>
+
+    <p>When a friend orders with your invite code, you both get $5 off.</p>
+  </section>
+
+  <section class='invite-code'>
+    <div ng-bind='user.referral_code'></div>
+  </section>
+
+  <section class='invite-button'>
+    <button class='button button-primary'>Invite Friends</button>
+  </section>
+
+  <section class='social'>
+    <div class='horizontal-rule'></div>
+    <div class='share-your-code'>Share your code</div>
+    <ul class='share-buttons'>
+      <span class='share facebook'><i class='fa fa-facebook'></i></span>
+      <span class='share messenger'><i class='fb-messenger'></i></span>
+      <span class='share twitter'><i class='fa fa-twitter'></i></span>
+    </ul>
+  </section>
+
+</article>

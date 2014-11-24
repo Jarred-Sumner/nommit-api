@@ -10,6 +10,11 @@
     <meta property="al:ios:app_store_id" content="928890698" />
     <meta property="al:ios:app_name" content="Nommit" />
 
+    <meta name="twitter:app:country" content="US" />
+    <meta name="twitter:app:name:iphone" content="Nommit" />
+    <meta name="twitter:app:id:iphone" content="928890698" />
+    <meta name="twitter:app:url:iphone" content="nommit://" />
+
     <meta name="apple-itunes-app" content="app-id=928890698" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -43,9 +48,9 @@
               <span>Account</span>
             </li>
 
-            <li class='page' ng-click='navigate("invite")' ui-sref- ng-hide='true' ng-class="{ active: page == 'invite' }">
+            <li class='page' ng-click='navigate("invite")' ng-show='isInstalled' ng-class="{ active: page == 'invite' }">
               <i class="fa fa-users"></i>
-              <span>Invite</span>
+              <span>Get Free Food</span>
             </li>
 
             <li class='page' ng-click='navigate("support")' ui-sref-active='active' ng-class="{ active: page == 'support' }">
