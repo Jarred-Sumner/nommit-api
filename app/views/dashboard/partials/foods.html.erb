@@ -11,7 +11,7 @@
   </div>
 
   <ul class='content foods'>
-
+    <h2 class='no-food' ng-if='foods && foods.length == 0'>Nommit is on Thanksgiving break!</h2>
     <fading-circle-spinner ng-if='!foods'></fading-circle-spinner>
 
     <li class='food-container' ng-repeat='food in foods' ng-class="{ 'sold-out': {{ food.isSoldOut() }}, 'expired': {{ food.isExpired() }}, 'ended': {{ food.isSaleOver() }}, 'pending': {{ food.isPending() }}  }">

@@ -667,6 +667,12 @@ article {
     padding: 16px 0px;
     list-style: none;
     text-align: center;
+    .no-food {
+      font-weight: $thin-font;
+      margin: 0 auto;
+      width: 100%;
+      text-align: center;
+    }
   }
 
   .food-container {
