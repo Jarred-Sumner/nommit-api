@@ -1,4 +1,4 @@
-tclass Api::V1::PaymentMethodsController < Api::V1::ApplicationController
+class Api::V1::PaymentMethodsController < Api::V1::ApplicationController
   before_filter :payment_method_params, only: :show
 
   def update
