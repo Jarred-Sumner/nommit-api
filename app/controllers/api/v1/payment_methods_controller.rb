@@ -1,8 +1,8 @@
-class Api::V1::PaymentMethodsController < Api::V1::ApplicationController
+tclass Api::V1::PaymentMethodsController < Api::V1::ApplicationController
   before_filter :payment_method_params, only: :show
 
   def update
-    @payment_method = PaymentMethod.create_from(token: payment_method_params[:customer_token])
+    @payment_method = PaymentMethod.create_for(token: payment_method_params[:customer_token], user: current_user)
   end
 
   def show
