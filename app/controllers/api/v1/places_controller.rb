@@ -2,15 +2,7 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
   skip_before_action :require_current_user!, if: -> { params[:courier_id].blank? }
   def index
     if courier.present?
-      these = Place
-                .active
-                .joins(:delivery_places => [:seller])
-                .where({
-                  sellers: {
-                    id: courier.seller_id
-                  }
-                }).pluck("places.id")
-      @places = Place.where.not(id: these).order("id DESC")
+      @places = Place.order("id DESC")
     else
       @places = Place.active.order("id DESC").uniq
       track_looked_at_places
