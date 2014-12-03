@@ -20,6 +20,8 @@ class Notifications::FoodAvailableWorker
 
     if should_push?(user)
       send_push_notification!(user.id)
+    elsif should_text?(user)
+      send_text!(user.id)
     elsif should_email?(user)
       send_email!(user.id)
       user.subscription.last_emailed = DateTime.now
@@ -32,9 +34,6 @@ class Notifications::FoodAvailableWorker
   end
 
   def should_text?(user)
-    # TODO: texting is disabled.
-    return false
-
     return false if user.phone.blank?
     return false unless user.subscription.sms?
     true
