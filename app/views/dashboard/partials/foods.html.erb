@@ -7,11 +7,11 @@
 
   <div class='nav-bar' ng-if='place'>
     <span class='left-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
-    <span class='title place' ui-sref='foods.places'>{{place.name | titleize }} <i class='fa fa-caret-down'></i></span>
+    <span class='title place' ui-sref='foods.places'>{{place.name }} <i class='fa fa-caret-down'></i></span>
   </div>
 
   <ul class='content foods'>
-    <h2 class='no-food' ng-if='foods && foods.length == 0'>Nommit is on Thanksgiving break!</h2>
+    <h2 class='no-food' ng-if='foods && foods.length == 0'>Check back at 8 PM for more food!</h2>
     <fading-circle-spinner ng-if='!foods'></fading-circle-spinner>
 
     <li class='food-container' ng-repeat='food in foods' ng-class="{ 'sold-out': {{ food.isSoldOut() }}, 'expired': {{ food.isExpired() }}, 'ended': {{ food.isSaleOver() }}, 'pending': {{ food.isPending() }}  }">
