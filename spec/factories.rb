@@ -307,6 +307,7 @@ end
 
 FactoryGirl.define do
 
+
   factory :user do
     name { Faker::Name.name }
     email { Faker::Internet.email }
@@ -320,6 +321,7 @@ FactoryGirl.define do
 
     after(:create) do |user|
       create(:payment_method, user_id: user.id)
+      create(:subscription, user_id: user.id)
     end
 
   end
@@ -353,6 +355,9 @@ FactoryGirl.define do
     after(:create) do |food|
       food.set_prices!([rand(300..500)])
     end
+
+    restaurant_id { create(:restaurant).id }
+
   end
 
   factory :seller do

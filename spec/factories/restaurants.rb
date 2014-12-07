@@ -2,6 +2,6 @@
 
 FactoryGirl.define do
   factory :restaurant do
-    name "MyString"
+    name "Testaurant"
   end
 end

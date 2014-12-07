@@ -43,9 +43,9 @@ describe SMS::Notifications::FoodAvailableWorker do
       expect(subject.message).to include((user.credit / 100.0).to_s)
     end
 
-    it "message contains seller" do
+    it "message contains restaurant" do
       subject.perform(user.id, food.id)
-      expect(subject.message).to include(food.seller.name)
+      expect(subject.message).to include(food.restaurant.name)
     end
 
   end

@@ -44,8 +44,9 @@ describe Notifications::FoodAvailableWorker do
       end.to change(Notifications::FoodAvailableWorker.jobs, :size)
     end
 
-    it "creates a Notification for each user who doesn't have one" do
+    it "creates a Subscription for each user who doesn't have one" do
       food.save!
+      Subscription.destroy_all
       expect do
         Notifications::FoodAvailableWorker.new.perform(food.id)
       end.to change(Subscription, :count).by(User.count)
@@ -119,7 +120,7 @@ describe Notifications::FoodAvailableWorker do
       end
 
       before :each do
-        Subscription.create!(user_id: user.id, sms: false)
+        user.subscription.update_attributes(sms: false)
       end
 
       it "successfully" do
@@ -141,7 +142,7 @@ describe Notifications::FoodAvailableWorker do
     context "sends push notification" do
       let(:user) do
         user = create(:user)
-        user.subscription = Subscription.create!(sms: false, user_id: user.id)
+        user.subscription.update_attributes(sms: false)
         create(:device, user_id: user.id)
         user
       end
