@@ -29,6 +29,13 @@ describe Notifications::FoodAvailableWorker do
       subject.perform(food.id)
     end
 
+    it "skips food that's already been notified" do
+      food.update_attributes(last_notified: 2.minutes.ago)
+      subject.food = food
+      expect(subject).to_not receive(:notify_user!)
+      subject.perform(food.id)
+    end
+
     it "reschedules food that isn't orderable yet" do
       food.update_attributes(start_date: 2.hours.from_now)
       subject.food = food
@@ -145,6 +152,12 @@ describe Notifications::FoodAvailableWorker do
         end.to change(PushNotifications::FoodAvailableWorker.jobs, :size).from(0).to(1)
       end
 
+    end
+
+    it "marks food as notified" do
+      expect do
+        subject.perform(food.id)
+      end.to change { food.reload.last_notified.present? }.from(false).to(true)
     end
 
   end

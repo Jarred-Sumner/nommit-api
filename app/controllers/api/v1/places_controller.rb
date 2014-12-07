@@ -2,7 +2,7 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
   skip_before_action :require_current_user!, if: -> { params[:courier_id].blank? }
   def index
     if courier.present?
-      @places = Place.order("id DESC")
+      @places = Place.order("name ASC")
     else
       @places = Place.active.order("id DESC").uniq
       track_looked_at_places

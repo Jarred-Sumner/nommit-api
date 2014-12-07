@@ -5,6 +5,7 @@ class Notifications::FoodAvailableWorker
 
   def perform(food_id)
     self.food = Food.orderable.find(food_id)
+    return nil if food.last_notified.present?
 
     if food.orderable?
       User.where(state: [ User.states[:registered], User.states[:activated] ]).find_each do |user|
@@ -13,6 +14,8 @@ class Notifications::FoodAvailableWorker
     elsif food.start_date.future?
       Notifications::FoodAvailableWorker.perform_at(food.start_date + 2.minutes, food.id)
     end
+
+    food.update_attributes(last_notified: DateTime.now)
   end
 
   def notify_user!(user)
