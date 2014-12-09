@@ -18,6 +18,8 @@
     <meta name="apple-itunes-app" content="app-id=928890698" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <meta name="description" content="Nommit does food delivery in under 15 minutes for college students, powered by students and organizations on campus" />
   </head>
 
   <body ng-controller='CoordinatorCtrl' ng-swipe-right='toggleDashboard()' ng-class='{ "modal-visible": isModalVisible() }'>
@@ -38,7 +40,7 @@
               <span>Menu</span>
             </li>
 
-            <li class='page' ng-click='navigate("deliver")' ui-sref-active='active' ng-hide='true' ng-class="{ active: page == 'deliver' }">
+            <li class='page' ng-click='navigate("deliver")' ui-sref-active='active' ng-show='user.is_courier' ng-class="{ active: page == 'deliver' }">
               <i class="fa fa-truck"></i>
               <span>Deliver</span>
             </li>
