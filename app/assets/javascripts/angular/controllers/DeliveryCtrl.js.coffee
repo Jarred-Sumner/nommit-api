@@ -5,7 +5,10 @@
 
   $scope.isLoading = true
   $scope.shift = null
-  reload = ->
+  refresh = ->
+    Shifts.get id: $scope.shiftID, (shift) ->
+      $scope.setShift(shift)
+  load = ->
     Shifts.query (shifts) ->
       for shift in shifts
         shift = new Shifts(shift)
@@ -26,6 +29,7 @@
       deliveryPlace.isNotifying = false
 
   $scope.setShift = (shift) ->
+    $scope.shiftID = shift.id
     deliveryPlaces = shift.activeDeliveryPlaces()
     Orders.query shift_id: shift.id, (orders) ->
       for order in orders
@@ -40,7 +44,14 @@
       $scope.shift = shift
       $scope.isLoading = false
 
-  reload()
+      $interval.cancel($scope.refreshInterval) if $scope.refreshInterval
+      $scope.refreshInterval = $interval ->
+        refresh()
+        if !$scope.$$phase
+          $scope.$apply()
+      , 10000
+
+  load()
 
   $scope.endShift = ->
     $scope.isEndingShift = true
@@ -74,17 +85,12 @@
     , (error) ->
       order.isDelivering = false
 
-  $interval.cancel($scope.reloadInterval) if $scope.reloadInterval
-  $scope.reloadInterval = $interval ->
-      reload()
-      if !$scope.$$phase
-        $scope.$apply()
-
-    , 5000
   $scope.reset = ->
     $scope.isEndingShift = false
     $scope.success = false
     $scope.error = false
+    $scope.shiftID = null
+
 
   $scope.timingState = (dp) ->
     fromSeconds = null

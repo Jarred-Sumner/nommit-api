@@ -28,7 +28,7 @@
   $scope.updateShift = ->
     $scope.isUpdating = true
     updatedShift = (shift) ->
-      $scope.shift = new Shifts(shift)
+      $scope.setShift(shift)
       $scope.success = true
       $timeout ->
         $scope.isUpdating = false
