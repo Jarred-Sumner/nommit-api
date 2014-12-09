@@ -399,6 +399,8 @@ fieldset {
     @include animation(slideDownModal 0.4s ease-in);
   }
 
+
+
   .error {
     .fa-info-circle { margin-right: 4px; }
     color: #AD0505;
@@ -676,6 +678,19 @@ article {
   }
 
   .food-container {
+
+    &.ng-enter, &.ng-leave {
+      @include backface-visibility(visible)
+    }
+
+    &.ng-enter {
+      @include animation(fadeIn 0.15s ease-in);
+    }
+
+    &.ng-leave {
+      @include animation(fadeOut 0.15s ease-in);
+    }
+
     margin: 16px;
     text-align: center;
     display: inline-block;
@@ -1017,7 +1032,7 @@ $desktop: new-breakpoint(min-width 480px);
 
 }
 
-.places-container {
+.places-container, .delivery-places-container {
   @extend .modal;
   background-color: #FAFAFA;
   $border-color: #E5E5E5;
@@ -1030,6 +1045,16 @@ $desktop: new-breakpoint(min-width 480px);
       font-weight: $thin-font;
       color: #6C6C6C;
     }
+
+    .ng-enter {
+      @include backface-visibility(visible);
+      @include animation(fadeIn 0.15s ease-in);
+    }
+    .ng-leave {
+      @include backface-visibility(visible);
+      @include animation(fadeOut 0.15s ease-in);
+    }
+
   }
 
   .search {
@@ -1086,6 +1111,7 @@ $desktop: new-breakpoint(min-width 480px);
         position: relative;
         bottom: 2px;
 
+        @include user-select(none);
       }
     }
   }
@@ -1101,6 +1127,7 @@ $desktop: new-breakpoint(min-width 480px);
   }
 
 }
+
 
 .triangle-border {
   position: relative;
@@ -1270,13 +1297,12 @@ $desktop: new-breakpoint(min-width 480px);
 
 }
 
-.new-order, .show-order {
+.new-order, .show-order, .delivery-places {
   background-color: $offwhite-background;
   color: $light-color;
 
   // Enough room for sticky footer
   margin-bottom: 48px;
-
   .overlay {
     padding: 0px;
     top: 0px;
@@ -1444,7 +1470,6 @@ $desktop: new-breakpoint(min-width 480px);
   section:last-child {
     border-bottom: none;
   }
-
 
 
 }
@@ -1840,12 +1865,13 @@ $desktop: new-breakpoint(min-width 480px);
     .header {
       margin: 25px auto;
       margin-top: 45px;
-      h2 {
 
+      h2 {
         color: $brand-green;
         font-weight: normal;
         font-size: 14pt;
       }
+
     }
 
 
@@ -1862,6 +1888,233 @@ $desktop: new-breakpoint(min-width 480px);
 
     .button-primary {
       margin: 0px;
+    }
+
+  }
+
+}
+
+.delivery-places {
+
+  .nav-bar {
+    position: static !important;
+  }
+
+  .header {
+    margin: 0 auto;
+    text-align: left;
+    padding: 10px;
+
+    color: white;
+
+    .number, .place, {
+      display: block;
+    }
+
+    &.your-late-asshole {
+      background-color: #B00000;
+      border-top: 1px solid #8B0606;
+      border-bottom: 1px solid #8B0606;
+
+      .number {
+        color: #B00000;
+      }
+    }
+
+    &.hurry-up-bro {
+      background-color: #E9931E;
+      border-top: 1px solid #D79323;
+      border-bottom: 1px solid #D79323;
+
+      .number {
+        color: #E9931E;
+      }
+    }
+
+    &.all-good {
+      background-color: #47DA80;
+      border-top: 1px solid #2FA85E;
+      border-bottom: 1px solid #2FA85E;
+
+      .number {
+        color: #47DA80;
+      }
+    }
+
+    .number {
+      float: left;
+
+      height: 24px;
+      width: 24px;
+
+      padding-top: 3px;
+
+      border-radius: 12px;
+      background-color: white;
+      color: $brand-green;
+
+      margin-top: -1px;
+      text-align: center;
+      font-size: 9pt;
+    }
+
+    .place {
+      margin-left: 45px;
+    }
+
+    .im-here {
+      display: inline-block;
+
+      margin-top: -23px;
+
+      float: right;
+      width: auto;
+      padding: 2px 5px;
+      font-size: 10pt;
+
+      border-radius: 1px;
+    }
+
+    .fading-circle-spinner {
+      margin: 0px;
+      margin-top: -20px;
+      margin-right: 6px;
+      float: right;
+      display: inline-block;
+
+      .fading-circle {
+        color: $brand-green;
+      }
+
+    }
+
+  }
+
+  .popup .header {
+    text-align: center;
+  }
+
+  .orders {
+    margin: 0px auto;
+    padding: 0px;
+    list-style: none;
+
+
+    .order {
+      display: block;
+      padding: 8px 15px;
+      border-bottom: 1px solid #E0E0E0;
+      vertical-align: middle;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .face {
+        margin-right: 5px;
+        height: 46px;
+        width: 46px;
+        display: inline-block;
+
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        border-radius: 23px;
+      }
+
+      .info {
+        display: inline-block;
+        vertical-align: top;
+        height: 46px;
+
+        .name {
+          font-weight: bold;
+        }
+
+        .quantity {
+          max-width: 150px;
+
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+      }
+
+      .actions {
+        height: 36px;
+        display: block;
+        float: right;
+
+        margin-top: 6px;
+        .call-button {
+          margin-right: 6px;
+          background-color: #F0F0F0;
+          color: #B0B0B0;
+          border: 1px solid #E3E1E1;
+
+          &:hover {
+            background-color: darken(#F0F0F0, 5%);
+          }
+
+        }
+
+        .deliver-button {
+          background-color: #3AC830;
+          color: white;
+
+          &:hover {
+            background-color: darken(#3AC830, 5%);
+          }
+
+        }
+
+        .call-button, .deliver-button {
+          padding-top: 2px;
+          height: 36px;
+          width: 36px;
+          border-radius: 18px;
+          font-size: 18pt;
+
+          display: inline-block;
+          vertical-align: middle;
+          text-align: center;
+
+          @include transition(background-color 0.15s ease-in);
+        }
+
+        .fading-circle-spinner {
+          margin: 0px;
+          margin-top: 5px;
+          display: inline-block;
+          .fading-circle {
+            color: $brand-green;
+          }
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+.delivery-page {
+  margin-bottom: 80px;
+
+  .sticky {
+    position: absolute;
+    bottom: 0px;
+
+    display: block;
+    width: 100%;
+    text-align: center;
+
+    .sum {
+      padding: 5px auto;
+      background-color: $offwhite-background;
+      opacity: 0.9;
+      display: block;
     }
 
   }

@@ -1,0 +1,116 @@
+<article ng-controller='DeliveryCtrl' class='delivery-page'>
+
+  <div class='nav-bar'>
+    <span class='left-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
+    <span class='title'>Deliveries</span>
+    <span class='right-button' ui-sref='deliver.places()'><i class='fa fa-building'></i></span>
+  </div>
+
+  <div class='popup-container' ng-if='isLoading'>
+
+    <div class='popup'>
+      <h2 class='header'>Loading</h2>
+      <fading-circle-spinner></fading-circle-spinner>
+    </div>
+
+  </div>
+
+  <section class='delivery-places'>
+
+    <p class='muted' ng-if='deliveryPlaces && deliveryPlaces.length == 0'>No pending orders yet!</p>
+
+    <div class='delivery-place' ng-repeat='deliveryPlace in shift.activeDeliveryPlaces()' ng-hide='deliveryPlace.pendingOrders().length == 0'>
+
+      <div class='header' ng-hide='deliveryPlace.isNotifying' ng-class='timingState(deliveryPlace)'>
+        <div class='number' ng-bind='deliveryPlace.index + 1'></div>
+
+        <div class='place'>
+          <span>{{ deliveryPlace.place.name }} -</span>
+          <timer end-time='deliveryPlace.eta()'>{{mminutes}}:{{sseconds}}</timer>
+        </div>
+
+        <div class='button im-here' ng-click='notify(deliveryPlace)' ng-if='!deliveryPlace.isNotifying'>
+          <i class='fa fa-bell'></i>
+          <span>I'm Here</span>
+        </div>
+
+      </div>
+
+      <div class='header' ng-show='deliveryPlace.isNotifying' ng-class='timingState(deliveryPlace)'>
+        <div class='number' ng-bind='deliveryPlace.index + 1'></div>
+
+        <div class='place'>
+          <span>{{ deliveryPlace.place.name }} -</span>
+          <timer end-time='deliveryPlace.eta()'>{{mminutes}}:{{sseconds}}</timer>
+        </div>
+
+        <fading-circle-spinner></fading-circle-spinner>
+
+      </div>
+
+      <ul class='orders'>
+        <li class='order' ng-repeat='order in deliveryPlace.pendingOrders()'>
+
+          <span class='profile'>
+            <span class='face' profile-pic='{{ order.user.id }}' size='46x46'></span>
+
+            <span class='info'>
+              <div class='name' ng-bind='order.user.name'></div>
+              <div class='quantity'>{{ order.quantity }} - {{ order.food.title }}</div>
+            </span>
+          </span>
+
+          <span class='actions' ng-hide='order.isDelivering'>
+
+            <span class='call-button' ng-click='callUser(order.user )'>
+              <i class='fa fa-phone'></i>
+            </span>
+
+
+            <span class='deliver-button' ng-click='deliverOrder(order)'>
+              <i class='fa fa-check'></i>
+            </span>
+
+          </span>
+
+          <span class='actions' ng-show='order.isDelivering'>
+
+            <fading-circle-spinner></fading-circle-spinner>
+
+          </span>
+
+        </li>
+      </ul>
+
+    </div>
+
+  </section>
+
+  <section class='sticky info'>
+    <div class='sum'>Total Delivered: {{ shift.revenue() | currency }}</div>
+    <div class='button button-primary end-shift' ng-click='endShift()'>Stop Deliveries</div>
+  </section>
+
+  <div class='popup-container' ng-if='isEndingShift'>
+
+    <div class='popup' ng-show='!error && !success'>
+      <h2 class='header'>Ending Shift...</h2>
+      <fading-circle-spinner></fading-circle-spinner>
+    </div>
+
+    <div class='popup' ng-show='error'>
+      <h2 class='header'>An error occurred</h2>
+      <p class='message'>{{ error }}</p>
+      <button class='button button-primary' ng-click='reset()'>Okay</button>
+    </div>
+
+    <div class='popup' ng-show='success'>
+      <h2 class='header'>Ended!</h2>
+      <i class='fa fa-check-circle'></i>
+    </div>
+
+  </div>
+
+  <div class='delivery-places-container' ui-view ng-if='page == "deliver.places"'></div>
+
+</article>

@@ -55,7 +55,7 @@ describe Api::V1::ShiftsController, type: :controller do
 
       it "courier" do
         post :create, session_id: create(:session).token
-        expect(response.status).to eq(400)
+        expect(response.status).to eq(403)
       end
 
     end

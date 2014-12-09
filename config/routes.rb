@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     get 'partials/deliver'
     get 'partials/invite'
     get 'partials/payment_method'
+    get 'partials/delivery_places'
 
     get 'partials/orders/new' => 'partials#new_order'
     get 'partials/orders/show' => 'partials#show_order'
@@ -53,6 +54,7 @@ Rails.application.routes.draw do
   get 'fundraise' => "dashboard#index"
   get 'foods/places' => 'dashboard#index'
   get 'deliver' => 'dashboard#index'
+  get 'deliver/places' => 'dashboard#index'
   get 'foods/:food_id/order' => 'dashboard#index', as: :new_order
   get 'orders/:id' => 'dashboard#index'
   get 'support' => 'dashboard#index'

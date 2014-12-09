@@ -80,6 +80,9 @@ window.settings =
     .state "deliver",
       url: "/deliver"
       templateUrl: "/dashboard/partials/deliver"
+    .state "deliver.places",
+      url: "/places"
+      templateUrl: "/dashboard/partials/delivery_places"
     .state "account",
       url: "/account"
       templateUrl: "/dashboard/partials/account"
