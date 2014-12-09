@@ -16,7 +16,7 @@
 
     <ul class='places' ng-if='places && places.length > 0'>
 
-      <li class='place' ng-repeat='place in places' ui-sref='foods({ place_id: place.id })'>
+      <li class='place' ng-repeat='place in places' ng-click='setPlaceID(place.id)'>
         <span class='name'>{{place.name}}</span>
 
         <span class='right-bar'>

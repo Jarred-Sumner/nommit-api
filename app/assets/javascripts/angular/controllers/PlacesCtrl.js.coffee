@@ -1,4 +1,4 @@
-@nommit.controller "PlacesCtrl", ($state, Foods, Places, $scope) ->
+@nommit.controller "PlacesCtrl", ($state, Foods, Places, $scope, $stateParams) ->
   $scope.query = ""
   $scope.searchPlaces = ->
     if $scope.query.length > 0
@@ -13,4 +13,10 @@
       $scope.allPlaces = _.select places, (place) ->
         place.food_count > 0
       $scope.places = $scope.allPlaces
+
+  $scope.setPlaceID = (placeID) ->
+    if $stateParams.food_id
+      $state.go "foods.order", { place_id: placeID, food_id: $stateParams.food_id }
+    else
+      $state.go "foods", { place_id: placeID }
   fetchPlaces()

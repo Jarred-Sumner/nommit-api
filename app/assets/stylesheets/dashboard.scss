@@ -250,8 +250,9 @@ fieldset {
     border-radius: 43px;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contain;
     border: 2px solid white;
+    background-color: white;
 
     &.price {
       background-color: $brand-green;
@@ -703,6 +704,7 @@ article {
       border-radius: 19px;
       background-size: contain;
       background-repeat: no-repeat;
+      background-color: white;
       display: inline-block;
       vertical-align: top;
     }

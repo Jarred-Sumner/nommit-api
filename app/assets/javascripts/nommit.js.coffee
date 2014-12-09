@@ -45,7 +45,7 @@ window.settings =
       url: "/foods?place_id"
       templateUrl: "/dashboard/partials/foods"
     .state "foods.places",
-      url: "/places"
+      url: "/places?food_id"
       templateUrl: "/dashboard/partials/places"
     .state "foods.order",
       url: "/:food_id/order"

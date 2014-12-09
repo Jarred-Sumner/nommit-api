@@ -19,9 +19,11 @@
 
   $scope.order = (food) ->
     $rootScope.food = food
-    $rootScope.place = $scope.place
-    $state.go("foods.order", { place_id: $rootScope.place.id, food_id: food.id })
-
+    if $scope.place
+      $rootScope.place = $scope.place
+      $state.go("foods.order", { place_id: $rootScope.place.id, food_id: food.id })
+    else
+      $state.go("foods.places", { food_id: food.id })
   retrieveFoods = ->
     Foods.query (foods) ->
       $scope.foods = _.chain(foods)
