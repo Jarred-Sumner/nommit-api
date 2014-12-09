@@ -11,7 +11,7 @@
   </div>
 
   <ul class='content foods'>
-    <h2 class='no-food' ng-if='foods && foods.length == 0'>Check back at 8 PM for more food!</h2>
+    <h2 class='no-food' ng-if='foods && foods.length == 0'>Check back on Wednesday for <%= link_to "Grilled Cheese", "https://www.facebook.com/events/839636766056516/?sid_reminder=6629536622742339584" %></h2>
     <fading-circle-spinner ng-if='!foods'></fading-circle-spinner>
 
     <li class='food-container' ng-repeat='food in foods' ng-class="{ 'sold-out': {{ food.isSoldOut() }}, 'expired': {{ food.isExpired() }}, 'ended': {{ food.isSaleOver() }}, 'pending': {{ food.isPending() }}  }">

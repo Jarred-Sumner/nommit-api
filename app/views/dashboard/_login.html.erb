@@ -1,7 +1,6 @@
 <div class='login-container' ng-if='isLoginVisible' ng-controller='LoginCtrl'>
-  <div class='food-preview' ng-style="{ 'background-image': 'url( {{food_image}} )' }">
 
-  </div>
+  <div ng-if='food_image' class='food-preview' ng-style="{ 'background-image': 'url( {{food_image}} )' }"></div>
 
   <h1>Sign in with Facebook <br />
   to complete your order</h1>

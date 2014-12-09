@@ -39,10 +39,11 @@
     $scope.isConfirmPhoneVisible = false
     $scope.isActivationVisible = false
 
-    $scope.food_id = food.id
-    $scope.place_id = place.id
+    if food && places
+      $scope.food_id = food.id
+      $scope.place_id = place.id
 
-    $scope.food_image = food.header_image_url
+      $scope.food_image = food.header_image_url
     $scope.isLoginVisible = true
   $rootScope.requireActivation = ->
     $scope.isLoginVisible = false
