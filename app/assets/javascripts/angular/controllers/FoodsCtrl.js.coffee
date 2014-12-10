@@ -1,4 +1,4 @@
-@nommit.controller "FoodsCtrl", ($state, Foods, Places, $stateParams, DeliveryPlaces, $scope, $timeout, $rootScope, Users, $adaption) ->
+@nommit.controller "FoodsCtrl", ($state, Foods, Places, $stateParams, DeliveryPlaces, $scope, $timeout, $rootScope, Users, $detection) ->
   didAutoPresentPlaces = false
 
   $scope.notifyMe = ->
@@ -45,7 +45,7 @@
           for food in $scope.foods
             if food.isOrderable()
               # Don't show modals on iOS
-              return false if $adaption.isiOS()
+              return false if $detection.isiOS()
               $state.go("foods.places")
               didAutopresentPlaces = true
       , 500
