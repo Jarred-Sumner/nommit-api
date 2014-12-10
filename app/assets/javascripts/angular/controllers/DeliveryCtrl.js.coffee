@@ -50,9 +50,6 @@
         if !$scope.$$phase
           $scope.$apply()
       , 10000
-
-  load()
-
   $scope.endShift = ->
     $scope.isEndingShift = true
     Shifts.update id: $scope.shift.id,
@@ -118,3 +115,10 @@
       return "hurry-up-bro"
     else
       return "your-late-asshole"
+
+
+  if $scope.user
+    load()
+  else
+    $scope.isLoading = false
+    $scope.requireLogin()

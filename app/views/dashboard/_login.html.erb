@@ -1,9 +1,13 @@
 <div class='login-container' ng-if='isLoginVisible' ng-controller='LoginCtrl'>
 
+  <div ng-if='!food_image' class='food-preview' style='background-image: url(<%= image_path("dashboard/deliver/default-login-bg.png") %>)'></div>
   <div ng-if='food_image' class='food-preview' ng-style="{ 'background-image': 'url( {{food_image}} )' }"></div>
 
-  <h1>Sign in with Facebook <br />
-  to complete your order</h1>
+  <h1>
+    <span>Sign in with Facebook</span> <br />
+    <span ng-show='food'>to complete your order</span>
+    <span ng-hide='food'>to continue</span>
+  </h1>
 
   <div class='button-container'>
     <button ng-click='login(food_id, place_id)' class='button facebook'>

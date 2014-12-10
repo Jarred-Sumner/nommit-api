@@ -1,4 +1,7 @@
 @nommit.controller "LoginCtrl", ($scope, $rootScope, $location) ->
   $scope.login = (food_id, place_id) ->
-    # TODO: Call Android bridge'd function for using Android FB SDK Login here
-    location.href = "/auth/facebook?place_id=#{place_id}&food_id=#{food_id}"
+    if food_id && place_id
+      @path = escape("/foods/#{food_id}/order?place_id=#{place_id}")
+    else
+      @path = escape(location.pathname)
+    location.href = "/auth/facebook?path=#{@path}"

@@ -1154,7 +1154,7 @@ $desktop: new-breakpoint(min-width 480px);
   text-align: center;
 
   .food-preview {
-    height: 284px;
+    height: 200px;
     display: block;
     width: 100%;
     background-size: cover;
@@ -1201,13 +1201,14 @@ $desktop: new-breakpoint(min-width 480px);
     $fb-blue: #3C5193;
     background-color: $fb-blue;
     color: white;
-    padding: 10px 64px;
+    padding: 10px 46px;
     font-size: 14pt;
     text-align: center;
     border: none;
     outline: none;
     box-shadow: none;
     position: relative;
+
 
     span {
       font-weight: $thin-font;
@@ -1634,7 +1635,7 @@ $desktop: new-breakpoint(min-width 480px);
 .iphone-container {
   @extend .modal;
   background-color: white;
-  overflow-y: hidden !important;
+  // overflow-y: hidden !important;
   -webkit-overflow-scrolling: none;
   overflow-scrolling: none;
 

@@ -1,6 +1,4 @@
 @nommit.controller "CoordinatorCtrl", ($state, Foods, Places, $scope, $rootScope, Users, Sessions, $cookies, $detection, $timeout) ->
-  if $detection.isiOS()
-    $scope.isiOSBannerVisible = true
   $scope.isInstalled = window.settings.isInstalled()
   if $scope.isInstalled && !window.settings.hasRequestedPushNotifications() && Sessions.isLoggedIn()
     $timeout ->
@@ -14,6 +12,8 @@
   $rootScope.$on "$stateChangeSuccess", ->
     $scope.isDashboardVisible = false
     $scope.page = $state.current.name
+    if $detection.isiOS() && $scope.page == "foods"
+      $scope.isiOSBannerVisible = true
   $rootScope.$on "$stateChangeError", ->
     $scope.isDashboardVisible = false
   $rootScope.$on "$viewContentLoading", ->
