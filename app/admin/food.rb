@@ -17,7 +17,7 @@ ActiveAdmin.register Food do
       link_to food.title, admin_food_path(food)
     end
 
-    column :customer_satisfaction do |food|
+    column "Customer Satisfaction" do |food|
       number_to_percentage food.customer_satisfaction * 100.0
     end
 
