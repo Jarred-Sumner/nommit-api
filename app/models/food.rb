@@ -84,6 +84,10 @@ class Food < ActiveRecord::Base
     orders.rated.average(:rating).try(:round, 2)
   end
 
+  def customer_satisfaction
+    food.orders.rated.where("rating > 4.5").count / food.orders.rated.count.to_f
+  end
+
   def price
     prices.first
   end

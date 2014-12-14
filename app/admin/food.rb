@@ -17,7 +17,9 @@ ActiveAdmin.register Food do
       link_to food.title, admin_food_path(food)
     end
 
-    column :rating
+    column :customer_satisfaction do |food|
+      number_to_percentage food.customer_satisfaction * 100.0
+    end
 
     column "Revenue" do |food|
       number_to_currency food.revenue.to_f
@@ -128,7 +130,7 @@ ActiveAdmin.register Food do
       end
 
       row "Customer Satisfaction" do
-        satisfied = food.orders.rated.where("rating > 4.5").count / food.orders.rated.count.to_f
+        satisfied = food.customer_satisfaction
         content_tag :strong, number_to_percentage(satisfied * 100.0, { precision: 2}) + " of #{food.orders.rated.count} rated"
       end
 
