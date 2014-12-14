@@ -98,6 +98,10 @@ ActiveAdmin.register Food do
         content_tag(:strong, number_to_currency(food.revenue))
       end
 
+      row "Real Revenue" do
+        number_to_currency food.revenue - food.credit
+      end
+
       row "Orders" do
         number_with_delimiter food.orders.placed.count
       end
@@ -129,7 +133,7 @@ ActiveAdmin.register Food do
       end
 
       row "Average Delivery Time" do
-        minutes = food.orders.placed("extract(epoch from delivered_at - created_at)") / 60.0
+        minutes = food.orders.placed.average("extract(epoch from delivered_at - created_at)") / 60.0
         "#{minutes} minutes"
       end
 
