@@ -129,7 +129,7 @@ ActiveAdmin.register Food do
           .select(:user_id)
           .count
 
-        retained_order_count = food.orders.where(user_id: user_ids).uniq(:user_id).count.to_f
+        retained_order_count = food.orders.where(user_id: user_ids).uniq("orders.user_id").count.to_f
 
         retained = retained_order_count / food.orders.select(:user_id).uniq.count
         number_to_percentage retained * 100.0, precision: 2
@@ -156,9 +156,6 @@ ActiveAdmin.register Food do
     render 'admin/foods/low_rated_orders', food: food
     render 'admin/foods/pending_orders', food: food
     render 'admin/foods/shifts', food: food
-
-
-
   end
 
 end
