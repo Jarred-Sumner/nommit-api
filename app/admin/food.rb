@@ -109,7 +109,7 @@ ActiveAdmin.register Food do
       end
 
       row "Credit Usage" do
-        "#{(food.percent_credit * 100.0).round(2)}%"
+        number_to_percentage "#{(food.percent_credit * 100.0).round(2)}%"
       end
 
       row "Retained Users" do
