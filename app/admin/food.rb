@@ -128,7 +128,8 @@ ActiveAdmin.register Food do
       end
 
       row "Average Delivery Time" do
-        food.orders.placed.average("orders.delivered_at - orders.created_at")
+        minutes = food.orders.placed.average("orders.delivered_at - orders.created_at") / 60.0
+        "#{minutes} minutes"
       end
 
 
