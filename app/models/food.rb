@@ -11,7 +11,7 @@ class Food < ActiveRecord::Base
   belongs_to :restaurant
   has_many :prices
 
-  has_many :buyers, through: :orders, source: :users, class_name: User
+  has_many :buyers, lambda { buyers }, through: :orders, source: :user, class_name: User
   accepts_nested_attributes_for :prices
   accepts_nested_attributes_for :orders
 
