@@ -120,7 +120,7 @@ ActiveAdmin.register Food do
         number_to_percentage food.percent_credit
       end
 
-      row "Retained Users" do
+      row "Repeat Buyers" do
         ids = food.orders.placed.pluck(:id)
         retained = food.buyers.repeat_buyers.count.to_f / food.buyers.count
         number_to_percentage retained * 100.0, precision: 2
