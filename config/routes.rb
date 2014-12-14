@@ -64,6 +64,8 @@ Rails.application.routes.draw do
   root to: 'dashboard#index'
 
   get '/auth/facebook/callback' => 'dashboard#facebook'
+  get '/admin/logout' => "dashboard#logout", as: :destroy_admin_user_session
 
   get 'download' => redirect("https://itunes.apple.com/us/app/nommit/id928890698?mt=8")
+
 end
