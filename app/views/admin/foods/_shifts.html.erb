@@ -9,6 +9,7 @@
     <th>Pending Orders</th>
     <th>Total Orders</th>
     <th>Late Percent</th>
+    <th>Average Rating</th>
     <th>Started</th>
   </thead>
 
@@ -19,7 +20,7 @@
       <td><%= shift.state %></td>
 
       <% if shift.user.present? %>
-        <td><%= link_to shift.user, admin_user_path(shift.user) %></td>
+        <td><%= link_to shift.user.name, admin_user_path(shift.user) %></td>
       <% else %>
         <td>Deleted User</td>
       <% end %>
@@ -33,6 +34,8 @@
       <% else %>
         <td>0%</td>
       <% end %>
+
+      <td><%= shift.orders.rated.average(:rating) %></td>
 
       <td><%= time_ago_in_words shift.created_at %> ago</td>
     </tr>

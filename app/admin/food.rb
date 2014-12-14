@@ -108,12 +108,13 @@ ActiveAdmin.register Food do
 
       row "Retained Users" do
         ids = food.orders.joins(:user).pluck(:id)
-        retained = Order
-          .where(food_id: food.id)
-          .uniq(:user_id)
-          .count(group: :user_id)
+        retained = User
+          .joins(:orders)
+          .where(orders: { food_id: food.id })
+          .uniq("orders.user_id")
+          .count(group: "orders.user_id")
 
-        rate = retained.to_f / food.orders.joins(:user).count.to_f
+        rate = retained.to_f / food.orders.joins(:user).uniq(:user_id).count.to_f
         number_to_percentage rate * 100.0, precision: 2
       end
 
@@ -128,7 +129,7 @@ ActiveAdmin.register Food do
       end
 
       row "Average Delivery Time" do
-        minutes = food.orders.placed.average("orders.delivered_at - orders.created_at") / 60.0
+        minutes = food.orders.placed("extract(epoch from delivered_at - created_at)") / 60.0
         "#{minutes} minutes"
       end
 
