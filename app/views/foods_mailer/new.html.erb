@@ -7,7 +7,7 @@
     <h1><%= @food.title %></h1>
     <h3>by <%= @food.restaurant.name %></h3>
   <% end %>
-  <p class='description'>Get <%= @food.title %> for <%= number_to_currency(@food.prices.first.price_in_cents / 100) %> delivered on Nommit. <%= @food.description %></p>
+  <p class='description'>Get <%= @food.title %> for <%= number_to_currency(@food.prices.first.price_in_cents.to_f / 100) %> delivered on Nommit. <%= @food.description %></p>
 
   <%= link_to "Order Now", root_url, class: "button" %>
 

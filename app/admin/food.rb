@@ -91,7 +91,7 @@ ActiveAdmin.register Food do
       end
 
       row "Price" do
-        number_to_currency food.price.price_in_cents / 100
+        number_to_currency food.price.price_in_cents.to_f / 100.0
       end
 
       row "Revenue" do
