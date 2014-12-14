@@ -131,7 +131,7 @@ ActiveAdmin.register Food do
           .count
           .keys
 
-        retained = food.orders.where(user_id: ordered_multiple).count.to_f / food.orders.placed.count.to_f
+        retained = food.orders.where(user_id: ordered_multiple).select(:user_id).uniq.count.to_f / food.orders.placed.select(:user_id).uniq.count.to_f
         number_to_percentage retained * 100.0, precision: 2
       end
 
