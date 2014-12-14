@@ -26,6 +26,14 @@ class Order < ActiveRecord::Base
     where(state: completed_states)
   end
 
+  scope :unhappy, -> do
+    rated.where("rating < 4.5").order("rating ASC")
+  end
+
+  scope :late, -> do
+    placed.where("orders.delivered_at > (orders.created_at + INTERVAL '15 minute')")
+  end
+
   def self.pending_states
     [
       Order.states[:active],

@@ -4,6 +4,7 @@ class Shift < ActiveRecord::Base
   has_many :delivery_places, dependent: :destroy
   has_many :places, through: :delivery_places
   has_many :orders, through: :delivery_places
+  has_one :user, through: :courier
   has_many :foods, lambda { uniq }, through: :delivery_places
 
   # Active means ongoing

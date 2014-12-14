@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
 
   enum state: [:registered, :activated, :invited]
   scope :emailable, -> { where("email IS NOT NULL") }
-
+  scope :admin, -> { where(admin: true) }
   attr_accessor :facebook
 
   def deactivate!

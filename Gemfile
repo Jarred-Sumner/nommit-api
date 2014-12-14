@@ -86,6 +86,10 @@ gem 'premailer-rails'
 # Cron
 gem 'whenever'
 
+# Admin Panel
+gem 'activeadmin', github: 'activeadmin'
+
+
 group :test, :development do
 
   # Debugging
