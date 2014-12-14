@@ -121,14 +121,15 @@ ActiveAdmin.register Food do
       end
 
       row "Retained Users" do
-        ids = food.orders.joins(:user).pluck(:id)
+        ids = food.orders.placed.pluck(:id)
         user_ids = Order
+          .placed
           .group(:user_id)
-          .having("COUNT(*) > 1")
+          .having("user_id > 1")
           .where(user_id: ids)
           .select(:user_id)
           .count
-
+          .count
         retained_order_count = food.orders.where(user_id: user_ids).uniq("orders.user_id").count.to_f
 
         retained = retained_order_count / food.orders.select(:user_id).uniq.count
