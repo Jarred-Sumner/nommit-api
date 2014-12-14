@@ -19,11 +19,11 @@ ActiveAdmin.register Food do
 
     column :rating
 
-    column "Revenue" do
+    column "Revenue" do |food|
       number_to_currency food.revenue.to_f * 100.0
     end
 
-    column "Real Revenue" do
+    column "Real Revenue" do |food|
       number_to_currency food.revenue - food.credit
     end
 
@@ -35,6 +35,8 @@ ActiveAdmin.register Food do
     column "Notified" do |food|
       check_box_tag "notified", food.last_notified.present?, food.last_notified.present?, readonly: true
     end
+
+
 
   end
 
@@ -123,6 +125,10 @@ ActiveAdmin.register Food do
       row "Customer Satisfaction" do
         satisfied = food.orders.rated.where("rating > 4.5").count / food.orders.rated.count.to_f
         content_tag :strong, number_to_percentage(satisfied * 100.0, { precision: 2}) + " of #{food.orders.rated.count} rated"
+      end
+
+      row "Average Delivery Time" do
+        food.orders.placed.average("orders.delivered_at - orders.created_at")
       end
 
 

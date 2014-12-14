@@ -20,7 +20,7 @@ class Food < ActiveRecord::Base
   scope :visible, lambda { where("end_date > ?", 1.day.ago) }
 
   scope :orderable, -> do
-  active.visible
+    active.visible
   end
 
   def orderable?
