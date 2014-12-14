@@ -122,14 +122,17 @@ ActiveAdmin.register Food do
 
       row "Retained Users" do
         ids = food.orders.joins(:user).pluck(:id)
-        retained = User
-          .joins(:orders)
-          .where(orders: { food_id: food.id })
-          .uniq("orders.user_id")
-          .count(group: "orders.user_id")
+        user_ids = Order
+          .group(:user_id)
+          .having("COUNT(*) > 1")
+          .where(user_id: ids)
+          .select(:user_id)
+          .count
 
-        rate = retained.to_f / food.orders.joins(:user).uniq(:user_id).count.to_f
-        number_to_percentage rate * 100.0, precision: 2
+        retained_order_count = food.orders.where(user_id: user_ids).uniq(:user_id).count.to_f
+
+        retained = retained_order_count / food.orders.select(:user_id).uniq.count
+        number_to_percentage retained * 100.0, precision: 2
       end
 
       row "Late Rate" do
