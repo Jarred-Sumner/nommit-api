@@ -17,8 +17,19 @@
 
     <tr class='order'>
       <td><%= time_ago_in_words order.created_at %> ago</td>
-      <td><%= link_to order.user.name, admin_user_path(order.user) %></td>
-      <td><%= link_to order.courier.user.name, admin_user_path(order.courier.user) %></td>
+
+      <% if order.user.present? %>
+        <td><%= link_to order.user.name, admin_user_path(order.user) %></td>
+      <% else %>
+        <td>Deleted User</td>
+      <% end %>
+
+      <% if order.courier.present? %>
+        <td><%= link_to order.courier.user.name, admin_user_path(order.courier.user) %></td>
+      <% else %>
+        <td>Deleted Courier</td>
+      <% end %>
+      
       <td><%= link_to order.place.name, admin_place_path(order.place) %></td>
       <td><%= order.user.orders.count > 0 ? "No" : "Yes" %></td>
       <td><%= number_to_currency order.discount_in_cents.to_f / 100.0 %></td>

@@ -17,7 +17,13 @@
 
     <tr class='shift'>
       <td><%= shift.state %></td>
-      <td><%= link_to shift.user.name, admin_user_path(shift.user) %></td>
+
+      <% if shift.user.present? %>
+        <td><%= link_to shift.user, admin_user_path(shift.user) %></td>
+      <% else %>
+        <td>Deleted User</td>
+      <% end %>
+
       <td><%= number_with_delimiter shift.places.count %></td>
       <td><%= number_with_delimiter shift.orders.pending.count %></td>
       <td><%= number_with_delimiter shift.orders.count %></td>
