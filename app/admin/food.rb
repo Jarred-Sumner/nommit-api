@@ -18,11 +18,11 @@ ActiveAdmin.register Food do
     end
 
     column "Customer Satisfaction" do |food|
-      number_to_percentage food.customer_satisfaction * 100.0
+      number_to_percentage food.customer_satisfaction
     end
 
     column "Revenue" do |food|
-      number_to_currency food.revenue.to_f
+      number_to_currency food.revenue
     end
 
     column "Credit Use" do |food|
@@ -131,7 +131,7 @@ ActiveAdmin.register Food do
 
       row "Customer Satisfaction" do
         satisfied = food.customer_satisfaction
-        content_tag :strong, number_to_percentage(satisfied * 100.0, { precision: 2}) + " of #{food.orders.rated.count} rated"
+        content_tag :strong, number_to_percentage(satisfied, { precision: 2}) + " of #{food.orders.rated.count} rated"
       end
 
       row "Average Delivery Time" do
