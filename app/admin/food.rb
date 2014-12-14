@@ -55,6 +55,7 @@ ActiveAdmin.register Food do
 
       f.input :title
       f.input :description
+      f.input :goal
       f.input :start_date, as: :datetime_select
       f.input :expiration_date, as: :datetime_select
       f.input :preview, as: :file, hint: f.template.image_tag(f.object.preview.url)
