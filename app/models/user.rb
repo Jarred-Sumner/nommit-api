@@ -18,6 +18,18 @@ class User < ActiveRecord::Base
   enum state: [:registered, :activated, :invited]
   scope :emailable, -> { where("email IS NOT NULL") }
   scope :admin, -> { where(admin: true) }
+  scope :buyers, -> { joins(:orders).uniq(:user_id) }
+
+  scope :repeat_buyers, -> do
+    ids = joins(:orders)
+    .group("orders.user_id")
+    .select("orders.user_id")
+    .having("COUNT(orders.user_id) > 1")
+    .count
+    .keys
+    User.where(id: ids)
+  end
+
   attr_accessor :facebook
 
   def deactivate!

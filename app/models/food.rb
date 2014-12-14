@@ -10,6 +10,8 @@ class Food < ActiveRecord::Base
   belongs_to :seller
   belongs_to :restaurant
   has_many :prices
+
+  has_many :buyers, through: :orders, source: :users, class_name: User
   accepts_nested_attributes_for :prices
   accepts_nested_attributes_for :orders
 
