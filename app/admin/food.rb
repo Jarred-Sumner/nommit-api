@@ -20,7 +20,7 @@ ActiveAdmin.register Food do
     column :rating
 
     column "Revenue" do |food|
-      number_to_currency food.revenue.to_f * 100.0
+      number_to_currency food.revenue.to_f
     end
 
     column "Real Revenue" do |food|
