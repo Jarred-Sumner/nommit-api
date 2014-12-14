@@ -124,7 +124,7 @@ ActiveAdmin.register Food do
         ids = food.orders.placed.pluck(:id)
 
         ordered_multiple = User
-          .joins(:order)
+          .joins(:orders)
           .group("orders.user_id")
           .select("orders.user_id")
           .having("COUNT(orders.user_id) > 1")
