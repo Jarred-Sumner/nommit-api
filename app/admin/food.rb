@@ -134,7 +134,7 @@ ActiveAdmin.register Food do
 
       row "Average Delivery Time" do
         minutes = food.orders.placed.average("extract(epoch from delivered_at - created_at)") / 60.0
-        "#{minutes} minutes"
+        "#{minutes.round(2)} minutes"
       end
 
 
