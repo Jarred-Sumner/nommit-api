@@ -128,6 +128,7 @@ ActiveAdmin.register Food do
           .group("orders.user_id")
           .select("orders.user_id")
           .having("COUNT(orders.user_id) > 1")
+          .count
           .keys
 
         retained = food.orders.where(user_id: ordered_multiple).count.to_f / food.orders.placed.count.to_f
