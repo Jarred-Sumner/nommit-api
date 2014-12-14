@@ -55,8 +55,8 @@ ActiveAdmin.register Food do
 
       f.input :title
       f.input :description
-      f.input :start_date, as: :date
-      f.input :expiration_date, as: :date
+      f.input :start_date, as: :datetime_select
+      f.input :expiration_date, as: :datetime_select
       f.input :preview, as: :file, hint: f.template.image_tag(f.object.preview.url)
 
       f.inputs "Restaurant", :for => [:restaurant, f.object.restaurant || Restaurant.new] do |cf|
