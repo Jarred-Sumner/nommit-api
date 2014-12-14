@@ -1,6 +1,6 @@
-role :app, %w{deploy@54.86.235.80}
-role :web, %w{deploy@54.86.235.80}
-role :db,  %w{deploy@54.86.235.80}
+role :app, %w{deploy@getnommit.com}
+role :web, %w{deploy@getnommit.com}
+role :db,  %w{deploy@getnommit.com}
 
 # Extended Server Syntax
 # ======================
