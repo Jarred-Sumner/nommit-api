@@ -25,8 +25,8 @@ ActiveAdmin.register Food do
       number_to_currency food.revenue.to_f
     end
 
-    column "Real Revenue" do |food|
-      number_to_currency food.revenue - food.credit
+    column "Credit Use" do |food|
+      number_to_currency food.credit / food.revenue
     end
 
     column :seller

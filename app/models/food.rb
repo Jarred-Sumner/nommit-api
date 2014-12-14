@@ -85,7 +85,7 @@ class Food < ActiveRecord::Base
   end
 
   def customer_satisfaction
-    food.orders.rated.where("rating > 4.5").count / food.orders.rated.count.to_f
+    orders.rated.where("rating > 4.5").count / orders.rated.count.to_f
   end
 
   def price
