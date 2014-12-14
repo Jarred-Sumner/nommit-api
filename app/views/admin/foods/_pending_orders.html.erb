@@ -1,0 +1,30 @@
+
+<h3>Pending Orders - <%= number_with_delimiter food.orders.pending.count %></h3>
+<table class='orders'>
+
+  <thead>
+    <th>Placed Time</th>
+    <th>User</th>
+    <th>Courier</th>
+    <th>Delivery Place</th>
+    <th>New User?</th>
+    <th>Discount</th>
+    <th>Quantity</th>
+  </thead>
+
+  <tbody>
+  <% food.orders.pending.each do |order| %>
+
+    <tr class='order'>
+      <td><%= time_ago_in_words order.created_at %> ago</td>
+      <td><%= link_to order.user.name, admin_user_path(order.user) %></td>
+      <td><%= link_to order.courier.user.name, admin_user_path(order.courier.user) %></td>
+      <td><%= link_to order.place.name, admin_place_path(order.place) %></td>
+      <td><%= order.user.orders.count > 0 ? "No" : "Yes" %></td>
+      <td><%= number_to_currency order.discount_in_cents.to_f / 100.0 %></td>
+      <td><%= order.quantity %></td>
+    </tr>
+
+  <% end %>
+  </tbody>
+</table>

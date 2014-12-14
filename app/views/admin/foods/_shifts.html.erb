@@ -1,0 +1,36 @@
+
+<h3>Shifts - <%= number_with_delimiter food.shifts.count %></h3>
+<table class='shifts'>
+
+  <thead>
+    <th>State</th>
+    <th>Courier</th>
+    <th>Number of Places</th>
+    <th>Pending Orders</th>
+    <th>Total Orders</th>
+    <th>Late Percent</th>
+    <th>Started</th>
+  </thead>
+
+  <tbody>
+    <% food.shifts.order("state ASC").each do |shift| %>
+
+    <tr class='shift'>
+      <td><%= shift.state %></td>
+      <td><%= link_to shift.user.name, admin_user_path(shift.user) %></td>
+      <td><%= number_with_delimiter shift.places.count %></td>
+      <td><%= number_with_delimiter shift.orders.pending.count %></td>
+      <td><%= number_with_delimiter shift.orders.count %></td>
+
+      <% if shift.orders.count > 0 %>
+        <td><%= number_to_percentage shift.orders.late.placed.count.to_f / shift.orders.placed.count.to_f, precision: 2 %></td>
+      <% else %>
+        <td>0%</td>
+      <% end %>
+
+      <td><%= time_ago_in_words shift.created_at %> ago</td>
+    </tr>
+
+    <% end %>
+  </tbody>
+</table>
