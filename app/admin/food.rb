@@ -122,17 +122,15 @@ ActiveAdmin.register Food do
 
       row "Retained Users" do
         ids = food.orders.placed.pluck(:id)
-        user_ids = Order
-          .placed
-          .group(:user_id)
-          .having("user_id > 1")
-          .where(user_id: ids)
-          .select(:user_id)
-          .count
-          .count
-        retained_order_count = food.orders.where(user_id: user_ids).uniq("orders.user_id").count.to_f
 
-        retained = retained_order_count / food.orders.select(:user_id).uniq.count
+        ordered_multiple = User
+          .joins(:order)
+          .group("orders.user_id")
+          .select("orders.user_id")
+          .having("COUNT(orders.user_id) > 1")
+          .keys
+
+        retained = food.orders.where(user_id: ordered_multiple).count.to_f / food.orders.placed.count.to_f
         number_to_percentage retained * 100.0, precision: 2
       end
 
