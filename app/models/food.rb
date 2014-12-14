@@ -70,7 +70,7 @@ class Food < ActiveRecord::Base
 
   def percent_credit
     if revenue > 0
-      credit / revenue
+      (credit / revenue) * 100.0
     else
       0.0
     end
@@ -85,7 +85,7 @@ class Food < ActiveRecord::Base
   end
 
   def customer_satisfaction
-    rating = orders.rated.where("rating > 4.5").count / orders.rated.count.to_f
+    rating = orders.rated.where("rating > 4.5").count.to_f / orders.rated.count.to_f
     rating = rating * 100.0
     rating.round(2)
   end

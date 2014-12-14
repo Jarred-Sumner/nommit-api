@@ -18,7 +18,11 @@ ActiveAdmin.register Food do
     end
 
     column "Customer Satisfaction" do |food|
-      number_to_percentage food.customer_satisfaction
+      if food.orders.rated.count > 0
+        number_to_percentage food.customer_satisfaction, precision: 2
+      else
+        "No Ratings"
+      end
     end
 
     column "Revenue" do |food|
@@ -26,7 +30,11 @@ ActiveAdmin.register Food do
     end
 
     column "Credit Use" do |food|
-      number_to_currency food.credit / food.revenue
+      if food.orders.count > 0
+        number_to_percentage food.percent_credit, precision: 2
+      else
+        "No Orders"
+      end
     end
 
     column :seller
@@ -109,7 +117,7 @@ ActiveAdmin.register Food do
       end
 
       row "Credit Usage" do
-        number_to_percentage "#{(food.percent_credit * 100.0).round(2)}%"
+        number_to_percentage food.percent_credit
       end
 
       row "Retained Users" do
@@ -135,7 +143,7 @@ ActiveAdmin.register Food do
       end
 
       row "Average Delivery Time" do
-        minutes = food.orders.placed.average("extract(epoch from delivered_at - created_at)") / 60.0
+        minutes = food.orders.placed.average("extract(epoch from delivered_at - created_at)").to_f / 60.0
         "#{minutes.round(2)} minutes"
       end
 
