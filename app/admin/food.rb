@@ -18,8 +18,15 @@ ActiveAdmin.register Food do
     end
 
     column :rating
-    column :revenue
-    column :excluding_credit
+
+    column "Revenue" do
+      number_to_currency food.revenue.to_f * 100.0
+    end
+
+    column "Real Revenue" do
+      number_to_currency food.revenue - food.credit
+    end
+
     column :seller
     column :restaurant
     column :start_date
