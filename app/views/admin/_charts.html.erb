@@ -5,8 +5,9 @@
 <h3>Total Repeat Buyers: <%= number_with_delimiter User.repeat_buyers.count %></h3>
 
 <div class='chart'>
-  <h3>Revenue (In Cents) by Week</h3>
-  <%= line_chart Charge.paid.group_by_week(:created_at).sum(:amount_charged_in_cents) %>
+  <h3>Revenue by Week</h3>
+  <% result = Charge.paid.group_by_week(:created_at).sum(:amount_charged_in_cents) %>
+  <%= line_chart(result.each { |key, value| result[key] = number_to_currency(value.to_f / 100.0) })  %>
 </div>
 
 <div class='chart'>
