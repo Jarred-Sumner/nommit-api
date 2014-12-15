@@ -12,6 +12,8 @@ class Order < ActiveRecord::Base
   has_and_belongs_to_many :applied_promos
 
   include StateID
+  include TimingScopes
+
   enum state: { cancelled: -1, active: 0, arrived: 1, delivered: 2, rated: 3 }
 
   scope :placed, -> do
@@ -28,6 +30,11 @@ class Order < ActiveRecord::Base
 
   scope :unhappy, -> do
     rated.where("rating < 4.5").order("rating ASC")
+  end
+
+  scope :satisfied, -> do
+    ids = rated.where("rating > 4.5").order('rating DESC').pluck(:id)
+    Order.where(id: ids)
   end
 
   scope :late, -> do
@@ -66,6 +73,17 @@ class Order < ActiveRecord::Base
 
   def quantity
     price.quantity
+  end
+
+  def self.satisfaction_by_week
+    satisfied = Order.satisfied.group_by_week(:created_at).count
+    all = Order.rated.group_by_week(:created_at).count
+
+    relative = Hash.new
+    satisfied.each do |k, v|
+      relative[k] = v.to_f / all[k].to_f
+    end
+    relative
   end
 
   def delivered!

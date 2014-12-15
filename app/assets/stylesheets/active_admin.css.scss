@@ -26,3 +26,23 @@
 .late {
   color: lighten(red, 10%);
 }
+
+.inputs ol {
+  margin: 10px;
+}
+
+.chart h3 { text-align: center; }
+
+
+.chart {
+  @extend .section;
+  ul {
+    list-style: none;
+    padding-bottom: 25px;
+  }
+  li {
+    margin: 25px 5px;
+    font-size: 14pt;
+  }
+  margin-top: 15px;
+}

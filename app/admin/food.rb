@@ -1,5 +1,5 @@
 ActiveAdmin.register Food do
-  menu priority: 1
+  menu priority: 2
 
   filter :title
   filter :seller

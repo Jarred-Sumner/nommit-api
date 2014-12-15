@@ -15,6 +15,8 @@ class User < ActiveRecord::Base
   include StateID
   AWHILE = 1 unless defined?(TEXT_THRESHOLD)
 
+  accepts_nested_attributes_for :couriers
+
   enum state: [:registered, :activated, :invited]
   scope :emailable, -> { where("email IS NOT NULL") }
   scope :admin, -> { where(admin: true) }
@@ -86,6 +88,18 @@ class User < ActiveRecord::Base
 
   def credit
     applied_promos.active.sum(:amount_remaining_in_cents)
+  end
+
+  def revenue
+    spent - orders.completed.sum(:discount_in_cents)
+  end
+
+  def spent
+    orders.completed.joins(:price).sum("prices.price_in_cents")
+  end
+
+  def satisfaction
+    orders.rated.where("rating > 4.5").count.to_f / orders.rated.count.to_f
   end
 
   after_create :generate_promo_code!, on: :create

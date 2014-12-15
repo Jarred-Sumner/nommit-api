@@ -88,7 +88,8 @@ gem 'whenever'
 
 # Admin Panel
 gem 'activeadmin', github: 'activeadmin'
-
+gem 'groupdate'
+gem 'chartkick'
 
 group :test, :development do
 

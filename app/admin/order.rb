@@ -1,4 +1,84 @@
 ActiveAdmin.register Order do
   menu priority: 1
-  belongs_to :food
+
+  filter :state
+  filter :user_id
+  filter :food
+  filter :created_at
+  filter :delivered_at
+
+  index do
+
+    column "ID" do |order|
+      link_to order.id, admin_order_path(order)
+    end
+
+    column "Food" do |order|
+      link_to order.food.title, admin_food_path(order.food)
+    end
+
+    column "Price" do |order|
+      number_to_currency order.price.price_in_cents.to_f / 100.0
+    end
+
+    column "Place" do |order|
+      link_to order.place.name, admin_place_path(order.place)
+    end
+
+    column "Courier" do |order|
+      link_to order.courier.user.name, admin_user_path(order.courier.user)
+    end
+
+    column :state
+
+    column "User" do |order|
+      link_to order.user.name, admin_user_path(order.user)
+    end
+
+    column :created_at
+    column :rating
+  end
+
+  show do |order|
+
+    attributes_table do
+
+      row :id
+      row :state
+      row :rating
+
+      row :user do
+        link_to order.user.name, admin_user_path(order.user)
+      end
+
+      row :food do
+        link_to order.food.title, admin_food_path(order.food)
+      end
+
+      row :courier do
+        link_to order.courier.user.name, admin_user_path(order.user)
+      end
+
+      row :place do
+        link_to order.place.name, admin_place_path(order.place)
+      end
+
+      row :delivery_estimate do
+        distance_of_time_in_words(order.delivered_at, order.created_at)
+      end
+
+      row :price do
+        number_to_currency order.price.price_in_cents.to_f / 100.0
+      end
+
+      row :credit do
+        number_to_currency order.discount_in_cents.to_f / 100.0
+      end
+
+      row :quantity
+
+    end
+
+  end
+
 end

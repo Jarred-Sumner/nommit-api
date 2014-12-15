@@ -1,0 +1,40 @@
+<h3>Orders - <%= number_with_delimiter user.orders.count %></h3>
+<table>
+  <thead>
+
+    <tr>
+      <th>ID</th>
+      <th>State</th>
+      <th>Rating</th>
+      <th>Food</th>
+      <th>Courier</th>
+      <th>Delivery Location</th>
+      <th>Placed At</th>
+      <th>Delivered In</th>
+      <th>Discount</th>
+      <th>Price</th>
+      <th>Quantity</th>
+    </tr>
+
+  </thead>
+
+  <tbody>
+    <% user.orders.each do |order| %>
+
+      <tr>
+        <td><%= link_to order.id, admin_order_path(order) %></td>
+        <td><%= order.state %></td>
+        <td><%= order.rating %></td>
+        <td><%= link_to order.food.title, admin_food_path(order.food) %></td>
+        <td><%= link_to order.courier.user.name, admin_user_path(order.courier) %></td>
+        <td><%= link_to order.place.name, admin_place_path(order.place) %></td>
+        <td><%= order.created_at.to_formatted_s(:medium) %></td>
+        <td><%= distance_of_time_in_words(order.delivered_at, order.created_at) %></td>
+        <td><%= number_to_currency(order.discount_in_cents.to_f / 100.0) %></td>
+        <td><%= number_to_currency order.price.price_in_cents.to_f / 100.0 %></td>
+        <td><%= number_with_delimiter order.quantity %></td>
+      </tr>
+
+    <% end %>
+  </tbody>
+</table>
