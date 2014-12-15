@@ -14,7 +14,7 @@
 
 <div class='chart'>
   <h3>Repeat Buyers by Week</h3>
-  <%= line_chart User.repeat_buyers.where("created_at BETWEEN ? and ?", 3.weeks.ago, 1.second.ago).group_by_week(:created_at).count %>
+  <%= line_chart User.repeat_buyers.group_by_week(:created_at).count %>
 </div>
 
 <div class='chart'>
