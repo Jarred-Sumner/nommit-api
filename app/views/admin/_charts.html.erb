@@ -2,15 +2,16 @@
 
 <h3>Total Revenue: <%= number_to_currency Charge.paid.sum(:amount_charged_in_cents).to_f / 100.0 %></h3>
 <h3>Total Orders: <%= number_with_delimiter Order.placed.count %></h3>
+<h3>Total Repeat Buyers: <%= number_with_delimiter User.repeat_buyers.count %></h3>
 
 <div class='chart'>
   <h3>Revenue (In Cents) by Week</h3>
-  <%= column_chart Charge.paid.group_by_week(:created_at).sum(:amount_charged_in_cents) %>
+  <%= line_chart Charge.paid.group_by_week(:created_at).sum(:amount_charged_in_cents) %>
 </div>
 
 <div class='chart'>
   <h3>Repeat Buyers by Week</h3>
-  <%= line_chart User.repeat_buyers.group_by_week(:created_at).count %>
+  <%= line_chart User.repeat_buyers.where("created_at BETWEEN ? and ?", 3.weeks.ago, 1.second.ago).group_by_week(:created_at).count %>
 </div>
 
 <div class='chart'>
@@ -20,7 +21,7 @@
 
 <div class='chart'>
   <h3>Orders by Week</h3>
-  <%= line_chart Order.placed.last_month.group_by_week(:created_at).count %>
+  <%= line_chart Order.placed.this_month.group_by_week(:created_at).count %>
 </div>
 
 <div class='chart'>
