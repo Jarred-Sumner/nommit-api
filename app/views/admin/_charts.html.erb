@@ -7,7 +7,8 @@
 <div class='chart'>
   <h3>Revenue by Week</h3>
   <% result = Charge.paid.group_by_week(:created_at).sum(:amount_charged_in_cents) %>
-  <%= line_chart(result.each { |key, value| result[key] = number_to_currency(value.to_f / 100.0) })  %>
+  <% result.each { |key, value| result[key] = number_to_currency(value.to_f / 100.0) } %>
+  <%= line_chart result  %>
 </div>
 
 <div class='chart'>
