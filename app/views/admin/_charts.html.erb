@@ -1,10 +1,10 @@
 <%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
 
-<h3>Total Revenue: <%= number_to_currency Charge.paid.sum(:amount_charged_in_cents) %></h3>
+<h3>Total Revenue: <%= number_to_currency Charge.paid.sum(:amount_charged_in_cents).to_f / 100.0 %></h3>
 <h3>Total Orders: <%= number_with_delimiter Order.placed.count %></h3>
 
 <div class='chart'>
-  <h3>Revenue by Week</h3>
+  <h3>Revenue (In Cents) by Week</h3>
   <%= column_chart Charge.paid.group_by_week(:created_at).sum(:amount_charged_in_cents) %>
 </div>
 
