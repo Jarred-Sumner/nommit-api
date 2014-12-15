@@ -27,12 +27,4 @@ module TimingScopes
 
   end
 
-  module ClassMethods
-
-    def between(date_one, date_two)
-      Order.where("created_at BETWEEN ? AND ?", date_one, date_two)
-    end
-
-  end
-
 end
