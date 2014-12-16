@@ -149,8 +149,6 @@ class Order < ActiveRecord::Base
     end
 
     def apply_pending_promotions!
-      activated_referrals = []
-
       # Grab all the active pending promotions
       user.applied_promos.active.order("created_at ASC").find_each do |u_p|
         # Create a copy of it so it becomes mutable
