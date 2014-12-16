@@ -30,9 +30,9 @@ class InviteWorker
       first_name = contact['name'].split(" ")[0] if first_name.present?
 
       if first_name.present?
-        @message = "Yo #{first_name}! #{user.first_name}#{' ' + last_name[0] + '.' if last_name.present?} sent you $5 on Nommit. Get food delivered to you in 15 mins - only @ CMU. Use code: #{code}. http://www.getnommit.com/?i=#{code}"
+        @message = "Yo #{first_name}! #{user.first_name}#{' ' + last_name[0] + '.' if last_name.present?} sent you $5 on Nommit. Get food delivered to you in under 15 mins. http://www.getnommit.com/?i=#{code}"
       else
-        @message = "#{user.first_name}#{' ' + last_name[0] + '.' if last_name.present?} sent you $5 on Nommit. Get food delivered to you in 15 mins - only @ CMU. Use code: #{code}. http://www.getnommit.com/?i=#{code}"
+        @message = "#{user.first_name}#{' ' + last_name[0] + '.' if last_name.present?} sent you $5 on Nommit. Get food delivered to you in under 15 mins. http://www.getnommit.com/?i=#{code}"
       end
 
       Texter.run(@message, contact['phone'], INVITE_PHONE)

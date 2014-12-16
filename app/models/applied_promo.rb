@@ -9,7 +9,7 @@ class AppliedPromo < ActiveRecord::Base
 
   validates :amount_remaining_in_cents, presence: true
   validate :user_didnt_create_promo!, if: :active?
-  validate :doesnt_already_have_referral_promo!, on: :create
+  validate :isnt_new_referral_promo!, on: :create
   validates :promo_id, uniqueness: { scope: [:user_id] , message: "has already been applied" }, :if => Proc.new { promo.class != ReferralPromo || !from_referral? }
 
   scope :referral_promos, -> { joins(:promo).where(promos: { type: "ReferralPromo"} ) }
@@ -53,17 +53,10 @@ class AppliedPromo < ActiveRecord::Base
       end
     end
 
-    def doesnt_already_have_referral_promo!
+    def isnt_new_referral_promo!
       return false unless promo.type == "ReferralPromo"
       return false if from_referral?
-
-      if user.promos.referral.where.not(user_id: user.id).count > 0
-        self.errors.add(:base, "Only one referral code can be applied to an account")
-      end
-    end
-
-    after_commit if: :active?, on: :create do
-      AppliedPromosMailer.delay.new(id) if user.email.present?
+      self.errors.add(:base, "Nommit's referral program has been paused")
     end
 
 end

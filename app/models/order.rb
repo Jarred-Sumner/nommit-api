@@ -192,9 +192,6 @@ class Order < ActiveRecord::Base
 
       save!
 
-      # Send only if applying promos was successful.
-      # Don't want to tell people they got credit when they may not have.
-      activated_referrals.each { |referral| SMS::Notifications::ReferralCreditAppliedWorker.perform_async(referral) }
     end
 
     def ensure_courier_isnt_delivering_to_self!

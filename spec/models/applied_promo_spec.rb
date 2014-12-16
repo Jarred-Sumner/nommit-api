@@ -6,15 +6,12 @@ RSpec.describe AppliedPromo, type: :model do
     let(:referral) { create(:user).referral_promo }
     let(:promo) { create(:promo) }
 
-    it "works for applying only one referral" do
-      another = create(:user).referral_promo
-
-      user.applied_promos.create!(promo_id: referral.id)
+    it "doesn't work for applying new referral promos" do
       expect do
-        user.applied_promos.create!(promo_id: another.id)
+        user.applied_promos.create!(promo_id: referral.id)
       end.to raise_error(ActiveRecord::RecordInvalid)
     end
-
+    
     it "works for applying promos" do
       expect do
         user.applied_promos.create!(promo_id: promo.id)

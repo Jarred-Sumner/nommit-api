@@ -99,9 +99,10 @@ describe Order, type: :model do
     context "from referral" do
       let(:referrer) { create(:user) }
       let(:referral_promo) { referrer.referral_promo }
+      let(:applied_promo) { user.applied_promos.create!(promo_id: referral_promo.id, from_referral: true) }
 
       before :each do
-        user.applied_promos.create!(promo_id: referral_promo.id)
+        applied_promo.active!
       end
 
       context "applies to" do
@@ -120,12 +121,6 @@ describe Order, type: :model do
           expect(
             referrer.applied_promos.active.sum(:amount_remaining_in_cents)
           ).to eq(referral_promo.discount_in_cents)
-        end
-
-        it "queues notification to referrer" do
-          expect do
-            subject
-          end.to change(SMS::Notifications::ReferralCreditAppliedWorker.jobs, :size).from(0).to(1)
         end
 
       end
