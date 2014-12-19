@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141214000356) do
+ActiveRecord::Schema.define(version: 20141218235634) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -134,7 +134,7 @@ ActiveRecord::Schema.define(version: 20141214000356) do
   create_table "foods", force: true do |t|
     t.string   "title"
     t.text     "description"
-    t.integer  "state",                default: 0, null: false
+    t.integer  "state",                default: 0,     null: false
     t.datetime "end_date"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -147,6 +147,7 @@ ActiveRecord::Schema.define(version: 20141214000356) do
     t.datetime "start_date"
     t.integer  "restaurant_id"
     t.datetime "last_notified"
+    t.boolean  "notify",               default: false, null: false
   end
 
   add_index "foods", ["restaurant_id"], name: "index_foods_on_restaurant_id", using: :btree
@@ -237,9 +238,11 @@ ActiveRecord::Schema.define(version: 20141214000356) do
     t.integer  "location_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "school_id"
   end
 
   add_index "places", ["location_id"], name: "index_places_on_location_id", using: :btree
+  add_index "places", ["school_id"], name: "index_places_on_school_id", using: :btree
 
   create_table "prices", force: true do |t|
     t.integer  "quantity"
@@ -275,6 +278,14 @@ ActiveRecord::Schema.define(version: 20141214000356) do
     t.datetime "logo_updated_at"
   end
 
+  create_table "schools", force: true do |t|
+    t.string   "name",       null: false
+    t.time     "from_hours"
+    t.time     "to_hours"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "sellers", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -283,7 +294,10 @@ ActiveRecord::Schema.define(version: 20141214000356) do
     t.string   "logo_content_type"
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
+    t.integer  "school_id"
   end
+
+  add_index "sellers", ["school_id"], name: "index_sellers_on_school_id", using: :btree
 
   create_table "sessions", force: true do |t|
     t.integer  "user_id"
@@ -337,11 +351,13 @@ ActiveRecord::Schema.define(version: 20141214000356) do
     t.integer  "confirm_code"
     t.integer  "promotion_credit_in_cents"
     t.boolean  "admin",                     default: false, null: false
+    t.integer  "school_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", using: :btree
   add_index "users", ["facebook_uid"], name: "index_users_on_facebook_uid", using: :btree
   add_index "users", ["location_id"], name: "index_users_on_location_id", using: :btree
+  add_index "users", ["school_id"], name: "index_users_on_school_id", using: :btree
   add_index "users", ["seller_id"], name: "index_users_on_seller_id", using: :btree
   add_index "users", ["state"], name: "index_users_on_state", using: :btree
 

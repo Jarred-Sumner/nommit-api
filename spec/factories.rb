@@ -315,13 +315,14 @@ FactoryGirl.define do
     facebook_uid { String(rand(11111..99999)) }
     state 1
 
+    school { create(:school) }
+
     factory :registered_user do
       state 0
     end
 
     after(:create) do |user|
       create(:payment_method, user_id: user.id)
-      create(:subscription, user_id: user.id)
     end
 
   end
@@ -363,6 +364,7 @@ FactoryGirl.define do
   factory :seller do
     name { Faker::Company.name }
     #logo { open(Faker::Company.logo) }
+    school { create(:school) }
   end
 
   factory :courier do
@@ -422,6 +424,10 @@ FactoryGirl.define do
     name do
       remaining_names = PLACES.keys | Place.where(name: PLACES.keys).pluck(:name)
       remaining_names.sample
+    end
+
+    school do
+      create(:school)
     end
 
     location do |place|

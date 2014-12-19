@@ -6,6 +6,7 @@ describe SMS::Notifications::FoodAvailableWorker do
   subject { SMS::Notifications::FoodAvailableWorker.new }
 
   before :each do
+    food.update_attributes(notify: true)
     allow(Texter).to receive(:run)
   end
 

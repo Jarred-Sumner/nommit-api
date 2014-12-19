@@ -10,12 +10,14 @@ class User < ActiveRecord::Base
   has_one :referral_promo
   has_many :devices
   belongs_to :location
-  has_many :sellers, through: :couriers
+  belongs_to :school
   has_one :subscription
+  has_many :sellers, through: :couriers
   include StateID
   AWHILE = 1 unless defined?(TEXT_THRESHOLD)
 
   accepts_nested_attributes_for :couriers
+  accepts_nested_attributes_for :school
 
   enum state: [:registered, :activated, :invited]
   scope :emailable, -> { where("email IS NOT NULL") }
@@ -84,7 +86,7 @@ class User < ActiveRecord::Base
   phony_normalize :phone, default_country_code: 'US'
   validates :phone, phony_plausible: true, uniqueness: true, if: :activated?
 
-  validates :confirm_code, presence: true, uniqueness: true, length: { is: 6 }, if: :registered?
+  validates :confirm_code, presence: true, uniqueness: true, length: { is: 4 }, if: :registered?
 
   def credit
     applied_promos.active.sum(:amount_remaining_in_cents)
@@ -109,11 +111,16 @@ class User < ActiveRecord::Base
 
   before_validation :generate_confirm_code!, on: :create, if: :registered?
   def generate_confirm_code!
-    self.confirm_code = rand(111111..999999)
+    self.confirm_code = rand(1111..9999)
   end
 
   # Utility method for retrieving a Facebook object given an access token
   def self.facebook_for(access_token)
     Koala::Facebook::API.new(access_token).get_object("me")
   end
+
+  after_commit on: :create do
+    Subscription.create!(user_id: id, sms: true, email: true)
+  end
+
 end

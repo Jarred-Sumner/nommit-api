@@ -40,23 +40,23 @@ class AppliedPromo < ActiveRecord::Base
   end
 
   def active!
-    self.update_attributes(state: 'active')
+    update_attributes(state: 'active')
     AppliedPromosMailer.delay.new(id) if user.email.present?
   end
 
   private
 
     def user_didnt_create_promo!
-      return if self.referrals.count > 0
-      if self.promo.user_id == self.user_id
-        self.errors.add(:base, "Can't use your own referral code")
+      return if referrals.count > 0
+      if promo.user_id == user_id
+        errors.add(:base, "Can't use your own referral code")
       end
     end
 
     def isnt_new_referral_promo!
       return false unless promo.type == "ReferralPromo"
       return false if from_referral?
-      self.errors.add(:base, "Nommit's referral program has been paused")
+      errors.add(:base, "Nommit's referral program has been paused")
     end
 
 end

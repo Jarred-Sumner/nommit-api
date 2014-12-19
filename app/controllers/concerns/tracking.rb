@@ -81,7 +81,7 @@ module Tracking
   end
 
   def track_looked_at_places
-    track("User Looked at Places")
+    track("User Looked at Places", track_properties_for(school: school))
   end
 
 
@@ -100,7 +100,7 @@ module Tracking
 
   private
 
-    def track_properties_for(order: nil, seller: nil, food: nil, place: nil, user: nil, courier: nil, shift: nil, delivery_place: nil)
+    def track_properties_for(order: nil, seller: nil, food: nil, place: nil, user: nil, courier: nil, shift: nil, delivery_place: nil, school: nil)
       if order.present?
         food_props = track_properties_for(food: order.food)
         place_props = track_properties_for(place: order.place)
@@ -131,14 +131,14 @@ module Tracking
         return {
           'Seller ID' => seller.id,
           'Seller Name' => seller.name,
-        }
+        }.merge(track_properties_for(school: seller.school))
       end
 
       if place.present?
         return {
           'Place Name' => place.name,
           'Place ID' => place.id
-        }
+        }.merge(track_properties_for(school: place.school))
       end
 
       if shift.present?
@@ -151,11 +151,18 @@ module Tracking
         }.merge(seller_params)
       end
 
+      if school.present?
+        return {
+          'School Name' => school.name
+        }
+      end
+
       if delivery_place.present?
         shift_params = track_properties_for(shift: delivery_place.shift)
         place_params = track_properties_for(place: delivery_place.place)
         shift_params.merge(place_params)
       end
+
 
     end
 end

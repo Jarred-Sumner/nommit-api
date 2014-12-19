@@ -6,6 +6,7 @@ class Seller < ActiveRecord::Base
   has_many :orders, through: :foods
   has_many :shifts
   has_many :delivery_places
+  belongs_to :school
 
   validates_attachment :logo, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png"] }
 

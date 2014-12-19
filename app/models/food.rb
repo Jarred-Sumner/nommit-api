@@ -10,6 +10,7 @@ class Food < ActiveRecord::Base
   belongs_to :seller
   belongs_to :restaurant
   has_many :prices
+  has_one :school, through: :seller
 
   has_many :buyers, through: :orders, source: :user, class_name: User
   accepts_nested_attributes_for :prices
@@ -23,6 +24,10 @@ class Food < ActiveRecord::Base
 
   scope :orderable, -> do
     active.visible
+  end
+
+  scope :notifiable, -> do
+    orderable.where(notify: true)
   end
 
   def orderable?
@@ -44,11 +49,6 @@ class Food < ActiveRecord::Base
       end
 
     end
-  end
-
-  def ended!
-    update_attributes!(state: 'ended')
-    PushNotifications::FoodUnavailableWorker.perform_async(id)
   end
 
   validates :title, presence: true
@@ -96,12 +96,7 @@ class Food < ActiveRecord::Base
     prices.first
   end
 
-  after_commit :notify_users!, :send_end_food!, on: :create
-
-  def send_end_food!
-    PushNotifications::FoodUnavailableWorker.perform_at(end_date + 5.seconds, id)
-  end
-
+  after_commit :notify_users!, if: :notify?, on: :create
   def notify_users!
     Notifications::FoodAvailableWorker.perform_at(start_date + 2.minutes, id)
   end

@@ -6,7 +6,7 @@ class SMS::Notifications::FoodAvailableWorker
 
   def perform(user_id, food_id)
     self.user = User.find(user_id)
-    self.food = Food.find(food_id)
+    self.food = Food.notifiable.find(food_id)
 
     if food.orderable? && user.phone.present?
       return false unless user.subscription.try(:sms?)

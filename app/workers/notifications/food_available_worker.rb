@@ -4,11 +4,11 @@ class Notifications::FoodAvailableWorker
   sidekiq_options retry: false
 
   def perform(food_id)
-    self.food = Food.orderable.find(food_id)
+    self.food = Food.notifiable.find(food_id)
     return nil if food.last_notified.present?
 
     if food.orderable?
-      User.where(state: [ User.states[:registered], User.states[:activated] ]).find_each do |user|
+      food.school.users.where(state: [ User.states[:registered], User.states[:activated] ]).find_each do |user|
         notify_user!(user)
       end
     elsif food.start_date.future?
@@ -19,8 +19,6 @@ class Notifications::FoodAvailableWorker
   end
 
   def notify_user!(user)
-    user.subscription ||= Subscription.new(user_id: user.id, sms: true, email: true)
-
     if should_push?(user)
       send_push_notification!(user.id)
     elsif should_text?(user)

@@ -3,11 +3,13 @@ require_relative "../../rails_helper"
 describe Notifications::FoodAvailableWorker do
   let(:order) { TestHelpers::Order.create_for }
   let(:food) do
+    order.food.update_attributes(notify: true)
     order.food
   end
 
   before :each do
     allow(Texter).to receive(:run)
+    User.update_all(school_id: food.seller.school_id)
   end
 
   context "#perform" do
@@ -44,71 +46,28 @@ describe Notifications::FoodAvailableWorker do
       end.to change(Notifications::FoodAvailableWorker.jobs, :size)
     end
 
-    it "creates a Subscription for each user who doesn't have one" do
-      food.save!
-      Subscription.destroy_all
-      expect do
-        Notifications::FoodAvailableWorker.new.perform(food.id)
-      end.to change(Subscription, :count).by(User.count)
+    it "texts everyone that just once" do
+      expect(subject).to receive(:send_text!).exactly(food.school.users.count - 1).times
+      subject.perform(food.id)
     end
 
-    # it "texts everyone that hasn't recently ordered just once" do
-    #   # - 1 for order.user
-    #   expect(subject).to receive(:send_text!).exactly(User.count - 1).times
-    #   subject.perform(food.id)
-    # end
+    context "texts user" do
+      let(:user) { create(:user) }
+    
+      it "successfully" do
+        expect do
+          subject.notify_user!(user)
+        end.to change(SMS::Notifications::FoodAvailableWorker.jobs, :size).from(0).to(1)
+      end
 
-    # context "texts user" do
-    #   let(:user) { create(:user) }
-    #
-    #   it "successfully" do
-    #     expect do
-    #       subject.notify_user!(user)
-    #     end.to change(SMS::Notifications::FoodAvailableWorker.jobs, :size).from(0).to(1)
-    #   end
-    #
-    #   it "when they ordered awhile ago" do
-    #     order.update_attributes(created_at: 8.days.ago)
-    #     expect do
-    #       subject.notify_user!(user)
-    #     end.to change(SMS::Notifications::FoodAvailableWorker.jobs, :size).from(0).to(1)
-    #   end
-    #
-    #   # it "unless they recently ordered" do
-    #   #   expect do
-    #   #     subject.notify_user!(order.user)
-    #   #   end.to_not change(SMS::Notifications::FoodAvailableWorker.jobs, :size)
-    #   # end
-    #
-    #   # it "unless they ordered recently and awhile ago" do
-    #   #   TestHelpers::Order.create_for(user: order.user, params: { created_at: 1.year.ago } )
-    #   #   expect do
-    #   #     subject.notify_user!(order.user)
-    #   #   end.to_not change(SMS::Notifications::FoodAvailableWorker.jobs, :size)
-    #   # end
-    #
-    #   # it "unless we texted them recently" do
-    #   #   user.subscription = Notification.create!(user_id: user.id, last_texted: 6.days.ago)
-    #   #   expect do
-    #   #     subject.notify_user!(user)
-    #   #   end.to_not change(SMS::Notifications::FoodAvailableWorker.jobs, :size)
-    #   # end
-    #
-    #   it "unless they're unsubscribed" do
-    #     user.subscription = Subscription.create!(user_id: user.id, sms: false)
-    #     expect do
-    #       subject.notify_user!(user)
-    #     end.to_not change(SMS::Notifications::FoodAvailableWorker.jobs, :size)
-    #   end
-    #
-    #   it "when they haven't ordered recently" do
-    #     TestHelpers::Order.create_for(user: user, params: { created_at: 1.year.ago })
-    #     expect do
-    #       subject.notify_user!(user)
-    #     end.to change(SMS::Notifications::FoodAvailableWorker.jobs, :size).from(0).to(1)
-    #   end
-    #
-    # end
+      it "unless they're unsubscribed" do
+        user.subscription.update_attributes(sms: false)
+        expect do
+          subject.notify_user!(user)
+        end.to_not change(SMS::Notifications::FoodAvailableWorker.jobs, :size)
+      end
+
+    end
 
     context "emails user" do
       let(:user) { create(:user) }

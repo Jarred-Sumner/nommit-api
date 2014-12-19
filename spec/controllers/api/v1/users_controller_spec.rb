@@ -12,6 +12,23 @@ describe Api::V1::UsersController, type: :controller do
       allow_any_instance_of(Texter).to receive(:perform)
     end
 
+    context "updates school" do
+
+      specify do
+        school = create(:school)
+        expect do
+          put :update, id: user.id, school_id: school.id
+        end.to change { user.reload.school.id }.to(school.id)
+      end
+
+      specify do
+        expect do
+          put :update, id: user.id, school_id: -999
+        end.to_not change { user.reload.school.id }
+      end
+
+    end
+
     context "given a valid token" do
       before { StripeMock.start }
       after { StripeMock.stop }
@@ -93,7 +110,6 @@ describe Api::V1::UsersController, type: :controller do
       end
 
     end
-
   end
 
 end

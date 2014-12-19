@@ -5,6 +5,7 @@ class Order < ActiveRecord::Base
   belongs_to :courier
   belongs_to :delivery
   belongs_to :price
+  has_one :school, through: :place
   has_one :charge, dependent: :destroy
   has_one :seller, through: :food
   has_one :delivery_place, through: :delivery
@@ -181,7 +182,6 @@ class Order < ActiveRecord::Base
         # Activate the referral credit of the referrer if it hasn't been all used up
         if promo.referrer.present? && promo.referrer.state != 'used_up'
           promo.referrer.active!
-          activated_referrals << promo.id
         end
 
         applied_promos << promo

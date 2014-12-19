@@ -1,5 +1,6 @@
 class Place < ActiveRecord::Base
   belongs_to :location
+  belongs_to :school
   has_many :delivery_places
   has_many :shifts, through: :delivery_places
   has_many :foods, -> { uniq }, through: :delivery_places

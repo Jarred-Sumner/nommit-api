@@ -1,21 +1,28 @@
+
+school = School.create!(name: "Carnegie Mellon University", from_hours: Time.parse("8:00 PM"), to_hours: Time.parse("12:00 AM"))
+
 PLACES.keys.each do |name|
   place = PLACES[name]
   location = Location.create!(latitude: place[:latitude], longitude: place[:longitude])
-  Place.create!(name: name, location: location)
+  Place.create!(name: name, location: location, school: school)
 end
 
 trisigma = Seller.create! do |s|
   s.name = "Sigma Sigma Sigma"
   s.logo = open("http://media-cache-ak0.pinimg.com/736x/48/cf/4d/48cf4da6e1cc673ce05da861d3cba5c6.jpg")
+  s.school = school
 end
 
 tridelta = Seller.create! do |s|
   s.name = "Delta Delta Delta"
   s.logo = open("http://i.imgur.com/Jq4kxzw.png")
+  s.school = school
 end
 
 j_user = User.create!(facebook_uid: "10203816999219792", email: "jarred@jarredsumner.com", name: "Jarred Sumner", state: 1, phone: "+19252008843")
 l_user = User.create!(facebook_uid: "10152442953459538", email: "lguo@andrew.cmu.edu", name: "Lucy Guo", state: 1, phone: "+19255968005")
+
+User.update_all(school_id: school.id)
 
 j_courier = Courier.create!(seller: trisigma, user: j_user)
 l_courier = Courier.create!(seller: tridelta, user: l_user)

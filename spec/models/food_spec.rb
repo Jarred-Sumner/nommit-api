@@ -6,15 +6,16 @@ describe Food, type: :model do
     subject { build(:food) }
 
     specify do
+      subject.notify = true
       expect do
         subject.save!
-      end.to change(PushNotifications::FoodUnavailableWorker.jobs, :size).by(1)
+      end.to change(Notifications::FoodAvailableWorker.jobs, :size).by(1)
     end
 
     specify do
       expect do
         subject.save!
-      end.to change(Notifications::FoodAvailableWorker.jobs, :size).by(1)
+      end.to_not change(Notifications::FoodAvailableWorker.jobs, :size)
     end
 
   end

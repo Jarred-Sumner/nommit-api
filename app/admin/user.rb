@@ -45,6 +45,10 @@ ActiveAdmin.register User do
       user.couriers.count > 0
     end
 
+    column "School" do |user|
+      link_to user.school.name, admin_school_path(user.school)
+    end
+
   end
 
   show do |user|
@@ -112,6 +116,10 @@ ActiveAdmin.register User do
 
       row :payment_method_state do
         user.payment_method.try(:state)
+      end
+
+      row :school do
+        link_to user.school.name, admin_school_path(user.school)
       end
 
     end

@@ -11,3 +11,7 @@ json.is_courier user.couriers.count > 0
 json.last_four String(user.payment_method.try(:last_four))
 json.card_type user.payment_method.try(:card_type)
 json.payment_authorized user.payment_method.try(:active?) == true
+
+json.school do
+  json.partial! user.school
+end

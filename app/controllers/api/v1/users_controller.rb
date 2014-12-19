@@ -24,8 +24,6 @@ class Api::V1::UsersController < Api::V1::ApplicationController
           current_user.update_attributes(phone: phone)
         end
         generate_confirm_code!
-      else
-        return render_bad_request("To continue, please enter a phone number.")
       end
 
     end
@@ -43,6 +41,18 @@ class Api::V1::UsersController < Api::V1::ApplicationController
       current_user.devices.update_all(last_notified: nil)
     end
 
+    if update_params[:school_id].present?
+      if school = School.find_by(id: Integer(update_params[:school_id]))
+        current_user.update_attributes!(school_id: school.id)
+      else
+        return render_bad_request("School not found, please choose a valid school and try again")
+      end
+    end
+
+    if update_params[:email].present?
+      current_user.update_attributes!(email: update_params[:email])
+    end
+
     render action: :me
   rescue ArgumentError
     render_invalid_confirm_code
@@ -53,7 +63,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
   private
 
     def update_params
-      params.permit(:id, :confirm_code, :stripe_token, :phone, :promo_code, :push_notifications)
+      params.permit(:id, :confirm_code, :stripe_token, :phone, :promo_code, :push_notifications, :school_id, :email)
     end
 
     def render_invalid_confirm_code

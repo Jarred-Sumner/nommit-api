@@ -21,6 +21,10 @@ class Api::V1::ApplicationController < ActionController::Base
     @current_seller ||= courier.try(:seller)
   end
 
+  def school
+    @current_school ||= current_user.school
+  end
+
   def apply_promo_to_user!(name: nil)
     promo = Promo.active.find_by!(name: name)
     if promo.class == ReferralPromo && current_user.orders.placed.count > 0
@@ -56,6 +60,10 @@ class Api::V1::ApplicationController < ActionController::Base
 
     def require_courier!
       render_forbidden unless courier.present?
+    end
+
+    def require_school!
+      render_bad_request("Please choose a school in the account page") if school.nil?
     end
 
     def render_error(status: nil, text: "An unexpected error occurred")

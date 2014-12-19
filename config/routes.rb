@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       end
       resources :sessions, only: [:create, :destroy]
       resources :payment_methods, only: [:update, :show]
+      resources :schools, only: [:index, :show]
 
       resources :users, only: [:update] do
         get 'subscription' => "subscriptions#show"

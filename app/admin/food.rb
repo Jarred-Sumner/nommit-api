@@ -6,6 +6,7 @@ ActiveAdmin.register Food do
   filter :restaurant
   filter :start_date
   filter :state
+  filter :notify
 
   index do |f|
 
@@ -56,6 +57,7 @@ ActiveAdmin.register Food do
       f.input :title
       f.input :description
       f.input :goal
+      f.input :notify
       f.input :start_date, as: :datetime_select
       f.input :expiration_date, as: :datetime_select
       f.input :preview, as: :file, hint: f.template.image_tag(f.object.preview.url)
@@ -93,6 +95,7 @@ ActiveAdmin.register Food do
       row :state
       row :start_date
       row :end_date
+      row :notify
 
       row :seller
       row :restaraunt
