@@ -9,7 +9,7 @@ json.prices do
 end
 
 json.header_image_url image_url(food.preview.url)
-json.thumbnail_image_url image_url(food.preview.url)
+json.thumbnail_image_url image_url(food.preview(:normal))
 
 # Teespring A/B tested this, and found that showing at least one order increased conversions
 quantity = food.goal - food.sold

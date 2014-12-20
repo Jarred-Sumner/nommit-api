@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141218235634) do
+ActiveRecord::Schema.define(version: 20141219192653) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -180,17 +180,15 @@ ActiveRecord::Schema.define(version: 20141218235634) do
   add_index "locations", ["latitude"], name: "index_locations_on_latitude", using: :btree
   add_index "locations", ["longitude"], name: "index_locations_on_longitude", using: :btree
 
-  create_table "notifications", force: true do |t|
-    t.datetime "last_texted"
-    t.datetime "last_emailed"
-    t.integer  "user_id"
+  create_table "motds", force: true do |t|
+    t.string   "message"
+    t.datetime "expiration"
+    t.integer  "school_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "email_subscribed", default: true, null: false
-    t.boolean  "phone_subscribed", default: true, null: false
   end
 
-  add_index "notifications", ["user_id"], name: "index_notifications_on_user_id", using: :btree
+  add_index "motds", ["school_id"], name: "index_motds_on_school_id", using: :btree
 
   create_table "orders", force: true do |t|
     t.integer  "food_id"
@@ -279,11 +277,15 @@ ActiveRecord::Schema.define(version: 20141218235634) do
   end
 
   create_table "schools", force: true do |t|
-    t.string   "name",       null: false
+    t.string   "name",               null: false
     t.time     "from_hours"
     t.time     "to_hours"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
   create_table "sellers", force: true do |t|
