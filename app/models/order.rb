@@ -203,10 +203,15 @@ class Order < ActiveRecord::Base
       end
     end
 
-  validates :food, presence: true
+
+
+  # Only validate on create because some users want their data deleted.
   validates :user, presence: true, on: :create
-  validates :place, presence: true
   validates :courier, presence: true, on: :create
+
+  validates :food, presence: true
+  validates :place, presence: true
+  
   validates :delivery_id, presence: true
   validates :shift_id, presence: true
   validates :price, presence: true
