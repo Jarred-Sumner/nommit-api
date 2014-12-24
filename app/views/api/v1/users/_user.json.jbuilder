@@ -13,8 +13,14 @@ json.cache! user do
   json.card_type user.payment_method.try(:card_type)
   json.payment_authorized user.payment_method.try(:active?) == true
 
-  json.school do
-    json.partial! user.school if user.school.present?
+
+  # Don't reveal this info to old iOS apps
+
+  if platform != "iOS" || version > 1.3
+
+    json.school do
+      json.partial! user.school if user.school.present?
+    end
   end
 
 end
