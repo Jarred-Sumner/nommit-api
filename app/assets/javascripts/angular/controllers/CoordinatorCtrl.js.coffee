@@ -35,16 +35,8 @@
   $scope.isConfirmPhoneVisible = false
   $scope.isActivateVisible = false
 
-  $rootScope.requireLogin = (food, place) ->
-    $scope.isConfirmPhoneVisible = false
-    $scope.isActivationVisible = false
-
-    if food && places
-      $scope.food_id = food.id
-      $scope.place_id = place.id
-
-      $scope.food_image = food.header_image_url
-    $scope.isLoginVisible = true
+  $rootScope.requireLogin = ->
+    location.pathname = "/login" unless Sessions.isLoggedIn()
   $rootScope.requireActivation = ->
     $scope.isLoginVisible = false
     $scope.isConfirmPhoneVisible = false

@@ -43,6 +43,11 @@ $header-background: rgba(25,17,16,.5);
   display: none !important;
 }
 
+.no-scrolling {
+  overflow-x: hidden; 
+  overflow-y: hidden;
+}
+
 
 @mixin vertical-align {
   position: relative;
@@ -477,6 +482,18 @@ fieldset {
   }
   100% {
     @include transform(translateY(100%));
+  }
+}
+
+// Hacky ken-burns zoom
+@include keyframes(kenburns) {
+  0% {
+    transform: scale(1);
+    background-position: 10%;
+  }
+  100% {
+    transform: scale(1.5);
+    background-position: 60%;
   }
 }
 
@@ -1147,71 +1164,125 @@ $desktop: new-breakpoint(min-width 480px);
   }
 }
 
-.login-container {
-  @extend .modal;
-  background-color: white;
-  margin: 0 auto;
-  text-align: center;
+.ken-burns {
+  background-color: transparent;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 
-  .food-preview {
-    height: 200px;
+  overflow: hidden;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-height: 100%;
+  width: 100%;
+  transform-origin: center center;
+
+  display: none;
+
+  @include animation(kenburns 10s linear infinite forwards);
+  &.active {
     display: block;
-    width: 100%;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    @extend .triangle-border;
-
-    .fa-close {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      font-size: 18pt;
-      color: white;
-      padding-top: 7px;
-      background-color: $brand-green;
-      border-radius: 19px;
-      height: 38px;
-      width: 38px;
-      opacity: 0.65;
-
-      &:hover {
-        color: $brand-green;
-        background-color: white;
-        opacity: 1;
-        cursor: pointer;
-      }
-
-    }
-
   }
 
-  h1 {
-    padding: 38px 10px;
-    font-size: 22pt;
-    font-weight: $thin-font;
-    color: $light-color;
+  &:nth-child(odd) {
+    @include animation(kenburns 10s linear infinite reverse); 
+  }
+
+  &.first {
+    background-image: url(image-path("login/BG1.png"));
+  }
+  &.second {
+    background-image: url(image-path("login/BG2.png"));
+  }
+  &.third {
+    background-image: url(image-path("login/BG3.png"));
+  }
+  &.fourth {
+    background-image: url(image-path("login/BG4.png"));
+  }
+  &.fifth {
+    background-image: url(image-path("login/BG5.png"));
+  }
+
+}
+
+.login-container {
+  margin: 0 auto;
+  text-align: center;
+  min-height: 100%;
+  width: 100%;
+
+  position: absolute;
+  z-index: 1;
+
+  display: table;
+
+  article {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+  }
+
+  .logo, .button {
+    max-width: 320px;
+  }
+
+  .logo {
+    margin-top: -192px;
+    margin-bottom: 50px;
+  }
+
+  .copy {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    line-height: 29px;
+
+    background-color: rgba(255,255,255,0.1);
+    border-top: 1px solid rgba(255,255,255,0.25);
+    color: white;
+
+
+    h3 { 
+      font-size: 16pt;
+    }
+
+    h3, em {
+      font-weight: $light-font;
+      opacity: 0.85;
+    }
+
+    em {
+      font-size: 8pt;
+    }
   }
 
   .button-container {
-    margin: 15px;
+    margin: 10px auto;
+    text-align: center;
+    width: 100%;
   }
 
   .button.facebook {
     $fb-blue: #3C5193;
     background-color: $fb-blue;
     color: white;
-    padding: 10px 46px;
-    font-size: 14pt;
+    padding: 10px 36px;
+    font-size: 12pt;
     text-align: center;
     border: none;
     outline: none;
     box-shadow: none;
     position: relative;
 
+    margin: 0 auto;
+
+    text-decoration: none;
 
     span {
-      font-weight: $thin-font;
+      font-weight: $light-font;
     }
 
     &:hover {
@@ -1224,7 +1295,7 @@ $desktop: new-breakpoint(min-width 480px);
       padding: 0px;
       position: absolute;
       left: 21px;
-      top: 14px;
+      top: 18px;
     }
 
   }

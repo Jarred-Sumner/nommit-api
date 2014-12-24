@@ -8,7 +8,7 @@
     Sessions.setSessionID(null)
     Sessions.setCurrentUser(null)
     $rootScope.user = null
-    $state.go "foods"
+    location.pathname = "/logout"
   $scope.applyPromo = ->
     $scope.isApplying = true
     $scope.isApplyingPromo = true

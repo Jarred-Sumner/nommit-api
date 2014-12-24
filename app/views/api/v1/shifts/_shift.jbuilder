@@ -6,6 +6,10 @@ json.courier do
   json.partial! shift.courier, show_seller: true
 end
 
-json.delivery_places do
-  json.array! shift.delivery_places, partial: "api/v1/delivery_places/delivery_place", as: :delivery_place
+json.orders do
+  json.array! shift.orders.pending, partial: "api/v1/orders/order", as: :order
+end
+
+json.place_ids do
+  json.array! shift.places.pluck(:id)
 end

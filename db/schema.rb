@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141219192653) do
+ActiveRecord::Schema.define(version: 20141221002341) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -207,6 +207,7 @@ ActiveRecord::Schema.define(version: 20141219192653) do
     t.integer  "tip_in_cents",          default: 0, null: false
     t.integer  "discount_in_cents",     default: 0, null: false
     t.integer  "price_id"
+    t.integer  "shift_id"
   end
 
   add_index "orders", ["address_id"], name: "index_orders_on_address_id", using: :btree
@@ -215,6 +216,7 @@ ActiveRecord::Schema.define(version: 20141219192653) do
   add_index "orders", ["food_id"], name: "index_orders_on_food_id", using: :btree
   add_index "orders", ["place_id"], name: "index_orders_on_place_id", using: :btree
   add_index "orders", ["price_id"], name: "index_orders_on_price_id", using: :btree
+  add_index "orders", ["shift_id"], name: "index_orders_on_shift_id", using: :btree
   add_index "orders", ["user_id"], name: "index_orders_on_user_id", using: :btree
 
   create_table "payment_methods", force: true do |t|

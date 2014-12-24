@@ -1,5 +1,4 @@
 class Api::V1::PlacesController < Api::V1::ApplicationController
-  skip_before_action :require_current_user!, if: -> { params[:courier_id].blank? }
   before_action :require_school!
   
   def index

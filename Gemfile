@@ -19,6 +19,9 @@ gem 'jquery-rails'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
+gem 'jbuilder_cache_multi'
+
+gem 'redis-rails'
 
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0',          group: :doc
@@ -28,6 +31,9 @@ gem 'spring',        group: :development
 
 # Facebook Auth
 gem 'koala'
+
+# Faster JSON
+gem 'yajl-ruby', :require => "yajl"
 
 # Images
 gem "paperclip", "~> 4.2"
@@ -113,7 +119,7 @@ group :test, :development do
 
   gem 'therubyrhino',  platforms: :ruby
 
-  gem 'did_you_mean'
+  gem 'did_you_mean', '0.9.4'
 end
 
 group :production do

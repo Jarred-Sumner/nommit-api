@@ -5,11 +5,12 @@ class Order < ActiveRecord::Base
   belongs_to :courier
   belongs_to :delivery
   belongs_to :price
+  belongs_to :shift
+
   has_one :school, through: :place
   has_one :charge, dependent: :destroy
   has_one :seller, through: :food
   has_one :delivery_place, through: :delivery
-  has_one :shift, through: :delivery_place
   has_and_belongs_to_many :applied_promos
 
   include StateID
@@ -118,6 +119,10 @@ class Order < ActiveRecord::Base
       self.delivered_at = 15.minutes.from_now
     end
 
+    def set_shift!
+      self.shift_id = self.delivery_place.try(:shift_id)
+    end
+
 
     def set_courier!
       self.courier_id = delivery.delivery_place.shift.courier_id
@@ -203,6 +208,7 @@ class Order < ActiveRecord::Base
   validates :place, presence: true
   validates :courier, presence: true
   validates :delivery_id, presence: true
+  validates :shift_id, presence: true
   validates :price, presence: true
   validate :price_belongs_to_food!
 
@@ -210,7 +216,7 @@ class Order < ActiveRecord::Base
   validates :rating, presence: true, if: :rated?
   validates :state, presence: true
 
-  before_validation :set_delivery!, :set_estimate!, on: :create
+  before_validation :set_delivery!, :set_estimate!, :set_shift!, on: :create
   after_create do
     apply_pending_promotions!
 

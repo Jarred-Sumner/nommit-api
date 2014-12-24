@@ -1,5 +1,6 @@
 @nommit.controller "FoodsCtrl", ($state, Foods, Places, $stateParams, DeliveryPlaces, $scope, $timeout, $rootScope, Users, $detection) ->
   didAutoPresentPlaces = false
+  $scope.requireLogin()
 
   $scope.notifyMe = ->
     $scope.notifying = true

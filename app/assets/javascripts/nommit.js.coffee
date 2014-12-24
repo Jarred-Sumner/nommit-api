@@ -124,3 +124,10 @@ window.settings =
 
   $httpProvider.defaults.headers.common["X-SESSION-ID"] = window.settings.sessionID()
   httpRequestInterceptorCacheBusterProvider.setMatchlist [/users/, /partials/], true
+
+  $httpProvider.interceptors.push ($q) ->
+
+    'responseError': (rejection) ->
+        if rejection.status == 401
+          location.replace("/login?path=#{location.pathname}")
+        $q.reject(rejection)

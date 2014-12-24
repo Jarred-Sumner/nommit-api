@@ -33,7 +33,7 @@
             <div class='fa fa-close back-button'></div>
           </div>
 
-          <nav ng-if='user'>
+          <nav>
 
             <li class='page' ng-click='navigate("foods", { place_id: null })' ng-class="{ active: page == 'foods' }">
               <i class="fa fa-cutlery"></i>
@@ -53,30 +53,6 @@
             <li class='page' ng-click='navigate("invite")' ng-show='isInstalled' ng-class="{ active: page == 'invite' }">
               <i class="fa fa-users"></i>
               <span>Invite Friends</span>
-            </li>
-
-            <li class='page' ng-click='navigate("support")' ui-sref-active='active' ng-class="{ active: page == 'support' }">
-              <i class="fa fa-phone"></i>
-              <span>Support</span>
-            </li>
-
-            <li class='page' ng-click='navigate("fundraise")' ui-sref-active='active' ng-class="{ active: page == 'fundraise' }">
-              <i class="fa fa-money"></i>
-              <span>Sell on Nommit</span>
-            </li>
-
-          </nav>
-
-          <nav ng-if='!user'>
-
-            <li class='page' ui-sref='foods({ place_id: null })' ui-sref-active='active'>
-              <i class="fa fa-cutlery"></i>
-              <span>Menu</span>
-            </li>
-
-            <li class='page' ng-click='requireLogin()'>
-              <i class="fa fa-key"></i>
-              <span>Login</span>
             </li>
 
             <li class='page' ng-click='navigate("support")' ui-sref-active='active' ng-class="{ active: page == 'support' }">
@@ -114,7 +90,6 @@
 
       <div class='view' ui-view></div>
 
-      <%= render 'login' %>
       <%= render 'activate' %>
       <%= render 'confirm_phone' %>
       <%= render 'iphone_banner' %>

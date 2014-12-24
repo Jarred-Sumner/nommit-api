@@ -61,11 +61,13 @@ Rails.application.routes.draw do
   get 'orders/:id' => 'dashboard#index'
   get 'support' => 'dashboard#index'
   get 'invite' => 'dashboard#index'
+  get 'login' => 'dashboard#login'
 
   root to: 'dashboard#index'
 
   get '/auth/facebook/callback' => 'dashboard#facebook'
   get '/admin/logout' => "dashboard#logout", as: :destroy_admin_user_session
+  get '/logout' => "dashboard#logout", as: :logout
 
   get 'download' => redirect("https://itunes.apple.com/us/app/nommit/id928890698?mt=8")
 
