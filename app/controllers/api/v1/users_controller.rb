@@ -8,7 +8,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
       if update_params[:confirm_code].present?
         if current_user.confirm_code == Integer(update_params[:confirm_code].to_s)
-          current_user.update_attributes!(confirm_code: nil, state: User.states[:activated])
+          current_user.update_attributes!(confirm_code: nil, state: User.states[:activated], school_id: School.first.id)
           track_activation
         else
           return render_invalid_confirm_code

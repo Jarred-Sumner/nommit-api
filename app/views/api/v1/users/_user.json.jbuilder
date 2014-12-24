@@ -14,6 +14,7 @@ json.cache! user do
   json.payment_authorized user.payment_method.try(:active?) == true
 
   json.school do
-    json.partial! user.school
+    json.partial! user.school if user.school.present?
   end
+
 end

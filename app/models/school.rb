@@ -17,5 +17,6 @@ class School < ActiveRecord::Base
     orders.completed.joins(:charge).where("charges.state = ?", Charge.states[:paid]).sum("charges.amount_charged_in_cents").to_f / 100.0
   end
 
+  validates :name, presence: true, uniqueness: true
   validates_attachment :image, content_type: { content_type: ["image/jpg", "image/jpeg", "image/png"] }
 end
