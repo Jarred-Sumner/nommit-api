@@ -204,9 +204,9 @@ class Order < ActiveRecord::Base
     end
 
   validates :food, presence: true
-  validates :user, presence: true
+  validates :user, presence: true, on: :create
   validates :place, presence: true
-  validates :courier, presence: true
+  validates :courier, presence: true, on: :create
   validates :delivery_id, presence: true
   validates :shift_id, presence: true
   validates :price, presence: true
