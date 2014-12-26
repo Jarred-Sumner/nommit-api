@@ -1,6 +1,9 @@
 class Dashboard::PartialsController < DashboardController
   layout false
 
+  def dashboard
+  end
+
   def account
   end
 
@@ -31,6 +34,15 @@ class Dashboard::PartialsController < DashboardController
 
   def show_order
     render 'dashboard/partials/orders/show'
+  end
+
+  def activate
+  end
+
+  def confirm
+  end
+
+  def schools
   end
 
 end

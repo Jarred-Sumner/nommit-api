@@ -1,0 +1,35 @@
+<article ng-controller='SchoolsCtrl'>
+
+  <div class='nav-bar'>
+    <span class='left-button' ng-click='goBack()'><i class='fa fa-close'></i></span>
+    <span class='title'>Pick your School</span>
+  </div>
+
+  <div class='content'>
+
+    <div class='search-container'>
+      <i class='fa fa-search'></i>
+      <input type='search' class='search' ng-change='searchSchools()' ng-model='query' placeholder='Search for your school'></input>
+    </div>
+
+    <fading-circle-spinner ng-if='!schools'></fading-circle-spinner>
+
+    <ul class='schools' ng-if='schools && schools.length > 0'>
+
+      <li class='place' ng-repeat='school in schools' ng-click='setSchoolID(place.id)'>
+        <span class='name'>{{school.name}}</span>
+
+        <span class='right-bar'>
+          <i class='fa fa-cutlery'></i>
+        </span>
+
+      </li>
+    </ul>
+
+    <div class='no-food' ng-show='places && places.length == 0'>
+      <div>No school found by that name!</div>
+    </div>
+
+  </div>
+
+</article>

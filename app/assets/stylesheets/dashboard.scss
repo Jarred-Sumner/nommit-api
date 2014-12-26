@@ -968,7 +968,7 @@ article.edit {
 
   }
 
-  .credit-card {
+  .field {
     font-size: 14pt;
     border: 1px solid #CCC;
     padding: 5px;
@@ -977,6 +977,17 @@ article.edit {
     .edit {
       margin-top: 3px;
       float: right;
+
+      &.on {
+        @extend .fa-check;
+        color: $brand-green;
+      }
+
+      &.off {
+        @extend .fa-close;
+        color: $cmu-red;
+      }
+
     }
 
     .type {
@@ -988,6 +999,10 @@ article.edit {
       color: $brand-green;
       border: 1px solid $brand-green;
       cursor: pointer;
+    }
+
+    &.email {
+      margin-bottom: 5px;
     }
 
   }
@@ -1051,7 +1066,7 @@ $desktop: new-breakpoint(min-width 480px);
 
 }
 
-.places-container, .delivery-places-container {
+.places-container, .delivery-places-container, .schools-container {
   @extend .modal;
   background-color: #FAFAFA;
   $border-color: #E5E5E5;
@@ -1073,6 +1088,7 @@ $desktop: new-breakpoint(min-width 480px);
       @include backface-visibility(visible);
       @include animation(fadeOut 0.15s ease-in);
     }
+
 
   }
 
@@ -1143,6 +1159,16 @@ $desktop: new-breakpoint(min-width 480px);
     line-height: 24px;
     text-align: center;
     div { font-size: 12pt; }
+    .fa { vertical-align: middle; }
+  }
+
+  .muted {
+    font-size: 10pt;
+    text-align: center;
+    display: block;
+    a {
+      font-size: 10pt;
+    }
   }
 
 }

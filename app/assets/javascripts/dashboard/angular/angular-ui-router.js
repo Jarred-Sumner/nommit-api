@@ -3398,32 +3398,32 @@ function stateContext(el) {
  * Here's an example of how you'd use ui-sref and how it would compile. If you have the 
  * following template:
  * <pre>
- * <a ui-sref="home">Home</a> | <a ui-sref="about">About</a> | <a ui-sref="{page: 2}">Next page</a>
+ * <a ui-sref="dashboard.home">Home</a> | <a ui-sref="dashboard.about">About</a> | <a ui-sref="dashboard.{page: 2}">Next page</a>
  * 
  * <ul>
  *     <li ng-repeat="contact in contacts">
- *         <a ui-sref="contacts.detail({ id: contact.id })">{{ contact.name }}</a>
+ *         <a ui-sref="dashboard.contacts.detail({ id: contact.id })">{{ contact.name }}</a>
  *     </li>
  * </ul>
  * </pre>
  * 
  * Then the compiled html would be (assuming Html5Mode is off and current state is contacts):
  * <pre>
- * <a href="#/home" ui-sref="home">Home</a> | <a href="#/about" ui-sref="about">About</a> | <a href="#/contacts?page=2" ui-sref="{page: 2}">Next page</a>
+ * <a href="#/home" ui-sref="dashboard.home">Home</a> | <a href="#/about" ui-sref="dashboard.about">About</a> | <a href="#/contacts?page=2" ui-sref="dashboard.{page: 2}">Next page</a>
  * 
  * <ul>
  *     <li ng-repeat="contact in contacts">
- *         <a href="#/contacts/1" ui-sref="contacts.detail({ id: contact.id })">Joe</a>
+ *         <a href="#/contacts/1" ui-sref="dashboard.contacts.detail({ id: contact.id })">Joe</a>
  *     </li>
  *     <li ng-repeat="contact in contacts">
- *         <a href="#/contacts/2" ui-sref="contacts.detail({ id: contact.id })">Alice</a>
+ *         <a href="#/contacts/2" ui-sref="dashboard.contacts.detail({ id: contact.id })">Alice</a>
  *     </li>
  *     <li ng-repeat="contact in contacts">
- *         <a href="#/contacts/3" ui-sref="contacts.detail({ id: contact.id })">Bob</a>
+ *         <a href="#/contacts/3" ui-sref="dashboard.contacts.detail({ id: contact.id })">Bob</a>
  *     </li>
  * </ul>
  *
- * <a ui-sref="home" ui-sref-opts="{reload: true}">Home</a>
+ * <a ui-sref="dashboard.home" ui-sref-opts="{reload: true}">Home</a>
  * </pre>
  *
  * @param {string} ui-sref 'stateName' can be any valid absolute or relative state
@@ -3526,7 +3526,7 @@ function $StateRefDirective($state, $timeout) {
  * <pre>
  * <ul>
  *   <li ui-sref-active="active" class="item">
- *     <a href ui-sref="app.user({user: 'bilbobaggins'})">@bilbobaggins</a>
+ *     <a href ui-sref="dashboard.app.user({user: 'bilbobaggins'})">@bilbobaggins</a>
  *   </li>
  * </ul>
  * </pre>
@@ -3537,7 +3537,7 @@ function $StateRefDirective($state, $timeout) {
  * <pre>
  * <ul>
  *   <li ui-sref-active="active" class="item active">
- *     <a ui-sref="app.user({user: 'bilbobaggins'})" href="/users/bilbobaggins">@bilbobaggins</a>
+ *     <a ui-sref="dashboard.app.user({user: 'bilbobaggins'})" href="/users/bilbobaggins">@bilbobaggins</a>
  *   </li>
  * </ul>
  * </pre>
@@ -3549,7 +3549,7 @@ function $StateRefDirective($state, $timeout) {
  * <pre>
  * <ul>
  *   <li ui-sref-active='class1 class2 class3'>
- *     <a ui-sref="app.user">link</a>
+ *     <a ui-sref="dashboard.app.user">link</a>
  *   </li>
  * </ul>
  * </pre>

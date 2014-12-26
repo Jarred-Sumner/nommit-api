@@ -4,10 +4,6 @@
     place_id: $scope.place.id
     food_id: $scope.food.id
     promo_code: null
-  if !$scope.user
-    $scope.requireLogin($scope.food, $scope.place)
-  if !$scope.user.isActivated()
-    $scope.requireActivation()
 
   $scope.quantity = ->
     $scope.food.quantityByID($scope.order.price_id)
@@ -22,7 +18,7 @@
     Orders.save $scope.order, (order) ->
       $scope.isPlacing = false
       $rootScope.order = order
-      $state.go("orders", { order_id: order.id })
+      $state.go("dashboard.orders", { order_id: order.id })
     , (error) ->
       $scope.isPlacing = false
       $scope.error = error.data.message

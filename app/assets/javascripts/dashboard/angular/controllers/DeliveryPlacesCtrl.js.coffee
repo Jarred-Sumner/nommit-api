@@ -32,7 +32,7 @@
       $scope.success = true
       $timeout ->
         $scope.isUpdating = false
-        $state.go("deliver")
+        $state.go("dashboard.deliver")
       , 150
 
     errorWhileUpdating = (error) ->

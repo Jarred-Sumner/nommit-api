@@ -41,13 +41,25 @@ window.settings =
 
   $urlRouterProvider.otherwise("/foods")
   $stateProvider
-    .state 'foods',
+    .state "dashboard",
+      url: ""
+      templateUrl: "/dashboard/partials/dashboard"
+      resolve:
+        user: (Users, Sessions, $cookies) ->
+          if $cookies.sessionID
+            Sessions.setSessionID($cookies.sessionID)
+            delete $cookies.sessionID
+
+          Users.get(id: "me").$promise
+      controller: ($scope, user) ->
+        $scope.user = user
+    .state 'dashboard.foods',
       url: "/foods?place_id"
       templateUrl: "/dashboard/partials/foods"
-    .state "foods.places",
+    .state "dashboard.foods.places",
       url: "/places?food_id"
       templateUrl: "/dashboard/partials/places"
-    .state "foods.order",
+    .state "dashboard.foods.order",
       url: "/:food_id/order"
       templateUrl: "/dashboard/partials/orders/new"
       resolve:
@@ -76,29 +88,43 @@ window.settings =
         # Remove globals, because globals can cause unexpected issues
         delete $rootScope.food
         delete $rootScope.place
-
-    .state "deliver",
+    .state "dashboard.deliver",
       url: "/deliver"
       templateUrl: "/dashboard/partials/deliver"
-    .state "deliver.places",
+    .state "dashboard.deliver.places",
       url: "/places"
       templateUrl: "/dashboard/partials/delivery_places"
-    .state "account",
-      url: "/account"
-      templateUrl: "/dashboard/partials/account"
-    .state "account.payment_method",
+    .state "dashboard.activate",
+      url: "/activate"
+      templateUrl: "/dashboard/partials/activate"
+    .state "dashboard.activate.confirm",
+      url: "/confirm"
+      templateUrl: "/dashboard/partials/confirm"
+    .state "dashboard.activate.payment_method",
       url: "/payment_method"
       templateUrl: "/dashboard/partials/payment_method"
-    .state "invite",
+    .state "dashboard.activate.schools",
+      url: "/schools"
+      templateUrl: "/dashboard/partials/schools"
+    .state "dashboard.account",
+      url: "/account"
+      templateUrl: "/dashboard/partials/account"
+    .state "dashboard.account.payment_method",
+      url: "/payment_method"
+      templateUrl: "/dashboard/partials/payment_method"
+    .state "dashboard.account.schools",
+      url: "/schools"
+      templateUrl: "/dashboard/partials/schools"
+    .state "dashboard.invite",
       url: "/invite"
       templateUrl: "/dashboard/partials/invite"
-    .state "support",
+    .state "dashboard.support",
       url: "/support"
       templateUrl: "/dashboard/partials/support"
-    .state "fundraise",
+    .state "dashboard.fundraise",
       url: "/fundraise"
       templateUrl: "/dashboard/partials/fundraise"
-    .state "orders",
+    .state "dashboard.orders",
       url: "/orders/:order_id"
       templateUrl: "/dashboard/partials/orders/show"
       resolve:

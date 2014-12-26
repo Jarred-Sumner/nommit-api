@@ -2,12 +2,12 @@
 
   <div class='nav-bar' ng-if='!place'>
     <span class='left-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
-    <span class='title place' ui-sref='foods.places'>Pick a Place <i class='fa fa-caret-down'></i></span>
+    <span class='title place' ui-sref='dashboard.foods.places'>Pick a Place <i class='fa fa-caret-down'></i></span>
   </div>
 
   <div class='nav-bar' ng-if='place'>
     <span class='left-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
-    <span class='title place' ui-sref='foods.places'>{{place.name }} <i class='fa fa-caret-down'></i></span>
+    <span class='title place' ui-sref='dashboard.foods.places'>{{place.name }} <i class='fa fa-caret-down'></i></span>
   </div>
 
   <ul class='content foods'>
@@ -117,8 +117,10 @@
 
   </ul>
 
-  <div ui-view class='order-container' ng-if='page == "foods.order"'></div>
-  <div ui-view class='places-container' ng-if='page == "foods.places"'></div>
+  <h1>Page: {{page}}</h1>
+
+  <div ui-view class='order-container' ng-if='page == "dashboard.foods.order"'></div>
+  <div ui-view class='places-container' ng-if='page == "dashboard.foods.places"'></div>
 
   <div class='popup-container' ng-if='isNotifying'>
 

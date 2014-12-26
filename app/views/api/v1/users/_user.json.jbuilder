@@ -21,6 +21,11 @@ json.cache! user do
     json.school do
       json.partial! user.school if user.school.present?
     end
+
+    json.subscription do
+      json.partial! user.subscription
+    end
+
   end
 
 end

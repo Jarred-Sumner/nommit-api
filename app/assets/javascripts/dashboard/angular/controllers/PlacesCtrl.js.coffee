@@ -16,7 +16,7 @@
 
   $scope.setPlaceID = (placeID) ->
     if $stateParams.food_id
-      $state.go "foods.order", { place_id: placeID, food_id: $stateParams.food_id }
+      $state.go "dashboard.foods.order", { place_id: placeID, food_id: $stateParams.food_id }
     else
-      $state.go "foods", { place_id: placeID }
+      $state.go "dashboard.foods", { place_id: placeID }
   fetchPlaces()

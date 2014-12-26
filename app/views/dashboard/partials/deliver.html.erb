@@ -3,7 +3,7 @@
   <div class='nav-bar'>
     <span class='left-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
     <span class='title'>Deliveries</span>
-    <span class='right-button' ui-sref='deliver.places()'><i class='fa fa-building'></i></span>
+    <span class='right-button' ui-sref='dashboard.deliver.places()'><i class='fa fa-building'></i></span>
   </div>
 
   <div class='popup-container' ng-if='isLoading'>
@@ -111,6 +111,6 @@
 
   </div>
 
-  <div class='delivery-places-container' ui-view ng-if='page == "deliver.places"'></div>
+  <div class='delivery-places-container' ui-view ng-if='page == "dashboard.deliver.places"'></div>
 
 </article>

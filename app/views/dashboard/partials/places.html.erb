@@ -1,7 +1,7 @@
 <article ng-controller='PlacesCtrl'>
 
   <div class='nav-bar'>
-    <span class='left-button' ui-sref='foods()'><i class='fa fa-close'></i></span>
+    <span class='left-button' ui-sref='dashboard.foods()'><i class='fa fa-close'></i></span>
     <span class='title'>Delivery Locations</span>
   </div>
 
@@ -27,10 +27,18 @@
       </li>
     </ul>
 
-    <div class='no-food' ng-show='places && places.length == 0'>
+    <div class='no-food' ng-show='places && places.length == 0 && !query'>
       <div>Not currently offering food!</div>
       <div>Please check back tonight at 8 PM</div>
     </div>
+
+    <div class='no-food' ng-show='places && places.length == 0 && query'>
+      <div>Can't find food being delivered there <i class='fa fa-frown-o'></i></div>
+    </div>
+
+    <span class='muted'>Can't find your delivery location? <a href='mailto:support@getnommit.com?subject=Missing a delivery location'>Request it</a></span>
+
+
 
   </div>
 

@@ -19,7 +19,7 @@
   <section class='payment'>
     <div class='header'>Your Card</div>
 
-    <div class='credit-card' ui-sref='account.payment_method'>
+    <div class='field credit-card' ui-sref='dashboard.account.payment_method'>
       <i class='type fa' ng-class='{ "fa-cc-visa": user.card_type == "visa", "fa-cc-discover": user.card_type == "discover", "fa-cc-mastercard": user.card_type == "mastercard", "fa-cc-amex": user.card_type == "amex"  }'></i>
 
       <span class='number'>
@@ -30,6 +30,31 @@
       </span>
 
       <i class='fa fa-pencil edit'></i>
+    </div>
+
+  </section>
+
+  <section ng-class='school'>
+    <div class='header'>Your School</div>
+
+    <div class='field show-school' ui-sref='dashboard.account.school()'>
+      <span>{{ user.school.name }}</span>
+      <i class='fa fa-pencil edit'></i>
+    </div> 
+
+  </section>
+
+  <section ng-class='subscriptions'>
+    <div class='header'>Your Subscriptions</div>
+
+    <div class='field subscription email' ng-click='toggleEmailSubscribe()'>
+      <span>Email</span>
+      <i class='fa edit' ng-class='{ "on": user.subscription.email == true, "off":  user.subscription.email == false }'></i>
+    </div>
+
+    <div class='field subscription email' ng-click='toggleSMSSubscribe()'>
+      <span>SMS</span>
+      <i class='fa edit' ng-class='{ "on": user.subscription.sms != true, "off":  user.subscription.sms }'></i>
     </div>
 
   </section>
@@ -48,19 +73,21 @@
 
   </section>
 
+
+
   <section class='logout'>
     <button class='button button-primary' ng-click='logout()'>Logout</button>
   </section>
 
-  <div class='popup-container' ng-if='isApplyingPromo'>
+  <div class='popup-container' ng-if='isSaving'>
 
-    <div class='popup' ng-show='isApplying'>
-      <h2 class='header'>Applying...</h2>
+    <div class='popup' ng-hide='didSave || error'>
+      <h2 class='header'>Saving...</h2>
       <fading-circle-spinner></fading-circle-spinner>
     </div>
 
-    <div class='popup' ng-show='didApply'>
-      <h2 class='header'>Applied!</h2>
+    <div class='popup' ng-show='didSave'>
+      <h2 class='header'>Saved!</h2>
       <i class='fa fa-check-circle'></i>
     </div>
 
@@ -72,5 +99,5 @@
 
   </div>
 
-  <div ui-view class='payment-method-container' ng-if='page == "account.payment_method"'></div>
+  <div ui-view class='payment-method-container' ng-if='page == "dashboard.account.payment_method"'></div>
 </article>

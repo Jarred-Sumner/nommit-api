@@ -22,9 +22,9 @@
     $rootScope.food = food
     if $scope.place
       $rootScope.place = $scope.place
-      $state.go("foods.order", { place_id: $rootScope.place.id, food_id: food.id })
+      $state.go("dashboard.foods.order", { place_id: $rootScope.place.id, food_id: food.id })
     else
-      $state.go("foods.places", { food_id: food.id })
+      $state.go("dashboard.foods.places", { food_id: food.id })
   retrieveFoods = ->
     Foods.query (foods) ->
       $scope.foods = _.chain(foods)
@@ -47,7 +47,7 @@
             if food.isOrderable()
               # Don't show modals on iOS
               return false if $detection.isiOS()
-              $state.go("foods.places")
+              $state.go("dashboard.foods.places")
               didAutopresentPlaces = true
       , 500
 

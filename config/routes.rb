@@ -33,6 +33,7 @@ Rails.application.routes.draw do
   end
 
   namespace :dashboard do
+    get 'partials/dashboard'
     get 'partials/foods'
     get 'partials/account'
     get 'partials/fundraise'
@@ -42,26 +43,40 @@ Rails.application.routes.draw do
     get 'partials/invite'
     get 'partials/payment_method'
     get 'partials/delivery_places'
-
+    get 'partials/schools'
+    get 'partials/activate'
+    get 'partials/confirm'
     get 'partials/orders/new' => 'partials#new_order'
     get 'partials/orders/show' => 'partials#show_order'
   end
 
-  post 'twilio/sms' => "twilio#sms"
 
   get 'foods' => 'dashboard#index'
+  get 'foods/places' => 'dashboard#index'
+  get 'foods/:food_id/order' => 'dashboard#index', as: :new_order
+
   get 'orders' => 'dashboard#index'
+  
   get 'account' => 'dashboard#index'
   get 'account/payment_method' => 'dashboard#index'
+  get 'account/schools' => 'dashboard#index'
+
   get 'fundraise' => "dashboard#index"
-  get 'foods/places' => 'dashboard#index'
+
   get 'deliver' => 'dashboard#index'
   get 'deliver/places' => 'dashboard#index'
-  get 'foods/:food_id/order' => 'dashboard#index', as: :new_order
   get 'orders/:id' => 'dashboard#index'
   get 'support' => 'dashboard#index'
   get 'invite' => 'dashboard#index'
+  
+  get 'activate' => "dashboard#index"
+  get 'activate/confirm' => "dashboard#index"
+  get 'activate/payment_method' => 'dashboard#index'
+  get 'activate/schools' => "dashboard#index"
   get 'login' => 'dashboard#login'
+
+
+  post 'twilio/sms' => "twilio#sms"
 
   root to: 'dashboard#index'
 

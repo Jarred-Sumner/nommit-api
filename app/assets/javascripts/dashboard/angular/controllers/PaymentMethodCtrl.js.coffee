@@ -23,7 +23,7 @@
 
           $timeout ->
             $scope.reset()
-            $state.go("account")
+            $state.go("dashboard.account")
           , 250
 
       , 1

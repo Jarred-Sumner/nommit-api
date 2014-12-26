@@ -1,4 +1,5 @@
 //= require jquery
+
 $(function() {
 
   function cycleImages() {

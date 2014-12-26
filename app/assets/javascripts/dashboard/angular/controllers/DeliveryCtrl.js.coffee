@@ -16,7 +16,7 @@
           $scope.setShift(shift)
           return null
       $scope.isLoading = false
-      $state.go("deliver.places")
+      $state.go("dashboard.deliver.places")
 
   $scope.notify = (deliveryPlace) ->
     deliveryPlace.isNotifying = true
@@ -59,7 +59,7 @@
       $interval.cancel($scope.reloadInterval)
       $timeout ->
         $scope.isEndingShift = false
-        $state.go("foods")
+        $state.go("dashboard.foods")
       , 250
     , (error) ->
       $scope.error = error.data.message

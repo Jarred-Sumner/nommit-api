@@ -1,0 +1,17 @@
+//= require jquery
+//= require jquery_ujs
+//= require dashboard/angular/angular.min
+//= require dashboard/angular/angular-ui-router
+//= require dashboard/angular/angular-touch
+//= require dashboard/angular/angular-animate
+//= require dashboard/angular/angular-resource
+//= require dashboard/angular/angular-payments
+//= require dashboard/angular/angular-cache-buster
+//= require dashboard/angular/angular-adaptive-detection.min
+//= require dashboard/angular/angular-cookies
+//= require dashboard/underscore-min
+//= require dashboard/underscore.string.min.js
+//= require_tree ./dashboard/mixins
+//= require_tree ./dashboard/angular/mixins
+//= require dashboard/nommit
+//= require_tree ./dashboard

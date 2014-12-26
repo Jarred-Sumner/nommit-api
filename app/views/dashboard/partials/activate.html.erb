@@ -1,0 +1,82 @@
+<article ng-controller='ActivateCtrl' class='edit modal activate-page'>
+  <form stripe-form='activate' name='activateForm'>
+
+    <div class='nav-bar'>
+      <span class='title'>Activate</span>
+      <span class='right-button'><button type='submit' class='fa fa-check' ng-click='startActivating()'></button></span>
+    </div>
+
+    <section class='profile'>
+      <div class='header'>Profile</div>
+
+      <span class='pic' profile-pic="{{ user.id }}" size='90x90'></span>
+
+      <span class='contact'>
+        <div class='name' ng-bind='user.full_name'></div>
+        <div class='name' ng-bind='user.email'></div>
+        <div class='name'>{{ user.phone | tel }}</div>
+        
+      </span>
+    </section>
+
+    <section class='email-section'>
+      <div class='header'>Email</div>
+
+      <fieldset>
+        <i class='fa fa-envelope'></i>
+        <input type='email' name='email' required ng-model='email' placeholder='example@example.com' />
+      </fieldset>
+    </section>
+
+    <section class='phone-section'>
+      <div class='header'>Phone</div>
+
+      <fieldset>
+        <i class='fa fa-phone'></i>
+        <input type='tel' name='phone' required ng-model='phone' placeholder='Your Phone Number' focus />
+      </fieldset>
+    </section>
+
+    <section class='payment'>
+      <div class='header'>Card</div>
+
+      <fieldset>
+        <i class='type fa' ng-class='{ "fa-credit-card": type == null, "fa-cc-visa": type == "visa", "fa-cc-discover": type == "discover", "fa-cc-mastercard": type == "mastercard", "fa-cc-amex": type == "amex"  }'></i>
+        <input type='text' name='number' payments-type-model="type" ng-model='number' payments-validate='card' payments-format="card" required placeholder='Enter Card Info' class='cc' />
+      </fieldset>
+
+      <span class='expiration'>
+        <i class='fa fa-calendar'></i>
+        <input type='text' name='expiry' ng-model='expiry' payments-validate='expiry' payments-format='expiry' required placeholder='XX/XXXX' />
+      </span>
+
+      <span class='cvc'>
+        <i class='fa fa-lock'></i>
+        <input type='text' name='cvc' ng-model='cvc' payments-validate="cvc" payments-type-model="type" payments-format="cvc" required placeholder='XXX' />
+      </span>
+
+      <div class='muted'>
+        <div><i class='fa fa-lock'></i>&nbsp;&nbsp;Secured with Stripe</div>
+        <div><small>(Lyft &amp; Twitter use them too!)</small></div>
+      </div>
+
+    </section>
+  </form>
+
+  <div class='popup-container' ng-if='isActivating'>
+
+    <div class='popup' ng-hide='error'>
+      <h2 class='header'>Activating...</h2>
+      <fading-circle-spinner></fading-circle-spinner>
+    </div>
+
+    <div class='popup' ng-show='error'>
+      <h2 class='header'>An error occurred</h2>
+      <p class='message'>{{ error }}</p>
+      <button class='button button-primary' ng-click='reset()'>Okay</button>
+    </div>
+
+  </div>
+
+
+</article>
