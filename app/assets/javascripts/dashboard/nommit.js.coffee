@@ -46,9 +46,6 @@ window.settings =
       templateUrl: "/dashboard/partials/dashboard"
       resolve:
         user: (Users, Sessions, $cookies) ->
-          if $cookies.sessionID
-            Sessions.setSessionID($cookies.sessionID)
-            delete $cookies.sessionID
           Users.get(id: "me").$promise
         controller: (user, Sessions) ->
           Sessions.setCurrentUser(user)
@@ -156,3 +153,8 @@ window.settings =
         if rejection.status == 401
           location.replace("/login?path=#{location.pathname}")
         $q.reject(rejection)
+
+@nommit.run ($cookies, $http, Sessions) ->
+  if $cookies.sessionID
+    Sessions.setSessionID($cookies.sessionID)
+    delete $cookies.sessionID
