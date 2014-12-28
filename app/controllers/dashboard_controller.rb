@@ -55,5 +55,4 @@ class DashboardController < ActionController::Base
       @current_session ||= Session.find_by(token: session[:sessionID])
     end
 
-
 end
