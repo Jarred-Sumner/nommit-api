@@ -50,7 +50,7 @@ window.settings =
             Sessions.setSessionID($cookies.sessionID)
             delete $cookies.sessionID
           Users.get(id: "me").$promise
-        controller: (user, Session) ->
+        controller: (user, Sessions) ->
           Sessions.setCurrentUser(user)
     .state 'dashboard.foods',
       url: "/foods?place_id"
