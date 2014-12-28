@@ -1,4 +1,8 @@
 @nommit.controller "AccountCtrl", ($scope, Users, $rootScope, Sessions, $timeout, $state, $http) ->
+  $scope.didSetPaymentMethod = ->
+    $state.go("dashboard.account")
+  $scope.didSetSchool = ->
+    $state.go("dashboard.account")
   $scope.toggleEmailSubscribe = ->
     if $scope.user.subscription.email then state = 0 else state = 1
     $scope.isSaving = true

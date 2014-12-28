@@ -19,7 +19,7 @@
 
     <p class='muted' ng-if='deliveryPlaces && deliveryPlaces.length == 0'>No pending orders yet!</p>
 
-    <div class='delivery-place' ng-repeat='deliveryPlace in shift.activeDeliveryPlaces()' ng-hide='deliveryPlace.pendingOrders().length == 0'>
+    <div class='delivery-place' ng-repeat='deliveryPlace in deliveryPlaces' ng-hide='deliveryPlace.pendingOrders().length == 0'>
 
       <div class='header' ng-hide='deliveryPlace.isNotifying' ng-class='timingState(deliveryPlace)'>
         <div class='number' ng-bind='deliveryPlace.index + 1'></div>

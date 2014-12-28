@@ -1,5 +1,5 @@
 <article ng-controller='ActivateCtrl' class='edit modal activate-page'>
-  <form stripe-form='activate' name='activateForm'>
+  <form ng-submit='activate()' name='activateForm'>
 
     <div class='nav-bar'>
       <span class='title'>Activate</span>
@@ -33,40 +33,20 @@
 
       <fieldset>
         <i class='fa fa-phone'></i>
-        <input type='tel' name='phone' required ng-model='phone' placeholder='Your Phone Number' focus />
+        <input type='tel' class='phone-field' name='phone' required ng-model='phone' placeholder='Your Phone Number' focus />
       </fieldset>
     </section>
 
-    <section class='payment'>
-      <div class='header'>Card</div>
-
-      <fieldset>
-        <i class='type fa' ng-class='{ "fa-credit-card": type == null, "fa-cc-visa": type == "visa", "fa-cc-discover": type == "discover", "fa-cc-mastercard": type == "mastercard", "fa-cc-amex": type == "amex"  }'></i>
-        <input type='text' name='number' payments-type-model="type" ng-model='number' payments-validate='card' payments-format="card" required placeholder='Enter Card Info' class='cc' />
-      </fieldset>
-
-      <span class='expiration'>
-        <i class='fa fa-calendar'></i>
-        <input type='text' name='expiry' ng-model='expiry' payments-validate='expiry' payments-format='expiry' required placeholder='XX/XXXX' />
-      </span>
-
-      <span class='cvc'>
-        <i class='fa fa-lock'></i>
-        <input type='text' name='cvc' ng-model='cvc' payments-validate="cvc" payments-type-model="type" payments-format="cvc" required placeholder='XXX' />
-      </span>
-
-      <div class='muted'>
-        <div><i class='fa fa-lock'></i>&nbsp;&nbsp;Secured with Stripe</div>
-        <div><small>(Lyft &amp; Twitter use them too!)</small></div>
-      </div>
-
-    </section>
   </form>
+
+  <div ui-view class='schools-container' ng-if='page == "dashboard.activate.schools"'></div>
+  <div ui-view class='confirm-container' ng-if='page == "dashboard.activate.confirm"'></div>
+  <div ui-view class='payments-container' ng-if='page == "dashboard.activate.payment_method"'></div>
 
   <div class='popup-container' ng-if='isActivating'>
 
     <div class='popup' ng-hide='error'>
-      <h2 class='header'>Activating...</h2>
+      <h2 class='header'>Saving...</h2>
       <fading-circle-spinner></fading-circle-spinner>
     </div>
 

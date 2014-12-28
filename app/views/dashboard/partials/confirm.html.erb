@@ -1,6 +1,7 @@
 <article ng-controller='ConfirmPhoneCtrl' class='edit modal'>
   <form ng-submit='confirm()'>
-    <div class='nav-bar' ng-show='isConfirmPhoneVisible'>
+    <div class='nav-bar'>
+    <span class='left-button' ui-sref='dashboard.activate()'><i class='fa fa-close'></i></span>
       <span class='title'>Confirm Phone</span>
       <span class='right-button'><button type='submit' class='fa fa-check'></button></span>
     </div>
@@ -9,11 +10,11 @@
       <div class='header'>Confirm Code</div>
       <fieldset>
         <i class='fa fa-send'></i>
-        <input type='text' required ng-model='confirm_code' min='6' max='6' focus />
+        <input type='text' required ng-model='confirm_code' min='4' max='4' focus />
       </fieldset>
     </section>
 
-    <p class='muted'>You've been <strong>texted a 6 digit confirm code</strong>. <br /> Please enter it above</p>
+    <p class='muted'>You've been <strong>texted a 4 digit confirm code</strong>. <br /> Please enter it above</p>
 
   </form>
 

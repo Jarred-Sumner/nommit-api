@@ -1,4 +1,4 @@
-@nommit.factory 'Orders', ($resource, Users) ->
+@nommit.factory 'Orders', ($resource, Users, DeliveryPlaces) ->
   Orders = $resource "api/v1/orders/:id", @id,
     update:
       method: "PUT"
@@ -13,6 +13,9 @@
     @state_id == 2
   Orders::isRated = ->
     @state_id == 3
+
+  Orders::deliveryPlace = ->
+    @_deilveryPlace ||= new DeliveryPlaces(@delivery_place)
 
   Orders::isLate = ->
     this.deliveredAt() < new Date()

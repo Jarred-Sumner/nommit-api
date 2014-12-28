@@ -10,11 +10,10 @@
     Users.update id: $scope.user.id,
       confirm_code: $scope.confirm_code
     , (user) ->
-      $rootScope.user = new Users(user)
       Sessions.setCurrentUser(user)
       $scope.didConfirm = true
       $timeout ->
-        $rootScope.hideConfirmPhone()
+        $scope.didConfirmPhone()
         $scope.reset()
       , 250
 

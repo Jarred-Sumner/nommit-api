@@ -135,9 +135,10 @@ p {
 
 input {
   border: 1px solid #BABABA;
-  box-shadow: none;
   @include appearance(none);
   border-radius: 0px;
+  box-shadow: none;
+  outline: none;
 }
 
 fieldset {
@@ -1104,7 +1105,7 @@ $desktop: new-breakpoint(min-width 480px);
   }
   .fa-search { margin-top: 3px; position: absolute; }
 
-  .search-container, .places {
+  .search-container, .list {
     background-color: white;
     list-style: none;
     border: 1px solid $border-color;
@@ -1113,11 +1114,11 @@ $desktop: new-breakpoint(min-width 480px);
   .search-container {
     padding: 10px 17px;
   }
-  .places {
+  .list {
     padding: 0px;
   }
 
-  .place {
+  .list li {
     padding: 17px;
     text-align: left;
     border-bottom: 1px solid $border-color;
@@ -1150,7 +1151,7 @@ $desktop: new-breakpoint(min-width 480px);
       }
     }
   }
-  .place:last-child {
+  .list li:last-child {
     border-bottom: none;
   }
 
@@ -1637,9 +1638,6 @@ $desktop: new-breakpoint(min-width 480px);
       input {
         text-indent: 15px;
         width: 100%;
-        box-shadow: none;
-        outline: none;
-        @include box-sizing(border-box);
         display: inline-block;
       }
     }
@@ -1706,7 +1704,7 @@ $desktop: new-breakpoint(min-width 480px);
       left: 10px;
     }
     input:not(.cc) {
-      text-indent: 25px;
+      text-indent: 35px;
       width: 100%;
       display: block;
     }

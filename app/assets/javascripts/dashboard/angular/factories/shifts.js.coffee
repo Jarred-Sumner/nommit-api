@@ -1,4 +1,4 @@
-@nommit.factory "Shifts", ($resource, Users, DeliveryPlaces) ->
+@nommit.factory "Shifts", ($resource, Users, DeliveryPlaces, Orders) ->
   Shifts = $resource "api/v1/shifts/:id", @id,
     update:
       method: "PUT"
@@ -9,16 +9,15 @@
     @state_id == 0 || @state_id == 1
 
   Shifts::deliveryPlaces = ->
-    @_deliveryPlaces ||= _.map @delivery_places, (deliveryPlace) ->
-      new DeliveryPlaces(deliveryPlace)
-  Shifts::activeDeliveryPlaces = ->
-    return @_activeDeliveryPlaces if @_activeDeliveryPlaces
-    @_activeDeliveryPlaces = _.chain(this.deliveryPlaces())
-      .select (deliveryPlace) ->
-        states = [0, 1, 2]
-        states.indexOf(deliveryPlace.state_id) > -1
-      .sortBy (deliveryPlace) ->
-        deliveryPlace.index
-      .value()
+    if @_deliveryPlaces then return @_deliveryPlaces
+
+    dps = {}
+    for o in @orders
+      order = new Orders(o)
+      continue unless order.isPending()
+      dps[order.deliveryPlace().id] ||= order.deliveryPlace()
+      dps[order.deliveryPlace().id].pendingOrders().push(order)
+
+    @_deliveryPlaces = _.values(dps)
 
   Shifts

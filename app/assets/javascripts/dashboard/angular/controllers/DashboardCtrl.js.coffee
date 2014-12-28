@@ -1,5 +1,5 @@
 @nommit.controller "DashboardCtrl", ($state, Foods, Places, $scope, $rootScope, Users, Sessions, $cookies, $detection, $timeout) ->
-  
+    
   $scope.isInstalled = window.settings.isInstalled()
   if $scope.isInstalled && !window.settings.hasRequestedPushNotifications() && Sessions.isLoggedIn()
     $timeout ->
@@ -17,19 +17,20 @@
       $scope.isiOSBannerVisible = true
     $rootScope.requireLogin()
     $rootScope.requireActivation()
-    $rootScope.isLoadingState = false
+    $rootScope.isLoadingFirstState = false
+    $rootScope.didLoadFirstState = true
   $rootScope.$on "$stateChangeError", ->
     $scope.isDashboardVisible = false
-    $rootScope.isLoadingState = false
+    $rootScope.isLoadingFirstState = false
   $rootScope.$on "$stateChangeStart", ->
-    $rootScope.isLoadingState = true
+    $rootScope.isLoadingFirstState = true
   $rootScope.$on "$viewContentLoading", ->
     $scope.isDashboardVisible = false
   $rootScope.requireLogin = ->
     location.pathname = "/login" unless Sessions.isLoggedIn()
   $rootScope.requireActivation = ->
-    return false if $state.current.name.indexOf("activate")
-    location.pathname = "/activate" unless $rootScope.user.isActivated()
+    return false if $state.current.name.indexOf("activate") > -1
+    location.pathname = "/activate" unless $scope.user.isActivated()
   isDashboardDisabled = ->
     disabled = [
       "dashboard.foods.places"

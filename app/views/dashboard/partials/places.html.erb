@@ -14,7 +14,7 @@
 
     <fading-circle-spinner ng-if='!places'></fading-circle-spinner>
 
-    <ul class='places' ng-if='places && places.length > 0'>
+    <ul class='list places' ng-if='places && places.length > 0'>
 
       <li class='place' ng-repeat='place in places' ng-click='setPlaceID(place.id)'>
         <span class='name'>{{place.name}}</span>
@@ -36,7 +36,7 @@
       <div>Can't find food being delivered there <i class='fa fa-frown-o'></i></div>
     </div>
 
-    <span class='muted'>Can't find your delivery location? <a href='mailto:support@getnommit.com?subject=Missing a delivery location'>Request it</a></span>
+    <span class='muted'>Missing your delivery location? <a href='mailto:support@getnommit.com?subject=Missing a delivery location'>Request it</a></span>
 
 
 

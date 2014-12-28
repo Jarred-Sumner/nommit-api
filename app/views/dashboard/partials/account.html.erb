@@ -37,7 +37,7 @@
   <section ng-class='school'>
     <div class='header'>Your School</div>
 
-    <div class='field show-school' ui-sref='dashboard.account.school()'>
+    <div class='field show-school' ui-sref='dashboard.account.schools()'>
       <span>{{ user.school.name }}</span>
       <i class='fa fa-pencil edit'></i>
     </div> 
@@ -99,5 +99,6 @@
 
   </div>
 
+  <div ui-view class='schools-container' ng-if='page == "dashboard.account.schools"'></div>
   <div ui-view class='payment-method-container' ng-if='page == "dashboard.account.payment_method"'></div>
 </article>

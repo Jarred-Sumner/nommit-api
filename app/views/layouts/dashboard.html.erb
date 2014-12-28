@@ -89,7 +89,7 @@
 
       <div class='view' ui-view></div>
 
-      <div class='popup-container loading' ng-if='isLoadingState'>
+      <div class='popup-container loading' ng-if='isLoadingFirstState && !didLoadFirstState'>
         <div class='popup'>
           <div class='header'><%= image_tag "nommit-logo.png" %></div>
 

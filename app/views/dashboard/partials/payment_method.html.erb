@@ -1,16 +1,16 @@
-<article ng-controller='PaymentMethodCtrl' class='edit payment-method-page'>
+<article ng-controller='PaymentMethodCtrl' class='edit modal payment-method-page'>
   <form stripe-form='update' name='cardForm'>
 
     <div class='nav-bar'>
-      <span class='left-button' ui-sref='dashboard.account()'><i class='fa fa-close'></i></span>
+      <span class='left-button' ui-sref='dashboard.account()' ng-if='page == "dashboard.account.payment_method"'><i class='fa fa-close'></i></span>
       <span class='title'>Payment Info</span>
-      <span class='right-button'><button type='submit' class='fa fa-check' ng-click='startUpdating()'></button></span>
+      <span class='right-button'><button type='submit' class='fa fa-check' ng-click='save()'></button></span>
     </div>
 
     <section class='payment'>
       <div class='header'>Your Card</div>
 
-      <fieldset>
+      <fieldset class='cc'>
         <i class='type fa' ng-class='{ "fa-credit-card": type == null, "fa-cc-visa": type == "visa", "fa-cc-discover": type == "discover", "fa-cc-mastercard": type == "mastercard", "fa-cc-amex": type == "amex"  }'></i>
         <input type='text' name='number' payments-type-model="type" ng-model='number' payments-validate='card' payments-format="card" required placeholder='Enter Card Info' focus />
       </fieldset>

@@ -1,5 +1,5 @@
 @nommit.controller "PaymentMethodCtrl", ($scope, Users, $timeout, Sessions, $rootScope, $state) ->
-  $scope.startUpdating = ->
+  $scope.save = ->
     $scope.isUpdating = true
 
     if $scope.cardForm.$invalid
@@ -10,29 +10,22 @@
     return false if $scope.cardForm.$invalid
     $scope.isUpdating = true
     if status == 200
-      # Debounce Stripe's context switching issue
+      # Fix the $digest/$apply cycle crap
       $timeout ->
         Users.update id: $scope.user.id,
           stripe_token: response.id
         , (user) ->
           $scope.didSave = true
-
-          $rootScope.user = new Users(user)
-          $scope.user = $rootScope.user
           Sessions.setCurrentUser(user)
 
           $timeout ->
             $scope.reset()
-            $state.go("dashboard.account")
+            $scope.didSetPaymentMethod()
           , 250
 
       , 1
     else
       $scope.error = response.error.message
-
-  $scope.submitForm = ->
-
-
 
   $scope.reset = ->
     $scope.isUpdating = false

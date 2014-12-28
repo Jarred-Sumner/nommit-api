@@ -1,13 +1,24 @@
-@nommit.controller "DeliveryCtrl", ($scope, Shifts, $state, Orders, $interval, $timeout) ->
+@nommit.controller "DeliveryCtrl", ($scope, Shifts, Orders, $interval, $timeout, $state, $rootScope) ->
+  $rootScope.$on "$stateChangeSuccess", ->
+    $interval.cancel($scope.refreshInterval) if $scope.refreshInterval
+    if $state.current.name == "dashboard.deliver"
+      $scope.refreshInterval = $interval ->
+        refresh()
+        if !$scope.$$phase
+          $scope.$apply()
+      , 10000
+  $rootScope.$broadcast "$stateChangeSuccess"
   deliveryPlaceByPlaceID = (place_id) ->
     _.find $scope.deliveryPlaces, (dp) ->
       dp.place.id == place_id
 
   $scope.isLoading = true
   $scope.shift = null
+
   refresh = ->
     Shifts.get id: $scope.shiftID, (shift) ->
       $scope.setShift(shift)
+
   load = ->
     Shifts.query (shifts) ->
       for shift in shifts
@@ -17,6 +28,7 @@
           return null
       $scope.isLoading = false
       $state.go("dashboard.deliver.places")
+  load()
 
   $scope.notify = (deliveryPlace) ->
     deliveryPlace.isNotifying = true
@@ -30,26 +42,9 @@
 
   $scope.setShift = (shift) ->
     $scope.shiftID = shift.id
-    deliveryPlaces = shift.activeDeliveryPlaces()
-    Orders.query shift_id: shift.id, (orders) ->
-      for order in orders
-        order = new Orders(order)
-        continue unless order.isPending()
-
-        dp = _.find deliveryPlaces, (dp) ->
-          dp.place.id == order.place.id
-
-        dp.pendingOrders().push(order)
-      $scope.deliveryPlaces = deliveryPlaces
-      $scope.shift = shift
-      $scope.isLoading = false
-
-      $interval.cancel($scope.refreshInterval) if $scope.refreshInterval
-      $scope.refreshInterval = $interval ->
-        refresh()
-        if !$scope.$$phase
-          $scope.$apply()
-      , 10000
+    $scope.deliveryPlaces = shift.deliveryPlaces()
+    $scope.shift = shift
+    $scope.isLoading = false
   $scope.endShift = ->
     $scope.isEndingShift = true
     Shifts.update id: $scope.shift.id,
@@ -70,7 +65,7 @@
   $scope.deliverOrder = (order) ->
     order.isDelivering = true
     dp = deliveryPlaceByPlaceID(order.place.id)
-    index = dp.pendingOrders().indexOf(order.place.id)
+    index = dp.pendingOrders().indexOf(order)
 
     Orders.update id: order.id,
       state_id: 2
@@ -107,18 +102,9 @@
     # To is the time from when they were estimated to depart less than the time they're estimated to arrive
     toSeconds = Math.abs( ( to.getTime() - from.getTime() ) / 1000)
 
-    console.log("#{fromSeconds}/#{toSeconds} for #{dp.place.name}")
-
     if fromSeconds / toSeconds < 0.25
       return "all-good"
     else if fromSeconds / toSeconds < 0.75
       return "hurry-up-bro"
     else
       return "your-late-asshole"
-
-
-  if $scope.user
-    load()
-  else
-    $scope.isLoading = false
-    $scope.requireLogin()

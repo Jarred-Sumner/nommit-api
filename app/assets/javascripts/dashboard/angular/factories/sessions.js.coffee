@@ -8,7 +8,7 @@
       Sessions.currentUser()
     setCurrentUser: (user) ->
       user = new Users(user)
-      $rootScope.$broadcast("CurrentUser", user)
+      $rootScope.user = user
       window.settings.setUserID(user.id)
       @user = user
     currentUser: (cb) ->

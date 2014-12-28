@@ -17,7 +17,7 @@
 
     <fading-circle-spinner ng-if='!places'></fading-circle-spinner>
 
-    <ul class='places' ng-if='visiblePlaces && visiblePlaces.length > 0'>
+    <ul class='list places' ng-if='visiblePlaces && visiblePlaces.length > 0'>
 
       <li class='place' ng-repeat='place in visiblePlaces' ng-click='togglePlace(place.id)'>
         <span class='name' ng-bind='place.name'></span>
@@ -28,6 +28,8 @@
 
       </li>
     </ul>
+
+    <span class='muted'>Missing a delivery location? <a href='mailto:support@getnommit.com?subject=Missing a delivery location for courier'>Request it</a></span>
 
   </div>
 

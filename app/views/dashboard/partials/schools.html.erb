@@ -1,7 +1,7 @@
-<article ng-controller='SchoolsCtrl'>
+<article ng-controller='SchoolsCtrl' class='edit modal'>
 
   <div class='nav-bar'>
-    <span class='left-button' ng-click='goBack()'><i class='fa fa-close'></i></span>
+    <span class='left-button' ui-sref='dashboard.account()' ng-if='page == "dashboard.account.schools"'><i class='fa fa-close'></i></span>
     <span class='title'>Pick your School</span>
   </div>
 
@@ -14,22 +14,41 @@
 
     <fading-circle-spinner ng-if='!schools'></fading-circle-spinner>
 
-    <ul class='schools' ng-if='schools && schools.length > 0'>
+    <ul class='list schools' ng-if='schools && schools.length > 0'>
 
-      <li class='place' ng-repeat='school in schools' ng-click='setSchoolID(place.id)'>
+      <li class='school' ng-repeat='school in schools' ng-click='setSchoolID(school.id)'>
         <span class='name'>{{school.name}}</span>
-
-        <span class='right-bar'>
-          <i class='fa fa-cutlery'></i>
-        </span>
-
       </li>
     </ul>
 
-    <div class='no-food' ng-show='places && places.length == 0'>
-      <div>No school found by that name!</div>
+    <span class='muted'>Can't find your school? <a href='mailto:support@getnommit.com?subject=Please launch at my school'>Request it</a></span>
+
+    <div class='no-food' ng-show='schools && schools.length == 0'>
+      <div>Nommit isn't at any school by that name!</div>
+    </div>
+
+  </div>
+
+  <div class='popup-container' ng-if='isSaving'>
+
+    <div class='popup' ng-hide='didSave || error'>
+      <h2 class='header'>Saving...</h2>
+      <fading-circle-spinner></fading-circle-spinner>
+    </div>
+
+    <div class='popup' ng-show='didSave'>
+      <h2 class='header'>Saved!</h2>
+      <i class='fa fa-check-circle'></i>
+    </div>
+
+    <div class='popup' ng-show='error'>
+      <h2 class='error'>An error occurred</h2>
+      <p class='message'>{{ error }}</p>
+      <button class='button button-primary' ng-click='reset()'>Okay</button>
     </div>
 
   </div>
 
 </article>
+
+
