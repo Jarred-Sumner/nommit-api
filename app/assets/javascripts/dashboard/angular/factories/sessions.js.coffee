@@ -1,4 +1,4 @@
-@nommit.factory 'Sessions', ($resource, Users, $http, $rootScope) ->
+@nommit.factory 'Sessions', ($resource, Users, $http, $rootScope, Schools) ->
   Sessions = $resource "api/v1/sessions"
 
   angular.extend Sessions,
@@ -9,6 +9,7 @@
     setCurrentUser: (user) ->
       user = new Users(user)
       $rootScope.user = user
+      $rootScope.school = new Schools(user.school)
       window.settings.setUserID(user.id)
       @user = user
     currentUser: (cb) ->

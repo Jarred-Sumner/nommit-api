@@ -9,6 +9,7 @@
 
 $popup-z-index: 12;
 $sticky-z-index: 11;
+$subview-z-index: 12;
 $modal-z-index: 10;
 $popup-z-index: 20;
 $content-z-index: 5;
@@ -21,7 +22,7 @@ $light-color: #767676;
 $ultralight-color: #828282;
 $cmu-red: #C20929;
 
-$offwhite-background: #FBFBFB;
+$offwhite-background: #F3F1F1;
 
 $brand-green: #42B7BB;
 
@@ -249,24 +250,26 @@ fieldset {
     color: white;
   }
 
-  .badge {
-    height: 86px;
-    width: 86px;
-    padding: 0px;
-    border-radius: 43px;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    border: 2px solid white;
-    background-color: white;
+}
 
-    &.price {
-      background-color: $brand-green;
-      color: white;
-      font-size: 18pt;
-    }
+.badge {
+  height: 86px;
+  width: 86px;
+  padding: 0px;
+  border-radius: 43px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: 2px solid white;
+  background-color: white;
+
+  display: inline-block;
+
+  &.price {
+    background-color: $brand-green;
+    color: white;
+    font-size: 18pt;
   }
-
 }
 
 .badge-list {
@@ -424,6 +427,8 @@ fieldset {
   display: block;
   background-color: white;
 
+  z-index: $subview-z-index;
+
   &.ng-enter {
     @include animation(slideInModal 0.35s ease-out);
   }
@@ -509,6 +514,7 @@ fieldset {
   height: auto;
   display: block;
   overflow-y: scroll;
+
   header {
     background-color: white;
     color: $default-color;
@@ -520,6 +526,8 @@ fieldset {
     position: absolute;
 
     z-index: $modal-z-index;
+
+
     .brand {
       @include retina-image("dashboard/header/top", $header-width 187px);
       height: 187px;
@@ -642,14 +650,24 @@ fieldset {
   }
 }
 
+.nav-bar-container {
+  margin-top: -1px;
+  padding-top: 1px;
+  background-color: #333;
+}
 
 .nav-bar {
   margin: 0 auto;
-  background-color: $brand-green;
-  padding: 12px 20px;
-  font-size: 20pt;
+  background-color: #F8F8F8;
+  padding: 9px 20px;
+  font-size: 14pt;
   text-align: center;
-  color: white;
+  color: rgb(140,140,140);
+  text-shadow: 0px 2px 1px rgba(255,255,255,0.5);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+
+  border: 1px solid rgba(200,200,200,0.8);
 
   .left-button {
     float: left;
@@ -677,9 +695,28 @@ fieldset {
 }
 
 article {
+
   .nav-bar {
     .place:hover {
-      cursor: pointer; color: $default-color;
+      cursor: pointer;
+      color: $default-color;
+    }
+  }
+
+  .sub-header {
+    background-color: #737373;
+    text-align: center;
+    font-size: 10pt;
+    line-space: 19pt;
+    font-weight: $thin-font;
+    padding: 3px;
+
+    color: white;
+    .fa-calendar {
+      padding: 4px;
+      margin-left: -7px;
+      vertical-align: top;
+      font-size: 8pt;
     }
   }
 
@@ -698,206 +735,180 @@ article {
 
   .food-container {
 
-    &.ng-enter, &.ng-leave {
-      @include backface-visibility(visible)
-    }
-
-    &.ng-enter {
-      @include animation(fadeIn 0.15s ease-in);
-    }
-
-    &.ng-leave {
-      @include animation(fadeOut 0.15s ease-in);
-    }
-
-    margin: 16px;
-    text-align: center;
-    display: inline-block;
-
-    .seller-logo {
-      margin-top: 8px;
-      margin-right: 13px;
-      height: 38px;
-      width: 38px;
-      border-radius: 19px;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-color: white;
-      display: inline-block;
-      vertical-align: top;
-    }
+    $border-radius: 4px;
+    $food-height: 175px;
 
     .food {
       margin: 0 auto;
-      min-width: 245px;
-      display: inline-block;
-      $border-radius: 3px;
+      width: 274px;
+      position: relative;
 
-      &:hover { cursor: pointer; }
+      margin-bottom: 23px;
 
-      .top-bar {
-        font-weight: $light-font;
-        font-size: 11pt;
-        color: $light-color;
-        text-align: left;
-        padding: 5px 0px;
-        .time-left { float: right; }
-      }
-
+      $preview-height: $food-height - 39px;
       .preview {
-        background-size: cover;
-        background-position: 50% 50%;
-        min-width: 100%;
-        width: auto;
-        height: 142px;
-        background-repeat: no-repeat;
-        text-align: right;
+        width: 100%;
+        height: $preview-height;
 
-        border-top-left-radius: $border-radius;
-        border-top-right-radius: $border-radius;
+        color: white;
+
+        background-repeat: none;
+        background-size: cover;
+        background-position: center;
+
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+
+        .overlay {
+          position: absolute;
+          z-index: $content-z-index;
+          top: 0;
+          left: 0;
+
+          height: $preview-height;
+          width: 100%;
+          
+          @include linear-gradient(-180deg, rgba(0,0,0,0.00) 50%, rgba(0,0,0,0.45) 100%);
+          background-color: rgba(25,25,25,0.05);
+          
+          border: 1px inset #979797;
+          border-bottom: none;
+
+          box-shadow: inset 0px 1px 5px 2px rgba(0,0,0,0.36);
+
+          border-top-left-radius: $border-radius;
+          border-top-right-radius: $border-radius;
+        }
+
+        .profile {
+          position: absolute;
+          bottom: 36px;
+          left: 0;
+          z-index: $content-z-index;
+
+          width: 100%;
+          height: $preview-height;
+
+          height: 44pt;
+
+          padding: 6px 12px;
+          margin: 0px 4px;
+          overflow: hidden;
+          
+          .badge {
+            margin-top: 3px;
+            margin-right: 5px;
+            height: 30pt;
+            width: 30pt;
+
+            border-radius: 15pt;
+            background-color: $brand-green;
+            border: 1px solid $brand-green;
+
+            float: left;
+          }
+
+          .details {
+            margin: 0px 5px;
+            margin-top: 5px;
+            overflow: hidden;
+
+            line-height: 14pt;
+            float: left;
+
+            text-align: left;
+
+            .title {
+              font-weight: $bold-font;
+              letter-spacing: -0.5px;
+              font-size: 10pt;
+            }
+            .seller {
+              font-weight: $light-font;
+              font-size: 8pt;
+            }
+
+            .title, .seller {
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              max-width: 145px;
+              width: 100%;
+            }
+
+          }
+
+          .price {
+            float: right;
+            font-weight: $bold-font;
+            font-size: 12pt;
+
+            padding-top: 12px;
+            margin-right: 8px;
+          }
+
+        }
       }
 
-      .details-container {
-        border: 1px solid #E9E9E9;
+      .stats {
+        background-color: #FAFAFA;
+        
+        border: 1px solid #E5E5E5;
         border-top: none;
-        background-color: white;
-        box-shadow: 0px 1px 4px rgba(232,232,232,.5);
-        font-weight: $light-font;
-        text-align: left;
-        padding: 8px 13px;
-        max-width: 245px;
-        color: $light-color;
         border-bottom-left-radius: $border-radius;
         border-bottom-right-radius: $border-radius;
 
-        .info {
-          margin: 0px 0px;
-          overflow: hidden;
-          h3 {
-            margin: 0px;
-            padding: 0px;
-            font-weight: $light-font;
-            font-size: 12pt;
-            display: inline-block;
-          }
-          .name {
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-            max-width: 80%;
-          }
-          .price {
-            max-width: 20%;
-            float: right;
-            color: $brand-green;
-          }
+        width: 100%;
+        text-align: left;
+
+        padding: 7px 15px;
+        margin-bottom: 10px;
+
+        .quantity, .rating {
+          margin: 0 0;
+          padding: 0px;
+
+          display: inline-block;
+          width: 50%;
         }
 
-        .status {
-          font-size: 10pt;
-          font-weight: $thin-font;
-          .rating { float: right; margin-top: 1px; }
-          .quantity { color: $ultralight-color; }
-        }
-        .progress-bar {
-          margin-bottom: 5px;
+        .quantity {
+          font-size: 12px;
+          color: $ultralight-color;
         }
 
-      }
-
-    }
-
-    &.sold-out, &.expired, &.ended, &.pending {
-      position: relative;
-      pointer-events: none;
-
-        .food::before {
+        .rating {
+          width: 112px;
           text-align: right;
-          position: absolute;
-          top: 29px;
-          right: 0px;
-          display: block;
-          background-color: rgba(0,0,0,0.15);
-          vertical-align: middle;
-          overflow: hidden;
-          height: 215px;
-          width: 245px;
-          content: " ";
-          z-index: $content-z-index;
-          border-radius: 3px;
-        }
-
-      .button-primary {
-        margin-top: 2px;
-        font-size: 12pt;
-        float: left;
-        margin-left: -14px;
-        width: 245px;
-        border-bottom-left-radius: 3px;
-        border-bottom-right-radius: 3px;
-        &[disabled] { opacity: 1; pointer-events: none; }
-      }
-
-      .food .preview {
-        position: relative;
-        &:after, .pending-overlay {
-          margin: 0 auto;
-          text-align: center;
-          position: absolute;
-          top: 55px; left: 0px; right: 0px; bottom: 0px;
-          display: block;
-          width: 100%;
-          color: white;
-          opacity: 0.9;
-          font-weight: bold;
-          font-size: 28pt;
-          z-index: $content-z-index + 1;
-        }
-        .pending-overlay {
-          font-size: 35pt;
-          top: 40px;
         }
       }
 
-    }
-
-    &.pending {
-      pointer-events: auto;
-      .food::before {
-        min-height: 0px;
-        height: 142px;
-        top: 29px;
+      &.ng-enter, &.ng-leave {
+        @include backface-visibility(visible);
       }
-    }
 
-    &.expired, &.ended {
-
-      .food .preview:after {
-        content: "SALE ENDED";
+      &.ng-enter {
+        @include animation(fadeIn 0.15s ease-in);
       }
-    }
 
-    &.sold-out {
-      .food .preview:after {
-        content: "SOLD OUT";
+      &.ng-leave {
+        @include animation(fadeOut 0.15s ease-in);
       }
+
     }
 
   }
 
-  section {
+  .header {
+    color: $brand-green;
+    text-transform: uppercase;
+    border-bottom: 1px solid $brand-green;
+    display: block;
+    width: 100%;
 
-    .header {
-      color: $brand-green;
-      text-transform: uppercase;
-      border-bottom: 1px solid $brand-green;
-      display: block;
-      width: 100%;
-
-      font-size: 12pt;
-    }
-
+    font-size: 12pt;
   }
+
 
   .muted {
     margin: 15px auto;
@@ -915,11 +926,11 @@ article {
 
   .button-group {
     padding: 20px;
+    padding-bottom: 0px;
     button {
       margin-top: 5px;
     }
   }
-
 
 }
 
@@ -927,14 +938,6 @@ article.edit {
   color: #5F5F5F;
   font-weight: $light-font;
   font-size: 10pt;
-
-  .nav-bar {
-    position: fixed;
-    top: 0px;
-    display: block;
-    min-width: 100%;
-  }
-  padding-top: 59px;
 
   section {
     margin: 20px;
@@ -970,7 +973,7 @@ article.edit {
   }
 
   .field {
-    font-size: 14pt;
+    font-size: 12pt;
     border: 1px solid #CCC;
     padding: 5px;
     text-align: center;

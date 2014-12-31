@@ -15,6 +15,7 @@ class Food < ActiveRecord::Base
   has_many :buyers, through: :orders, source: :user, class_name: User
   accepts_nested_attributes_for :prices
   accepts_nested_attributes_for :orders
+  scope :featured, -> { where(featured: true) }
 
   include StateID
   enum state: { active: 0, halted: 1, ended: 2 }

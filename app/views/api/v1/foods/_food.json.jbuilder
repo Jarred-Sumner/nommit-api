@@ -1,5 +1,5 @@
 json.cache! food do
-  json.(food, :id, :title, :description, :goal)
+  json.(food, :id, :title, :description, :goal, :featured)
 
   json.start_date food.start_date.try(:iso8601)
   json.end_date food.end_date.try(:iso8601)
@@ -33,4 +33,5 @@ json.cache! food do
       json.array!(food.delivery_places, partial: "api/v1/delivery_places/delivery_place", as: :delivery_place, show_places: true)
     end
   end
+
 end

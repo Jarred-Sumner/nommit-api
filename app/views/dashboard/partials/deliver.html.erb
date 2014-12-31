@@ -1,9 +1,11 @@
 <article ng-controller='DeliveryCtrl' class='delivery-page'>
 
-  <div class='nav-bar'>
-    <span class='left-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
-    <span class='title'>Deliveries</span>
-    <span class='right-button' ui-sref='dashboard.deliver.places()'><i class='fa fa-building'></i></span>
+  <div class='nav-bar-container'>
+    <div class='nav-bar'>
+      <span class='left-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
+      <span class='title'>Deliveries</span>
+      <span class='right-button' ui-sref='dashboard.deliver.places()'><i class='fa fa-building'></i></span>
+    </div>
   </div>
 
   <div class='popup-container' ng-if='isLoading'>

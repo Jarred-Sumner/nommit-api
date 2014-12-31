@@ -1,115 +1,52 @@
 <article ng-controller='FoodsCtrl' class='foods-page'>
 
-  <div class='nav-bar' ng-if='!place'>
-    <span class='left-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
-    <span class='title place' ui-sref='dashboard.foods.places'>Pick a Place <i class='fa fa-caret-down'></i></span>
+  <div class='nav-bar-container'>
+    <div class='nav-bar' ng-if='!place'>
+      <span class='left-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
+      <span class='title place' ui-sref='dashboard.foods.places'>Pick a Place <i class='fa fa-caret-down'></i></span>
+    </div>
+
+    <div class='nav-bar' ng-if='place'>
+      <span class='left-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
+      <span class='title place' ui-sref='dashboard.foods.places'>{{place.name }} <i class='fa fa-caret-down'></i></span>
+    </div>
   </div>
 
-  <div class='nav-bar' ng-if='place'>
-    <span class='left-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
-    <span class='title place' ui-sref='dashboard.foods.places'>{{place.name }} <i class='fa fa-caret-down'></i></span>
-  </div>
+  <div class='sub-header' ng-if='school.showMOTD()'>{{ school.motd }}</div>
+  <div class='sub-header' ng-if='school.showHours()'><i class='fa fa-calendar'></i> Weekdays {{ school.from() | date:"hh:mm a" }} - {{ school.to() | date:"hh:mm a" }}</div>
+  <div class='sub-header' ng-if='school.showSpecialEvents()'><i class='fa fa-calendar'></i> Only for Special Events</div>
+
 
   <ul class='content foods'>
-    <h2 class='no-food' ng-if='foods && foods.length == 0'>Nommit is closed for Winter Break!</h2>
     <fading-circle-spinner ng-if='!foods'></fading-circle-spinner>
 
     <li class='food-container' ng-repeat='food in foods' ng-class="{ 'sold-out': {{ food.isSoldOut() }}, 'expired': {{ food.isExpired() }}, 'ended': {{ food.isSaleOver() }}, 'pending': {{ food.isPending() }}  }">
 
-      <div class='seller-logo' ng-style='{ "background-image": "url({{ food.seller.logo_url }})" }'></div>
-
       <div class='food' ng-if='food.isOrderable()' ng-click='order(food)'>
+        <div class='featured' ng-show='food.featured'></div>
+        
+        <div class='preview' ng-style="{ 'background-image': 'url( {{ food.header_image_url }})' }">
+          
+          <span class='overlay'></span>
+          
+          <div class='profile'>
+            <div class='badge' ng-style="{ 'background-image': 'url( {{ food.seller.logo_url }} )' }"></div>
+            <div class='details'>
+              <div class='title' ng-bind='food.title'></div>
+              <div class='seller'>By {{ food.seller.name }}</div>
+            </div>
+            <div class='price'>{{ food.price() | currency }}</div>
+          </div>
 
-        <div class='top-bar'>
-          <span class='seller-name'>{{ food.seller.name }}</span>
-
-          <span class='time-left'>
-            <i class='fa fa-clock-o'></i>
-            <timer end-time='food.endDate()'>{{hhours}}:{{mminutes}}:{{sseconds}} left</timer>
-          </span>
         </div>
 
-        <div class='preview' ng-style='{ "background-image": "url({{ food.thumbnail_image_url }})" }'></div>
-
-        <div class='details-container'>
-
-          <div class='info'>
-            <h3 class='name'>{{ food.title }}</h3>
-            <h3 class='price'>{{ food.price() | currency }}</h3>
-          </div>
-
-          <div class='status'>
-            <span class='quantity'>{{ food.order_count }}/{{ food.goal }} left</span>
-            <rating class='rating' score='food.rating' max='5' readonly='true'></rating>
-          </div>
-
+        <div class='stats'>
+          <span class='quantity'>{{ food.order_count }} / {{ food.goal }} left</span>
+          <rating class='rating' score='food.rating' max='5' readonly='true'></rating>
           <div class='progress-bar'>
-            <span class='progress' ng-style='{ "width": "{{ food.progress() }}%" }'></span>
+            <div class='progress' ng-style='{ "width": "{{food.progress()}}%" }'></div>
           </div>
-
         </div>
-
-      </div>
-
-      <div class='food' ng-if='food.isSoldOut() || food.isExpired() || food.isSaleOver()'>
-
-        <div class='top-bar'>
-          <span class='seller-name'>{{ food.seller.name }}</span>
-
-          <span class='time-left'>
-            <i class='fa fa-clock-o'></i>
-            <span class='end-date'>{{ food.endDate() | date:"mediumTime"}}
-          </span>
-        </div>
-
-        <div class='preview' ng-style='{ "background-image": "url({{ food.thumbnail_image_url }})" }'></div>
-
-        <div class='details-container'>
-
-          <div class='info'>
-            <h3 class='name'>{{ food.title }}</h3>
-            <h3 class='price'>{{ food.price() | currency }}</h3>
-          </div>
-
-          <div class='status'>
-            <span class='quantity'>{{ food.order_count }}/{{ food.goal }} left</span>
-            <rating class='rating' score='food.rating' max='5' readonly='true'></rating>
-          </div>
-
-          <div class='progress-bar'>
-            <span class='progress' ng-style='{ "width": "{{ food.progress() }}%" }'></span>
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class='food pending' ng-if='food.isPending()'>
-
-        <div class='top-bar'>
-          <span class='seller-name'>{{ food.seller.name }}</span>
-
-          <span class='time-left'>
-            <i class='fa fa-clock-o'></i>
-            <span class='end-date'>{{ food.startDate() | date:"mediumTime"}}
-          </span>
-        </div>
-
-        <div class='preview' ng-style='{ "background-image": "url({{ food.thumbnail_image_url }})" }'>
-          <div class='pending-overlay' ng-if='food.isPending()'><timer end-time='food.startDate()'>{{hhours}}:{{mminutes}}:{{sseconds}}</timer></div>
-        </div>
-
-        <div class='details-container'>
-
-          <div class='info'>
-            <h3 class='name'>{{ food.title }}</h3>
-            <h3 class='price'>{{ food.price() | currency }}</h3>
-          </div>
-
-          <button class='button button-primary' ng-disabled='notified' ng-click='notifyMe()'>{{ notified ? "We'll Notify You" : "Notify Me" }}</div>
-
-        </div>
-
 
       </div>
 

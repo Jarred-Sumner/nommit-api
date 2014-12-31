@@ -22,9 +22,9 @@
   Foods::isOrderable = ->
     this.isActive() && this.isOngoing() && !this.isSoldOut()
   Foods::remaining = ->
-    this.goal - this.order_count
+    @goal - @order_count
   Foods::progress = ->
-    (this.remaining() / this.goal) * 100.0
+    ( (@goal - @order_count) / @goal) * 100.0
   Foods::pricingByID = (id) ->
     _.find @prices, (price) ->
       price.id == id

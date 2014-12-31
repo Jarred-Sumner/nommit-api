@@ -47,7 +47,7 @@ ActiveAdmin.register Food do
       check_box_tag "notified", food.last_notified.present?, food.last_notified.present?, readonly: true
     end
 
-
+    column :featured
 
   end
 
@@ -76,6 +76,8 @@ ActiveAdmin.register Food do
         cf.input :quantity
         cf.input :price_in_cents
       end
+
+      f.input :featured
 
     end
   end
@@ -145,7 +147,7 @@ ActiveAdmin.register Food do
         "#{minutes.round(2)} minutes"
       end
 
-
+      row :featured
     end
 
     render 'admin/foods/low_rated_orders', food: food
