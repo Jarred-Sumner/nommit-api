@@ -20,7 +20,7 @@
   <ul class='content foods'>
     <fading-circle-spinner ng-if='!foods'></fading-circle-spinner>
 
-    <li class='food-container' ng-repeat='food in foods' ng-class="{ 'sold-out': {{ food.isSoldOut() }}, 'expired': {{ food.isExpired() }}, 'ended': {{ food.isSaleOver() }}, 'pending': {{ food.isPending() }}  }">
+    <li class='food-container' ng-repeat='food in foods' ng-class="{ 'sold-out': food.isSoldOut(), 'expired': food.isExpired(), 'ended': food.isSaleOver(), 'pending': food.isPending()  }">
 
       <div class='food' ng-if='food.isOrderable()' ng-click='order(food)'>
         <div class='featured' ng-show='food.featured'></div>
@@ -68,6 +68,22 @@
       <h2 class='header'>We'll Notify You!</h2>
       <i class='fa fa-check-circle'></i>
     </div>
+
+  </div>
+
+  <div class='become-a-seller' ng-class="{ 'sticky': (!foods || foods.length < 2 || isDesktop) }">
+    
+    <ul class='step-logos'>
+      <li><%= image_tag "dashboard/seller/money.png", class: "money" %></li>
+      <li><%= image_tag "dashboard/seller/chef.png", class: "chef" %></li>
+      <li><%= image_tag "dashboard/seller/people.png", class: "people" %></li>
+    </ul>
+
+    <%= image_tag "dashboard/seller/caption.png", class: "caption" %>
+
+    <p class='sales-pitch'>Sellers make at least $15/hour, some make $150/hour. It's a wild time.</p>
+
+    <div ui-sref='dashboard.fundraise()' class='button button-primary'>Learn More</div>
 
   </div>
 </article>

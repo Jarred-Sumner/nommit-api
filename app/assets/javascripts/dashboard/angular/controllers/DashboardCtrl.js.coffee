@@ -1,5 +1,5 @@
 @nommit.controller "DashboardCtrl", ($state, Foods, Places, $scope, $rootScope, Users, Sessions, $cookies, $detection, $timeout) ->
-    
+  $scope.isDesktop = !($detection.isAndroid() || $detection.isiOS() || $detection.isWindowsPhone() || $detection.isBB10())
   $scope.isInstalled = window.settings.isInstalled()
   if $scope.isInstalled && !window.settings.hasRequestedPushNotifications() && Sessions.isLoggedIn()
     $timeout ->
