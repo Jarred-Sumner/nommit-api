@@ -46,7 +46,7 @@ ActiveAdmin.register User do
     end
 
     column "School" do |user|
-      link_to user.school.name, admin_school_path(user.school)
+      link_to user.school.name, admin_school_path(user.school) if user.school
     end
 
   end

@@ -1,17 +1,21 @@
-<%= link_to root_url, class: "clickable-area" do %>
-  <%= image_tag @food.preview.url, class: "preview" %>
-<% end %>
+<div class='content-container'>
 
-<div class='content'>
   <%= link_to root_url, class: "clickable-area" do %>
-    <h1><%= @food.title %></h1>
-    <h3>by <%= @food.restaurant.name %></h3>
+    <%= image_tag @food.preview.url, class: "preview" %>
   <% end %>
-  <p class='description'>Get <%= @food.title %> for <%= number_to_currency(@food.prices.first.price_in_cents.to_f / 100) %> delivered on Nommit. <%= @food.description %></p>
 
-  <%= link_to "Order Now", root_url, class: "button" %>
+  <div class='content'>
+    <%= link_to root_url, class: "clickable-area" do %>
+      <h1><%= @food.title %></h1>
+      <h3>by <%= @food.restaurant.name %></h3>
+    <% end %>
+    <p class='description'>Get <%= @food.title %> for <%= number_to_currency(@food.prices.first.price_in_cents.to_f / 100) %> delivered on Nommit. <%= @food.description %></p>
 
-  <% if @user.credit > 0 %>
-    <p class='credit'>PS - You have <strong><%= number_to_currency @user.credit / 100 %> in free credit</strong> remaining on Nommit</p>
-  <% end %>
+    <%= link_to "Order Now", root_url, class: "button" %>
+
+    <% if @user.credit > 0 %>
+      <p class='credit'>PS - You have <strong><%= number_to_currency @user.credit / 100 %> in free credit</strong> remaining on Nommit</p>
+    <% end %>
+  </div>
+
 </div>

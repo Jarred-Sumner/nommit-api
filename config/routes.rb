@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   ActiveAdmin.routes(self)
   namespace :api do
 
@@ -8,6 +7,7 @@ Rails.application.routes.draw do
       resources :shifts, only: [:index, :create, :update, :show] do
         resources :orders, only: [:index]
       end
+      resources :sellers, only: [:create]
       resources :sessions, only: [:create, :destroy]
       resources :payment_methods, only: [:update, :show]
       resources :schools, only: [:index, :show]
@@ -16,7 +16,7 @@ Rails.application.routes.draw do
         get 'subscription' => "subscriptions#show"
         post 'subscription' => "subscriptions#create"
         resources :promos, only: [:create]
-      end
+      end 
       resources :devices, only: [:create]
       resources :promos, only: [:show]
 
@@ -36,7 +36,7 @@ Rails.application.routes.draw do
     get 'partials/dashboard'
     get 'partials/foods'
     get 'partials/account'
-    get 'partials/fundraise'
+    get 'partials/sell'
     get 'partials/support'
     get 'partials/places'
     get 'partials/deliver'
@@ -61,7 +61,7 @@ Rails.application.routes.draw do
   get 'account/payment_method' => 'dashboard#index'
   get 'account/schools' => 'dashboard#index'
 
-  get 'fundraise' => "dashboard#index"
+  get 'sell' => "dashboard#index"
 
   get 'deliver' => 'dashboard#index'
   get 'deliver/places' => 'dashboard#index'

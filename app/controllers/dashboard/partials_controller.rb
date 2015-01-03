@@ -7,7 +7,7 @@ class Dashboard::PartialsController < DashboardController
   def account
   end
 
-  def fundraise
+  def sell
   end
 
   def support

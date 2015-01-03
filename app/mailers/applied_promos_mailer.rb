@@ -1,7 +1,4 @@
-class AppliedPromosMailer < ActionMailer::Base
-  default from: '"Nommit" <support@getnommit.com>'
-  layout "email"
-  include ActionView::Helpers::NumberHelper
+class AppliedPromosMailer < ApplicationMailer
 
   def new(applied_promo_id)
     @applied_promo = AppliedPromo.find(applied_promo_id)

@@ -117,9 +117,9 @@ window.settings =
     .state "dashboard.support",
       url: "/support"
       templateUrl: "/dashboard/partials/support"
-    .state "dashboard.fundraise",
-      url: "/fundraise"
-      templateUrl: "/dashboard/partials/fundraise"
+    .state "dashboard.sell",
+      url: "/sell"
+      templateUrl: "/dashboard/partials/sell"
     .state "dashboard.orders",
       url: "/orders/:order_id"
       templateUrl: "/dashboard/partials/orders/show"

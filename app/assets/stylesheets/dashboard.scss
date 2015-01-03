@@ -908,7 +908,7 @@ article {
     box-shadow: 0px 2px 2px 0px rgba(175,175,175,0.50), inset 0px 1px 1px 0px rgba(0,0,0,0.50);
 
     &.sticky {
-      position: fixed;
+      position: absolute;
       bottom: 0px;
 
       display: block;
@@ -952,7 +952,7 @@ article {
     }
 
     .caption, .sales-pitch, .button {
-      max-width: 250px;
+      max-width: 300px;
       margin: 15px auto;
     }
 
@@ -1120,6 +1120,7 @@ $desktop: new-breakpoint(min-width 480px);
 
   .foods {
     text-align: center !important;
+    margin-bottom: 225px !important;
 
     .food-container {
       display: inline-block;
