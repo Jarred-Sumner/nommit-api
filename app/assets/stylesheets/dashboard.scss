@@ -371,9 +371,10 @@ fieldset {
     }
 
     .button {
-      margin-top: 25px;
       font-size: 12pt;
       font-weight: $light-font;
+      width: 100%;
+      display: block;
     }
 
     .button-group {
@@ -961,8 +962,7 @@ article {
     }
 
   }
-
-  .header {
+  section .header {
     color: $brand-green;
     text-transform: uppercase;
     border-bottom: 1px solid $brand-green;
@@ -971,7 +971,6 @@ article {
 
     font-size: 12pt;
   }
-
 
   .muted {
     margin: 15px auto;
@@ -1097,7 +1096,7 @@ article.edit {
     input {
       width: 100%;
     }
-    .button {
+    .apply-button {
       padding: 8px 10px;
       padding-top: 7px;
       font-size: 10pt;

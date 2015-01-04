@@ -9,22 +9,28 @@
   $scope.update = (status, response) ->
     return false if $scope.cardForm.$invalid
     $scope.isUpdating = true
+
     if status == 200
+
+      success = (user) ->
+        $scope.didSave = true
+        Sessions.setCurrentUser(user)
+
+        $timeout ->
+          $scope.reset()
+          $scope.didSetPaymentMethod()
+        , 250
+      error = (error) ->
+        $scope.error = error.data.message
+
       # Fix the $digest/$apply cycle crap
       $timeout ->
-        Users.update id: $scope.user.id,
+        Users.update(id: $scope.user.id,
           stripe_token: response.id
-        , (user) ->
-          $scope.didSave = true
-          Sessions.setCurrentUser(user)
+        ).$promise.then(success, error)
 
-          $timeout ->
-            $scope.reset()
-            $scope.didSetPaymentMethod()
-          , 250
-
-      , 1
     else
+      console.log(response)
       $scope.error = response.error.message
 
   $scope.reset = ->
