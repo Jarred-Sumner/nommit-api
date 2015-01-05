@@ -672,8 +672,10 @@ fieldset {
 
   .left-button {
     float: left;
+    width: 20px;
   }
   .title {
+    margin-left: -20px;
     font-weight: $light-font;
     .fa-caret-down { margin-left: 20px; }
   }
@@ -2331,10 +2333,77 @@ $desktop: new-breakpoint(min-width 480px);
 
 }
 
-.support-page {
+.become-a-seller {
+
+  .pitch {
+    text-align: center;
+    height: 83px;
+    background-image: image-url("dashboard/seller/pitch.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;
+    background-position: center;
+
+    padding-top: 16px;
+    line-height: 24px;
+
+    font-size: 14px;
+  }
   
   .points {
+    margin: 25px auto;
+    margin-bottom: 160px;
     height: 361px;
+    max-width: 280px;
+
+    background-image: image-url("dashboard/seller/points.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    list-style: none;
+    text-align: center;
+    li {
+      margin: 0px auto;
+      height: 100px;
+      width: 100%;
+      text-align: left;
+      padding-left: 30px;
+      
+      .header {
+        font-size: 14px;
+      }
+
+      p {
+        color: $light-color;
+        font-weight: $light-font;
+        font-size: 12px;
+        line-height: 18px;
+      }
+    }
+
+    .get-food { color: #BC4068; }
+    .prepare-food { color: #30AA8E; }
+    .deliver-food { color: #CE0808; }
+    .profit { color: #9C4FE0; }
+  }
+
+  .sticky-banner {
+    padding: 30px 20px;
+    @include linear-gradient(-180deg, #FDFDFD 17%, #E9E9E9 100%);
+    border: 1px solid #D0D0D0;
+    box-shadow: 0px 2px 2px 0px rgba(255,255,255,0.50);
+    
+    position: fixed;
+    bottom: 0px;
+
+    display: block;
+    width: 100%;
+    text-align: center;
+
+    .message {
+      height: 20px;
+      margin-bottom: 10px;
+    }
   }
   
 }

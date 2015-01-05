@@ -1,4 +1,4 @@
-<article ng-controller='SupportCtrl' class='support-page'>
+<article ng-controller='BecomeASellerCtrl' class='become-a-seller'>
   
   <div class='nav-bar-container'>
     <div class='nav-bar'>
@@ -12,18 +12,48 @@
   <ul class='points'>
     <li class='get-food'>
       <div class='header'>Get Food</div>
+      <p>Buy fresh food people want from restaurants and grocery stores.</p>
     </li>
     <li class='prepare-food'>
       <div class='header'>Prepare Food</div>
+      <p>Heat, box, package, and bag the food before deliveries start.</p>
     </li>
     <li class='deliver-food'>
       <div class='header'>Deliver Food</div>
+      <p>Gather 3-4 friends and deliver the food together!</p>
     </li>
     <li class='profit'>
       <div class='header'>Profit</div>
+      <p>Mark up the price and sell!</p>
     </li>
   </ul>
 
+  <div class='sticky-banner'>
+    <%= image_tag "dashboard/seller/become-seller-message.png", class: "message" %>
+    <button class='button button-primary' ng-click='apply()'>Apply Now</button>
+  </div>
 
-  
+  <div class='popup-container' ng-if='isApplying'>
+
+    <div class='popup' ng-hide='error || success'>
+      <h2 class='header'>Applying...</h2>
+      <fading-circle-spinner></fading-circle-spinner>
+    </div>
+
+    <div class='popup' ng-show='error'>
+      <h2 class='header'>An error occurred</h2>
+      <p class='message'>{{ error }}</p>
+      <button class='button button-primary' ng-click='reset()'>Okay</button>
+    </div>
+
+    <div class='popup' ng-show='success'>
+      <h2 class='header'>Application Sent!</h2>
+      <p class='message'>We'll follow up with an email or phone call within 48 hours.</p>
+      <button class='button button-primary' ng-click='reset()'>Okay</button>
+    </div>
+
+  </div>
+
+
+
 </article>
