@@ -17,21 +17,8 @@ json.cache! food do
   # Ratings default to 4. Because we want people to buy the food.
   json.rating food.seller.rating
 
-  # Until we update the API, we're just going to say that the seller is the restaurant
-  if food.restaurant.present?
-    json.seller do
-      json.partial! food.restaurant
-    end
-  elsif food.seller.present?
-    json.seller do
-      json.partial! food.seller
-    end
-  end
-
-  if !hide_delivery_places ||= false
-    json.delivery_places do
-      json.array!(food.delivery_places, partial: "api/v1/delivery_places/delivery_place", as: :delivery_place, show_places: true)
-    end
+  json.seller do
+    json.partial! food.seller
   end
 
 end

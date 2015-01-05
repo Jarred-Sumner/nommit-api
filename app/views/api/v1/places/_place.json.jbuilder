@@ -5,6 +5,10 @@ json.cache! place do
     json.partial!(partial: "api/v1/locations/location", locals: { location: place.location })
   end
 
+  json.school do
+    json.partial! place.school
+  end
+
   json.food_count place.food_count
 
   if !hide_delivery_places ||= false

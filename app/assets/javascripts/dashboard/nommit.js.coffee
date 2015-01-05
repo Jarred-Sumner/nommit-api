@@ -157,4 +157,3 @@ window.settings =
 @nommit.run ($cookies, $http, Sessions) ->
   if $cookies.sessionID
     Sessions.setSessionID($cookies.sessionID)
-    delete $cookies.sessionID

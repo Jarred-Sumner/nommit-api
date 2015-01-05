@@ -1,5 +1,4 @@
 class DashboardController < ActionController::Base
-  before_action :require_login!, only: :index
   skip_before_action :verify_authenticity_token
 
   def index
@@ -11,9 +10,10 @@ class DashboardController < ActionController::Base
 
   def facebook
     @user = User.authenticate_or_create!(access_token)
+    token = Session.find_by(access_token: access_token).token
 
-    cookies[:sessionID] = Session.find_by(access_token: access_token).token
-    session[:sessionID] = Session.find_by(access_token: access_token).token
+    cookies[:sessionID] = { value: token, expiration: 10.minutes.from_now }
+    session[:sessionID] = token
     if session[:redirect_to_admin]
       session.delete(:redirect_to_admin)
       if @user.admin?
@@ -44,12 +44,6 @@ class DashboardController < ActionController::Base
 
     def omniauth_params
       request.env["omniauth.params"]
-    end
-
-    def require_login!
-      if current_session.nil?
-        redirect_to action: :login
-      end
     end
 
     def current_session

@@ -23,6 +23,7 @@ class Place < ActiveRecord::Base
       .deliverable
       .joins(:foods)
       .where("foods.state = ? AND ? BETWEEN foods.start_date AND foods.end_date", Food.states[:active], DateTime.now)
+      .select("foods.id")
       .uniq
       .count
   end
