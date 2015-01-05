@@ -3,14 +3,14 @@
     Couriers.me (couriers) ->
       active = couriers[0]
 
-      Places.query courier_id: active.id, (places) ->
+      Places.query delivery: 1, (places) ->
         $scope.places = places
         $scope.visiblePlaces = places
         $scope.selectedPlaces = []
 
         if $scope.shift
-          for dp in $scope.shift.deliveryPlaces()
-            $scope.selectedPlaces.push(dp.place.id)
+          for placeID in $scope.shift.place_ids
+            $scope.selectedPlaces.push(placeID)
   $scope.searchPlaces = (query) ->
     if $scope.query.length > 0
       normalized = _.str.titleize($scope.query)

@@ -916,12 +916,18 @@ article {
       color: white;
       font-size: 21px;
       background-color: rgba(0,0,0,0.24);
+      border-radius: 5px;
+    }
+
+    &.expired, &.ended, &.sold-out {
+      .food { pointer-events: none; }
+      cursor: auto;
     }
 
     &.expired, &.ended {
-      pointer-events: none;
       .disable-overlay { content: "SALE ENDED"; }
     }
+
     &.sold-out {
       pointer-events: none;
       .disable-overlay { content: "SOLD OUT"; }
@@ -930,7 +936,7 @@ article {
   }
 
   .become-a-seller {
-    margin: 60px auto;
+    margin: 40px auto;
     margin-bottom: 0px;
     padding: 25px;
     position: relative;
@@ -1149,7 +1155,7 @@ $desktop: new-breakpoint(min-width 480px);
 
   .foods {
     text-align: center !important;
-    margin-bottom: 225px !important;
+    margin-bottom: 100px !important;
 
     .food-container {
       display: inline-block;
