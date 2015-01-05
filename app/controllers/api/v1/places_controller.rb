@@ -3,9 +3,9 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
   
   def index
     if index_params[:delivery] && current_user.couriers.count > 0
-      @places = school.places.order("name ASC")
+      @places = school.places.order("name ASC").uniq("places.id")
     else
-      @places = school.places.active.order("id DESC").uniq
+      @places = school.places.active.order("id DESC").uniq("places.id")
       track_looked_at_places
       @for_orders_page = true
     end
