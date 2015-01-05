@@ -2,7 +2,7 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
   before_action :require_school!
   
   def index
-    if courier.present?
+    if index_params[:delivery] && current_user.couriers.count > 0
       @places = school.places.order("name ASC")
     else
       @places = school.places.active.order("id DESC").uniq
@@ -18,6 +18,10 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
   end
 
   private
+
+    def index_params
+      params.permit(:delivery)
+    end
 
     def courier
       @courier ||= Courier.find_by(id: params[:courier_id]) if params[:courier_id].present?
