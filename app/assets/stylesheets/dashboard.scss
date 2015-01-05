@@ -2352,7 +2352,7 @@ $desktop: new-breakpoint(min-width 480px);
   
   .points {
     margin: 25px auto;
-    margin-bottom: 160px;
+    margin-bottom: 130px;
     height: 361px;
     max-width: 280px;
 
@@ -2388,7 +2388,7 @@ $desktop: new-breakpoint(min-width 480px);
   }
 
   .sticky-banner {
-    padding: 30px 20px;
+    padding: 15px 10px;
     @include linear-gradient(-180deg, #FDFDFD 17%, #E9E9E9 100%);
     border: 1px solid #D0D0D0;
     box-shadow: 0px 2px 2px 0px rgba(255,255,255,0.50);
@@ -2401,8 +2401,14 @@ $desktop: new-breakpoint(min-width 480px);
     text-align: center;
 
     .message {
-      height: 20px;
+      height: 30px;
       margin-bottom: 10px;
+    }
+    .button {
+      margin: 0 auto;
+      font-size: 14px;
+      padding: 10px 15px;
+      width: 250px;
     }
   }
   
