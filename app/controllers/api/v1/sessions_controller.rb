@@ -1,5 +1,5 @@
 class Api::V1::SessionsController < Api::V1::ApplicationController
-  skip_before_action :require_current_user!
+  skip_before_action :require_current_user!, :require_school!
 
   def create
     @user = User.authenticate_or_create!(session_params)

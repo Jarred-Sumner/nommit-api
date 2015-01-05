@@ -1,5 +1,5 @@
 class Api::V1::PlacesController < Api::V1::ApplicationController
-  before_action :require_school!
+  before_action :require_current_user!, :require_school!
   
   def index
     if index_params[:delivery] && current_user.couriers.count > 0

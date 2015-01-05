@@ -21,7 +21,7 @@ class Food < ActiveRecord::Base
   enum state: { active: 0, halted: 1, ended: 2 }
 
   # Foods are visible for awhile
-  scope :visible, lambda { where("end_date > ?", 1.day.ago) }
+  scope :visible, lambda { where("end_date > ?", 1.day.ago).order("start_date ASC") }
 
   scope :orderable, -> do
     active.visible
