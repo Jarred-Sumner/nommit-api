@@ -79,6 +79,7 @@ Rails.application.routes.draw do
   post 'twilio/sms' => "twilio#sms"
 
   root to: 'dashboard#index'
+  get 'dashboard' => redirect("/")
 
   get '/auth/facebook/callback' => 'dashboard#facebook'
   get '/admin/logout' => "dashboard#logout", as: :destroy_admin_user_session

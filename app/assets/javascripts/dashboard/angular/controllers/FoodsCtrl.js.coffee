@@ -19,6 +19,7 @@
 
 
   $scope.order = (food) ->
+    return false unless food.isOrderable()
     $rootScope.food = food
     if $scope.place
       $rootScope.place = $scope.place

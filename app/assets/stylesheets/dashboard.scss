@@ -897,6 +897,36 @@ article {
 
     }
 
+    .disable-overlay {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      bottom: 0px;
+      right: 0px;
+
+      z-index: $content-z-index;
+
+      min-height: 100%;
+      display: block;
+      width: 100%;
+
+      padding-top: 54px;
+      text-align: center;
+      font-weight: $bold-font;
+      color: white;
+      font-size: 21px;
+      background-color: rgba(0,0,0,0.24);
+    }
+
+    &.expired, &.ended {
+      pointer-events: none;
+      .disable-overlay { content: "SALE ENDED"; }
+    }
+    &.sold-out {
+      pointer-events: none;
+      .disable-overlay { content: "SOLD OUT"; }
+    }
+
   }
 
   .become-a-seller {
@@ -2300,5 +2330,5 @@ $desktop: new-breakpoint(min-width 480px);
   .points {
     height: 361px;
   }
-
+  
 }
