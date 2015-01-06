@@ -38,6 +38,9 @@ class PaymentMethod < ActiveRecord::Base
       failed_charges.pluck(:id).each { |charge| ChargeWorker.perform_async(charge.order_id) }
 
     end
+
+    # Bust user cache
+    user.touch
   end
 
   validates :state, presence: true
