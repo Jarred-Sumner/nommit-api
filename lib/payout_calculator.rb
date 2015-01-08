@@ -19,7 +19,7 @@ class PayoutCalculator < Struct.new(:order_ids)
     minutes_late = (seconds_spent_delivering - seconds_spent_delivering_on_time) / 60.0
 
     # Late fee is $0.50/minute
-    Math.abs(minutes_late * 0.5)
+    (minutes_late * 0.5).abs
   end
 
   def our_cut
