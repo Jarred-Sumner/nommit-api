@@ -7,7 +7,6 @@ class Motd < ActiveRecord::Base
   scope :active, -> { where("expiration > ?", DateTime.now).order('created_at DESC') }
 
   after_create :bust_school_cache!
-
   def bust_school_cache!
     school.touch
   end

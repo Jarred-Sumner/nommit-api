@@ -13,6 +13,10 @@ class Shift < ActiveRecord::Base
   include StateID
   enum state: [:active, :halt, :ended]
 
+  def payout_calculator
+    @payout_calculator ||= PayoutCalculator.new(orders.pluck(:id))
+  end
+
   # Couriers leave at DeliveryPlace for time_spent_in_place
   def deliver_to!(places: [])
 

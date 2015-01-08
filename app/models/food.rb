@@ -64,7 +64,7 @@ class Food < ActiveRecord::Base
   end
 
   def revenue
-    orders.completed.joins(:price).sum("prices.price_in_cents").to_f / 100.0
+    payout_calculator.revenue
   end
 
   def credit
@@ -77,6 +77,14 @@ class Food < ActiveRecord::Base
     else
       0.0
     end
+  end
+
+  def payout_calculator
+    @payout_calculator ||= PayoutCalculator.new(orders.pluck(:id))
+  end
+
+  def payout
+    payout_calculator.payout
   end
 
   def sold

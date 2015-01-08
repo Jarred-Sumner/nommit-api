@@ -1,0 +1,41 @@
+
+<h3>Late Orders - <%= number_with_delimiter food.orders.late.count %></h3>
+<table class='orders'>
+
+  <thead>
+    <th>ID</th>
+    <th>Rating</th>
+    <th>User</th>
+    <th>Courier</th>
+    <th>Delivery Time</th>
+    <th>Quantity</th>
+    <th>Discount</th>
+  </thead>
+
+  <tbody>
+    <% food.orders.late.each do |order| %>
+
+    <tr class='order'>
+      <td><%= order.id %></td>
+      <td><%= order.rating.to_f.round(2) %></td>
+
+      <% if order.user.present? %>
+        <td><%= link_to order.user.name, admin_user_path(order.user) %></td>
+      <% else %>
+        <td>Deleted User</td>
+      <% end %>
+
+      <% if order.courier.present? %>
+        <td><%= link_to order.courier.user.name, admin_user_path(order.courier.user) %></td>
+      <% else %>
+        <td>Deleted Courier</td>
+      <% end %>
+
+      <td><%= distance_of_time_in_words(order.created_at, order.delivered_at, include_seconds: true) %></td>
+      <td><%= number_with_delimiter order.quantity %></td>
+      <td><%= number_to_currency order.discount_in_cents.to_f / 100.0 %>
+    </tr>
+
+    <% end %>
+  </tbody>
+</table>

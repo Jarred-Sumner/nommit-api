@@ -30,6 +30,10 @@ ActiveAdmin.register Food do
       number_to_currency food.revenue
     end
 
+    column "Payout" do |food|
+      number_to_currency food.payout
+    end
+
     column "Credit Use" do |food|
       if food.orders.count > 0
         number_to_percentage food.percent_credit, precision: 2
@@ -118,6 +122,22 @@ ActiveAdmin.register Food do
         number_to_currency food.revenue - food.credit
       end
 
+      row "Payout" do
+        number_to_currency food.payout
+      end
+
+      row "Late Fee" do
+        number_to_currency food.payout_calculator.late_fee
+      end
+
+      row "Transaction Fee" do
+        number_to_currency food.payout_calculator.transaction_fee
+      end
+
+      row "Our Cut" do
+        number_to_currency food.payout_calculator.our_cut
+      end
+
       row "Orders" do
         number_with_delimiter food.orders.placed.count
       end
@@ -150,6 +170,7 @@ ActiveAdmin.register Food do
       row :featured
     end
 
+    render 'admin/foods/late_orders', food: food
     render 'admin/foods/low_rated_orders', food: food
     render 'admin/foods/pending_orders', food: food
     render 'admin/foods/shifts', food: food
