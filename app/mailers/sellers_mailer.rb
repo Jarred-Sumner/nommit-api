@@ -7,7 +7,7 @@ class SellersMailer < ApplicationMailer
 
   def apply(user_id)
     @user = User.find(user_id)
-    mail to: "support@getnommit.com", subject: "Your Application has been submitted"
+    mail @user.email, subject: "Your Application has been submitted"
   end
 
 end
