@@ -69,6 +69,10 @@ class Order < ActiveRecord::Base
     self.class.completed_states.include? state_id
   end
 
+  def late?
+    created_at > 15.minutes.ago && pending?
+  end
+
   def price_in_cents
     price.price_in_cents
   end

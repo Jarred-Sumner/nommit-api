@@ -78,6 +78,10 @@ class DeliveryPlace < ActiveRecord::Base
     ready? || arrived?
   end
 
+  def late?
+    active? && arrives_at < 0.seconds.ago
+  end
+
   def accepting_new_deliveries?
     active? || pending?
   end

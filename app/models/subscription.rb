@@ -7,4 +7,8 @@ class Subscription < ActiveRecord::Base
     user.touch
   end
 
+  def push?
+    user.devices.count > 0
+  end
+
 end
