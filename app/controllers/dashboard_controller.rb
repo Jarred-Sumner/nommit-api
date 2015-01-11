@@ -1,5 +1,6 @@
 class DashboardController < ActionController::Base
   skip_before_action :verify_authenticity_token
+  before_action :require_login!, only: :index
 
   def index
   end
@@ -48,6 +49,10 @@ class DashboardController < ActionController::Base
 
     def current_session
       @current_session ||= Session.find_by(token: session[:sessionID])
+    end
+
+    def require_login!
+      redirect_to action: :login if current_session.nil?
     end
 
 end
