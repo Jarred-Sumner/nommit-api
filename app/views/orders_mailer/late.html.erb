@@ -1,0 +1,7 @@
+<p>Hi <%= @user.first_name %>,</p>
+
+<p>We're really sorry that your order of <%= @order.food.title %> was delivered late. Nommit has a zero-tolerance policy for tardiness, so <strong>we refunded <%= number_to_currency Float(@order.late_discount_in_cents) / 100.0 %> from the cost of your food</strong>, bringing your total to <%= number_to_currency Float(@order.charge.subtotal_in_cents) / 100.0 %>.</p>
+
+<p>Sellers lose <%= number_to_currency PayoutCalculator::LATE_FEE %> per minute they're late. We want our buyers to have a great experience with Nommit everytime, and this is one of the many ways we incentivize that.</p>
+
+<p>If you have any questions, feel free to reply directly to this email.</p>

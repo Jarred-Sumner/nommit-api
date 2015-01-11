@@ -81,6 +81,8 @@ class Shift < ActiveRecord::Base
           dp.generate_eta!
           dp.state = state
           dp.save!
+
+          Notifications::LateWorker.perform_at(dp.arrives_at + 30.seconds, dp.id)
         end
 
       end

@@ -14,7 +14,7 @@ RSpec.describe Api::V1::SellersController, :type => :controller do
     it "emails the applicant and us" do
       expect do
         post :create
-      end.to change(Sidekiq::Extensions::DelayedMailer.jobs).by(2)
+      end.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(2)
     end
 
   end

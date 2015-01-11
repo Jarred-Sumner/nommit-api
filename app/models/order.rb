@@ -70,7 +70,13 @@ class Order < ActiveRecord::Base
   end
 
   def late?
-    created_at > 15.minutes.ago && pending?
+    if pending?
+      created_at > 15.minutes.ago
+    elsif completed?
+      delivered_at > created_at + 15.minutes
+    else
+      false
+    end
   end
 
   def price_in_cents
@@ -96,7 +102,13 @@ class Order < ActiveRecord::Base
     transaction do
       update_attributes!(state: "delivered", delivered_at: DateTime.now, original_delivered_at: delivered_at)
       shift.update_arrival_times!
+      apply_late_credit! if late?
     end
+  end
+
+  def cancelled!
+    update_attributes!(state: Order.states[:cancelled])
+    OrdersMailer.delay.cancelled(id)
   end
 
   private
@@ -199,6 +211,14 @@ class Order < ActiveRecord::Base
 
       save!
 
+    end
+
+    def apply_late_credit!
+      late_fee = (PayoutCalculator.new([id]).late_fee * 100.0).round
+      late_fee = price_in_cents if late_fee > price_in_cents
+
+      self.update_attributes(late_discount_in_cents: late_fee)
+      OrdersMailer.delay.late(id) if self.late_discount_in_cents > 0
     end
 
     def ensure_courier_isnt_delivering_to_self!

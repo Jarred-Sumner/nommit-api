@@ -16,9 +16,8 @@ describe Api::V1::OrdersController, type: :controller do
       let(:place) { create(:place) }
 
       it "fails" do
-        expect do
-          post :create, place_id: place.id
-        end.to raise_error(ActionController::ParameterMissing)
+        expect(controller).to receive(:render_bad_request)
+        post :create, place_id: place.id
       end
 
     end

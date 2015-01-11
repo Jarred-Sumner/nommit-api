@@ -40,5 +40,7 @@ module NommitApi
     config.action_controller.perform_caching = true
     config.cache_store = :redis_store, 'redis://localhost:6379/0/cache', { expires_in: 90.minutes }
 
+    config.action_mailer.default_url_options = { host: "localhost:3000" }
+    config.asset_host = "http://localhost:3000"
   end
 end

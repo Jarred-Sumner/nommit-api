@@ -79,7 +79,7 @@ class DeliveryPlace < ActiveRecord::Base
   end
 
   def late?
-    active? && arrives_at < 0.seconds.ago
+    active? && arrives_at < 0.seconds.ago && orders.pending.count > 0
   end
 
   def accepting_new_deliveries?

@@ -1,6 +1,7 @@
 class Api::V1::ApplicationController < ActionController::Base
   attr_writer :current_user
   include Tracking
+
   rescue_from Exception, with: :render_generic_error if Rails.env.production?
   rescue_from ActiveRecord::RecordInvalid, with: :render_invalid_record
   rescue_from ActionController::ParameterMissing, with: :render_bad_request
@@ -76,7 +77,8 @@ class Api::V1::ApplicationController < ActionController::Base
       }
     end
 
-    def render_bad_request(text = "The information you entered was incorrect, please re-enter it and try again")
+    def render_bad_request(text = nil)
+      text = "The information you entered was incorrect, please re-enter it and try again" if !text || text.class != String
       render_error(status: :bad_request, text: text)
     end
 

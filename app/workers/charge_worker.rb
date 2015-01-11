@@ -8,7 +8,7 @@ class ChargeWorker
 
     ActiveRecord::Base.transaction do
       return false if charge.state.to_sym != :not_charged && charge.state.to_sym != :failed
-      charge.amount_charged_in_cents = order.price_in_cents + order.tip_in_cents - order.discount_in_cents
+      charge.amount_charged_in_cents = charge.subtotal_in_cents
       if charge.amount_charged_in_cents > 0
         charge_card!
       else
@@ -22,6 +22,7 @@ class ChargeWorker
   def charge_card!
     description = "#{order.quantity}x - #{order.food.title} from #{order.seller.name} "
     description << "plus $#{Float(order.tip_in_cents) / 100.0} tip " if order.tip_in_cents > 0
+    description << "minus #{Float(order.late_discount_in_cents) / 100.0} due to tardiness" if order.late_discount_in_cents > 0
     description << "using #{Float(order.discount_in_cents) / 100.0} in Nommit credit " if order.discount_in_cents > 0
 
     stripe_charge = Stripe::Charge.create(

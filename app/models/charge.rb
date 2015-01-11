@@ -14,4 +14,8 @@ class Charge < ActiveRecord::Base
   validates :state, presence: true
   validates :order, presence: true
   validates :payment_method, presence: true
+
+  def subtotal_in_cents
+    order.price_in_cents + order.tip_in_cents - order.discount_in_cents - order.late_discount_in_cents
+  end
 end

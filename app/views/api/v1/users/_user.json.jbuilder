@@ -18,12 +18,16 @@ json.cache! user do
 
   if platform != "iOS" || version > 1.3
 
-    json.school do
-      json.partial! user.school if user.school.present?
+    json.subscription do
+      json.partial! user.subscription if user.subscription.present?
     end
 
-    json.subscription do
-      json.partial! user.subscription
+  end
+
+  if platform != "iOS" || version > 1.4
+    
+    json.school do
+      json.partial! user.school if user.school.present?
     end
 
   end

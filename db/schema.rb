@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141228212933) do
+ActiveRecord::Schema.define(version: 20150110224124) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -195,8 +195,8 @@ ActiveRecord::Schema.define(version: 20141228212933) do
   create_table "orders", force: true do |t|
     t.integer  "food_id"
     t.integer  "user_id"
-    t.integer  "state",                 default: 0, null: false
-    t.integer  "quantity",              default: 1, null: false
+    t.integer  "state",                  default: 0, null: false
+    t.integer  "quantity",               default: 1, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "delivered_at"
@@ -206,10 +206,11 @@ ActiveRecord::Schema.define(version: 20141228212933) do
     t.integer  "courier_id"
     t.integer  "delivery_id"
     t.datetime "original_delivered_at"
-    t.integer  "tip_in_cents",          default: 0, null: false
-    t.integer  "discount_in_cents",     default: 0, null: false
+    t.integer  "tip_in_cents",           default: 0, null: false
+    t.integer  "discount_in_cents",      default: 0, null: false
     t.integer  "price_id"
     t.integer  "shift_id"
+    t.integer  "late_discount_in_cents", default: 0
   end
 
   add_index "orders", ["address_id"], name: "index_orders_on_address_id", using: :btree
