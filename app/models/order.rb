@@ -249,8 +249,8 @@ class Order < ActiveRecord::Base
   after_create do
     apply_pending_promotions!
 
-    Charge.create!(order_id: self.id, payment_method_id: user.payment_method.id)
-    ChargeWorker.perform_at(Charge::DELAY.hours.from_now, self.id)
+    Charge.create!(order_id: id, payment_method_id: user.payment_method.id)
+    ChargeWorker.perform_at(Charge::DELAY.hours.from_now, id)
 
     shift.update_arrival_times!
 
