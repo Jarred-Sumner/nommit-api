@@ -5,6 +5,7 @@ ActiveAdmin.register User do
   filter :email
   filter :phone
   filter :state
+  filter :school
 
   index do |f|
 
@@ -15,6 +16,8 @@ ActiveAdmin.register User do
     column :state
     column :email
     column :phone
+
+    column :school
 
     column "Satisfaction" do |user|
       if user.orders.rated.count > 0
@@ -66,6 +69,8 @@ ActiveAdmin.register User do
       row :name
       row :email
       row :phone
+
+      row :school
 
       row :facebook do
         link_to "#{user.facebook_uid}", "https://facebook.com/#{user.facebook_uid}"
@@ -119,7 +124,7 @@ ActiveAdmin.register User do
       end
 
       row :school do
-        link_to user.school.name, admin_school_path(user.school)
+        link_to user.school.try(:name), admin_school_path(user.school)
       end
 
     end
@@ -140,6 +145,8 @@ ActiveAdmin.register User do
         cf.input :sms
         cf.input :email
       end
+
+      f.input :school
 
       f.has_many :couriers, allow_destroy: true, heading: "Organizations" do |cf|
         cf.input :seller

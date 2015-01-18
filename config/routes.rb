@@ -4,10 +4,15 @@ Rails.application.routes.draw do
 
     namespace :v1 do
       resources :foods, only: [:index, :show]
+
       resources :shifts, only: [:index, :create, :update, :show] do
         resources :orders, only: [:index]
       end
-      resources :sellers, only: [:create]
+
+      resources :sellers, only: [:create, :index, :show] do
+        resources :foods, only: [:index]
+      end
+
       resources :sessions, only: [:create, :destroy]
       resources :payment_methods, only: [:update, :show]
       resources :schools, only: [:index, :show]
@@ -16,7 +21,8 @@ Rails.application.routes.draw do
         get 'subscription' => "subscriptions#show"
         post 'subscription' => "subscriptions#create"
         resources :promos, only: [:create]
-      end 
+      end
+
       resources :devices, only: [:create]
       resources :promos, only: [:show]
 

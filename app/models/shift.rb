@@ -18,7 +18,7 @@ class Shift < ActiveRecord::Base
   end
 
   # Couriers leave at DeliveryPlace for time_spent_in_place
-  def deliver_to!(places: [])
+  def deliver!(places: [], foods: nil)
 
     stop_delivering_to = delivery_places.where.not(place_id: places)
     if stop_delivering_to.count > 0
@@ -29,7 +29,18 @@ class Shift < ActiveRecord::Base
       raise ArgumentError, "Your shift is about to end! Can't deliver to more places until the next shift."
     end
 
-    foods = seller.foods.orderable.pluck(:id)
+    SellableFood.where(id: foods).each do |sellable_food|
+      index = foods.index(sellable_food.id)
+      if version = sellable_food.versions.visible.order("created_at ASC").first
+        foods[index] = version.id
+      else
+        raise ArgumentError, "To schedule your run, please contact support@getnommit.com!"
+      end
+    end
+
+    if foods.blank?
+      foods = self.foods.count > 0 ? self.foods.pluck(:id) : seller.foods.orderable.pluck(:id) 
+    end
 
     transaction do
       places.each do |place_id, index|

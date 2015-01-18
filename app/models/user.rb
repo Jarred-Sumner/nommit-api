@@ -42,6 +42,10 @@ class User < ActiveRecord::Base
     registered!
   end
 
+  def become_seller!
+    
+  end
+
   def first_name
     self.name.split(" ").first
   end
@@ -86,7 +90,7 @@ class User < ActiveRecord::Base
   phony_normalize :phone, default_country_code: 'US'
   validates :phone, phony_plausible: true, uniqueness: true, if: :activated?
 
-  validates :confirm_code, presence: true, uniqueness: true, length: { is: 4 }, if: :registered?
+  validates :confirm_code, presence: true, uniqueness: { scope: :phone }, length: { is: 4 }, if: :registered?
 
   def credit
     applied_promos.active.sum(:amount_remaining_in_cents)

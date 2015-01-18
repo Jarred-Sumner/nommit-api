@@ -36,6 +36,7 @@ describe Api::V1::ShiftsController, type: :controller do
   describe '#create' do
 
     let(:places) { 5.times.collect { create(:place).id } }
+
     it "creates a shift successfully" do
       expect(controller).to receive(:track_started_shift)
       expect do

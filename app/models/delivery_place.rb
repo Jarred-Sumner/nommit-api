@@ -29,6 +29,7 @@ class DeliveryPlace < ActiveRecord::Base
   validates :shift, presence: true
   validates :place, presence: true, uniqueness: { scope: :shift_id }
   validates :state, uniqueness: { scope: :shift_id }, if: :arrived?
+  validates :seller_id, presence: true
 
   validates :current_index, uniqueness: { :scope => [:shift_id, :place_id], allow_nil: true }
 

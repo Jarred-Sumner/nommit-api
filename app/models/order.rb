@@ -1,5 +1,5 @@
 class Order < ActiveRecord::Base
-  belongs_to :food
+  belongs_to :food, class_name: BaseFood
   belongs_to :user
   belongs_to :place
   belongs_to :courier

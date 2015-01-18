@@ -1,5 +1,7 @@
 class School < ActiveRecord::Base
   has_many :sellers
+  has_many :base_foods, through: :sellers
+  has_many :sellable_foods, through: :sellers
   has_many :foods, through: :sellers
   has_many :users
   has_many :places

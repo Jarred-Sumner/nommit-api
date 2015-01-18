@@ -1,19 +1,12 @@
-class Food < ActiveRecord::Base
-  has_attached_file :preview, styles: { normal: "150x736" }
-  validates_attachment_content_type :preview, :content_type => /\Aimage\/.*\Z/
+class Food < BaseFood
+  belongs_to :parent, class_name: SellableFood
   has_many :orders
   has_many :deliveries
   has_many :shifts, lambda { uniq }, through: :delivery_places
   has_many :delivery_places, through: :deliveries
   has_many :places, lambda { uniq }, through: :delivery_places
   has_many :couriers, through: :shifts
-  belongs_to :seller
-  belongs_to :restaurant
-  has_many :prices
-  has_one :school, through: :seller
-
-  has_many :buyers, through: :orders, source: :user, class_name: User
-  accepts_nested_attributes_for :prices
+  
   accepts_nested_attributes_for :orders
   scope :featured, -> { where(featured: true) }
 
@@ -39,28 +32,11 @@ class Food < ActiveRecord::Base
     orders.placed.count >= goal
   end
 
-  def set_prices!(prices)
-    transaction do
-      self.prices.destroy_all
-
-      default_price = prices[0]
-      9.times do |index|
-        price = prices[index] || default_price * (index + 1)
-        self.prices.create!(quantity: index + 1, price_in_cents: price)
-      end
-
-    end
-  end
-
-  validates :title, presence: true
-  validates :description, presence: true
-  validates :goal, presence: true
-  validates :seller_id, presence: true
   validates :start_date, presence: true
   validates :end_date, presence: true
 
   def remaining
-    self.goal - sold
+    goal - sold
   end
 
   def revenue

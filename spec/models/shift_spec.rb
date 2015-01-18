@@ -77,15 +77,60 @@ describe Shift, type: :model do
   end
 
   context "#eta_for" do
-
+    pending
   end
 
-  context "#deliver_to!" do
+  context "#deliver!" do
+    let(:order) { TestHelpers::Order.create_for }
+    let(:shift) { order.shift }
+
+    it "fails when you try to remove delivery places" do
+      expect do
+        shift.deliver! places: []
+      end.to raise_error(ArgumentError)
+    end
+
+    it "fails when your shift is halted and you add more places" do
+      shift.update_attributes!(state: Shift.states[:halt])
+      new_place = create(:place, school_id: order.seller.school_id)
+      expect do
+        shift.deliver! places: shift.places.pluck("places.id") << new_place.id
+      end.to raise_error(ArgumentError)
+    end
+
+    it "succeeds" do
+      new_place = create(:place, school_id: order.seller.school_id)
+      expect do
+        shift.deliver! places: shift.places.pluck("places.id") << new_place.id
+      end.to change(shift.reload.places, :count).by(1)
+    end
+
+    it "lets you add more places" do
+      new_place = create(:place, school_id: order.seller.school_id)
+      expect do
+        shift.deliver! places: shift.places.pluck("places.id") << new_place.id
+      end.to change { shift.delivery_places.reload.count }.by(1)
+    end
+
+    it "lets you add more foods" do
+      new_food = create(:food, seller_id: order.seller.id)
+      expect do
+        shift.deliver! foods: shift.foods.pluck(:id) << new_food.id, places: shift.places.pluck(:id)
+      end.to change { shift.foods.reload.count }.by(1)
+    end
+
+    it "lets you add sellable foods" do
+      new_food = create(:sellable_food, seller_id: order.seller.id)
+      new_version = create(:food, parent_id: new_food, seller_id: order.seller.id)
+      expect do
+        shift.deliver! foods: shift.foods.pluck(:id) << new_food.id, places: shift.places.pluck(:id)
+      end.to change { shift.foods.reload.count }.by(1)
+    end
 
   end
 
   context "#ended!" do
-
+    pending
   end
 
   context "#halt!" do

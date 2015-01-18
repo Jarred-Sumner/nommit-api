@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150110224124) do
+ActiveRecord::Schema.define(version: 20150114050658) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(version: 20150110224124) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "seller_id"
+    t.datetime "late_notified"
   end
 
   add_index "delivery_places", ["current_index"], name: "index_delivery_places_on_current_index", using: :btree
@@ -134,7 +135,7 @@ ActiveRecord::Schema.define(version: 20150110224124) do
   create_table "foods", force: true do |t|
     t.string   "title"
     t.text     "description"
-    t.integer  "state",                default: 0,     null: false
+    t.integer  "state",                default: 0,          null: false
     t.datetime "end_date"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -147,13 +148,17 @@ ActiveRecord::Schema.define(version: 20150110224124) do
     t.datetime "start_date"
     t.integer  "restaurant_id"
     t.datetime "last_notified"
-    t.boolean  "notify",               default: false, null: false
-    t.boolean  "featured",             default: false, null: false
+    t.boolean  "notify",               default: false,      null: false
+    t.boolean  "featured",             default: false,      null: false
+    t.string   "type",                 default: "BaseFood"
+    t.integer  "parent_id"
   end
 
   add_index "foods", ["featured"], name: "index_foods_on_featured", using: :btree
+  add_index "foods", ["parent_id"], name: "index_foods_on_parent_id", using: :btree
   add_index "foods", ["restaurant_id"], name: "index_foods_on_restaurant_id", using: :btree
   add_index "foods", ["seller_id"], name: "index_foods_on_seller_id", using: :btree
+  add_index "foods", ["type"], name: "index_foods_on_type", using: :btree
 
   create_table "foods_places", force: true do |t|
     t.integer "food_id"

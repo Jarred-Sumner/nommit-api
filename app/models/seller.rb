@@ -1,6 +1,10 @@
 class Seller < ActiveRecord::Base
   has_attached_file :logo, styles: { normal: "180x180" }
+  
+  has_many :base_foods
   has_many :foods
+  has_many :sellable_foods
+
   has_many :couriers
   has_many :places, through: :foods
   has_many :orders, through: :foods

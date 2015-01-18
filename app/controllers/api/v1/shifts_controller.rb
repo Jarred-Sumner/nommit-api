@@ -10,7 +10,7 @@ class Api::V1::ShiftsController < Api::V1::ApplicationController
   def create
     ActiveRecord::Base.transaction do
       @shift = courier.shifts.create!
-      @shift.deliver_to!(places: Array(place_ids))
+      @shift.deliver!(places: place_ids, foods: food_ids)
       track_started_shift(@shift)
     end
     render action: :show
@@ -30,7 +30,7 @@ class Api::V1::ShiftsController < Api::V1::ApplicationController
         end
       end
     elsif shift_params.has_key?(:place_ids)
-      shift.deliver_to!(places: shift_params[:place_ids])
+      shift.deliver!(places: shift_params[:place_ids])
       track_shift_changed_delivery_places(shift)
     # Changing the current delivery place?
     elsif delivery_place.present?
@@ -74,7 +74,11 @@ class Api::V1::ShiftsController < Api::V1::ApplicationController
     end
 
     def place_ids
-      params.require(:place_ids)
+      Array(params.require(:place_ids))
+    end
+
+    def food_ids
+      Array(params.permit(:food_ids)[:food_ids])
     end
 
     # Get your mind out of the gutter.

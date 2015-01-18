@@ -327,38 +327,45 @@ FactoryGirl.define do
 
   end
 
-  factory :food do
+  factory :base_food do
     title { Faker::Lorem.words(2).join(" ").titleize }
     description { Faker::Lorem.sentences(2).join(" ") }
-    end_date 6.hours.from_now
     goal { rand(100..300) }
-    start_date 3.hours.ago
-    # preview { open(FOOD_IMAGES.sample) }
     seller_id { FactoryGirl.create(:seller).id }
+    restaurant_id { create(:restaurant).id }
 
-    factory :halted_food do
-      state Food.states[:halted]
+    factory :food, class: Food do
+      end_date 6.hours.from_now
+      start_date 3.hours.ago
+      type "Food"
+      # preview { open(FOOD_IMAGES.sample) }
+    
+
+      factory :halted_food do
+        state Food.states[:halted]
+      end
+
+      factory :ended_food do
+        state Food.states[:ended]
+      end
+
+      factory :pending_food do
+        start_date 3.weeks.from_now
+        end_date 6.weeks.from_now
+      end
+
+      factory :expired_food do
+        end_date 2.hours.ago
+      end
     end
 
-    factory :ended_food do
-      state Food.states[:ended]
-    end
-
-    factory :pending_food do
-      start_date 3.weeks.from_now
-      end_date 6.weeks.from_now
-    end
-
-    factory :expired_food do
-      end_date 2.hours.ago
+    factory :sellable_food do
+      type "SellableFood"
     end
 
     after(:create) do |food|
       food.set_prices!([rand(300..500)])
     end
-
-    restaurant_id { create(:restaurant).id }
-
   end
 
   factory :seller do
