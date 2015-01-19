@@ -121,7 +121,7 @@ describe Shift, type: :model do
 
     it "lets you add sellable foods" do
       new_food = create(:sellable_food, seller_id: order.seller.id)
-      new_version = create(:food, parent_id: new_food, seller_id: order.seller.id)
+      new_version = create(:food, parent_id: new_food.id, seller_id: order.seller.id)
       expect do
         shift.deliver! foods: shift.foods.pluck(:id) << new_food.id, places: shift.places.pluck(:id)
       end.to change { shift.foods.reload.count }.by(1)

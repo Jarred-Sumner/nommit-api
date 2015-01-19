@@ -42,12 +42,23 @@ class Shift < ActiveRecord::Base
       foods = self.foods.count > 0 ? self.foods.pluck(:id) : seller.foods.orderable.pluck(:id) 
     end
 
+    foods.sort!
+
     transaction do
       places.each do |place_id, index|
-        next if delivery_places.where(place_id: place_id).count > 0
 
-        dp = delivery_places.create!(place_id: place_id, arrives_at: nil, state: DeliveryPlace.states[:pending])
-        foods.each { |food_id| dp.deliveries.create!(food_id: food_id) }
+        dp = delivery_places
+          .where("delivery_places.place_id = ?", place_id)
+          .first
+
+        next if dp.present? && dp.foods.pluck("foods.id").sort == foods
+
+        dp ||= DeliveryPlace.new(place_id: place_id, shift_id: id)
+        dp.state = DeliveryPlace.states[:pending]
+        dp.arrives_at = nil
+        dp.save!
+
+        foods.each { |food_id| dp.deliveries.where(food_id: food_id).first_or_create! }
       end
     end
 
