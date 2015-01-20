@@ -62,9 +62,16 @@ describe Api::V1::ShiftsController, type: :controller do
     end
 
     context "fails to create a shift with an ongoing one" do
+      
       before :each do
-        create(:shift, courier_id: courier.id)
+        create(:shift, courier_id: courier.id, state: Shift.states[:active])
       end
+
+      specify do
+        post :create, place_ids: places
+        expect(response).to_not be_successful
+      end
+
     end
 
   end

@@ -17,7 +17,9 @@ class Food < BaseFood
   scope :visible, lambda { where("end_date > ?", 1.day.ago).order("start_date ASC") }
 
   scope :orderable, -> do
-    active.visible
+    active
+      .where("end_date > ? AND start_date < ?", DateTime.now, DateTime.now)
+      .order('start_date ASC')
   end
 
   scope :notifiable, -> do

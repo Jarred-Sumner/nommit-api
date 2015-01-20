@@ -30,8 +30,9 @@ class Shift < ActiveRecord::Base
     end
 
     SellableFood.where(id: foods).each do |sellable_food|
-      index = foods.index(sellable_food.id)
-      if version = sellable_food.versions.visible.order("created_at ASC").first
+      index = foods.index(String(sellable_food.id))
+      version = sellable_food.versions.orderable.order("created_at ASC").first
+      if version.try(:orderable?)
         foods[index] = version.id
       else
         raise ArgumentError, "To schedule your run, please contact support@getnommit.com!"
@@ -51,6 +52,7 @@ class Shift < ActiveRecord::Base
           .where("delivery_places.place_id = ?", place_id)
           .first
 
+        # Is it already "in sync"?
         next if dp.present? && dp.foods.pluck("foods.id").sort == foods
 
         dp ||= DeliveryPlace.new(place_id: place_id, shift_id: id)

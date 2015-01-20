@@ -12,8 +12,10 @@ class Api::V1::ShiftsController < Api::V1::ApplicationController
       @shift = courier.shifts.create!
       @shift.deliver!(places: place_ids, foods: food_ids)
       track_started_shift(@shift)
+      render action: :show
     end
-    render action: :show
+  rescue ArgumentError => e
+    render_error(status: :bad_request, text: e.message)
   end
 
   def update
@@ -78,7 +80,7 @@ class Api::V1::ShiftsController < Api::V1::ApplicationController
     end
 
     def food_ids
-      Array(params.permit(:food_ids)[:food_ids])
+      Array(params[:food_ids])
     end
 
     # Get your mind out of the gutter.
