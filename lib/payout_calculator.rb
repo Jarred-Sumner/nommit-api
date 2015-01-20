@@ -8,7 +8,7 @@ class PayoutCalculator < Struct.new(:order_ids)
   end
 
   def transaction_fee
-    orders.completed.count * TRANSACTION_FEE
+    (orders.completed.count * TRANSACTION_FEE).round(2)
   end
 
   def late_fee
@@ -21,15 +21,15 @@ class PayoutCalculator < Struct.new(:order_ids)
 
     minutes_late = (seconds_spent_delivering - seconds_spent_delivering_on_time) / 60.0
 
-    (minutes_late.floor * LATE_FEE).abs
+    (minutes_late.floor * LATE_FEE).abs.round(2)
   end
 
   def our_cut
-    revenue * OUR_CUT
+    (revenue * OUR_CUT).round(2)
   end
 
   def payout
-    revenue - transaction_fee - late_fee - our_cut
+    (revenue - transaction_fee - late_fee - our_cut).round(2)
   end
 
   def orders

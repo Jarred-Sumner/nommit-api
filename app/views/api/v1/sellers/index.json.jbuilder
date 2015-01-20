@@ -1,1 +1,1 @@
-json.array! @sellers
+json.array! @sellers, partial: "api/v1/sellers/seller", as: :seller
