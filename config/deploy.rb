@@ -9,7 +9,7 @@ set :repo_url, 'git@github.com:Jarred-Sumner/nommit-api.git'
 
 set :deploy_to, '/home/deploy/nommit-api'
 
-set :linked_files, %w{config/database.yml .env config/sidekiq.yml}
+set :linked_files, %w{config/database.yml .env}
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 namespace :deploy do

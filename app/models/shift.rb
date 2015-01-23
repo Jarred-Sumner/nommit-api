@@ -29,13 +29,15 @@ class Shift < ActiveRecord::Base
       raise ArgumentError, "Your shift is about to end! Can't deliver to more places until the next shift."
     end
 
-    SellableFood.where(id: foods).each do |sellable_food|
-      index = foods.index(String(sellable_food.id))
-      version = sellable_food.versions.orderable.order("created_at ASC").first
-      if version.try(:orderable?)
-        foods[index] = version.id
-      else
-        raise ArgumentError, "To schedule your run, please contact support@getnommit.com!"
+    if foods.present?
+      SellableFood.where(id: foods).each do |sellable_food|
+        index = foods.index(sellable_food.id)
+        version = sellable_food.versions.orderable.order("created_at ASC").first
+        if version.try(:orderable?)
+          foods[index] = version.id
+        else
+          raise ArgumentError, "To schedule your run, please contact support@getnommit.com!"
+        end
       end
     end
 

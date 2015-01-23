@@ -3,7 +3,7 @@ require_relative "../../rails_helper"
 describe Notifications::FoodAvailableWorker do
   let(:order) { TestHelpers::Order.create_for }
   let(:food) do
-    order.food.update_attributes(notify: true)
+    order.food.update_attributes!(notify: true, start_date: 3.hours.ago, end_date: 3.hours.from_now)
     order.food
   end
 

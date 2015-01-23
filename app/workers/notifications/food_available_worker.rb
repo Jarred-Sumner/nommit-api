@@ -1,11 +1,11 @@
-class Notifications::FoodAvailableWorker
+  class Notifications::FoodAvailableWorker
   include Sidekiq::Worker
   attr_accessor :food
   sidekiq_options retry: false
 
   def perform(food_id)
-    self.food = Food.notifiable.find(food_id)
-    return nil if food.last_notified.present?
+    self.food = Food.visible.find_by(id: food_id)
+    return nil if food.nil? || food.last_notified.present?
 
     if food.orderable?
       food.school.users.where(state: [ User.states[:registered], User.states[:activated] ]).find_each do |user|

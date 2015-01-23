@@ -472,7 +472,7 @@ class TestHelpers
       shift = FactoryGirl.create(:active_shift, courier_id: courier.id)
       place = FactoryGirl.create(:place)
       delivery_place = FactoryGirl.create(:delivery_place, shift_id: shift.id, place_id: place.id)
-      food = FactoryGirl.create(:food, seller_id: courier.seller_id)
+      food = FactoryGirl.create(:food, seller_id: courier.seller_id, start_date: 1.seconds.ago)
       Delivery.create!(food: food, delivery_place: delivery_place)
 
       params[:place_id] ||= place.id

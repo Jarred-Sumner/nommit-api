@@ -80,7 +80,7 @@ class Api::V1::ShiftsController < Api::V1::ApplicationController
     end
 
     def food_ids
-      Array(params[:food_ids])
+      Array(params[:food_ids]).collect { |id| Integer(id) }.uniq.compact
     end
 
     # Get your mind out of the gutter.
