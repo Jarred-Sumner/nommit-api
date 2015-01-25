@@ -10,7 +10,7 @@ describe Notifications::FoodAvailableWorker do
   before :each do
     allow(Texter).to receive(:run)
     User.update_all(school_id: food.seller.school_id)
-  end
+end
 
   context "#perform" do
     subject do

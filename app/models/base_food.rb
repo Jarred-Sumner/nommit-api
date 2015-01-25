@@ -9,7 +9,6 @@ class BaseFood < ActiveRecord::Base
   has_one :school, through: :seller
   has_many :prices, foreign_key: "food_id"
 
-  has_many :buyers, through: :orders, source: :user, class_name: User
   accepts_nested_attributes_for :prices
 
   validates :title, presence: true

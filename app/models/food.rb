@@ -5,6 +5,7 @@ class Food < BaseFood
   has_many :shifts, lambda { uniq }, through: :delivery_places
   has_many :delivery_places, through: :deliveries
   has_many :places, lambda { uniq }, through: :delivery_places
+  has_many :buyers, through: :orders, source: :user, class_name: User
   has_many :couriers, through: :shifts
   
   accepts_nested_attributes_for :orders

@@ -21,11 +21,19 @@ class Seller < ActiveRecord::Base
   def customer_satisfaction
     rating = orders.rated.where("rating > 4.5").count.to_f / orders.rated.count.to_f
     rating = rating * 100.0
-    rating.round(2)
+    rating.round(1)
+  end
+
+  def payout_calculator
+    @payout_calculator ||= PayoutCalculator.new(orders.completed.pluck(:id))
   end
 
   def revenue
-    PayoutCalculator.new(orders.completed.pluck(:id)).revenue
+    payout_calculator.revenue
+  end
+
+  def late_rate
+    orders.late.count.to_f / orders.placed.count.to_f
   end
 
 end
