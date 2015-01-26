@@ -259,6 +259,11 @@ class Order < ActiveRecord::Base
 
     # Send the courier a push notification 3 minutes before the order is set to arrive
     PushNotifications::Courier::HurryUpWorker.perform_at(delivered_at - 3.minutes, id)
+
+  end
+
+  after_commit do
+    food.touch
   end
 
   validate :food_is_active!, on: :create
