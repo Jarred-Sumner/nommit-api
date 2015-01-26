@@ -1,5 +1,3 @@
-json.cache! restaurant do
-  json.(restaurant, :id, :name)
+json.(restaurant, :id, :name)
 
-  json.logo_url image_url(restaurant.logo(:normal))
-end
+json.logo_url image_url(restaurant.logo(:normal))
