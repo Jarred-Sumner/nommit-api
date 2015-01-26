@@ -52,7 +52,7 @@ class DashboardController < ActionController::Base
     end
 
     def require_login!
-      redirect_to action: :login if current_session.nil?
+      redirect_to action: :login, android: params[:android] if current_session.nil?
     end
 
 end

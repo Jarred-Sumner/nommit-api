@@ -88,6 +88,7 @@ Rails.application.routes.draw do
   get 'dashboard' => redirect("/")
 
   get '/auth/facebook/callback' => 'dashboard#facebook'
+  get '/auth/failure' => redirect("/login")
   get '/admin/logout' => "dashboard#logout", as: :destroy_admin_user_session
   get '/logout' => "dashboard#logout", as: :logout
 
