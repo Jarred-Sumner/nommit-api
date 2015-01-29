@@ -21,14 +21,14 @@
   def notify_user!(user)
     if should_push?(user)
       send_push_notification!(user.id)
-    # elsif should_text?(user)
-    #   send_text!(user.id)
-    # elsif should_email?(user)
-    #   send_email!(user.id)
-    #   user.subscription.last_emailed = DateTime.now
+    elsif should_text?(user)
+      send_text!(user.id)
+    elsif should_email?(user)
+      send_email!(user.id)
+      user.subscription.last_emailed = DateTime.now
     end
 
-    user.subscription.save!
+    user.subscription.try(:save!)
   rescue Exception => e
     Bugsnag.notify(e)
     Rails.logger.info "Exception while notifying: #{e.inspect}"
