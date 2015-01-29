@@ -11,7 +11,7 @@ class SMS::Notifications::FoodAvailableWorker
     if food.orderable? && user.phone.present?
       return false unless user.subscription.try(:sms?)
       price = number_to_currency(food.price.price_in_cents / 100)
-      @message = "Hungry? Get #{food.title} from #{food.restaurant.name} for #{price} delivered to you on Nommit in < 15 min - http://getnommit.com?sms=true"
+      @message = "Hungry? Get #{food.title} from #{food.seller.name} for #{price} delivered to you on Nommit in < 15 min - http://getnommit.com?sms=true"
 
       if user.credit > 0
 
