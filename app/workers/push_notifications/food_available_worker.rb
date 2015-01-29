@@ -20,7 +20,7 @@ class PushNotifications::FoodAvailableWorker < PushNotifications::BaseWorker
 
     if food.orderable?
       params[:expiry] = food.end_date.to_time
-      price = number_to_currency(food.prices.first.price_in_cents / 100)
+      price = number_to_currency(food.price.price_in_cents / 100)
 
       if food.seller.name.include?("Nommit")
         params[:alert] = "Hungry? Get #{food.title} from #{food.restaurant.name} delivered for #{price} in under 15 minutes!"

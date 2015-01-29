@@ -81,7 +81,7 @@ class Food < BaseFood
   end
 
   def price
-    prices.first
+    prices.order("price_in_cents ASC").first
   end
 
   after_commit :notify_users!, if: :notify?, on: :create
