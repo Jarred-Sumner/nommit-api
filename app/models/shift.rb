@@ -33,7 +33,7 @@ class Shift < ActiveRecord::Base
       SellableFood.where(id: foods).each do |sellable_food|
         index = foods.index(sellable_food.id)
         version = sellable_food.versions.orderable.order("created_at ASC").first
-        if version.try(:orderable?)
+        if version.active?
           foods[index] = version.id
         else
           raise ArgumentError, "To schedule your run, please contact support@getnommit.com!"

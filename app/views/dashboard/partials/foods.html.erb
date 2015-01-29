@@ -20,7 +20,7 @@
   <ul class='content foods'>
     <fading-circle-spinner ng-if='!foods'></fading-circle-spinner>
 
-    <li class='food-container' ng-repeat='food in foods' ng-class="{ 'sold-out': food.isSoldOut(), 'expired': food.isExpired(), 'ended': food.isSaleOver(), 'pending': food.isPending()  }">
+    <li class='food-container' ng-repeat='food in foods' ng-class="{ 'sold-out': food.isSoldOut(), 'expired': food.isExpired(), 'ended': food.isSaleOver() && !food.isSoldOut(), 'pending': food.isPending()  }">
 
       <div class='food' ng-click='order(food)'>
         <div class='featured' ng-show='food.featured'></div>
