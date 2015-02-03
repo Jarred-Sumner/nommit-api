@@ -29,7 +29,20 @@ class Shift < ActiveRecord::Base
       raise ArgumentError, "Your shift is about to end! Can't deliver to more places until the next shift."
     end
 
-    foods = [53]
+    if foods.blank?
+      foods = seller.foods.visible.active.pluck(:id)
+    end
+
+    sellable_foods = SellableFood.where(id: Food.where(id: foods).pluck(:id) | foods)
+    sellable_foods.each do |food|
+      i = foods.index(food.id)
+      foods[i] = food.versions
+        .where("end_date > ?", DateTime.now)
+        .where(state: [ Food.states[:active], Food.states[:halted] ])
+        .order("end_date ASC")
+        .first!
+        .id
+    end
 
     foods.sort!
 
@@ -48,7 +61,10 @@ class Shift < ActiveRecord::Base
         dp.arrives_at = nil
         dp.save!
 
-        foods.each { |food_id| dp.deliveries.where(food_id: food_id).first_or_create! }
+        foods.each do |food_id| 
+          dp.deliveries.where(food_id: food_id).first_or_create!
+        end
+
       end
     end
 
