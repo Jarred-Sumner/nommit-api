@@ -1,10 +1,10 @@
 class Api::V1::ShiftsController < Api::V1::ApplicationController
-  before_action :require_courier!
+  before_action :require_courier!, only: [:create]
   before_action :require_shift!, :require_authorized_courier!, only: [:update, :show]
   before_action :require_no_ongoing_shifts!, :require_at_least_one_place!, only: :create
 
   def index
-    @shifts = courier.shifts.limit(10).order("created_at DESC")
+    @shifts = current_user.shifts.limit(10).order("created_at DESC")
   end
 
   def create
@@ -64,7 +64,7 @@ class Api::V1::ShiftsController < Api::V1::ApplicationController
   private
 
     def shift
-      @shift ||= Shift.find_by(id: shift_params[:id], courier: courier)
+      @shift ||= current_user.shifts.find_by(id: shift_params[:id])
     end
 
     def delivery_place
@@ -98,7 +98,7 @@ class Api::V1::ShiftsController < Api::V1::ApplicationController
     end
 
     def require_authorized_courier!
-      render_forbidden unless shift.courier_id == courier.id
+      render_forbidden unless current_user.couriers.pluck(:id).include? shift.courier_id
     end
 
     def require_at_least_one_place!

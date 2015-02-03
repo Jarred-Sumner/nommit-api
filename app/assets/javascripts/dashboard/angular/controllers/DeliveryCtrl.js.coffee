@@ -27,7 +27,7 @@
           $scope.setShift(shift)
           return null
       $scope.isLoading = false
-      $state.go("dashboard.deliver.places")
+      $state.go("dashboard.choose_seller")
   load()
 
   $scope.notify = (deliveryPlace) ->

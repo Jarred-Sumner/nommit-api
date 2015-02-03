@@ -1,0 +1,26 @@
+<article ng-controller='ChooseSellerCtrl' class='choose-seller-page'>
+
+  <div class='nav-bar-container'>
+    <div class='nav-bar'>
+      <span class='left-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
+      <span class='title'>Delivering for?</span>
+    </div>
+  </div>
+
+  <div class='popup-container' ng-if='isLoading'>
+
+    <div class='popup'>
+      <h2 class='header'>Loading</h2>
+      <fading-circle-spinner></fading-circle-spinner>
+    </div>
+
+  </div>
+
+  <section class='choose-seller'>
+    <li class='picker' ng-repeat='seller in sellers' ui-sref='dashboard.choose_foods({ seller_id: seller.id })'>
+      <span class='badge' ng-style="{ 'background-image': 'url({{seller.logo_url}})' }"></span>
+      <span class='name' ng-bind='seller.name'></span>
+    </li>
+  </section>
+
+</article>

@@ -1,0 +1,28 @@
+<article ng-controller='ChooseFoodsCtrl' class='choose-foods-page'>
+
+  <div class='nav-bar-container'>
+    <div class='nav-bar'>
+      <span class='left-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
+      <span class='title'>What're you delivering?</span>
+      <span class='right-button' ui-sref='dashboard.deliver.places({ foods: foods, seller_id: seller_id })' ng-disabled='!foods || foods.length == 0'><i class='fa fa-building'></i></span>
+    </div>
+  </div>
+
+  <div class='popup-container' ng-if='isLoading'>
+
+    <div class='popup'>
+      <h2 class='header'>Loading</h2>
+      <fading-circle-spinner></fading-circle-spinner>
+    </div>
+
+  </div>
+
+  <section class='choose-foods'>
+    <li class='picker' ng-repeat='seller in sellers' ng-click='toggleFood(food.id)'>
+      <span class='badge' ng-style="{ background-image: seller.logo_url }"></span>
+      <span class='name' ng-binding='seller.name'></span>
+      <span class='check' ng-class='{ checked: foods.indexOf(food.id) }'></span>
+    </li>
+  </section>
+
+</article>

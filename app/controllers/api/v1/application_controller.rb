@@ -15,7 +15,7 @@ class Api::V1::ApplicationController < ActionController::Base
   end
 
   def courier
-    @current_courier ||= params[:seller_id].present? ? current_user.couriers.find_by(seller_id: Integer(params[:seller_id])) : current_user.couriers.first
+    @current_courier ||= current_user.couriers.find_by(seller_id: Integer(params[:seller_id])) if params[:seller_id].present?
   end
 
   def seller

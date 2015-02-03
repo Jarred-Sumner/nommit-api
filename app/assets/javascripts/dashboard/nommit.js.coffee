@@ -87,8 +87,14 @@ window.settings =
     .state "dashboard.deliver",
       url: "/deliver"
       templateUrl: "/dashboard/partials/deliver"
+    .state "dashboard.choose_seller",
+      url: "/deliver/choose_seller"
+      templateUrl: "/dashboard/partials/choose_seller"
+    .state "dashboard.choose_foods",
+      url: "/deliver/choose_foods?seller_id"
+      templateUrl: "/dashboard/partials/choose_foods"
     .state "dashboard.deliver.places",
-      url: "/places"
+      url: "/places?seller_id&foods"
       templateUrl: "/dashboard/partials/delivery_places"
     .state "dashboard.activate",
       url: "/activate"

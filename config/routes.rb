@@ -11,7 +11,9 @@ Rails.application.routes.draw do
   namespace :api do
 
     namespace :v1 do
-      resources :foods, only: [:index, :show]
+      resources :foods, except: [:destroy] do
+        resources :schedules, only: [:index]
+      end
 
       resources :shifts, only: [:index, :create, :update, :show] do
         resources :orders, only: [:index]
@@ -60,6 +62,8 @@ Rails.application.routes.draw do
     get 'partials/schools'
     get 'partials/activate'
     get 'partials/confirm'
+    get 'partials/choose_seller'
+    get 'partials/choose_foods'
     get 'partials/orders/new' => 'partials#new_order'
     get 'partials/orders/show' => 'partials#show_order'
   end
@@ -79,6 +83,9 @@ Rails.application.routes.draw do
 
   get 'deliver' => 'dashboard#index'
   get 'deliver/places' => 'dashboard#index'
+  get 'deliver/choose_seller' => 'dashboard#index'
+  get 'deliver/choose_foods' => 'dashboard#index'
+
   get 'orders/:id' => 'dashboard#index'
   get 'support' => 'dashboard#index'
   get 'invite' => 'dashboard#index'

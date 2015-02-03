@@ -25,7 +25,7 @@
       $rootScope.place = $scope.place
       $state.go("dashboard.foods.order", { place_id: $rootScope.place.id, food_id: food.id })
     else
-      $state.go("dashboard.foods.places", { food_id: food.id })
+      $state.go("dashboard.foods.places")
   retrieveFoods = ->
     Foods.query (foods) ->
       $scope.foods = _.chain(foods)
