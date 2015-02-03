@@ -4,11 +4,13 @@
   </head>
   <body>
 
-    <div class='header'>
-      <%= link_to root_url, class: "clickable-area" do %>
-        <%= image_tag "nommit-logo.png", class: "logo" %>
-      <% end %>
-    </div>
+    <% unless @header_hidden %>
+      <div class='header'>
+        <%= link_to root_url, class: "clickable-area" do %>
+          <%= image_tag "nommit-logo.png", class: "logo" %>
+        <% end %>
+      </div>
+    <% end %>
 
     <%= yield %>
 

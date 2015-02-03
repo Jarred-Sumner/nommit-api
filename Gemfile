@@ -49,6 +49,7 @@ gem 'phony_rails'
 gem 'twilio-ruby'
 
 # Sidekiq
+gem 'sinatra', :require => nil
 gem 'sidekiq'
 
 # Bugsnag
