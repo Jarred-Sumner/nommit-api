@@ -40,8 +40,12 @@ class Shift < ActiveRecord::Base
         .where("end_date > ?", DateTime.now)
         .where(state: [ Food.states[:active], Food.states[:halted] ])
         .order("end_date ASC")
-        .first!
+        .first
         .id
+    end
+
+    if foods.blank?
+      raise ArgumentError, "A run hasn't been scheduled - please contact support@getnommit.com for assistance"
     end
 
     foods.sort!
