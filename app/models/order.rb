@@ -102,7 +102,7 @@ class Order < ActiveRecord::Base
     transaction do
       update_attributes!(state: "delivered", delivered_at: DateTime.now, original_delivered_at: delivered_at)
       shift.update_arrival_times!
-      # apply_late_credit! if late?
+      apply_late_credit! if late?
     end
   end
 

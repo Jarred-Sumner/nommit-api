@@ -7,4 +7,9 @@ class Courier < ActiveRecord::Base
 
   enum state: { inactive: 0, active: 1 }
   include StateID
+
+  after_commit on: :create do
+    CouriersMailer.delay.create(id) if user.email.present?
+  end
+
 end
