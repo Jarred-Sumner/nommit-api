@@ -11,9 +11,6 @@ module Tracking
     Analytics.track(event: event_name, properties: properties.merge(metadata), user_id: current_user.try(:id))
   end
 
-
-  # Long list of events!
-
   ## User Events
 
   def track_activation
@@ -34,6 +31,10 @@ module Tracking
 
   def track_sent_confirm_code
     track("User Sent Confirm Code")
+  end
+
+  def track_seller_application
+    track("User Applied to Become a Seller")
   end
 
   ## Device Events
@@ -83,7 +84,6 @@ module Tracking
   def track_looked_at_places
     track("User Looked at Places", track_properties_for(school: school))
   end
-
 
   # Food Events
 
