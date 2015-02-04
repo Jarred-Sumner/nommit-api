@@ -18,6 +18,11 @@
       dps[order.deliveryPlace().id] ||= order.deliveryPlace()
       dps[order.deliveryPlace().id].pendingOrders().push(order)
 
-    @_deliveryPlaces = _.values(dps)
+    dps = _.sortBy(_.values(dps), (dp) ->
+      dp.index
+    )
+    _.each dps, (dp, index) ->
+      dp.index = index
+    @_deliveryPlaces = dps
 
   Shifts
