@@ -18,8 +18,8 @@
 
   <section class='choose-seller'>
     <li class='picker' ng-repeat='seller in sellers' ui-sref='dashboard.choose_foods({ seller_id: seller.id })'>
-      <span class='badge' ng-style="{ 'background-image': 'url({{seller.logo_url}})' }"></span>
       <span class='name' ng-bind='seller.name'></span>
+      <span class='badge' ng-style="{ 'background-image': 'url({{seller.logo_url}})' }"></span>
     </li>
   </section>
 

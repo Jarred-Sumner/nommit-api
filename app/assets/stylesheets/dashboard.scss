@@ -681,6 +681,12 @@ fieldset {
   }
   .right-button {
     float: right;
+
+    &[disabled] {
+      cursor: none;
+      pointer-events: none;
+      opacity: 0.5;
+    }
   }
 
   button {
@@ -2413,3 +2419,53 @@ $desktop: new-breakpoint(min-width 480px);
   }
   
 }
+
+.choose-seller, .choose-foods {
+  .picker {
+    margin: 20px;
+    padding: 20px;
+    list-style: none;
+    background-color: white;
+    border: 1px solid #E5E5E5;
+    box-shadow: 0px 1px 6px 0px rgba(214,214,214,0.50);
+    border-radius: 2px;
+
+    position: relative;
+
+    &:hover {
+      cursor: pointer;
+      background-color: darken(white, 5%);
+    }
+
+    .badge {
+      position: absolute;
+      top: -8px;
+      right: 0px;
+
+      height: 74px;
+      width: 74px;
+      border-radius: 37px;
+
+      box-shadow: 0px 0px 1px #CCC;
+
+      background-size: cover;
+      background-position: center;
+
+      overflow: hidden;
+
+      .fa-check {
+        padding: 5px;
+        display: block;
+        vertical-align: middle;
+        background-color: rgba(0,0,0,0.43);
+        color: rgba(255,255,255,0.70);
+        box-shadow: inset 0px 1px 0px 0px rgba(0,0,0,0.62);
+
+        font-size: 60px;
+      }
+
+    }
+
+  }
+}
+

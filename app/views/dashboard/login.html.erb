@@ -36,12 +36,6 @@
         <%= image_tag "nommit-logo.png", class: "logo" %>
         <div class='copy'>
 
-          <% if params[:android] == "true" %>
-            <h3>To use Nommit, go to <br /> <strong>http://www.getnommit.com</strong> <br/> in Google Chrome</h3>
-            <br />
-            <p>Android app is down for maintenance</p>
-          <% else %>
-
           <h3>Food delivered in under <br />15 minutes</h3>
           <div class='button-container'>
             <a href='/auth/facebook' class='button facebook'>
@@ -49,8 +43,6 @@
               <span>Sign in with Facebook</span>
             </a>
           </div>
-
-          <% end %>
 
         </div>
 

@@ -20,14 +20,17 @@
       $scope.setShift(shift)
 
   load = ->
-    Shifts.query (shifts) ->
-      for shift in shifts
-        shift = new Shifts(shift)
-        if shift.isOngoing()
-          $scope.setShift(shift)
-          return null
+    if $state.current.name == "dashboard.deliver.places"
       $scope.isLoading = false
-      $state.go("dashboard.choose_seller")
+    else
+      Shifts.query (shifts) ->
+        for shift in shifts
+          shift = new Shifts(shift)
+          if shift.isOngoing()
+            $scope.setShift(shift)
+            return null
+        $scope.isLoading = false
+        $state.go("dashboard.choose_seller")
   load()
 
   $scope.notify = (deliveryPlace) ->

@@ -2,9 +2,9 @@
 
   <div class='nav-bar-container'>
     <div class='nav-bar'>
-      <span class='left-button' ng-click='toggleDashboard()'><i class='fa fa-bars'></i></span>
+      <span class='left-button' ui-sref='dashboard.choose_seller()'><i class='fa fa-arrow-left'></i></span>
       <span class='title'>What're you delivering?</span>
-      <span class='right-button' ui-sref='dashboard.deliver.places({ foods: foods, seller_id: seller_id })' ng-disabled='!foods || foods.length == 0'><i class='fa fa-building'></i></span>
+      <span class='right-button' ng-disabled='selectedFoods.length == 0' ui-sref='dashboard.deliver.places({ foods: selectedFoods, seller_id: seller_id })'><i class='fa fa-check'></i></span>
     </div>
   </div>
 
@@ -18,10 +18,12 @@
   </div>
 
   <section class='choose-foods'>
-    <li class='picker' ng-repeat='seller in sellers' ng-click='toggleFood(food.id)'>
-      <span class='badge' ng-style="{ background-image: seller.logo_url }"></span>
-      <span class='name' ng-binding='seller.name'></span>
-      <span class='check' ng-class='{ checked: foods.indexOf(food.id) }'></span>
+    <li class='picker' ng-repeat='food in foods' ng-click='toggleFood(food.id)'>
+      <span class='name' ng-bind='food.title'></span>
+      <span class='badge' ng-style="{ 'background-image': 'url({{ food.thumbnail_image_url }})' }">
+        <span class='fa' ng-class='{ "fa-check": selectedFoods.indexOf(food.id) > -1 }'></span>
+      </span>
+
     </li>
   </section>
 

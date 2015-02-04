@@ -1,4 +1,4 @@
-@nommit.controller "DeliveryPlacesCtrl", ($scope, Places, $state, Couriers, Shifts, $timeout) ->
+@nommit.controller "DeliveryPlacesCtrl", ($scope, Places, $state, Couriers, Shifts, $timeout, $stateParams) ->
   refresh = ->
     Couriers.me (couriers) ->
       active = couriers[0]
@@ -45,7 +45,13 @@
         errorWhileUpdating
       )
     else
-      Shifts.save(place_ids: $scope.selectedPlaces, updatedShift, errorWhileUpdating)
+      Shifts.save( 
+          place_ids: $scope.selectedPlaces,
+          foods: $stateParams.foods,
+          seller_id: $stateParams.seller_id
+        updatedShift, 
+        errorWhileUpdating
+      )
 
 
 
