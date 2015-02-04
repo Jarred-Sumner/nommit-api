@@ -47,7 +47,7 @@
     else
       Shifts.save( 
           place_ids: $scope.selectedPlaces,
-          foods: $stateParams.foods,
+          food_ids: $stateParams.foods,
           seller_id: $stateParams.seller_id
         updatedShift, 
         errorWhileUpdating

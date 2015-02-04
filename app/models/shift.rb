@@ -33,7 +33,7 @@ class Shift < ActiveRecord::Base
       foods = seller.foods.visible.active.pluck(:id)
     end
 
-    sellable_foods = SellableFood.where(id: Food.where(id: foods).pluck(:id) | foods)
+    sellable_foods = SellableFood.where(id: foods | Food.where(id: foods).pluck(:id))
     sellable_foods.each do |food|
       i = foods.index(food.id)
       foods[i] = food.versions
